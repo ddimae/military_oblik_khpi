@@ -1,5 +1,6 @@
 package ntukhpi.semit.militaryoblik;
 
+import javafx.application.Application;
 import ntukhpi.semit.militaryoblik.utils.DataWriteService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,11 +15,13 @@ import java.nio.charset.StandardCharsets;
 public class MilitaryAccounting {
 
     public static void main(String[] args) throws IOException {
-        ConfigurableApplicationContext context = SpringApplication.run(MilitaryAccounting.class, args);
+        // for run demo console with menu
+//        ConfigurableApplicationContext context = SpringApplication.run(MilitaryAccounting.class, args);
+//        runConsole();
+//        context.close();
 
-        runConsole();
-
-        context.close();
+        //for run javaFX app
+        Application.launch(MilitaryOblikKhPIMain.class, args);
     }
 
     public static void runConsole() throws IOException {
