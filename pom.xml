@@ -12,7 +12,7 @@
 
     <groupId>ntukhpi.semit.militaryoblik</groupId>
     <artifactId>MilitaryOblikKhPI</artifactId>
-    <version>0.0.5-SNAPSHOT</version>
+    <version>V.0.0.1</version>
     <name>MilitaryOblikKhPI</name>
     <description>Software for collect data about employee and prepare setted result tables</description>
 

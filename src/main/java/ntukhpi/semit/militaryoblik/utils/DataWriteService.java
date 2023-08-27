@@ -1,4 +1,4 @@
-package ntukhpi.semit.militaryoblik.services;
+package ntukhpi.semit.militaryoblik.utils;
 
 import ntukhpi.semit.militaryoblik.adapters.D05Adapter;
 import ntukhpi.semit.militaryoblik.utils.DataPreparer;

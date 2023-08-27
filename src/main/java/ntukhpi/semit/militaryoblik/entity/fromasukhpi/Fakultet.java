@@ -24,11 +24,11 @@ public class Fakultet {
 
     //??? true (1) = ???
     @Column(name = "sm_o")
-    private boolean sm_o;
+    private Boolean sm_o;
 
     //??? true (1) = ???
     @Column(name = "sm_v")
-    private boolean sm_v;
+    private Boolean sm_v;
 
     //Найменування факультету
     @Column(length = 100)
@@ -44,15 +44,15 @@ public class Fakultet {
 
     //???? true (1) = ???
     @Column(name = "ok_yn")
-    private boolean okYn;
+    private Boolean okYn;
 
     //???? true (1) = ???
     @Column(name = "dog_otdel")
-    private boolean dogOtdel;
+    private Boolean dogOtdel;
 
     //Є заочне навчання? true (1) = так
     @Column(name = "zaochniy")
-    private boolean zaochniy;
+    private Boolean zaochniy;
 
     //Телефон: 707-63-11 або 7076814 або пусто
     @Column(length = 10)
@@ -88,5 +88,13 @@ public class Fakultet {
     //Скорочене найменування new
     @Column(length = 10, name = "abr_new")
     private String abrNew;
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("");
+        sb.append(fname).append(" (");
+        sb.append(abr).append(")");
+        return sb.toString();
+    }
 
 }

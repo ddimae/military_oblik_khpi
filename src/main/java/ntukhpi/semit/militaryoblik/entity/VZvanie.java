@@ -23,6 +23,6 @@ public class VZvanie {
 
     //Порядковий номер для представлення у списку, для сортування при відображенні
     @Column(name="show_order")
-    private int numOrderShow;
+    private Integer numOrderShow;
 
 }

@@ -1,6 +1,6 @@
 package ntukhpi.semit.militaryoblik;
 
-import ntukhpi.semit.militaryoblik.services.DataWriteService;
+import ntukhpi.semit.militaryoblik.utils.DataWriteService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;

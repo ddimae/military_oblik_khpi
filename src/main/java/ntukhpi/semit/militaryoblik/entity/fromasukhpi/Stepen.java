@@ -22,4 +22,5 @@ public class Stepen {
     @Column(length = 80, name="stepen_long")
     private String stepenLong;
     @Column(name="okp_id_nstep")
-    private int okpIdNaukStepen;}
+    private Integer okpIdNaukStepen;
+}

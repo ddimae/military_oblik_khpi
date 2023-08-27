@@ -22,7 +22,7 @@ public class Zvanie {
     private String zvanieName;
 
     @Column(name="okp_id_uzvan")
-    private int okpIdUchZvan;
+    private Integer okpIdUchZvan;
 
 
 }

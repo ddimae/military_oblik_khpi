@@ -22,7 +22,7 @@ public class Kafedra {
     private String kname;
 
     //Зв"язок із факультетом-інститутом
-    @ManyToOne(fetch = FetchType.LAZY) //Треба?!
+    @ManyToOne
     @JoinColumn(name = "fid")
     private Fakultet fakultet;
 
@@ -46,11 +46,11 @@ public class Kafedra {
 
     //Загальноуніверситетьська? true (1) = так
     @Column(name = "zagal")
-    private boolean zagal;
+    private Boolean zagal;
 
     //Випускна? true (1) = так
     @Column(name = "vipusk")
-    private boolean vipusk;
+    private Boolean vipusk;
 
     //співробітник для зв'язку (???)
     @Column(length = 100)
@@ -59,5 +59,26 @@ public class Kafedra {
     //телефон співробітника для зв'язку
     @Column(length = 30,name = "work_telef")
     private String workTelef;
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("");
+        sb.append(kname).append(" (").append(kabr).append(',').append(oid);
+        if (fakultet != null) {
+            sb.append(',').append(fakultet.getAbr());
+        }
+        sb.append(")");
+        return sb.toString();
+    }
+
+    public String showKafForPrepod() {
+        final StringBuilder sb = new StringBuilder("");
+        sb.append(" (").append(kabr);
+        if (fakultet != null) {
+            sb.append(',').append(fakultet.getAbr());
+        }
+        sb.append(")");
+        return sb.toString();
+    }
 
 }
