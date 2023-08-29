@@ -46,6 +46,12 @@ public class MilitaryOblikKhPIMain extends Application {
                     0, 0, false, true);
 
     //============================
+    private final static String DOCUMENTS_JAVAFX = "/javafxview/DocumentsAll.fxml";
+    private final static String DOCUMENTS_JAVAFX_TITLE = "Документи";
+
+    private static SettingsStage documentsAll =
+            new SettingsStage(DOCUMENTS_JAVAFX, DOCUMENTS_JAVAFX_TITLE,
+                    0, 0, false, true);
 //    private final static String EDUCATION_POSTGRADUATE_JAVAFX = "/javafxview/EducationPostgraduateAll.fxml";
 //    private final static String EDUCATION_POSTGRADUATE_JAVAFX_TITLE = "Післядипломна освіта";
 
@@ -211,6 +217,10 @@ public class MilitaryOblikKhPIMain extends Application {
 
     public static void showEducationWindow() {
         showStage(educationAll);
+    }
+
+    public static void showDocumentsWindow() {
+        showStage(documentsAll);
     }
 
 //    Так было в исходном варианте

@@ -38,7 +38,7 @@ public class LoginFormController {
     }
 
     private static void showReservistsForm() {
-        currentStage.close();
+        currentStage.close(); //FIXME Скоріш за все не треба власноруч закривати stage
         MilitaryOblikKhPIMain.showReservistsWindow();
     }
 

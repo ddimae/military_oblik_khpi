@@ -243,5 +243,8 @@ public class ReservistsAllController {
         MilitaryOblikKhPIMain.showEducationWindow();
     }
 
-
+    @FXML
+    private void handleDocumentsButton() {
+        MilitaryOblikKhPIMain.showDocumentsWindow();
+    }
 }
