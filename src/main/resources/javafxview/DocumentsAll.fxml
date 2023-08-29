@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane prefHeight="800.0" prefWidth="1000.0" stylesheets="@MOStyles.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <TableView prefHeight="356.0" prefWidth="781.0" BorderPane.alignment="CENTER">
+         <columns>
+            <TableColumn prefWidth="114.39998853206635" text="Вид" />
+            <TableColumn prefWidth="214.40001678466797" text="Серія Номер" />
+            <TableColumn prefWidth="219.99996948242188" text="Ким видан" />
+            <TableColumn minWidth="0.0" prefWidth="189.60002441406255" text="Дата" />
+         </columns>
+      </TableView>
+   </center>
+   <right>
+      <VBox alignment="TOP_CENTER" prefHeight="376.0" prefWidth="219.0" spacing="30.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button mnemonicParsing="false" prefWidth="165.0" text="Повернутися" />
+            <Button mnemonicParsing="false" prefWidth="165.0" text="Додати" />
+            <Button mnemonicParsing="false" prefWidth="165.0" text="Змінити" />
+            <Button mnemonicParsing="false" prefWidth="165.0" text="Вилучити" />
+         </children>
+      </VBox>
+   </right>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+   <padding>
+      <Insets bottom="40.0" left="35.0" right="7.0" top="20.0" />
+   </padding>
+   <top>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Двухглавов Дмитро Едуардович" wrappingWidth="930.0" BorderPane.alignment="CENTER">
+         <font>
+            <Font size="24.0" />
+         </font>
+         <BorderPane.margin>
+            <Insets bottom="20.0" />
+         </BorderPane.margin>
+      </Text>
+   </top>
+</BorderPane>
