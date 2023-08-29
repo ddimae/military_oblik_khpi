@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntukhpi.semit.militaryoblik.javafxview.EducationEditController">
+    <children>
+        <GridPane prefHeight="399.0" prefWidth="600.0">
+            <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <TextField prefHeight="27.0" prefWidth="237.0" promptText="ПІБ" GridPane.columnIndex="2" GridPane.columnSpan="2" />
+                <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="100.0" text="Зберегти" GridPane.columnIndex="2" GridPane.rowIndex="8" onAction="#saveEducation"/>
+                <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="100.0" text="Повернутися" GridPane.columnIndex="3" GridPane.rowIndex="8" onAction="#closeEdit"/>
+                <Label text="ВНЗ" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Label text="Форма" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <Label text="Рік" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <Label text="Рівень" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <Label text="Диплом" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                <Label text="Спеціальність" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                <Label text="Кваліфікація" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                <ComboBox fx:id="vnzComboBox" prefHeight="27.0" prefWidth="183.0" promptText="--Оберіть ВНЗ" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                <ComboBox fx:id="formComboBox" prefHeight="27.0" prefWidth="183.0" promptText="--Оберіть форму" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+                <ComboBox fx:id="levelComboBox" prefHeight="27.0" prefWidth="183.0" promptText="--Оберіть рівень" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+            <TextField fx:id="yearTextField" promptText="ХХХХ" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <TextField fx:id="diplomaSeriesTextField" promptText="A00" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            <TextField fx:id="diplomaNumberTextField" promptText="000000" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+            <Label prefHeight="17.0" prefWidth="112.0" text="                       Серія" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Label prefHeight="17.0" prefWidth="114.0" text="         Номер" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+            <TextField fx:id="specialtyTextField" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+            <TextField fx:id="qualificationTextField" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+            </children>
+        </GridPane>
+    </children>
+</AnchorPane>

@@ -1,6 +1,7 @@
 package ntukhpi.semit.militaryoblik.javafxview;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -15,10 +16,11 @@ import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import org.springframework.stereotype.Component;
 
+import static ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain.currentStage;
+
 @Component
 public class LoginFormController {
 
-    public static Stage loginStage;
     @FXML
     private TextField loginField;
     @FXML
@@ -36,10 +38,11 @@ public class LoginFormController {
     }
 
     private static void showReservistsForm() {
-        loginStage.close();
+        currentStage.close();
         MilitaryOblikKhPIMain.showReservistsWindow();
     }
 
+    //TODO Нужна форма JavaFX!!!! Для универсальности!!!
     private void showInvalidDataWindow() {
         Stage invalidDataStage = new Stage();
         invalidDataStage.setTitle("Помилка входу!");
@@ -47,7 +50,7 @@ public class LoginFormController {
 
         invalidDataStage.alwaysOnTopProperty();
         invalidDataStage.initModality(Modality.APPLICATION_MODAL);
-        loginStage.hide();
+        currentStage.hide();
         //invalidDataStage.initStyle(StageStyle.UNDECORATED);
         invalidDataStage.setResizable(false);
 
@@ -73,7 +76,7 @@ public class LoginFormController {
             loginField.setText("");
             passwordField.setText("");
             invalidDataStage.close();
-            loginStage.show();
+            currentStage.show();
         });
 
         exitButton.setOnAction(e -> {
@@ -85,5 +88,11 @@ public class LoginFormController {
         invalidDataStage.setScene(scene);
 
         invalidDataStage.showAndWait();
+    }
+
+    @FXML
+    public void closeForm(ActionEvent actionEvent) {
+        MilitaryOblikKhPIMain.applicationContext.close();
+        Platform.exit();
     }
 }

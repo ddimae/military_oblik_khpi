@@ -20,7 +20,7 @@ public class Voenkomat {
     @Column(name = "voenkamat_id")
     Long id;
 
-    @Column(length = 50)
-    private String voenkomat_name;
+    @Column(length = 50,name="voenkomat_name")
+    private String voenkomatName;
 
 }

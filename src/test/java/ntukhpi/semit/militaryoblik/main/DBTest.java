@@ -1,9 +1,11 @@
 package ntukhpi.semit.militaryoblik.main;
 
+import ntukhpi.semit.militaryoblik.entity.Voenkomat;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Fakultet;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Kafedra;
 import ntukhpi.semit.militaryoblik.repository.FakultetRepository;
 import ntukhpi.semit.militaryoblik.repository.KafedraRepository;
+import ntukhpi.semit.militaryoblik.repository.VoenkomatRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,6 +38,19 @@ public class DBTest {
         List<Kafedra> kafedraList = kafedraRepository.findAll();
         for (Kafedra kaf : kafedraList) {
             System.out.println(kaf);
+        }
+    }
+
+    @Autowired
+    VoenkomatRepository voenkomatRepository;
+
+    @Test
+    void showVoenkomat() {
+
+        System.out.println("\nVoenkomat list in SQLite:");
+        List<Voenkomat> voenkomatList = voenkomatRepository.findAll();
+        for (Voenkomat voenkomat : voenkomatList) {
+            System.out.println(voenkomat.getVoenkomatName());
         }
     }
 

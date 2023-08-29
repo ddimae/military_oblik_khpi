@@ -1,10 +1,10 @@
-package ntukhpi.semit.militaryoblik.javafxview;
+package ntukhpi.semit.militaryoblik.adapters;
 
 /**
  * Автор - Линьков А.
  * Класс для хранения информации о студентах. Временное решение, необходимое для работы с таблицей.
  */
-public class Reservist {
+public class ReservistAdapter {
     private String pib;
     private String dr;
     private String gender;
@@ -19,10 +19,10 @@ public class Reservist {
     private String institute;
     private String cathedra;
 
-    public Reservist(String pib, String dr, String gender,
-                     String trc, String rank, String vos,
-                     String type, String category,
-                     String tck, String institute, String cathedra) {
+    public ReservistAdapter(String pib, String dr, String gender,
+                            String trc, String rank, String vos,
+                            String type, String category,
+                            String tck, String institute, String cathedra) {
         this.pib = pib;
         this.dr = dr;
         this.gender = gender;

@@ -7,15 +7,15 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntukhpi.semit.militaryoblik.javafxview.LoginFormController">
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="298.0" prefWidth="519.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntukhpi.semit.militaryoblik.javafxview.LoginFormController">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
-    <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="84.0" minWidth="10.0" prefWidth="59.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="121.0" minWidth="10.0" prefWidth="80.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="127.0" minWidth="10.0" prefWidth="83.0" />
+    <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="134.0" minWidth="10.0" prefWidth="65.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="148.0" minWidth="10.0" prefWidth="148.0" />
+      <ColumnConstraints hgrow="NEVER" maxWidth="77.0" minWidth="10.0" prefWidth="68.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="81.0" minWidth="10.0" prefWidth="33.0" />
   </columnConstraints>
   <rowConstraints>
       <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="40.0" vgrow="NEVER" />
@@ -43,7 +43,7 @@
             <Insets left="-20.0" />
          </GridPane.margin>
       </Label>
-      <TextField fx:id="loginField" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.rowIndex="1">
+      <TextField fx:id="loginField" prefHeight="39.0" prefWidth="255.0" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets left="50.0" />
          </GridPane.margin>
@@ -51,7 +51,7 @@
             <Font size="18.0" />
          </font>
       </TextField>
-      <PasswordField fx:id="passwordField" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.rowIndex="3">
+      <PasswordField fx:id="passwordField" prefHeight="39.0" prefWidth="252.0" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets left="50.0" />
          </GridPane.margin>
@@ -59,13 +59,21 @@
             <Font size="18.0" />
          </font>
       </PasswordField>
-      <Button mnemonicParsing="false" onAction="#logIn" prefHeight="45.0" prefWidth="240.0" text="Увійти" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="5">
+      <Button fx:id="buttonLogin" mnemonicParsing="false" onAction="#logIn" prefHeight="45.0" prefWidth="157.0" text="Увійти" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="5">
          <font>
             <Font size="20.0" />
          </font>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
+      </Button>
+      <Button fx:id="buttonExit" mnemonicParsing="false" onAction="#closeForm" prefHeight="45.0" prefWidth="158.0" text="Закінчити" textAlignment="CENTER" GridPane.columnIndex="4" GridPane.columnSpan="3" GridPane.rowIndex="5">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="20.0" />
+         </font>
       </Button>
    </children>
 </GridPane>

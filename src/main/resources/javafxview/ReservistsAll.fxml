@@ -7,8 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane minHeight="600.0" minWidth="700.0" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ntukhpi.semit.militaryoblik.javafxview.ReservistsAllController">
+<AnchorPane minHeight="600.0" minWidth="700.0" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntukhpi.semit.militaryoblik.javafxview.ReservistsAllController">
    <children>
       <AnchorPane prefHeight="1080.0" prefWidth="1920.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -65,37 +64,37 @@
                         <Insets />
                      </GridPane.margin>
                   </ComboBox>
-                  <Button mnemonicParsing="false" prefHeight="55.0" prefWidth="225.0" text="Дані про посаду" textAlignment="CENTER" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                  <Button fx:id="educationButton" mnemonicParsing="false" onAction="#handleEducationButton" prefHeight="55.0" prefWidth="225.0" text="Дані про посаду" textAlignment="CENTER" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="9">
                      <GridPane.margin>
                         <Insets bottom="10.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button mnemonicParsing="false" prefHeight="55.0" prefWidth="225.0" text="Дані про освіту" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="5">
+                  <Button mnemonicParsing="false" onAction="#handleEducationButton" prefHeight="55.0" prefWidth="225.0" text="Дані про освіту" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="5">
                      <GridPane.margin>
                         <Insets bottom="10.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button mnemonicParsing="false" prefHeight="55.0" prefWidth="225.0" text="Дані про родину" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="6">
+                  <Button mnemonicParsing="false" prefHeight="55.0" prefWidth="225.0" text="Дані про родину" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="8">
                      <GridPane.margin>
                         <Insets bottom="10.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button mnemonicParsing="false" prefHeight="55.0" prefWidth="225.0" text="Адреси" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="7">
+                  <Button mnemonicParsing="false" prefHeight="55.0" prefWidth="225.0" text="Адреси та телефони" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="7">
                      <GridPane.margin>
                         <Insets bottom="10.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button mnemonicParsing="false" prefHeight="55.0" prefWidth="225.0" text="Облікові дані ТРЦ" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="8">
+                  <Button mnemonicParsing="false" prefHeight="55.0" prefWidth="225.0" text="Облікові дані ТРЦ" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="10">
                      <GridPane.margin>
                         <Insets bottom="10.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button mnemonicParsing="false" prefHeight="55.0" prefWidth="225.0" text="Паспорт гр. України" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="9">
+                  <Button mnemonicParsing="false" prefHeight="55.0" prefWidth="225.0" text="Документи" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="4">
                      <GridPane.margin>
                         <Insets bottom="10.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button mnemonicParsing="false" prefHeight="55.0" prefWidth="225.0" text="Закордонний паспорт" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="10">
+                  <Button mnemonicParsing="false" prefHeight="55.0" prefWidth="225.0" text="Дані про післядипломну освіту" wrapText="true" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="6">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
@@ -120,11 +119,6 @@
                         <Insets right="5.0" top="40.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label text="Кафедра:" GridPane.columnIndex="4" GridPane.rowIndex="11">
-                     <GridPane.margin>
-                        <Insets right="5.0" top="40.0" />
-                     </GridPane.margin>
-                  </Label>
                   <Label text="Категорія:" GridPane.columnIndex="6" GridPane.rowIndex="11">
                      <GridPane.margin>
                         <Insets right="5.0" top="40.0" />
@@ -135,17 +129,7 @@
                         <Insets right="5.0" top="40.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextField fx:id="filterTextField" prefHeight="31.0" prefWidth="99.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="11">
-                     <GridPane.margin>
-                        <Insets top="40.0" />
-                     </GridPane.margin>
-                  </TextField>
-                  <TextField fx:id="cathedraTextField" prefHeight="31.0" prefWidth="70.0" GridPane.columnIndex="5" GridPane.rowIndex="11">
-                     <GridPane.margin>
-                        <Insets top="40.0" />
-                     </GridPane.margin>
-                  </TextField>
-                  <TextField fx:id="categoryTextField" GridPane.columnIndex="7" GridPane.rowIndex="11">
+                  <TextField fx:id="filterTextField" prefHeight="31.0" prefWidth="617.0" GridPane.columnIndex="2" GridPane.columnSpan="6" GridPane.rowIndex="11">
                      <GridPane.margin>
                         <Insets top="40.0" />
                      </GridPane.margin>
@@ -155,6 +139,7 @@
                         <Insets top="40.0" />
                      </GridPane.margin>
                   </TextField>
+                  <Button fx:id="exitButton" mnemonicParsing="false" onAction="#stopApp" prefHeight="55.0" prefWidth="222.0" text="ВИХІД" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="12" />
                </children>
             </GridPane>
          </children>
