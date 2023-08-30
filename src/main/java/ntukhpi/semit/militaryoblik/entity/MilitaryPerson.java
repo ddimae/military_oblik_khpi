@@ -42,8 +42,9 @@ public class MilitaryPerson {
     //Можна продумати варіант завантаження переліку із файлу зовнішніх налаштувань.
     //Формувати у окремій таблиці БД - складніше і більше зусиль (моя думка)
     //До речі - як і для попередніх полів vCategory та
-    @Column(name = "sklad_obliky")
-    private Integer vSklad;
+    @ManyToOne
+    @JoinColumn(name = "vsklad_obliky_id")
+    private VSklad vSklad;
 
     //Військове званння.
     //Кожен військовозобовязаний має звання, яке отримав, коли проходив службу.

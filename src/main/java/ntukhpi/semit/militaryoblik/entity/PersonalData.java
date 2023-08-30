@@ -65,6 +65,21 @@ public class PersonalData {
     @JoinColumn(name = "region_kh_id")
     private RegionKharkiv regionKh;
 
+    /// Адреса фактична
+    @ManyToOne
+    @JoinColumn(name = "oblast_id_fact")
+    private RegionUkraine factOblastUA;
+
+    @Column(name = "post_index_fact",length = 10)
+    private String factPostIndex;
+    @Column(name="city_name_fact",length = 30)
+    private String factCity;
+    @Column(name="adress_fact")
+    private String factRowAddress;
+    @ManyToOne
+    @JoinColumn(name = "region_kh_id_fact")
+    private RegionKharkiv factRegionKh;
+
     //телефони
     //Храним в символьном виде, но при вводе проверяем маску - +СтранаОператорНомер
     //+380951203066
