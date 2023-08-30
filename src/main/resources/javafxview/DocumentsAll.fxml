@@ -37,7 +37,7 @@
       <Insets bottom="40.0" left="35.0" right="7.0" top="20.0" />
    </padding>
    <top>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Двухглавов Дмитро Едуардович" wrappingWidth="930.0" BorderPane.alignment="CENTER">
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Двухглавов Дмитро Едуардович" textAlignment="CENTER" wrappingWidth="930.0" BorderPane.alignment="CENTER">
          <font>
             <Font size="24.0" />
          </font>
