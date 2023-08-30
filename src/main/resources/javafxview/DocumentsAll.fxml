@@ -9,24 +9,25 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="800.0" prefWidth="1000.0" stylesheets="@MOStyles.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="400.0" prefWidth="1000.0" stylesheets="@MOStyles.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntukhpi.semit.militaryoblik.javafxview.DocumentsAllController">
    <center>
-      <TableView prefHeight="356.0" prefWidth="781.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="docsTableView" prefHeight="356.0" prefWidth="780.0" BorderPane.alignment="CENTER">
          <columns>
-            <TableColumn prefWidth="114.39998853206635" text="Вид" />
-            <TableColumn prefWidth="214.40001678466797" text="Серія Номер" />
-            <TableColumn prefWidth="219.99996948242188" text="Ким видан" />
-            <TableColumn minWidth="0.0" prefWidth="189.60002441406255" text="Дата" />
+            <TableColumn fx:id="typeColumn" prefWidth="177.6000121831894" text="Вид" />
+            <TableColumn fx:id="seriesColumn" prefWidth="57.600006103515625" text="Серія" />
+            <TableColumn fx:id="numberColumn" prefWidth="98.4000244140625" text="Номер" />
+            <TableColumn fx:id="givenColumn" prefWidth="279.1999816894531" text="Ким видан" />
+            <TableColumn fx:id="dateColumn" minWidth="0.0" prefWidth="132.7999267578125" text="Дата видачі" />
          </columns>
       </TableView>
    </center>
    <right>
       <VBox alignment="TOP_CENTER" prefHeight="376.0" prefWidth="219.0" spacing="30.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" prefWidth="165.0" text="Повернутися" />
-            <Button mnemonicParsing="false" prefWidth="165.0" text="Додати" />
-            <Button mnemonicParsing="false" prefWidth="165.0" text="Змінити" />
-            <Button mnemonicParsing="false" prefWidth="165.0" text="Вилучити" />
+            <Button mnemonicParsing="false" onAction="#returnToMainForm" prefWidth="165.0" text="Повернутися" />
+            <Button mnemonicParsing="false" onAction="#openAddWindow" prefWidth="165.0" text="Додати" />
+            <Button mnemonicParsing="false" onAction="#openEditWindow" prefWidth="165.0" text="Змінити" />
+            <Button mnemonicParsing="false" onAction="#deleteSelectedRow" prefWidth="165.0" text="Вилучити" />
          </children>
       </VBox>
    </right>
@@ -37,7 +38,7 @@
       <Insets bottom="40.0" left="35.0" right="7.0" top="20.0" />
    </padding>
    <top>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Двухглавов Дмитро Едуардович" textAlignment="CENTER" wrappingWidth="930.0" BorderPane.alignment="CENTER">
+      <Text fx:id="pibText" strokeType="OUTSIDE" strokeWidth="0.0" text="Двухглавов Дмитро Едуардович" textAlignment="CENTER" wrappingWidth="930.0" BorderPane.alignment="CENTER">
          <font>
             <Font size="24.0" />
          </font>

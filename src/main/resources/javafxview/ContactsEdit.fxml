@@ -9,10 +9,10 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="600.0" spacing="10.0" stylesheets="@MOStyles.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -24,7 +24,17 @@
             <Insets />
          </VBox.margin>
       </Text>
-      <Label text="Дані реєстрації" />
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label text="Дані реєстрації" />
+            <HBox alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="434.0">
+               <children>
+                  <Pane prefHeight="27.0" prefWidth="48.0" styleClass="obligatory-field" />
+                  <Label text=" - Обов'язкове для заповнення поле" />
+               </children>
+            </HBox>
+         </children>
+      </HBox>
       <VBox prefHeight="234.0" prefWidth="560.0" spacing="5.0" style="-fx-border-style: solid inside;">
          <children>
             <HBox prefHeight="100.0" prefWidth="547.0">
@@ -50,9 +60,9 @@
                               <Font size="24.0" />
                            </font>
                         </TextField>
-                        <TextField maxWidth="200.0" promptText="Харків" />
+                        <TextField maxWidth="200.0" promptText="Харків" styleClass="obligatory-field" />
                         <TextField promptText="Харківська" />
-                        <TextField promptText="вул Кирпичова, 2" />
+                        <TextField promptText="вул Кирпичова, 2" styleClass="obligatory-field" />
                      </children>
                   </VBox>
                </children>
@@ -60,7 +70,7 @@
             <HBox prefHeight="40.0" prefWidth="547.0">
                <children>
                   <Label prefHeight="40.0" prefWidth="100.0" text="Телефон 1" />
-                  <TextField prefHeight="40.0" prefWidth="160.0" promptText="+380123456789" />
+                  <TextField prefHeight="40.0" prefWidth="160.0" promptText="+380123456789" styleClass="obligatory-field" />
                   <Label alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="100.0" text="Телефон 2">
                      <HBox.margin>
                         <Insets right="10.0" />
