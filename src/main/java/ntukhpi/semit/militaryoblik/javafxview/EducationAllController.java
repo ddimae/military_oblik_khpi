@@ -44,7 +44,7 @@ public class EducationAllController {
         if (selectedEducation != null) {
             MilitaryOblikKhPIMain.openEditWindow("/javafxview/EducationEdit.fxml", "Редагувати дані про навчання", this, selectedEducation);
         } else {
-            MilitaryOblikKhPIMain.showAlert("Error", "No row selected", "Please select a row to edit.");
+            MilitaryOblikKhPIMain.showAlert("Error", "No row selected", "Please select a row to edit.");    //FIXME Може перевести це на укр?
         }
     }
 
@@ -61,7 +61,7 @@ public class EducationAllController {
             educationObservableList.remove(selectedEducation);
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
+            alert.setTitle("Error");    //FIXME Може перевести це на укр?
             alert.setHeaderText("No row selected");
             alert.setContentText("Please select a row to edit.");
             alert.showAndWait();
