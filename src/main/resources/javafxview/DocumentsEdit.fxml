@@ -76,7 +76,7 @@
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="C:\Users\Mico\Desktop\circle-check-svgrepo-com.png" />
+                        <Image url="@/icons/cicle-check.png" />
                      </image>
                   </ImageView>
                </graphic></Button>
@@ -84,7 +84,7 @@
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="C:\Users\Mico\Desktop\circle-xmark-svgrepo-com.png" />
+                        <Image url="@/icons/circle-xmark.png" />
                      </image>
                   </ImageView>
                </graphic></Button>
