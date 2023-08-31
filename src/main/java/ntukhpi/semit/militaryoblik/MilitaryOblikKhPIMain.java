@@ -94,6 +94,7 @@ public class MilitaryOblikKhPIMain extends Application {
 
             Stage stage = new Stage();
             stage.setTitle(title);
+            stage.setResizable(false);
             Scene scene = new Scene(root);
             // Применить стиль
             scene.getStylesheets().add(Objects.requireNonNull(MilitaryOblikKhPIMain.class.getResource(STYLES_JAVAFX)).toExternalForm());
