@@ -25,6 +25,9 @@ import static ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain.currentStage;
 
 @Component
 public class ReservistsAllController {
+    private final static String CONTACT_INFO_JAVAFX = "/javafxview/ContactsEdit.fxml";
+    private final static String CONTACT_INFO_JAVAFX_TITLE = "Контактна інформація";
+
     @FXML
     public ComboBox<String> tckComboBox;
 
@@ -246,5 +249,15 @@ public class ReservistsAllController {
     @FXML
     private void handleDocumentsButton() {
         MilitaryOblikKhPIMain.showDocumentsWindow();
+    }
+
+    @FXML
+    void handleContactInfoButton(ActionEvent event) {
+        ReservistAdapter reservist = reservistsTableView.getSelectionModel().getSelectedItem();
+        if (reservist != null) {
+            MilitaryOblikKhPIMain.openEditWindow(CONTACT_INFO_JAVAFX, CONTACT_INFO_JAVAFX_TITLE, this, reservist);
+        } else {
+            MilitaryOblikKhPIMain.showAlert("Error", "No row selected", "Please select a row to edit.");    //FIXME Може перевести це на укр?
+        }
     }
 }
