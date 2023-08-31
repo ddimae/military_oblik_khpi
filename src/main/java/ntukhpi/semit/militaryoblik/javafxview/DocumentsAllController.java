@@ -85,7 +85,7 @@ public class DocumentsAllController {
     }
 
     private ObservableList<DocumentsAdapter> docsObservableList = getDocumentsData();
-    private ObservableList<DocumentsAdapter> getDocumentsData() { //TODO Переробити коли будемо підключатись до бд
+    private ObservableList<DocumentsAdapter> getDocumentsData() {
         List<DocumentsAdapter> docList = new ArrayList<>();
 
         docList.add(new DocumentsAdapter("ДВУХГЛАВОВ Д. Е", "Паперовий паспорт", "МН", "123456", "7115 УДМС УКРАЇНИ В ЧЕРКАСЬКІЙ ОБЛАСТІ", LocalDate.of(1995, 1, 23)));
