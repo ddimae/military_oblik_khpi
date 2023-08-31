@@ -16,7 +16,10 @@ public class ContactInfoAdapter {
 
     public ContactInfoAdapter() {}
 
-    public ContactInfoAdapter(String country, String index, String city, String region, String address, String mainPhone, String secondPhone, String indexFact, String cityFact, String regionFact, String addressFact) {
+    public ContactInfoAdapter(String country, String index, String city, String region,
+                              String address, String mainPhone, String secondPhone,
+                              String indexFact, String cityFact, String regionFact,
+                              String addressFact) {
         this.country = country;
         this.index = index;
         this.city = city;
