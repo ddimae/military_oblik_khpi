@@ -55,16 +55,12 @@ public class DocumentsAllController {
         if (selectedDocument != null) {
             docsObservableList.remove(selectedDocument);
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");    //FIXME Може перевести це на укр?
-            alert.setHeaderText("No row selected");
-            alert.setContentText("Please select a row to edit.");
-            alert.showAndWait();
+            MilitaryOblikKhPIMain.noSelectedRowAlert();
         }
     }
 
     @FXML
-    void openAddWindow(ActionEvent event) { //FIXME Не працює передача ПІБ, бо не передається взагалі нічого
+    void openAddWindow(ActionEvent event) { //FIXME Не працює передача ПІБ, бо не передається взагалі нічого (чекати на рішення від Кулак Анастасії)
 //        MilitaryOblikKhPIMain.openEditWindow("/javafxview/EducationEdit.fxml", "Додати дані про навчання", this, null);
         MilitaryOblikKhPIMain.openEditWindow(DOCUMENTS_ADD_JAVAFX, DOCUMENTS_ADD_JAVAFX_TITLE, this, null);
     }
@@ -75,7 +71,7 @@ public class DocumentsAllController {
         if (selectedDocument != null) {
             MilitaryOblikKhPIMain.openEditWindow(DOCUMENTS_EDIT_JAVAFX, DOCUMENTS_EDIT_JAVAFX_TITLE, this, selectedDocument);
         } else {
-            MilitaryOblikKhPIMain.showAlert("Error", "No row selected", "Please select a row to edit.");    //FIXME Може перевести це на укр?
+            MilitaryOblikKhPIMain.noSelectedRowAlert();
         }
     }
 

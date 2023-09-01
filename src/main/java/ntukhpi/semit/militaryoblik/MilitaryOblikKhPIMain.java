@@ -119,6 +119,15 @@ public class MilitaryOblikKhPIMain extends Application {
     }
 
     /**
+     * Метод виведення повідомлення о помилки про неибраний рядок
+     * автор Степанов Михайло
+     *
+     */
+    public static void noSelectedRowAlert() {   //TODO Можливо краще буде створити окремий клас для різних повідомлень
+        MilitaryOblikKhPIMain.showAlert("Помилка", "Не вибраний рядок", "Натисніть на рядок, щоб його вибрати");
+    }
+
+    /**
      * Метод для создания Stage на основе fxml
      * автор Двухглавов
      *
