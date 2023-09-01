@@ -14,10 +14,9 @@
       <TableView fx:id="docsTableView" prefHeight="356.0" prefWidth="780.0" BorderPane.alignment="CENTER">
          <columns>
             <TableColumn fx:id="typeColumn" prefWidth="177.6000121831894" text="Вид" />
-            <TableColumn fx:id="seriesColumn" prefWidth="57.600006103515625" text="Серія" />
-            <TableColumn fx:id="numberColumn" prefWidth="98.4000244140625" text="Номер" />
-            <TableColumn fx:id="givenColumn" prefWidth="279.1999816894531" text="Ким видан" />
-            <TableColumn fx:id="dateColumn" minWidth="0.0" prefWidth="132.7999267578125" text="Дата видачі" />
+            <TableColumn fx:id="numberColumn" prefWidth="111.19996643066406" text="Номер" />
+            <TableColumn fx:id="givenColumn" prefWidth="297.6000061035156" text="Ким видан" />
+            <TableColumn fx:id="dateColumn" minWidth="0.0" prefWidth="148.79998779296875" text="Дата видачі" />
          </columns>
       </TableView>
    </center>

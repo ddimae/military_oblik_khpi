@@ -33,7 +33,7 @@ public class Document {
     // - посвідчення особи офіцера
     // Обирається з переліку (фіксований)
     // Правільність вводу не контролюємо: FF9834239 - проблема тих, хто вводить
-    @Column(name = "docType", length = 30)
+    @Column(name = "docType", length = 30, nullable = false)
     private String docType;
 
     //Серія та номер документу.
@@ -42,13 +42,13 @@ public class Document {
     // - закордонний паспорт FR444328
     // - посвідчення особи офіцера KK #732843
     //тобто користувач має ввести або 2 букви та 6 цифр, або 9 цифр ИД картки - це контролювати
-    @Column(name = "doc_number", length = 10)
+    @Column(name = "doc_number", length = 10, nullable = false)
     private String docNumber;
 
     //дата видачі документа
     //Семантичну коректність дати не контролюємо. Мається на увазі перевірка наявності 16 років
     //на момент отримання паспорту, 21 року на момент отримання посвідчення офіцера, тощо.
-    @Column(name = "data_vyd")
+    @Column(name = "data_vyd", nullable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dataVyd;
 
@@ -57,7 +57,7 @@ public class Document {
     // Для всіх інших це буде текстове поле, яке постійно треба вводити руцями.
     // Тому довжину обмежувати не слід, та щось вигадувати для збереження значень теж.
     // Принаймні так було у Приватбанку
-    @Column(name = "kto_vyd")
+    @Column(name = "kto_vyd", nullable = false)
     private String ktoVyd;
 
 }
