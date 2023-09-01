@@ -2,3 +2,8 @@
 {
     -fx-font-size: 18;
 }
+
+.obligatory-field
+{
+    -fx-border-color: darkorange;
+}

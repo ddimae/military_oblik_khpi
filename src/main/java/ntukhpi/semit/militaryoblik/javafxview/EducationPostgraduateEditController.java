@@ -54,7 +54,7 @@ public class EducationPostgraduateEditController implements Initializable, Contr
         String yearStr = yearTextField.getText();
 
         if (yearStr.length() != 4) {
-            MilitaryOblikKhPIMain.showAlert("Error", "Invalid input", "Year must have 4 digits");
+            MilitaryOblikKhPIMain.showAlert("Error", "Invalid input", "Year must have 4 digits"); //TODO перевести на урк
             return;
         }
 
@@ -63,7 +63,7 @@ public class EducationPostgraduateEditController implements Initializable, Contr
         try {
             year = Integer.parseInt(yearStr);
         } catch (NumberFormatException e) {
-            MilitaryOblikKhPIMain.showAlert("Error", "Invalid input", "Year must be a valid integer");
+            MilitaryOblikKhPIMain.showAlert("Error", "Invalid input", "Year must be a valid integer"); //TODO перевести на урк
             return;
         }
 
@@ -71,7 +71,7 @@ public class EducationPostgraduateEditController implements Initializable, Contr
         String vnz = vnzComboBox.getValue();
 
         if (type == null || vnz == null) {
-            MilitaryOblikKhPIMain.showAlert("Error", "All fields are required", "Please fill in all data");
+            MilitaryOblikKhPIMain.showAlert("Error", "All fields are required", "Please fill in all data"); //TODO перевести на урк
             return;
         }
 

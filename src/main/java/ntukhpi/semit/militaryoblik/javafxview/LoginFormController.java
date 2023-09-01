@@ -38,7 +38,6 @@ public class LoginFormController {
     }
 
     private static void showReservistsForm() {
-        currentStage.close();
         MilitaryOblikKhPIMain.showReservistsWindow();
     }
 

@@ -46,6 +46,12 @@ public class MilitaryOblikKhPIMain extends Application {
                     0, 0, false, true);
 
     //============================
+    private final static String DOCUMENTS_JAVAFX = "/javafxview/DocumentsAll.fxml";
+    private final static String DOCUMENTS_JAVAFX_TITLE = "Документи";
+
+    private static SettingsStage documentsAll =
+            new SettingsStage(DOCUMENTS_JAVAFX, DOCUMENTS_JAVAFX_TITLE,
+                    0, 0, false, true);
 //    private final static String EDUCATION_POSTGRADUATE_JAVAFX = "/javafxview/EducationPostgraduateAll.fxml";
 //    private final static String EDUCATION_POSTGRADUATE_JAVAFX_TITLE = "Післядипломна освіта";
 
@@ -88,6 +94,7 @@ public class MilitaryOblikKhPIMain extends Application {
 
             Stage stage = new Stage();
             stage.setTitle(title);
+            stage.setResizable(false);
             Scene scene = new Scene(root);
             // Применить стиль
             scene.getStylesheets().add(Objects.requireNonNull(MilitaryOblikKhPIMain.class.getResource(STYLES_JAVAFX)).toExternalForm());
@@ -109,6 +116,15 @@ public class MilitaryOblikKhPIMain extends Application {
         alert.setHeaderText(headerText);
         alert.setContentText(contentText);
         alert.showAndWait();
+    }
+
+    /**
+     * Метод виведення повідомлення о помилки про неибраний рядок
+     * автор Степанов Михайло
+     *
+     */
+    public static void noSelectedRowAlert() {   //TODO Можливо краще буде створити окремий клас для різних повідомлень
+        MilitaryOblikKhPIMain.showAlert("Помилка", "Не вибраний рядок", "Натисніть на рядок, щоб його вибрати");
     }
 
     /**
@@ -211,6 +227,10 @@ public class MilitaryOblikKhPIMain extends Application {
 
     public static void showEducationWindow() {
         showStage(educationAll);
+    }
+
+    public static void showDocumentsWindow() {
+        showStage(documentsAll);
     }
 
 //    Так было в исходном варианте

@@ -53,7 +53,7 @@ public class EducationEditController implements ControlledScene {
         String diplomaNumberStr = diplomaNumberTextField.getText();
 
         if (yearStr.length() != 4 || diplomaNumberStr.length() != 6) {
-            MilitaryOblikKhPIMain.showAlert("Error", "Invalid input", "Year must have 4 digits, and diploma number must have 6 digits");
+            MilitaryOblikKhPIMain.showAlert("Error", "Invalid input", "Year must have 4 digits, and diploma number must have 6 digits"); //TODO перевести на урк
             return;
         }
 
@@ -64,7 +64,7 @@ public class EducationEditController implements ControlledScene {
             year = Integer.parseInt(yearStr);
             diplomaNumber = Integer.parseInt(diplomaNumberStr);
         } catch (NumberFormatException e) {
-            MilitaryOblikKhPIMain.showAlert("Error", "Invalid input", "Year and diploma number must be valid integers");
+            MilitaryOblikKhPIMain.showAlert("Error", "Invalid input", "Year and diploma number must be valid integers");//TODO перевести на урк
             return;
         }
 
@@ -77,7 +77,7 @@ public class EducationEditController implements ControlledScene {
 
         if (vnz == null || form == null || level == null || diplomaSeries.isEmpty()
                 || specialty.isEmpty() || qualification.isEmpty()) {
-            MilitaryOblikKhPIMain.showAlert("Error", "All fields are required", "Please fill in all data");
+            MilitaryOblikKhPIMain.showAlert("Error", "All fields are required", "Please fill in all data"); //TODO перевести на урк
             return;
         }
 

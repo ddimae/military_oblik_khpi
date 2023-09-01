@@ -56,7 +56,7 @@ public class EducationPostgraduateAllController {
         if (selectedEducation != null) {
             MilitaryOblikKhPIMain.openEditWindow("EducationPostgraduateEdit.fxml", "Редагувати дані про навчання", this, selectedEducation);
         } else {
-            MilitaryOblikKhPIMain.showAlert("Error", "No row selected", "Please select a row to edit.");
+            MilitaryOblikKhPIMain.noSelectedRowAlert();
         }
     }
 

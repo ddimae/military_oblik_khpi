@@ -67,7 +67,7 @@ public class PersonalData {
 
     /// Адреса фактична
     @ManyToOne
-    @JoinColumn(name = "oblast_id_fact")
+    @JoinColumn(name = "oblast_id_fact",nullable = false)
     private RegionUkraine factOblastUA;
 
     @Column(name = "post_index_fact",length = 10)
@@ -87,7 +87,7 @@ public class PersonalData {
     //Неполные мобильные принимать и дописывать нужные цифры и "+"
     //Если городской, то дописывать +38057
     //При вводе нового сотрудника или редактировании существующего контролировать наличие хотя бы одного номера
-    @Column(name = "phone_main",length = 13)
+    @Column(name = "phone_main",length = 13,nullable = false)
     private String phoneMain;
     @Column(name = "phone_dop",length = 13)
     private String phoneDop;
