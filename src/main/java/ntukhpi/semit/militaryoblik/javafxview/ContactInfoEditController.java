@@ -15,6 +15,8 @@ import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import org.springframework.stereotype.Component;
 
+import java.util.regex.Pattern;
+
 @Component
 public class ContactInfoEditController implements ControlledScene {
 
@@ -32,6 +34,9 @@ public class ContactInfoEditController implements ControlledScene {
 
     @FXML
     private ComboBox<String> countryComboBox;
+
+    @FXML
+    private ComboBox<String> countryFactComboBox;
 
     @FXML
     private RadioButton equalRadioButton;
@@ -107,6 +112,7 @@ public class ContactInfoEditController implements ControlledScene {
                 "Франція"
         );
         countryComboBox.setItems(countryList);
+        countryFactComboBox.setItems(countryList);
     }
 
     @FXML
@@ -120,6 +126,85 @@ public class ContactInfoEditController implements ControlledScene {
 
     @FXML
     void saveContactInfo(ActionEvent event) {
-        //TODO валідація введених даних
+        try {
+            String country = String.valueOf(countryComboBox.getValue());
+            String index = indexTextArea.getText();
+            String city = cityTextArea.getText();
+            String region = regionTextArea.getText();
+            String address = addressTextArea.getText();
+            String mainPhone = mainPhoneTextArea.getText();
+            String secondPhone = secondPhoneTextArea.getText();
+
+            String countryFact = String.valueOf(countryFactComboBox.getValue());
+            String indexFact = indexFactTextArea.getText();
+            String cityFact = cityFactTextArea.getText();
+            String regionFact = regionFactTextArea.getText();
+            String addressFact = addressFactTextArea.getText();
+
+            Pattern ukrIndexRegex = Pattern.compile("(\\d{5})?");
+            Pattern ukrMainPhoneRegex = Pattern.compile("^((\\+\\d{12})|(\\d{10}))?$");
+            Pattern ukrSecondPhoneRegex = Pattern.compile("^((\\+\\d{12})|(\\d{10}))?$");
+            Pattern mainPhoneRegex = Pattern.compile("(^\\+\\d+)?");
+            Pattern secondPhoneRegex = Pattern.compile("(^\\+\\d+)?");
+            Pattern cityRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії\\s]*$");
+            Pattern regionRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії,.\\s]*$");
+            Pattern addressRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії\\d,.\\-\\'\\&_\\s]*$");
+
+            boolean isUkraine = country.equals("Україна");
+            boolean isUkraineFact = countryFact.equals("Україна");
+
+            if (country.equals("null"))
+                throw new Exception("Країна реєстрації є обов'язковим полем");
+            if (region.isEmpty())
+                throw new Exception("Область реєстрації є обов'язковим полем");
+            if (mainPhone.isEmpty())
+                throw new Exception("Телефон 1 є обов'язковим полем");
+
+            if ((isUkraine && !ukrIndexRegex.matcher(index).matches()) || ((isUkraineFact && !ukrIndexRegex.matcher(indexFact).matches())))
+                throw new Exception("Індекс повинен складатися із 5 цифр");
+
+            if (isUkraine && (!ukrMainPhoneRegex.matcher(mainPhone).matches() || !ukrSecondPhoneRegex.matcher(secondPhone).matches()))
+                throw new Exception("Формат телефона повинен виглядати +380123456789, або 0123456789");
+            if (!isUkraine && (!mainPhoneRegex.matcher(mainPhone).matches() || !secondPhoneRegex.matcher(secondPhone).matches()))
+                throw new Exception("Формат іноземного телефона повинен починатися зі знаку '+'");
+
+            if (!cityRegex.matcher(city).matches() || !cityRegex.matcher(cityFact).matches())
+                throw new Exception("Назва міста повинна містити тільки українські літери");
+            if (!regionRegex.matcher(region).matches() || (!regionRegex.matcher(regionFact).matches()))
+                throw new Exception("Назва області може містити тільки українські літери та розділові знаки");
+            if (!addressRegex.matcher(address).matches() || !addressRegex.matcher(addressFact).matches())
+                throw new Exception("Адресса може містити українські літери, цифри та розділові знаки");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @FXML
+    void handleEqualRadioButton(ActionEvent event) {
+        if (equalRadioButton.isSelected()) {
+            countryFactComboBox.setDisable(true);
+            indexFactTextArea.setDisable(true);
+            cityFactTextArea.setDisable(true);
+            regionFactTextArea.setDisable(true);
+            addressFactTextArea.setDisable(true);
+
+//            countryFactComboBox.setValue(countryComboBox.getValue());
+//            indexFactTextArea.setText(indexTextArea.getText());
+//            cityFactTextArea.setText(cityTextArea.getText());
+//            regionFactTextArea.setText(regionTextArea.getText());
+//            addressFactTextArea.setText(addressTextArea.getText());
+
+//            countryFactComboBox.setValue("");
+//            indexFactTextArea.setText("");
+//            cityFactTextArea.setText("");
+//            regionFactTextArea.setText("");
+//            addressFactTextArea.setText("");
+        } else {
+            countryFactComboBox.setDisable(false);
+            indexFactTextArea.setDisable(false);
+            cityFactTextArea.setDisable(false);
+            regionFactTextArea.setDisable(false);
+            addressFactTextArea.setDisable(false);
+        }
     }
 }
