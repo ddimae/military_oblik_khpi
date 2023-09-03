@@ -10,7 +10,7 @@ public interface CurrentDoljnostInfoService {
 
     CurrentDoljnostInfo getCurrentDoljnostInfoById(Long id);
 
-    List<CurrentDoljnostInfo> getAllCurrentDoljnost();
+    CurrentDoljnostInfo getCurrentDoljnost();
 
     CurrentDoljnostInfo updateCurrentDoljnostInfo(Long id, CurrentDoljnostInfo updateCurrentDoljnostInfo);
 
