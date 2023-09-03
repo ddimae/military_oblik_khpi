@@ -10,7 +10,7 @@ public interface FamilyStateService {
 
     FamilyState getFamilyStateById(Long id);
 
-    List<FamilyState> getAllFamilyState();
+    FamilyState getFamilyState();
 
     FamilyState updateFamilyState(Long id, FamilyState updatedFamilyState);
 
