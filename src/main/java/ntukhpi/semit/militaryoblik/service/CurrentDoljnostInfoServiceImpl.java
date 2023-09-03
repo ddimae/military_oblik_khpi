@@ -28,8 +28,9 @@ public class CurrentDoljnostInfoServiceImpl implements CurrentDoljnostInfoServic
     }
 
     @Override
-    public List<CurrentDoljnostInfo> getAllCurrentDoljnost() {
-        return currentDoljnostInfoRepository.findAll();
+    public CurrentDoljnostInfo getCurrentDoljnost() {
+        List<CurrentDoljnostInfo> list = currentDoljnostInfoRepository.findAll();
+        return !list.isEmpty()?list.get(0):null;
     }
 
     @Override
