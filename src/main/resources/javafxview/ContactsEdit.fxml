@@ -36,12 +36,12 @@
                <children>
                   <HBox prefHeight="100.0" prefWidth="547.0">
                      <children>
-                        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                        <VBox alignment="CENTER_LEFT" prefHeight="315.0" prefWidth="145.0" spacing="5.0">
                            <children>
                               <Label prefHeight="40.0" text="Країна" />
                               <Label prefHeight="40.0" text="Індекс" />
                               <Label prefHeight="40.0" text="Місто" />
-                              <Label prefHeight="40.0" text="Область" />
+                              <Label prefHeight="40.0" prefWidth="157.0" text="Область України" textOverrun="CLIP" />
                               <Label prefHeight="40.0" text="Вул, кв, дім">
                                  <font>
                                     <Font size="24.0" />
@@ -59,9 +59,9 @@
                                     <Font size="24.0" />
                                  </font>
                               </TextField>
-                              <TextField fx:id="cityTextArea" maxWidth="200.0" promptText="Харків" />
-                              <TextField fx:id="regionTextArea" promptText="Харківська" styleClass="obligatory-field" />
-                              <TextField fx:id="addressTextArea" promptText="вул Кирпичова, 2" />
+                              <TextField fx:id="cityTextArea" maxWidth="200.0" promptText="Харків" styleClass="obligatory-field" />
+                              <ComboBox fx:id="regionComboBox" prefHeight="40.0" prefWidth="326.0" promptText="--Оберіть область України" />
+                              <TextField fx:id="addressTextArea" promptText="вул Кирпичова, 2" styleClass="obligatory-field" />
                               <TextField fx:id="mainPhoneTextArea" maxWidth="180.0" prefHeight="40.0" prefWidth="160.0" promptText="+380123456789" styleClass="obligatory-field" />
                               <TextField fx:id="secondPhoneTextArea" maxWidth="180.0" prefWidth="160.0" promptText="+380123456789" />
                            </children>
@@ -79,12 +79,12 @@
                <children>
                   <HBox prefHeight="100.0" prefWidth="547.0">
                      <children>
-                        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="145.0" spacing="5.0">
                            <children>
                               <Label maxHeight="40.0" minHeight="40.0" prefHeight="40.0" text="Країна" />
                               <Label maxHeight="40.0" minHeight="40.0" text="Індекс" />
                               <Label maxHeight="40.0" minHeight="40.0" text="Місто" />
-                              <Label maxHeight="40.0" minHeight="40.0" text="Область" />
+                              <Label maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="150.0" text="Область України" />
                               <Label maxHeight="40.0" minHeight="40.0" prefHeight="40.0" text="Вул, кв, дім">
                                  <font>
                                     <Font size="24.0" />
@@ -94,14 +94,14 @@
                         </VBox>
                         <VBox prefHeight="174.0" prefWidth="323.0" spacing="5.0">
                            <children>
-                              <ComboBox fx:id="countryFactComboBox" prefHeight="40.0" prefWidth="362.0" promptText="--Оберіть країну" />
+                              <ComboBox fx:id="countryFactComboBox" onAction="#handleChangeCountry" prefHeight="40.0" prefWidth="362.0" promptText="--Оберіть країну" />
                               <TextField fx:id="indexFactTextArea" maxWidth="100.0" prefHeight="40.0" prefWidth="74.0" promptText="00000">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </TextField>
                               <TextField fx:id="cityFactTextArea" maxWidth="200.0" promptText="Харків" />
-                              <TextField fx:id="regionFactTextArea" promptText="Харківська" />
+                              <ComboBox fx:id="regionFactComboBox" prefHeight="40.0" prefWidth="326.0" promptText="--Оберіть область України" />
                               <TextField fx:id="addressFactTextArea" promptText="вул Кирпичова, 2" />
                            </children>
                         </VBox>

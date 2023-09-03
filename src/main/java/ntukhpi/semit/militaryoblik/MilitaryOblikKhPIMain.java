@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.SettingsStage;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -129,6 +130,10 @@ public class MilitaryOblikKhPIMain extends Application {
 
     public static void wrongInputAlert(String msg) {
         MilitaryOblikKhPIMain.showAlert("Помилка", "Неправильно введені дані", msg);
+    }
+
+    public static String getPIB(Prepod prepod) {    //TODO Точно створити окремий клас!!!
+        return prepod.getFam() + " " + prepod.getImya() + " " + prepod.getOtch();
     }
 
     /**

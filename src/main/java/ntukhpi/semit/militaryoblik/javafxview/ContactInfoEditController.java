@@ -12,17 +12,16 @@ import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
-import ntukhpi.semit.militaryoblik.adapters.ContactInfoAdapter;
-import ntukhpi.semit.militaryoblik.adapters.DocumentsAdapter;
-import ntukhpi.semit.militaryoblik.adapters.FakultetAdapter;
 import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
+import ntukhpi.semit.militaryoblik.entity.PersonalData;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Country;
+import ntukhpi.semit.militaryoblik.entity.fromasukhpi.RegionUkraine;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
-import ntukhpi.semit.militaryoblik.repository.CountryRepository;
-import ntukhpi.semit.militaryoblik.repository.PersonalDataRepository;
+import ntukhpi.semit.militaryoblik.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.lang.constant.DynamicCallSiteDesc;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -108,23 +107,29 @@ public class ContactInfoEditController implements ControlledScene {
     private Text pibText;
 
     @FXML
-    private TextField regionFactTextArea;
+    private ComboBox<String> regionFactComboBox;
 
     @FXML
-    private TextField regionTextArea;
+    private ComboBox<String> regionComboBox;
 
     @FXML
     private TextField secondPhoneTextArea;
 
     private ReservistsAllController mainController;
-    private String selectedPrepodId;
-//    private ContactInfoAdapter selectedContactInfo;
+    private Long selectedPrepodId;
+    private PersonalData personalData;
 
     @Autowired
-    CountryRepository countryRepository;
+    CountryServiceImpl countryService;
 
     @Autowired
-    PersonalDataRepository personalDataRepository;
+    RegionUkraineServiceImpl regionUkraineService;
+
+    @Autowired
+    PersonalDataServiceImpl personalDataService;
+
+    @Autowired
+    PrepodServiceImpl prepodService;
 
 
     @Override
@@ -134,43 +139,64 @@ public class ContactInfoEditController implements ControlledScene {
 
     @Override
     public void setData(Object data) {
-        if (data instanceof ReservistAdapter) {
-            setContactInfo((ReservistAdapter) data);
-        }
+        setContactInfo((ReservistAdapter) data);
     }
 
     private void setContactInfo(ReservistAdapter reservist) {
-        selectedReservist = reservist;
-        //TODO брати із БД контактну інформацію про резервиста
-//        personalDataRepository.
+        personalData = personalDataService.getPersonalDataById(selectedPrepodId);
 
-        pibText.setText(reservist.getPib());
+        pibText.setText(MilitaryOblikKhPIMain.getPIB(prepodService.getPrepodById(selectedPrepodId)));
 
-        countryComboBox.setValue("Україна");
+        if (personalData == null) {
+            personalData = new PersonalData();
+            return;
+        }
 
-        indexTextArea.setText("12345");
-        indexFactTextArea.setText("54321");
+        Country country = personalData.getCountry();
+        Country countryFact = personalData.getCountry_fact();
+        RegionUkraine region = personalData.getOblastUA();
+        RegionUkraine regionFact = personalData.getFactOblastUA();
 
-        cityTextArea.setText("Київ");
-        cityFactTextArea.setText("Харків");
+        if (country != null)
+            countryComboBox.setValue(country.getCountryName());
+        if (countryFact != null)
+            countryFactComboBox.setValue(countryFact.getCountryName());
 
-        regionTextArea.setText("Київська обл.");
-        regionFactTextArea.setText("Харківська обл.");
+        indexTextArea.setText(personalData.getPostIndex());
+        indexFactTextArea.setText(personalData.getFactPostIndex());
 
-        addressFactTextArea.setText("вул Кирпичова, 5");
+        cityTextArea.setText(personalData.getCity());
+        cityFactTextArea.setText(personalData.getFactCity());
 
-        mainPhoneTextArea.setText("+380123456789");
-        secondPhoneTextArea.setText("+380453216543");
+        if (region != null)
+            regionComboBox.setValue(region.getCountryName());
+        if (regionFact != null)
+            regionFactComboBox.setValue(regionFact.getCountryName());
+
+        addressTextArea.setText(personalData.getRowAddress());
+        addressFactTextArea.setText(personalData.getFactRowAddress());
+
+        mainPhoneTextArea.setText(personalData.getPhoneMain());
+        secondPhoneTextArea.setText(personalData.getPhoneDop());
+
+        handleChangeCountry(null);
     }
 
     public void initialize() {
-        ObservableList<String> countryList = FXCollections.observableArrayList( //TODO Переробити із використанням сервісів
-                countryRepository.findAll().stream().map(Country::getCountryName).collect(Collectors.toList()));
+        ObservableList<String> countryList = FXCollections.observableArrayList(
+                countryService.getAllCountry().stream().map(Country::getCountryName).toList());
+        ObservableList<String> regionList = FXCollections.observableArrayList(
+                regionUkraineService.getAllRegionUkraine().stream().map(RegionUkraine::getCountryName).toList());
 
         countryComboBox.setItems(countryList);
         countryFactComboBox.setItems(countryList);
 
+        regionComboBox.setItems(regionList);
+        regionFactComboBox.setItems(regionList);
+
         selectedPrepodId = ReservistsAllController.getSelectedPrepodId();
+
+        handleChangeCountry(null);
     }
 
     @FXML
@@ -187,7 +213,7 @@ public class ContactInfoEditController implements ControlledScene {
         String country = String.valueOf(countryComboBox.getValue());
         String index = indexTextArea.getText();
         String city = cityTextArea.getText();
-        String region = regionTextArea.getText();
+        String region = regionComboBox.getValue();
         String address = addressTextArea.getText();
         PhoneNumber mainPhone = new PhoneNumber(mainPhoneTextArea.getText());
         PhoneNumber secondPhone = new PhoneNumber(secondPhoneTextArea.getText());
@@ -195,7 +221,7 @@ public class ContactInfoEditController implements ControlledScene {
         String countryFact = String.valueOf(countryFactComboBox.getValue());
         String indexFact = indexFactTextArea.getText();
         String cityFact = cityFactTextArea.getText();
-        String regionFact = regionFactTextArea.getText();
+        String regionFact = regionFactComboBox.getValue();
         String addressFact = addressFactTextArea.getText();
 
         Pattern ukrIndexRegex = Pattern.compile("(\\d{5})?");
@@ -213,13 +239,16 @@ public class ContactInfoEditController implements ControlledScene {
         boolean isUkraine = country.equals("Україна");
         boolean isUkraineFact = countryFact.equals("Україна");
 
-        region = region.trim();
+        city = city.trim();
+        address = address.trim();
 
         try {
             if (country.equals("null"))
                 throw new Exception("Країна реєстрації є обов'язковим полем");
-            if (region.isEmpty())
-                throw new Exception("Область реєстрації є обов'язковим полем");
+            if (city.isEmpty())
+                throw new Exception("Місто реєстрації є обов'язковим полем");
+            if (address.isEmpty())
+                throw new Exception("Адреса реєстрації є обов'язковим полем");
             if (mainPhone.getNumber().isEmpty())
                 throw new Exception("Телефон 1 є обов'язковим полем");
 
@@ -245,10 +274,50 @@ public class ContactInfoEditController implements ControlledScene {
 
             if (!cityRegex.matcher(city).matches() || !cityRegex.matcher(cityFact).matches())
                 throw new Exception("Назва міста повинна містити тільки українські літери");
-            if (!regionRegex.matcher(region).matches() || (!regionRegex.matcher(regionFact).matches()))
-                throw new Exception("Назва області може містити тільки українські літери та розділові знаки");
+//            if (!regionRegex.matcher(region).matches() || (!regionRegex.matcher(regionFact).matches()))
+//                throw new Exception("Назва області може містити тільки українські літери та розділові знаки");
             if (!addressRegex.matcher(address).matches() || !addressRegex.matcher(addressFact).matches())
                 throw new Exception("Адресса може містити українські літери, цифри та розділові знаки");
+
+
+            if (countryFact.equals("null"))
+                personalData.setCountry_fact(countryService.getCountryByName("Україна"));
+
+            personalData.setCountry(countryService.getCountryByName(country));
+            personalData.setPostIndex(index);
+            personalData.setCity(city);
+            personalData.setRowAddress(address);
+            personalData.setPhoneMain(mainPhone.getNumber());
+            personalData.setPhoneDop(secondPhone.getNumber());
+            personalData.setPrepod(prepodService.getPrepodById(selectedPrepodId));
+            if (isUkraine && regionComboBox.getValue() != null)
+                personalData.setOblastUA(regionUkraineService.getRegionUkraineByName(region));
+            else
+                personalData.setOblastUA(null);
+
+            if (equalRadioButton.isSelected()) {
+                personalData.setCountry_fact(countryService.getCountryByName(country));
+                personalData.setFactPostIndex(index);
+                personalData.setFactCity(city);
+                personalData.setFactRowAddress(address);
+                if (isUkraine && regionComboBox.getValue() != null)
+                    personalData.setFactOblastUA(regionUkraineService.getRegionUkraineByName(region));
+                else
+                    personalData.setFactOblastUA(null);
+            } else {
+                personalData.setCountry_fact(countryService.getCountryByName(countryFact));
+                personalData.setFactPostIndex(indexFact);
+                personalData.setFactCity(cityFact);
+                personalData.setFactRowAddress(addressFact);
+                if (isUkraineFact && regionFactComboBox.getValue() != null)
+                    personalData.setFactOblastUA(regionUkraineService.getRegionUkraineByName(regionFact));
+                else
+                    personalData.setFactOblastUA(null);
+            }
+
+            personalDataService.updatePersonalData(personalData);
+
+            closeEdit(null);
         } catch (Exception e) {
             MilitaryOblikKhPIMain.wrongInputAlert(e.getMessage());
         }
@@ -260,7 +329,7 @@ public class ContactInfoEditController implements ControlledScene {
             countryFactComboBox.setDisable(true);
             indexFactTextArea.setDisable(true);
             cityFactTextArea.setDisable(true);
-            regionFactTextArea.setDisable(true);
+            regionFactComboBox.setDisable(true);
             addressFactTextArea.setDisable(true);
 
 //            countryFactComboBox.setValue(countryComboBox.getValue());
@@ -278,7 +347,7 @@ public class ContactInfoEditController implements ControlledScene {
             countryFactComboBox.setDisable(false);
             indexFactTextArea.setDisable(false);
             cityFactTextArea.setDisable(false);
-            regionFactTextArea.setDisable(false);
+            regionFactComboBox.setDisable(false);
             addressFactTextArea.setDisable(false);
         }
     }
@@ -293,10 +362,18 @@ public class ContactInfoEditController implements ControlledScene {
         if (String.valueOf(countryComboBox.getValue()).equals("Україна")) {
             foreinNumberRadioButton.setDisable(false);
             foreinNumberRadioButton.setSelected(false);
+            regionComboBox.setDisable(false);
         }
         else {
             foreinNumberRadioButton.setDisable(true);
             foreinNumberRadioButton.setSelected(true);
+            regionComboBox.setDisable(true);
+        }
+
+        if (String.valueOf(countryFactComboBox.getValue()).equals("Україна")) {
+            regionFactComboBox.setDisable(false);
+        } else {
+            regionFactComboBox.setDisable(true);
         }
     }
 }

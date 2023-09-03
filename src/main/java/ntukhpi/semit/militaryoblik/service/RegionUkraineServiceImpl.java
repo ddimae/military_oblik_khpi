@@ -28,6 +28,11 @@ public class RegionUkraineServiceImpl implements RegionUkraineService {
     }
 
     @Override
+    public RegionUkraine getRegionUkraineByName(String name) {
+        return regionUkraineRepository.findByCountryName(name);
+    }
+
+    @Override
     public List<RegionUkraine> getAllRegionUkraine() {
         return regionUkraineRepository.findAll();
     }

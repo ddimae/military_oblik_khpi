@@ -173,11 +173,11 @@ public class ReservistsAllController {
         return selectedPrepodId;
     }
 
-    public static String getSelectedPrepodId() {
+    public static Long getSelectedPrepodId() {
         if (selectedPrepodId == null || selectedPrepodId.isEmpty())
             return null;
 
-        return selectedPrepodId;
+        return Long.parseLong(selectedPrepodId);
     }
 
     public void stopApp(ActionEvent actionEvent) {
