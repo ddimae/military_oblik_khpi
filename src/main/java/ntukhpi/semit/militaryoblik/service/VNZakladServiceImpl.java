@@ -18,7 +18,33 @@ public class VNZakladServiceImpl implements VNZakladService {
     }
 
     @Override
+    public VNZaklad createVNZaklad(VNZaklad vNZaklad) {
+        return vnZakladRepository.save(vNZaklad);
+    }
+
+    @Override
+    public VNZaklad getVNZakladById(Long id) {
+        return vnZakladRepository.findById(id).orElse(null);
+    }
+
+    @Override
     public List<VNZaklad> getAllVNZaklad() {
         return vnZakladRepository.findAll();
+    }
+
+    @Override
+    public VNZaklad updateVNZaklad(Long id, VNZaklad updatedVNZaklad) {
+        VNZaklad existingVNZaklad = vnZakladRepository.findById(id).orElse(null);
+        if (existingVNZaklad != null) {
+            updatedVNZaklad.setId(existingVNZaklad.getId());
+            return vnZakladRepository.save(updatedVNZaklad);
+        }
+        return null;
+    }
+
+    //ToDo change when special conditions was presented
+    @Override
+    public void deleteVNZaklad(Long id) {
+        vnZakladRepository.deleteById(id);
     }
 }

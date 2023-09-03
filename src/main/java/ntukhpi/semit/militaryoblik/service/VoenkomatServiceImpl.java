@@ -19,11 +19,6 @@ public class VoenkomatServiceImpl implements VoenkomatService {
     }
 
     @Override
-    public List<Voenkomat> getAllVoenkom() {
-        return voenkomatRepository.findAll();
-    }
-
-    @Override
     public Voenkomat createVoenkomat(Voenkomat voenkomat) {
         return voenkomatRepository.save(voenkomat);
     }
@@ -31,6 +26,11 @@ public class VoenkomatServiceImpl implements VoenkomatService {
     @Override
     public Voenkomat getVoenkomatById(Long id) {
         return voenkomatRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Voenkomat> getAllVoenkom() {
+        return voenkomatRepository.findAll();
     }
 
     @Override

@@ -18,7 +18,33 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
+    public Document createDocument(Document document) {
+        return documentRepository.save(document);
+    }
+
+    @Override
+    public Document getDocumentById(Long id) {
+        return documentRepository.findById(id).orElse(null);
+    }
+
+    @Override
     public List<Document> getAllDocument() {
         return documentRepository.findAll();
+    }
+
+    @Override
+    public Document updateDocument(Long id, Document updatedDocument) {
+        Document existingDocument = documentRepository.findById(id).orElse(null);
+        if (existingDocument != null) {
+            updatedDocument.setId(existingDocument.getId());
+            return documentRepository.save(updatedDocument);
+        }
+        return null;
+    }
+
+    //ToDo change when special conditions was presented
+    @Override
+    public void deleteDocument(Long id) {
+        documentRepository.deleteById(id);
     }
 }

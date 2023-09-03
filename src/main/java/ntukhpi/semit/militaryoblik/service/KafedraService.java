@@ -17,5 +17,4 @@ public interface KafedraService {
     void deleteKafedra(Long id);
 
 
-
 }

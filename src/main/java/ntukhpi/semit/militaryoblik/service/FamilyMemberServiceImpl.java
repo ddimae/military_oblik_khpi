@@ -18,7 +18,33 @@ public class FamilyMemberServiceImpl implements FamilyMemberService {
     }
 
     @Override
+    public FamilyMember createFamilyMember(FamilyMember familyMember) {
+        return familyMemberRepository.save(familyMember);
+    }
+
+    @Override
+    public FamilyMember getFamilyMemberById(Long id) {
+        return familyMemberRepository.findById(id).orElse(null);
+    }
+
+    @Override
     public List<FamilyMember> getAllFamilyMember() {
         return familyMemberRepository.findAll();
+    }
+
+    @Override
+    public FamilyMember updateFamilyMember(Long id, FamilyMember updatedFamilyMember) {
+        FamilyMember existingFamilyMember = familyMemberRepository.findById(id).orElse(null);
+        if (existingFamilyMember != null) {
+            updatedFamilyMember.setId(existingFamilyMember.getId());
+            return familyMemberRepository.save(updatedFamilyMember);
+        }
+        return null;
+    }
+
+    //ToDo change when special conditions was presented
+    @Override
+    public void deleteFamilyMember(Long id) {
+        familyMemberRepository.deleteById(id);
     }
 }
