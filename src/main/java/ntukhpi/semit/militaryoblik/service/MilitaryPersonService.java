@@ -9,7 +9,7 @@ public interface MilitaryPersonService {
 
     MilitaryPerson getMilitaryPersonById(Long id);
 
-    List<MilitaryPerson> getAllMilitaryPerson();
+    MilitaryPerson getMilitaryPerson();
 
     MilitaryPerson updateMilitaryPerson(Long id, MilitaryPerson updateMilitaryPerson);
 
