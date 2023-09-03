@@ -127,6 +127,10 @@ public class MilitaryOblikKhPIMain extends Application {
         MilitaryOblikKhPIMain.showAlert("Помилка", "Не вибраний рядок", "Натисніть на рядок, щоб його вибрати");
     }
 
+    public static void wrongInputAlert(String msg) {
+        MilitaryOblikKhPIMain.showAlert("Помилка", "Неправильно введені дані", msg);
+    }
+
     /**
      * Метод для создания Stage на основе fxml
      * автор Двухглавов

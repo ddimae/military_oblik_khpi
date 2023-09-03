@@ -11,6 +11,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
+import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.ContactInfoAdapter;
 import ntukhpi.semit.militaryoblik.adapters.DocumentsAdapter;
 import ntukhpi.semit.militaryoblik.adapters.FakultetAdapter;
@@ -204,6 +205,8 @@ public class ContactInfoEditController implements ControlledScene {
             boolean isUkraine = country.equals("Україна");
             boolean isUkraineFact = countryFact.equals("Україна");
 
+            region = region.trim();
+
             if (country.equals("null"))
                 throw new Exception("Країна реєстрації є обов'язковим полем");
             if (region.isEmpty())
@@ -235,7 +238,7 @@ public class ContactInfoEditController implements ControlledScene {
             if (!addressRegex.matcher(address).matches() || !addressRegex.matcher(addressFact).matches())
                 throw new Exception("Адресса може містити українські літери, цифри та розділові знаки");
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            MilitaryOblikKhPIMain.wrongInputAlert(e.getMessage());
         }
     }
 
