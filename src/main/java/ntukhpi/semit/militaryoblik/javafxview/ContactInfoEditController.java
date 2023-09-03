@@ -9,8 +9,11 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import lombok.Getter;
+import lombok.Setter;
 import ntukhpi.semit.militaryoblik.adapters.ContactInfoAdapter;
 import ntukhpi.semit.militaryoblik.adapters.DocumentsAdapter;
+import ntukhpi.semit.militaryoblik.adapters.FakultetAdapter;
 import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Country;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
@@ -24,6 +27,39 @@ import java.util.stream.Collectors;
 
 @Component
 public class ContactInfoEditController implements ControlledScene {
+
+    @Getter
+    @Setter
+    private class PhoneNumber {
+        String number;
+        boolean isFullNumber;
+        boolean isNoCountryCodeNumber;
+        boolean isNoPlusNumber;
+        boolean isCityNumber;
+        boolean isWrongNumber;
+
+        public PhoneNumber(String number) {
+            this.number = number;
+            isFullNumber = false;
+            isNoCountryCodeNumber = false;
+            isNoPlusNumber = false;
+            isCityNumber = false;
+            isWrongNumber = false;
+        }
+
+        public void validateNumber(Pattern full, Pattern noCountryCode, Pattern noPlus, Pattern city) {
+            if (full != null && full.matcher(number).matches())
+                isFullNumber = true;
+            else if (noCountryCode != null && noCountryCode.matcher(number).matches())
+                isNoCountryCodeNumber = true;
+            else if (noPlus != null && noPlus.matcher(number).matches())
+                isNoPlusNumber = true;
+            else if (city != null && city.matcher(number).matches())
+                isCityNumber = true;
+            else
+                isWrongNumber = true;
+        }
+    }
 
     @FXML
     private TextField addressFactTextArea;
@@ -45,6 +81,9 @@ public class ContactInfoEditController implements ControlledScene {
 
     @FXML
     private RadioButton equalRadioButton;
+
+    @FXML
+    private RadioButton foreinNumberRadioButton;
 
     @FXML
     private TextField indexFactTextArea;
@@ -139,8 +178,8 @@ public class ContactInfoEditController implements ControlledScene {
             String city = cityTextArea.getText();
             String region = regionTextArea.getText();
             String address = addressTextArea.getText();
-            String mainPhone = mainPhoneTextArea.getText();
-            String secondPhone = secondPhoneTextArea.getText();
+            PhoneNumber mainPhone = new PhoneNumber(mainPhoneTextArea.getText());
+            PhoneNumber secondPhone = new PhoneNumber(secondPhoneTextArea.getText());
 
             String countryFact = String.valueOf(countryFactComboBox.getValue());
             String indexFact = indexFactTextArea.getText();
@@ -149,10 +188,15 @@ public class ContactInfoEditController implements ControlledScene {
             String addressFact = addressFactTextArea.getText();
 
             Pattern ukrIndexRegex = Pattern.compile("(\\d{5})?");
-            Pattern ukrMainPhoneRegex = Pattern.compile("^((\\+\\d{12})|(\\d{10}))?$");
-            Pattern ukrSecondPhoneRegex = Pattern.compile("^((\\+\\d{12})|(\\d{10}))?$");
-            Pattern mainPhoneRegex = Pattern.compile("(^\\+\\d+)?");
-            Pattern secondPhoneRegex = Pattern.compile("(^\\+\\d+)?");
+
+            Pattern ukrPhoneFullRegex = Pattern.compile("^(\\+\\d{12})?$");
+            Pattern ukrPhoneNoCountryCodeRegex = Pattern.compile("^(\\d{10})?$");
+            Pattern ukrPhoneNoPlusRegex = Pattern.compile("^(\\d{12})?$");
+            Pattern ukrPhoneCityRegex = Pattern.compile("^(\\d{8})?$");
+//            Pattern ukrMainPhoneRegex = Pattern.compile("^((\\+\\d{12})|(\\d{10}))?$");
+//            Pattern ukrSecondPhoneRegex = Pattern.compile("^((\\+\\d{12})|(\\d{10}))?$");
+
+            Pattern foreinPhoneRegex = Pattern.compile("(^\\+\\d+)?");
             Pattern cityRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії\\s]*$");
             Pattern regionRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії,.\\s]*$");
             Pattern addressRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії\\d,.\\-\\'\\&_\\s]*$");
@@ -164,16 +208,25 @@ public class ContactInfoEditController implements ControlledScene {
                 throw new Exception("Країна реєстрації є обов'язковим полем");
             if (region.isEmpty())
                 throw new Exception("Область реєстрації є обов'язковим полем");
-            if (mainPhone.isEmpty())
+            if (mainPhone.getNumber().isEmpty())
                 throw new Exception("Телефон 1 є обов'язковим полем");
 
             if ((isUkraine && !ukrIndexRegex.matcher(index).matches()) || ((isUkraineFact && !ukrIndexRegex.matcher(indexFact).matches())))
                 throw new Exception("Індекс повинен складатися із 5 цифр");
 
-            if (isUkraine && (!ukrMainPhoneRegex.matcher(mainPhone).matches() || !ukrSecondPhoneRegex.matcher(secondPhone).matches()))
-                throw new Exception("Формат телефона повинен виглядати +380123456789, або 0123456789");
-            if (!isUkraine && (!mainPhoneRegex.matcher(mainPhone).matches() || !secondPhoneRegex.matcher(secondPhone).matches()))
-                throw new Exception("Формат іноземного телефона повинен починатися зі знаку '+'");
+            if (!foreinNumberRadioButton.isSelected()) {
+                mainPhone.validateNumber(ukrPhoneFullRegex, ukrPhoneNoCountryCodeRegex, ukrPhoneNoPlusRegex, ukrPhoneCityRegex);
+                secondPhone.validateNumber(ukrPhoneFullRegex, ukrPhoneNoCountryCodeRegex, ukrPhoneNoPlusRegex, ukrPhoneCityRegex);
+
+                if (mainPhone.isWrongNumber || (!secondPhone.getNumber().isEmpty() && secondPhone.isWrongNumber))
+                    throw new Exception("Формат телефона повинен виглядати +380951203066, 0951203066, 380951203066, або 70768453");
+            } else {
+                mainPhone.validateNumber(foreinPhoneRegex, null, null, null);
+                secondPhone.validateNumber(foreinPhoneRegex, null, null, null);
+
+                if (mainPhone.isWrongNumber || (!secondPhone.getNumber().isEmpty() && secondPhone.isWrongNumber))
+                    throw new Exception("Формат іноземного телефона повинен починатися зі знаку '+'");
+            }
 
             if (!cityRegex.matcher(city).matches() || !cityRegex.matcher(cityFact).matches())
                 throw new Exception("Назва міста повинна містити тільки українські літери");
@@ -212,6 +265,23 @@ public class ContactInfoEditController implements ControlledScene {
             cityFactTextArea.setDisable(false);
             regionFactTextArea.setDisable(false);
             addressFactTextArea.setDisable(false);
+        }
+    }
+
+    @FXML
+    void handleForeinNumberRadioButton(ActionEvent event) {
+
+    }
+
+    @FXML
+    void handleChangeCountry(ActionEvent event) {
+        if (String.valueOf(countryComboBox.getValue()).equals("Україна")) {
+            foreinNumberRadioButton.setDisable(false);
+            foreinNumberRadioButton.setSelected(false);
+        }
+        else {
+            foreinNumberRadioButton.setDisable(true);
+            foreinNumberRadioButton.setSelected(true);
         }
     }
 }
