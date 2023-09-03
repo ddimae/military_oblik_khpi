@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface PersonalDataService {
 
-    List<PersonalData> getAllCountry();
+    List<PersonalData> getAllPersonalData();
 }

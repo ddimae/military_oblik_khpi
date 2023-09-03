@@ -18,7 +18,34 @@ public class CurrentDoljnostInfoServiceImpl implements CurrentDoljnostInfoServic
     }
 
     @Override
-    public List<CurrentDoljnostInfo> getAllCountry() {
-        return currentDoljnostInfoRepository.findAll();
+    public CurrentDoljnostInfo createCurrentDoljnostInfo(CurrentDoljnostInfo currentDoljnostInfo) {
+        return currentDoljnostInfoRepository.save(currentDoljnostInfo);
+    }
+
+    @Override
+    public CurrentDoljnostInfo getCurrentDoljnostInfoById(Long id) {
+        return currentDoljnostInfoRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public CurrentDoljnostInfo getCurrentDoljnost() {
+        List<CurrentDoljnostInfo> list = currentDoljnostInfoRepository.findAll();
+        return !list.isEmpty()?list.get(0):null;
+    }
+
+    @Override
+    public CurrentDoljnostInfo updateCurrentDoljnostInfo(Long id, CurrentDoljnostInfo updateCurrentDoljnostInfo) {
+        CurrentDoljnostInfo existingCurrentDoljnostInfo = currentDoljnostInfoRepository.findById(id).orElse(null);
+        if (existingCurrentDoljnostInfo != null) {
+            updateCurrentDoljnostInfo.setId(existingCurrentDoljnostInfo.getId());
+            return currentDoljnostInfoRepository.save(updateCurrentDoljnostInfo);
+        }
+        return null;
+    }
+
+    //ToDo change when special conditions was presented
+    @Override
+    public void deleteCurrentDoljnostInfo(Long id) {
+        currentDoljnostInfoRepository.deleteById(id);
     }
 }

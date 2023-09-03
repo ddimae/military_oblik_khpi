@@ -6,5 +6,13 @@ import java.util.List;
 
 public interface VNZakladService {
 
-    List<VNZaklad> getAllCountry();
+    VNZaklad createVNZaklad(VNZaklad vNZaklad);
+
+    VNZaklad getVNZakladById(Long id);
+
+    List<VNZaklad> getAllVNZaklad();
+
+    VNZaklad updateVNZaklad(Long id, VNZaklad updatedVNZaklad);
+
+    void deleteVNZaklad(Long id);
 }

@@ -6,5 +6,13 @@ import java.util.List;
 
 public interface StepenService {
 
-    List<Stepen> getAllCountry();
+    Stepen createStepen(Stepen stepen);
+
+    Stepen getStepenById(Long id);
+
+    List<Stepen> getAllStepen();
+
+    Stepen updateStepen(Long id, Stepen updatedStepen);
+
+    void deleteStepen(Long id);
 }

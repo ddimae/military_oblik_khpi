@@ -18,7 +18,7 @@ public class PersonalDataServiceImpl implements PersonalDataService {
     }
 
     @Override
-    public List<PersonalData> getAllCountry() {
+    public List<PersonalData> getAllPersonalData() {
         return personalDataRepository.findAll();
     }
 }

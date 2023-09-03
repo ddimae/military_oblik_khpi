@@ -6,5 +6,13 @@ import java.util.List;
 
 public interface DolghnostService {
 
-    List<Dolghnost> getAllCountry();
+    Dolghnost createDolghnost(Dolghnost dolghnost);
+
+    Dolghnost getDolghnostById(Long id);
+
+    List<Dolghnost> getAllDolghnost();
+
+    Dolghnost updateDolghnost(Long id, Dolghnost updatedDolghnost);
+
+    void deleteDolghnost(Long id);
 }

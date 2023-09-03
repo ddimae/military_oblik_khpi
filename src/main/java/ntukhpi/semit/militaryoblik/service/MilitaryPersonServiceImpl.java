@@ -18,7 +18,34 @@ public class MilitaryPersonServiceImpl implements MilitaryPersonService {
     }
 
     @Override
-    public List<MilitaryPerson> getAllCountry() {
-        return militaryPersonRepository.findAll();
+    public MilitaryPerson createMilitaryPerson(MilitaryPerson militaryPerson) {
+        return militaryPersonRepository.save(militaryPerson);
+    }
+
+    @Override
+    public MilitaryPerson getMilitaryPersonById(Long id) {
+        return militaryPersonRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public MilitaryPerson getMilitaryInfo() {
+        List<MilitaryPerson> list = militaryPersonRepository.findAll();
+        return !list.isEmpty()?list.get(0):null;
+    }
+
+    @Override
+    public MilitaryPerson updateMilitaryPerson(Long id, MilitaryPerson updateMilitaryPerson) {
+        MilitaryPerson existingMilitaryPerson = militaryPersonRepository.findById(id).orElse(null);
+        if (existingMilitaryPerson != null) {
+            updateMilitaryPerson.setId(existingMilitaryPerson.getId());
+            return militaryPersonRepository.save(updateMilitaryPerson);
+        }
+        return null;
+    }
+
+    //ToDo change when special conditions was presented
+    @Override
+    public void deleteMilitaryPerson(Long id) {
+        militaryPersonRepository.deleteById(id);
     }
 }

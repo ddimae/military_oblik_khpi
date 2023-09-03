@@ -6,5 +6,13 @@ import java.util.List;
 
 public interface VSkladService {
 
-    List<VSklad> getAllCountry();
+    VSklad createVSklad(VSklad vSklad);
+
+    VSklad getVSkladById(Long id);
+
+    List<VSklad> getAllVSklad();
+
+    VSklad updateVSklad(Long id, VSklad updatedVSklad);
+
+    void deleteVSklad(Long id);
 }

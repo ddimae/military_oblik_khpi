@@ -6,5 +6,13 @@ import java.util.List;
 
 public interface CurrentDoljnostInfoService {
 
-    List<CurrentDoljnostInfo> getAllCountry();
+    CurrentDoljnostInfo createCurrentDoljnostInfo(CurrentDoljnostInfo currentDoljnostInfo);
+
+    CurrentDoljnostInfo getCurrentDoljnostInfoById(Long id);
+
+    CurrentDoljnostInfo getCurrentDoljnost();
+
+    CurrentDoljnostInfo updateCurrentDoljnostInfo(Long id, CurrentDoljnostInfo updateCurrentDoljnostInfo);
+
+    void deleteCurrentDoljnostInfo(Long id);
 }

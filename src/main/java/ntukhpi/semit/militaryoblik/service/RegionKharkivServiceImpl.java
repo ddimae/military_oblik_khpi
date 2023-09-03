@@ -18,7 +18,33 @@ public class RegionKharkivServiceImpl implements RegionKharkivService {
     }
 
     @Override
-    public List<RegionKharkiv> getAllCountry() {
+    public RegionKharkiv createRegionKharkiv(RegionKharkiv regionKharkiv) {
+        return regionKharkivRepository.save(regionKharkiv);
+    }
+
+    @Override
+    public RegionKharkiv getRegionKharkivById(Long id) {
+        return regionKharkivRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<RegionKharkiv> getAllRegionKharkiv() {
         return regionKharkivRepository.findAll();
+    }
+
+    @Override
+    public RegionKharkiv updateRegionKharkiv(Long id, RegionKharkiv updatedRegionKharkiv) {
+        RegionKharkiv existingRegionKharkiv = regionKharkivRepository.findById(id).orElse(null);
+        if (existingRegionKharkiv != null) {
+            updatedRegionKharkiv.setId(existingRegionKharkiv.getId());
+            return regionKharkivRepository.save(updatedRegionKharkiv);
+        }
+        return null;
+    }
+
+    //ToDo change when special conditions was presented
+    @Override
+    public void deleteRegionKharkiv(Long id) {
+        regionKharkivRepository.deleteById(id);
     }
 }

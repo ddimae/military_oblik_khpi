@@ -6,5 +6,13 @@ import java.util.List;
 
 public interface RegionUkraineService {
 
-    List<RegionUkraine> getAllCountry();
+    RegionUkraine createRegionUkraine(RegionUkraine regionUkraine);
+
+    RegionUkraine getRegionUkraineById(Long id);
+
+    List<RegionUkraine> getAllRegionUkraine();
+
+    RegionUkraine updateRegionUkraine(Long id, RegionUkraine updatedRegionUkraine);
+
+    void deleteRegionUkraine(Long id);
 }

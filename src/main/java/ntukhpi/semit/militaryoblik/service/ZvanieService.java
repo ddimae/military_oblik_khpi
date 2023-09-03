@@ -6,5 +6,13 @@ import java.util.List;
 
 public interface ZvanieService {
 
-    List<Zvanie> getAllCountry();
+    Zvanie createZvanie(Zvanie zvanie);
+
+    Zvanie getZvanieById(Long id);
+
+    List<Zvanie> getAllZvanie();
+
+    Zvanie updateZvanie(Long id, Zvanie updatedZvanie);
+
+    void deleteZvanie(Long id);
 }
