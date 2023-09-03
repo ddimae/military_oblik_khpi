@@ -13,15 +13,12 @@ import ntukhpi.semit.militaryoblik.entity.Voenkomat;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Fakultet;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Kafedra;
 
-import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain.currentStage;
 
 @Component
 public class ReservistsAllController {
@@ -103,7 +100,7 @@ public class ReservistsAllController {
 //                "TCK 2",
 //                "TCK 3"
 //                fakultetRepository.findAll().stream().map(Fakultet::getFname).toList()
-                voenkomatServiceImpl.getAllVoenkom().stream().map(Voenkomat::getVoenkomatName).toList()
+                voenkomatServiceImpl.getAllVoenkomat().stream().map(Voenkomat::getVoenkomatName).toList()
         );
         ObservableList<String> instituteOptions = FXCollections.observableArrayList(
 //                "Institute 1",

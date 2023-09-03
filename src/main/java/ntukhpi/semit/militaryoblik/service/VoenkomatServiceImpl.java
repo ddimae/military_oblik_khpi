@@ -29,7 +29,7 @@ public class VoenkomatServiceImpl implements VoenkomatService {
     }
 
     @Override
-    public List<Voenkomat> getAllVoenkom() {
+    public List<Voenkomat> getAllVoenkomat() {
         return voenkomatRepository.findAll();
     }
 

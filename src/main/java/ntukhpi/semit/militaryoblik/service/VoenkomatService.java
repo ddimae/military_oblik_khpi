@@ -10,16 +10,11 @@ public interface VoenkomatService {
 
     Voenkomat getVoenkomatById(Long id);
 
-    List<Voenkomat> getAllVoenkom();
-    Voenkomat createVoenkomat(Voenkomat voenkomat);
-
-    Voenkomat getVoenkomatById(Long id);
+    List<Voenkomat> getAllVoenkomat();
 
     Voenkomat updateVoenkomat(Long id, Voenkomat updatedVoenkomat);
 
     void deleteVoenkomat(Long id);
 
-    Voenkomat updateVoenkomat(Long id, Voenkomat updatedVoenkomat);
 
-    void deleteVoenkomat(Long id);
 }
