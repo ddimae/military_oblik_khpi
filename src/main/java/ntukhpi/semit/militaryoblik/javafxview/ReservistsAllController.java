@@ -278,7 +278,7 @@ public class ReservistsAllController {
     @FXML
     void handleContactInfoButton(ActionEvent event) {   //TODO переробити коли закінчу із prepodId
         if (setSelectedPrepodId() != null) {
-            MilitaryOblikKhPIMain.openEditWindow(CONTACT_INFO_JAVAFX, CONTACT_INFO_JAVAFX_TITLE, this, reservistsTableView.getSelectionModel().getSelectedItem());
+            MilitaryOblikKhPIMain.openEditWindow(CONTACT_INFO_JAVAFX, CONTACT_INFO_JAVAFX_TITLE, this, null);
         }
         else
             MilitaryOblikKhPIMain.noSelectedRowAlert();

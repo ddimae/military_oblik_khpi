@@ -60,6 +60,15 @@ public class ContactInfoEditController implements ControlledScene {
             else
                 isWrongNumber = true;
         }
+
+        public void setToUkrStandart() {
+            if (isNoCountryCodeNumber)
+                number = "+380" + number;
+            else if (isNoPlusNumber)
+                number = "+" + number;
+            else if (isCityNumber)
+                number = "+38057";
+        }
     }
 
     @FXML
@@ -108,7 +117,7 @@ public class ContactInfoEditController implements ControlledScene {
     private TextField secondPhoneTextArea;
 
     private ReservistsAllController mainController;
-    private ReservistAdapter selectedReservist;
+    private String selectedPrepodId;
 //    private ContactInfoAdapter selectedContactInfo;
 
     @Autowired
@@ -160,6 +169,8 @@ public class ContactInfoEditController implements ControlledScene {
 
         countryComboBox.setItems(countryList);
         countryFactComboBox.setItems(countryList);
+
+        selectedPrepodId = ReservistsAllController.getSelectedPrepodId();
     }
 
     @FXML
@@ -173,40 +184,38 @@ public class ContactInfoEditController implements ControlledScene {
 
     @FXML
     void saveContactInfo(ActionEvent event) {
+        String country = String.valueOf(countryComboBox.getValue());
+        String index = indexTextArea.getText();
+        String city = cityTextArea.getText();
+        String region = regionTextArea.getText();
+        String address = addressTextArea.getText();
+        PhoneNumber mainPhone = new PhoneNumber(mainPhoneTextArea.getText());
+        PhoneNumber secondPhone = new PhoneNumber(secondPhoneTextArea.getText());
+
+        String countryFact = String.valueOf(countryFactComboBox.getValue());
+        String indexFact = indexFactTextArea.getText();
+        String cityFact = cityFactTextArea.getText();
+        String regionFact = regionFactTextArea.getText();
+        String addressFact = addressFactTextArea.getText();
+
+        Pattern ukrIndexRegex = Pattern.compile("(\\d{5})?");
+
+        Pattern ukrPhoneFullRegex = Pattern.compile("^(\\+\\d{12})?$");
+        Pattern ukrPhoneNoCountryCodeRegex = Pattern.compile("^(\\d{10})?$");
+        Pattern ukrPhoneNoPlusRegex = Pattern.compile("^(\\d{12})?$");
+        Pattern ukrPhoneCityRegex = Pattern.compile("^(\\d{8})?$");
+
+        Pattern foreinPhoneRegex = Pattern.compile("(^\\+\\d+)?");
+        Pattern cityRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії\\s]*$");
+        Pattern regionRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії,.\\s]*$");
+        Pattern addressRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії\\d,.\\-\\'\\&_\\s]*$");
+
+        boolean isUkraine = country.equals("Україна");
+        boolean isUkraineFact = countryFact.equals("Україна");
+
+        region = region.trim();
+
         try {
-            String country = String.valueOf(countryComboBox.getValue());
-            String index = indexTextArea.getText();
-            String city = cityTextArea.getText();
-            String region = regionTextArea.getText();
-            String address = addressTextArea.getText();
-            PhoneNumber mainPhone = new PhoneNumber(mainPhoneTextArea.getText());
-            PhoneNumber secondPhone = new PhoneNumber(secondPhoneTextArea.getText());
-
-            String countryFact = String.valueOf(countryFactComboBox.getValue());
-            String indexFact = indexFactTextArea.getText();
-            String cityFact = cityFactTextArea.getText();
-            String regionFact = regionFactTextArea.getText();
-            String addressFact = addressFactTextArea.getText();
-
-            Pattern ukrIndexRegex = Pattern.compile("(\\d{5})?");
-
-            Pattern ukrPhoneFullRegex = Pattern.compile("^(\\+\\d{12})?$");
-            Pattern ukrPhoneNoCountryCodeRegex = Pattern.compile("^(\\d{10})?$");
-            Pattern ukrPhoneNoPlusRegex = Pattern.compile("^(\\d{12})?$");
-            Pattern ukrPhoneCityRegex = Pattern.compile("^(\\d{8})?$");
-//            Pattern ukrMainPhoneRegex = Pattern.compile("^((\\+\\d{12})|(\\d{10}))?$");
-//            Pattern ukrSecondPhoneRegex = Pattern.compile("^((\\+\\d{12})|(\\d{10}))?$");
-
-            Pattern foreinPhoneRegex = Pattern.compile("(^\\+\\d+)?");
-            Pattern cityRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії\\s]*$");
-            Pattern regionRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії,.\\s]*$");
-            Pattern addressRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії\\d,.\\-\\'\\&_\\s]*$");
-
-            boolean isUkraine = country.equals("Україна");
-            boolean isUkraineFact = countryFact.equals("Україна");
-
-            region = region.trim();
-
             if (country.equals("null"))
                 throw new Exception("Країна реєстрації є обов'язковим полем");
             if (region.isEmpty())
@@ -223,6 +232,9 @@ public class ContactInfoEditController implements ControlledScene {
 
                 if (mainPhone.isWrongNumber || (!secondPhone.getNumber().isEmpty() && secondPhone.isWrongNumber))
                     throw new Exception("Формат телефона повинен виглядати +380951203066, 0951203066, 380951203066, або 70768453");
+
+                mainPhone.setToUkrStandart();
+                secondPhone.setToUkrStandart();
             } else {
                 mainPhone.validateNumber(foreinPhoneRegex, null, null, null);
                 secondPhone.validateNumber(foreinPhoneRegex, null, null, null);
