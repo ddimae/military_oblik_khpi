@@ -12,10 +12,15 @@ import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.adapters.ContactInfoAdapter;
 import ntukhpi.semit.militaryoblik.adapters.DocumentsAdapter;
 import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
+import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Country;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
+import ntukhpi.semit.militaryoblik.repository.CountryRepository;
+import ntukhpi.semit.militaryoblik.repository.PersonalDataRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Component
 public class ContactInfoEditController implements ControlledScene {
@@ -66,6 +71,13 @@ public class ContactInfoEditController implements ControlledScene {
     private ReservistAdapter selectedReservist;
 //    private ContactInfoAdapter selectedContactInfo;
 
+    @Autowired
+    CountryRepository countryRepository;
+
+    @Autowired
+    PersonalDataRepository personalDataRepository;
+
+
     @Override
     public void setMainController(Object mainController) {
         this.mainController = (ReservistsAllController) mainController;
@@ -81,6 +93,7 @@ public class ContactInfoEditController implements ControlledScene {
     private void setContactInfo(ReservistAdapter reservist) {
         selectedReservist = reservist;
         //TODO брати із БД контактну інформацію про резервиста
+//        personalDataRepository.
 
         pibText.setText(reservist.getPib());
 
@@ -102,15 +115,9 @@ public class ContactInfoEditController implements ControlledScene {
     }
 
     public void initialize() {
-        //TODO Брати із БД всі країни
-        ObservableList<String> countryList = FXCollections.observableArrayList(
-                "Україна",
-                "Германія",
-                "Польша",
-                "Грузія",
-                "Молдова",
-                "Франція"
-        );
+        ObservableList<String> countryList = FXCollections.observableArrayList( //TODO Переробити із використанням сервісів
+                countryRepository.findAll().stream().map(Country::getCountryName).collect(Collectors.toList()));
+
         countryComboBox.setItems(countryList);
         countryFactComboBox.setItems(countryList);
     }
