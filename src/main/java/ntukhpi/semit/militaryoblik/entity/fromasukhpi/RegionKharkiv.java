@@ -16,7 +16,7 @@ public class RegionKharkiv {
     @Column(name = "rn_id")
     private Long id;
 
-    @Column(length = 40, name="rn_name")
+    @Column(length = 40, name="rn_name",nullable = false)
     private String countryName;
 
 }

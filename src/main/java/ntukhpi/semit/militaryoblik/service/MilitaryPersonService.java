@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface MilitaryPersonService {
 
-    List<MilitaryPerson> getAllCountry();
+    MilitaryPerson getMilitaryInfo();
 }

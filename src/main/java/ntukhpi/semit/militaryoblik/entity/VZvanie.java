@@ -18,11 +18,11 @@ public class VZvanie {
     @Column(name = "army_zvanie_id")
     Long id;
 
-    @Column(length = 30, name="army_zvanie_name")
+    @Column(length = 30, name="army_zvanie_name",nullable = false,unique = true)
     private String zvanieName;
 
     //Порядковий номер для представлення у списку, для сортування при відображенні
-    @Column(name="show_order")
+    @Column(name="show_order",nullable = false,unique = true)
     private Integer numOrderShow;
 
 }

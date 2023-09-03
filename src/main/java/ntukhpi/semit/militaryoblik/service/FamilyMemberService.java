@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface FamilyMemberService {
 
-    List<FamilyMember> getAllCountry();
+    List<FamilyMember> getAllFamilyMember();
 }

@@ -18,7 +18,7 @@ public class RegionKharkivServiceImpl implements RegionKharkivService {
     }
 
     @Override
-    public List<RegionKharkiv> getAllCountry() {
+    public List<RegionKharkiv> getAllPrepod() {
         return regionKharkivRepository.findAll();
     }
 }

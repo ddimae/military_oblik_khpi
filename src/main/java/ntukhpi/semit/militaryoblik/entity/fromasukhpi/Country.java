@@ -16,10 +16,10 @@ public class Country {
     @Column(name = "co_id")
     private Long id;
 
-    @Column(length = 40, name="co_name")
+    @Column(length = 40, name="co_name",nullable = false)
     private String countryName;
 
-    @Column(length = 40, name="co_name_e")
+    @Column(length = 40, name="co_name_e",nullable = false)
     private String countryNameEn;
 
 

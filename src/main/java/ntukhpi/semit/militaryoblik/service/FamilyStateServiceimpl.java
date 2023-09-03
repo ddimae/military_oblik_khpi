@@ -17,7 +17,8 @@ public class FamilyStateServiceimpl implements FamilyStateService {
     }
 
     @Override
-    public List<FamilyState> getAllCountry() {
-        return familyStateRepository.findAll();
+    public FamilyState getFamilyState() {
+        List<FamilyState> list = familyStateRepository.findAll();
+        return !list.isEmpty()?list.get(0):null;
     }
 }

@@ -8,7 +8,9 @@ import lombok.ToString;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "prepod")
+//Унікальним робимо ПІБ+кафедра.
+//Тобто приймаємо за аксіому, що однофамільці на одній кафедрі не працюють
+@Table(name = "prepod",uniqueConstraints = @UniqueConstraint(columnNames = {"fam", "imya","otch","kid"}))
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,11 +22,11 @@ public class Prepod {
     @Column(name = "prepod_id")
     Long id;
 
-    @Column(length = 40)
+    @Column(length = 40,nullable = false)
     private String fam;
-    @Column(length = 30)
+    @Column(length = 30,nullable = false)
     private String imya;
-    @Column(length = 30)
+    @Column(length = 30,nullable = false)
     private String otch;
 
     //В БД АСУ УПД ХПИ можно получить дані про посаду, яку обіймає співробітник
@@ -36,11 +38,11 @@ public class Prepod {
     //Через те, що це клас "незмінний", створений клас CurrentDoljnostInfo, який буде зберігати дані про накази
     //про призначення та звільнення
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "kid")
+    @JoinColumn(name = "kid",nullable = false)
     private Kafedra kafedra;
 
     @ManyToOne
-    @JoinColumn(name = "dolghn_id")
+    @JoinColumn(name = "dolghn_id",nullable = false)
     private Dolghnost dolghnost;
 
     //Вчене звання - це доцент, професор, старший науковий співробітник, академік, тощо
@@ -56,4 +58,52 @@ public class Prepod {
     @Column
     private String email;
 
+    public Prepod(String fam, String imya, String otch, Kafedra kafedra, Dolghnost dolghnost, Zvanie zvanie, Stepen stepen, String email) {
+        id = 0L;
+        this.fam = fam;
+        this.imya = imya;
+        this.otch = otch;
+        this.kafedra = kafedra;
+        this.dolghnost = dolghnost;
+        this.zvanie = zvanie;
+        this.stepen = stepen;
+        this.email = email;
+    }
+
+    public Prepod(String fam, String imya, String otch, Kafedra kafedra) {
+        this.fam = fam;
+        this.imya = imya;
+        this.otch = otch;
+        this.kafedra = kafedra;
+    }
+
+    public Prepod(String fam, String imya, String otch, Kafedra kafedra, Dolghnost dolghnost) {
+        this.fam = fam;
+        this.imya = imya;
+        this.otch = otch;
+        this.kafedra = kafedra;
+        this.dolghnost = dolghnost;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Prepod prepod = (Prepod) o;
+
+        if (!fam.equals(prepod.fam)) return false;
+        if (!imya.equals(prepod.imya)) return false;
+        if (!otch.equals(prepod.otch)) return false;
+        return kafedra.equals(prepod.kafedra);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = fam.hashCode();
+        result = 31 * result + imya.hashCode();
+        result = 31 * result + otch.hashCode();
+        result = 31 * result + kafedra.hashCode();
+        return result;
+    }
 }

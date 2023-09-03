@@ -18,7 +18,7 @@ public class StepenServiceImpl implements StepenService {
     }
 
     @Override
-    public List<Stepen> getAllCountry() {
+    public List<Stepen> getAllStepen() {
         return stepenRepository.findAll();
     }
 }

@@ -19,7 +19,7 @@ public class VSkladServiceImpl implements VSkladService {
     }
 
     @Override
-    public List<VSklad> getAllCountry() {
+    public List<VSklad> getAllVSklad() {
         return vSkladRepository.findAll();
     }
 }

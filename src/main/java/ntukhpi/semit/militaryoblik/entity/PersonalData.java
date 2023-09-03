@@ -31,7 +31,7 @@ public class PersonalData {
     private Prepod prepod;
 
     //дата рождения
-    @Column(name = "data_rozd")
+    @Column(name = "data_rozd",nullable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dr;
 

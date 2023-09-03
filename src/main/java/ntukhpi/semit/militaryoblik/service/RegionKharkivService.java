@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface RegionKharkivService {
 
-    List<RegionKharkiv> getAllCountry();
+    List<RegionKharkiv> getAllPrepod();
 }

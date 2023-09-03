@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface DocumentService {
 
-    List<Document> getAllCountry();
+    List<Document> getAllDocument();
 }

@@ -22,7 +22,7 @@ public class MilitaryPerson {
     Long id;
 
     @OneToOne
-    @JoinColumn(name = "prepod_id",unique = true)
+    @JoinColumn(name = "prepod_id",unique = true,nullable = false)
     private Prepod prepod;
 
     //Категорія обліку - 1 або 2 (2 у більшості)
@@ -59,7 +59,7 @@ public class MilitaryPerson {
     //Теріторіальний центр комплектування та соціальної підтримки, на обліку у якому стоїть військовозобовязаний
     //Вводиться зі списку, якщо немає - додається новий до окремої таблиці
     @ManyToOne
-    @JoinColumn(name = "voenkomat_id")
+    @JoinColumn(name = "voenkomat_id",nullable = false)
     private Voenkomat voenkomat;
 
     //Придатність

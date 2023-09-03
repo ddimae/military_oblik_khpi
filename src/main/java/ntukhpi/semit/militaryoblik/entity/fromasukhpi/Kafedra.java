@@ -18,22 +18,37 @@ public class Kafedra {
     private Long kid;
 
     //Найменування кафедри повне
-    @Column(length = 100)
+    @Column(length = 100, nullable = false)
     private String kname;
 
     //Зв"язок із факультетом-інститутом
     @ManyToOne
-    @JoinColumn(name = "fid")
+    @JoinColumn(name = "fid", nullable = false)
     private Fakultet fakultet;
 
     //Скорочене найменування кафедри
-    @Column(length = 10)
+    @Column(length = 10, nullable = false)
     private String kabr;
 
     //Ідентифікатор кафедри в НТУ "ХПI" - код підрозділу для діловодства
     //Опис в конструкторі : "oid"       smallint,  <=== чому в лапках?!
     @Column(name = "oidkafedra")
     private String oid;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Kafedra kafedra = (Kafedra) o;
+
+        return kname.equals(kafedra.kname);
+    }
+
+    @Override
+    public int hashCode() {
+        return kname.hashCode();
+    }
 
     //Імя та прізвище завідувача : Олег РЕЗИНКІН або пусто
     @Column(length = 40)

@@ -18,7 +18,7 @@ public class VNZakladServiceImpl implements VNZakladService {
     }
 
     @Override
-    public List<VNZaklad> getAllCountry() {
+    public List<VNZaklad> getAllVNZaklad() {
         return vnZakladRepository.findAll();
     }
 }

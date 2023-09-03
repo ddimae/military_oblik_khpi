@@ -16,11 +16,11 @@ public class VSklad {
     @Column(name = "army_sklad_id")
     Long id;
 
-    @Column(length = 30, name="army_sklad_name")
+    @Column(length = 30, name="army_sklad_name",nullable = false,unique = true)
     private String skladName;
 
     //Порядковий номер для представлення у списку, для сортування при відображенні
-    @Column(name="show_order")
+    @Column(name="show_order",nullable = false,unique = true)
     private Integer numOrderShow;
 
 }

@@ -26,12 +26,12 @@ public class CurrentDoljnostInfo {
 
     //ІНФО ПРО ПРИЗНАЧЕННЯ
     //Дата наказу про призначення
-    @Column(name = "date_start")
+    @Column(name = "date_start",nullable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dateStart;
 
     //Номер наказу про призначення
-    @Column(name = "nakaz_start", length = 12)
+    @Column(name = "nakaz_start", length = 12,nullable = false)
     private String numNakazStart;
 
     //Поле для нотаток щодо призначення

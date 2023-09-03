@@ -1,5 +1,6 @@
 package ntukhpi.semit.militaryoblik.service;
 
+import ntukhpi.semit.militaryoblik.entity.CurrentDoljnostInfo;
 import ntukhpi.semit.militaryoblik.entity.PersonalData;
 import ntukhpi.semit.militaryoblik.repository.PersonalDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,8 @@ public class PersonalDataServiceImpl implements PersonalDataService {
     }
 
     @Override
-    public List<PersonalData> getAllCountry() {
-        return personalDataRepository.findAll();
+    public PersonalData getPersonalData() {
+        List<PersonalData> list = personalDataRepository.findAll();
+        return !list.isEmpty()?list.get(0):null;
     }
 }

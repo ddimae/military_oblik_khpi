@@ -18,7 +18,7 @@ public class Dolghnost {
     @Column(name = "dolghn_id")
     Long id;
 
-    @Column(length = 40, name="dolghn_name")
+    @Column(length = 40, name="dolghn_name",nullable = false)
     private String dolghnName;
 
 }

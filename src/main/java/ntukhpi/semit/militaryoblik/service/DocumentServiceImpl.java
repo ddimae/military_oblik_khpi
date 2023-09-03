@@ -18,7 +18,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public List<Document> getAllCountry() {
+    public List<Document> getAllDocument() {
         return documentRepository.findAll();
     }
 }

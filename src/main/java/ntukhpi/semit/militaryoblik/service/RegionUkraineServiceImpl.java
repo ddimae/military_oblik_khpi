@@ -18,7 +18,7 @@ public class RegionUkraineServiceImpl implements RegionUkraineService {
     }
 
     @Override
-    public List<RegionUkraine> getAllCountry() {
+    public List<RegionUkraine> getAllRegionUA() {
         return regionUkraineRepository.findAll();
     }
 }

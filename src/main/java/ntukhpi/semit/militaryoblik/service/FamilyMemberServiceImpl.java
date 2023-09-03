@@ -18,7 +18,7 @@ public class FamilyMemberServiceImpl implements FamilyMemberService {
     }
 
     @Override
-    public List<FamilyMember> getAllCountry() {
+    public List<FamilyMember> getAllFamilyMember() {
         return familyMemberRepository.findAll();
     }
 }

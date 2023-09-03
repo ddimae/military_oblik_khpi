@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface FamilyStateService {
 
-    List<FamilyState> getAllCountry();
+    FamilyState getFamilyState();
 }

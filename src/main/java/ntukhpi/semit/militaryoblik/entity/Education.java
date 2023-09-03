@@ -18,17 +18,17 @@ public class Education {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "prepod_id")
+    @JoinColumn(name = "prepod_id",nullable = false)
     private Prepod prepod;
 
     //Заклад вищої освіти, який закінчив співробітник
     //private String vnz;
     @ManyToOne
-    @JoinColumn(name = "vnz_id")
+    @JoinColumn(name = "vnz_id",nullable = false)
     private VNZaklad vnz;
 
     //Рік закінчення
-    @Column(name = "year_vypusk",length = 4)
+    @Column(name = "year_vypusk",length = 4,nullable = false)
     private String yearVypusk;
     //Серия и номер диплома про закінчення
     @Column(name = "diploma_series",length = 3)

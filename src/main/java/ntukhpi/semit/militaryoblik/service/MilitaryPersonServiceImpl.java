@@ -18,7 +18,8 @@ public class MilitaryPersonServiceImpl implements MilitaryPersonService {
     }
 
     @Override
-    public List<MilitaryPerson> getAllCountry() {
-        return militaryPersonRepository.findAll();
+    public MilitaryPerson getMilitaryInfo() {
+        List<MilitaryPerson> list = militaryPersonRepository.findAll();
+        return !list.isEmpty()?list.get(0):null;
     }
 }

@@ -16,7 +16,7 @@ public class RegionUkraine {
     @Column(name = "obl")
     private Long id;
 
-    @Column(length = 40, name="oname")
+    @Column(length = 40, name="oname",nullable = false)
     private String countryName;
 
 }

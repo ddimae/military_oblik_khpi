@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface VSkladService {
 
-    List<VSklad> getAllCountry();
+    List<VSklad> getAllVSklad();
 }

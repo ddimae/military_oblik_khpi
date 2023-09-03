@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface StepenService {
 
-    List<Stepen> getAllCountry();
+    List<Stepen> getAllStepen();
 }

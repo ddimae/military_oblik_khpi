@@ -18,10 +18,10 @@ public class Zvanie {
     @Column(name = "zvanie_id")
     Long id;
 
-    @Column(length = 40, name="zvanie_name")
+    @Column(length = 40, name="zvanie_name",nullable = false,unique = true)
     private String zvanieName;
 
-    @Column(name="okp_id_uzvan")
+    @Column(name="okp_id_uzvan",nullable = false,unique = true)
     private Integer okpIdUchZvan;
 
 

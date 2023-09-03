@@ -30,15 +30,15 @@ public class FamilyMember {
     // Обирається з переліку (фіксований)
     // чоловік; дружина; син; донька
     // Правільність вводу не контролюємо: чоловік Петрова, син Альона - проблема тих, хто вводить
-    @Column(name = "vid_ridstva", length = 10)
+    @Column(name = "vid_ridstva", length = 10,nullable = false)
     private String vid_ridstva;
 
     //Рік народження - 4 цифри, перевіряємо програмно тільки факт вводу 4 цифри
-    @Column(name = "rik_narodz", length = 4)
+    @Column(name = "rik_narodz", length = 4,nullable = false)
     private String rikNarodz;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "family_stat_id")
+    @JoinColumn(name = "family_stat_id",nullable = false)
     private FamilyState prepodFamilyState;
 
 

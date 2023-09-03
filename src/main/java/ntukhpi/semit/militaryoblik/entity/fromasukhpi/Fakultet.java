@@ -19,7 +19,7 @@ public class Fakultet {
     private Long fid;
 
     //Скорочене найменування
-    @Column(length = 10)
+    @Column(length = 10, nullable = false)
     private String abr;
 
     //??? true (1) = ???
@@ -31,7 +31,7 @@ public class Fakultet {
     private Boolean sm_v;
 
     //Найменування факультету
-    @Column(length = 100)
+    @Column(length = 100, nullable = false)
     private String fname;
 
     //Імя та ПРІЗВИЩЕ декана

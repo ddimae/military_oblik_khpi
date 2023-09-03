@@ -18,7 +18,7 @@ public class VZvanieServiceImpl implements VZvanieService {
     }
 
     @Override
-    public List<VZvanie> getAllCountry() {
+    public List<VZvanie> getAllVZvanie() {
         return vZvanieRepository.findAll();
     }
 }

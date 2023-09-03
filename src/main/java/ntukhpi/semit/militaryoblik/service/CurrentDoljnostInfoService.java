@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface CurrentDoljnostInfoService {
 
-    List<CurrentDoljnostInfo> getAllCountry();
+    CurrentDoljnostInfo getCurrentDoljnost();
 }

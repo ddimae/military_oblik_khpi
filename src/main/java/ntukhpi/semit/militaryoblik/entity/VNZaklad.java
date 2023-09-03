@@ -16,10 +16,10 @@ public class VNZaklad {
     @Column(name = "vnz_id")
     private Long id;
 
-    @Column(name="vnz_name")
+    @Column(name="vnz_name",nullable = false,unique = true)
     private String vnzName;
 
-    @Column(length = 10, name="vnz_short_name")
+    @Column(length = 10, name="vnz_short_name",unique = true)
     private String vnzShortName;
 
 }

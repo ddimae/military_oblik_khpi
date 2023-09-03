@@ -18,7 +18,7 @@ public class ZvanieServiceImpl implements ZvanieService {
     }
 
     @Override
-    public List<Zvanie> getAllCountry() {
+    public List<Zvanie> getAllZvanie() {
         return zvanieRepository.findAll();
     }
 }

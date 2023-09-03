@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface RegionUkraineService {
 
-    List<RegionUkraine> getAllCountry();
+    List<RegionUkraine> getAllRegionUA();
 }

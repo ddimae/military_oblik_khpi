@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface VNZakladService {
 
-    List<VNZaklad> getAllCountry();
+    List<VNZaklad> getAllVNZaklad();
 }

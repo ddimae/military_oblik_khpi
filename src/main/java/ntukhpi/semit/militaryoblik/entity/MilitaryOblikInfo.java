@@ -19,7 +19,7 @@ public class MilitaryOblikInfo {
     Long id;
 
     @OneToOne
-    @JoinColumn(name = "mp_id",unique = true)
+    @JoinColumn(name = "mp_id",unique = true,nullable = false)
     private MilitaryPerson militaryPerson;
 
 

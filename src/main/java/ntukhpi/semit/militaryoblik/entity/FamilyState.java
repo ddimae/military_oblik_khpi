@@ -26,12 +26,12 @@ public class FamilyState {
     Long idFamState;
 
     @OneToOne
-    @JoinColumn(name = "prepod_id",unique = true)
+    @JoinColumn(name = "prepod_id",unique = true,nullable = false)
     private Prepod prepod;
 
     //Сімейний стан  - одружений або неодружений (можуть бути заміжня та незаміжня, але працюємо із двома значеннями)
     //Обирається з переліку (фіксований) - одружений (у більшості офіцерів) або неодружений
-    @Column(name = "fam_stan")
+    @Column(name = "fam_stan",nullable = false)
     private String familyState;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "prepodFamilyState")

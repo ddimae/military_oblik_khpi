@@ -12,9 +12,9 @@ import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
 import ntukhpi.semit.militaryoblik.entity.Voenkomat;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Fakultet;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Kafedra;
-import ntukhpi.semit.militaryoblik.repository.FakultetRepository;
-import ntukhpi.semit.militaryoblik.repository.KafedraRepository;
-import ntukhpi.semit.militaryoblik.repository.VoenkomatRepository;
+
+import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
+import ntukhpi.semit.militaryoblik.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -42,12 +42,6 @@ public class ReservistsAllController {
 
     @FXML
     public TextField filterTextField;
-
-    @FXML
-    public TextField cathedraTextField;
-
-    @FXML
-    public TextField categoryTextField;
 
     @FXML
     public TextField numberOfReservistsTextField;
@@ -84,13 +78,16 @@ public class ReservistsAllController {
     private final ObservableList<ReservistAdapter> reservistsData = getSampleReservistsData();
 
     @Autowired
-    FakultetRepository fakultetRepository;
+    FakultetServiceImpl fakultetServiceImpl;
 
     @Autowired
-    KafedraRepository kafedraRepository;
+    KafedraServiceImpl kafedraServiceImpl;
 
     @Autowired
-    VoenkomatRepository voenkomatRepository;
+    VoenkomatServiceImpl voenkomatServiceImpl;
+
+    @Autowired
+    PrepodServiceImpl prepodServiceImpl;
 
     /**
      * Initializes the conkafedraRepositorytroller class. This method is automatically called
@@ -106,23 +103,23 @@ public class ReservistsAllController {
 //                "TCK 2",
 //                "TCK 3"
 //                fakultetRepository.findAll().stream().map(Fakultet::getFname).toList()
-                voenkomatRepository.findAll().stream().map(Voenkomat::getVoenkomatName).toList()
+                voenkomatServiceImpl.getAllVoenkom().stream().map(Voenkomat::getVoenkomatName).toList()
         );
         ObservableList<String> instituteOptions = FXCollections.observableArrayList(
 //                "Institute 1",
 //                "Institute 2",
 //                "Institute 3"
-                fakultetRepository.findAll().stream().map(Fakultet::getFname).toList()
+                fakultetServiceImpl.getAllFak().stream().map(Fakultet::getFname).toList()
         );
         ObservableList<String> cathedraOptions = FXCollections.observableArrayList(
 //                "Cathedra 1",
 //                "Cathedra 2",
 //                "Cathedra 3"
-                kafedraRepository.findAll().stream().map(Kafedra::getKname).toList()
+                kafedraServiceImpl.getAllKafedra().stream().map(Kafedra::getKname).toList()
         );
         ObservableList<String> typeOptions = FXCollections.observableArrayList(
-                "Officer",
-                "Non-Commissioned Officer"
+                "Офіцерський склад",
+                "Рядовий та сержантський склад"
         );
 
         // Присваивание комбо-боксам определенных выше значений
@@ -164,7 +161,11 @@ public class ReservistsAllController {
      */
     private ObservableList<ReservistAdapter> getSampleReservistsData() {
         List<ReservistAdapter> reservistsList = new ArrayList<>();
-
+//        List<Prepod> prepodList = prepodServiceImpl.getAllPrepod();
+//        System.out.println(prepodList);
+//        prepodList.stream().forEach(
+//                prep -> reservistsList.add(new ReservistAdapter(prep))
+//        );
         reservistsList.add(new ReservistAdapter("John Doe", "1990-01-15", "Male", "TRC 1", "Captain", "VOS 123", "Officer", "Category A", "TCK 1", "Institute 1", "Cathedra 1"));
         reservistsList.add(new ReservistAdapter("Jane Smith", "1985-05-20", "Female", "TRC 2", "Lieutenant", "VOS 456", "Officer", "Category B", "TCK 2", "Institute 2", "Cathedra 2"));
         reservistsList.add(new ReservistAdapter("Michael Johnson", "1988-11-03", "Male", "TRC 3", "Sergeant", "VOS 789", "Non-Commissioned Officer", "Category C", "TCK 1", "Institute 3", "Cathedra 3"));

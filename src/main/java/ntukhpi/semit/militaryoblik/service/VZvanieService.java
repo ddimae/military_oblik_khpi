@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface VZvanieService {
 
-    List<VZvanie> getAllCountry();
+    List<VZvanie> getAllVZvanie();
 }
