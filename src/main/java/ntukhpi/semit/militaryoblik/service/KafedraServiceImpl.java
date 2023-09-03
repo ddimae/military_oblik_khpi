@@ -20,7 +20,33 @@ public class KafedraServiceImpl implements KafedraService {
     }
 
     @Override
+    public Kafedra createKafedra(Kafedra kafedra) {
+        return kafedraRepository.save(kafedra);
+    }
+
+    @Override
+    public Kafedra getKafedraById(Long id) {
+        return kafedraRepository.findById(id).orElse(null);
+    }
+
+    @Override
     public List<Kafedra> getAllKafedra() {
         return kafedraRepository.findAll();
+    }
+
+    @Override
+    public Kafedra updateKafedra(Long id, Kafedra updatedKafedra) {
+        Kafedra existingKafedra = kafedraRepository.findById(id).orElse(null);
+        if (existingKafedra != null) {
+            updatedKafedra.setKid(existingKafedra.getKid());
+            return kafedraRepository.save(updatedKafedra);
+        }
+        return null;
+    }
+
+    //ToDo change when special conditions was presented
+    @Override
+    public void deleteKafedra(Long id) {
+        kafedraRepository.deleteById(id);
     }
 }

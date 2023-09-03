@@ -18,7 +18,33 @@ public class StepenServiceImpl implements StepenService {
     }
 
     @Override
-    public List<Stepen> getAllCountry() {
+    public Stepen createStepen(Stepen stepen) {
+        return stepenRepository.save(stepen);
+    }
+
+    @Override
+    public Stepen getStepenById(Long id) {
+        return stepenRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Stepen> getAllStepen() {
         return stepenRepository.findAll();
+    }
+
+    @Override
+    public Stepen updateStepen(Long id, Stepen updatedStepen) {
+        Stepen existingStepen = stepenRepository.findById(id).orElse(null);
+        if (existingStepen != null) {
+            updatedStepen.setId(existingStepen.getId());
+            return stepenRepository.save(updatedStepen);
+        }
+        return null;
+    }
+
+    //ToDo change when special conditions was presented
+    @Override
+    public void deleteStepen(Long id) {
+        stepenRepository.deleteById(id);
     }
 }

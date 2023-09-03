@@ -6,5 +6,13 @@ import java.util.List;
 
 public interface RegionKharkivService {
 
-    List<RegionKharkiv> getAllCountry();
+    RegionKharkiv createRegionKharkiv(RegionKharkiv regionKharkiv);
+
+    RegionKharkiv getRegionKharkivById(Long id);
+
+    List<RegionKharkiv> getAllRegionKharkiv();
+
+    RegionKharkiv updateRegionKharkiv(Long id, RegionKharkiv updatedRegionKharkiv);
+
+    void deleteRegionKharkiv(Long id);
 }

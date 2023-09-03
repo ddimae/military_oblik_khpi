@@ -18,7 +18,33 @@ public class VZvanieServiceImpl implements VZvanieService {
     }
 
     @Override
-    public List<VZvanie> getAllCountry() {
+    public VZvanie createVZvanie(VZvanie vZvanie) {
+        return vZvanieRepository.save(vZvanie);
+    }
+
+    @Override
+    public VZvanie getVZvanieById(Long id) {
+        return vZvanieRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<VZvanie> getAllVZvanie() {
         return vZvanieRepository.findAll();
+    }
+
+    @Override
+    public VZvanie updateVZvanie(Long id, VZvanie updatedVZvanie) {
+        VZvanie existingVZvanie = vZvanieRepository.findById(id).orElse(null);
+        if (existingVZvanie != null) {
+            updatedVZvanie.setId(existingVZvanie.getId());
+            return vZvanieRepository.save(updatedVZvanie);
+        }
+        return null;
+    }
+
+    //ToDo change when special conditions was presented
+    @Override
+    public void deleteVZvanie(Long id) {
+        vZvanieRepository.deleteById(id);
     }
 }

@@ -17,7 +17,33 @@ public class FamilyStateServiceimpl implements FamilyStateService {
     }
 
     @Override
-    public List<FamilyState> getAllCountry() {
+    public FamilyState createFamilyState(FamilyState familyState) {
+        return familyStateRepository.save(familyState);
+    }
+
+    @Override
+    public FamilyState getFamilyStateById(Long id) {
+        return familyStateRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<FamilyState> getAllFamilyState() {
         return familyStateRepository.findAll();
+    }
+
+    @Override
+    public FamilyState updateFamilyState(Long id, FamilyState updatedFamilyState) {
+        FamilyState existingFamilyState = familyStateRepository.findById(id).orElse(null);
+        if (existingFamilyState != null) {
+            updatedFamilyState.setIdFamState(existingFamilyState.getIdFamState());
+            return familyStateRepository.save(updatedFamilyState);
+        }
+        return null;
+    }
+
+    //ToDo change when special conditions was presented
+    @Override
+    public void deleteFamilyState(Long id) {
+        familyStateRepository.deleteById(id);
     }
 }

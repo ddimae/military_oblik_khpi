@@ -6,5 +6,13 @@ import java.util.List;
 
 public interface FamilyMemberService {
 
-    List<FamilyMember> getAllCountry();
+    FamilyMember createFamilyMember(FamilyMember familyMember);
+
+    FamilyMember getFamilyMemberById(Long id);
+
+    List<FamilyMember> getAllFamilyMember();
+
+    FamilyMember updateFamilyMember(Long id, FamilyMember updatedFamilyMember);
+
+    void deleteFamilyMember(Long id);
 }
