@@ -53,6 +53,13 @@ public class MilitaryOblikKhPIMain extends Application {
     private static SettingsStage documentsAll =
             new SettingsStage(DOCUMENTS_JAVAFX, DOCUMENTS_JAVAFX_TITLE,
                     0, 0, false, true);
+
+    //============================
+//    private final static String MILITARY_REGISTRATION_JAVAFX = "/javafxview/MilitaryRegistration.fxml";
+//    private final static String MILITARY_REGISTRATION_JAVAFX_TITLE = "Дані військового обліку";
+//
+//    private static SettingsStage registrationAll =
+//            new SettingsStage(MILITARY_REGISTRATION_JAVAFX, MILITARY_REGISTRATION_JAVAFX_TITLE, 0, 0, false, true);
 //    private final static String EDUCATION_POSTGRADUATE_JAVAFX = "/javafxview/EducationPostgraduateAll.fxml";
 //    private final static String EDUCATION_POSTGRADUATE_JAVAFX_TITLE = "Післядипломна освіта";
 
@@ -85,6 +92,8 @@ public class MilitaryOblikKhPIMain extends Application {
      */
     public static void openEditWindow(String fxmlFileName, String title, Object controller, Object selectedObject) {
         try {
+            //FIXME При вызове окна редактирования основная форма сворачивается. Это неудобно.
+            // Нашел баг. Можно создать бесконечное количество окон
             FXMLLoader loader = new FXMLLoader(MilitaryOblikKhPIMain.class.getResource(fxmlFileName));
             loader.setControllerFactory(aClass -> applicationContext.getBean(aClass));
             Parent root = loader.load();
