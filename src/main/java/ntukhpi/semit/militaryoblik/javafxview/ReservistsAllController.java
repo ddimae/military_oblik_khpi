@@ -12,6 +12,7 @@ import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
 import ntukhpi.semit.militaryoblik.entity.Voenkomat;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Fakultet;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Kafedra;
+import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.repository.FakultetRepository;
 import ntukhpi.semit.militaryoblik.repository.KafedraRepository;
 import ntukhpi.semit.militaryoblik.repository.VoenkomatRepository;
@@ -188,7 +189,7 @@ public class ReservistsAllController {
     /**
      * @return возвращает список студентов
      */
-    private ObservableList<ReservistAdapter> getSampleReservistsData() {    //TODO Підключии бд сюди і брати із неї людей
+    private ObservableList<ReservistAdapter> getSampleReservistsData() {
         List<ReservistAdapter> reservistsList = new ArrayList<>();
 
         reservistsList.add(new ReservistAdapter("John Doe", "1990-01-15", "Male", "TRC 1", "Captain", "VOS 123", "Officer", "Category A", "1", "TCK 1", "Institute 1", "Cathedra 1"));
@@ -264,7 +265,7 @@ public class ReservistsAllController {
         if (setSelectedPrepodId() != null)
             MilitaryOblikKhPIMain.showEducationWindow();
         else
-            MilitaryOblikKhPIMain.noSelectedRowAlert();
+            Popup.noSelectedRowAlert();
     }
 
     @FXML
@@ -272,15 +273,15 @@ public class ReservistsAllController {
         if (setSelectedPrepodId() != null)
             MilitaryOblikKhPIMain.showDocumentsWindow();
         else
-            MilitaryOblikKhPIMain.noSelectedRowAlert();
+            Popup.noSelectedRowAlert();
     }
 
     @FXML
-    void handleContactInfoButton(ActionEvent event) {   //TODO переробити коли закінчу із prepodId
+    void handleContactInfoButton(ActionEvent event) {
         if (setSelectedPrepodId() != null) {
             MilitaryOblikKhPIMain.openEditWindow(CONTACT_INFO_JAVAFX, CONTACT_INFO_JAVAFX_TITLE, this, null);
         }
         else
-            MilitaryOblikKhPIMain.noSelectedRowAlert();
+            Popup.noSelectedRowAlert();
     }
 }

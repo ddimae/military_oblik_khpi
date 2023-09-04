@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.EducationPostgraduateAdapter;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
+import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -54,7 +55,7 @@ public class EducationPostgraduateEditController implements Initializable, Contr
         String yearStr = yearTextField.getText();
 
         if (yearStr.length() != 4) {
-            MilitaryOblikKhPIMain.showAlert("Error", "Invalid input", "Year must have 4 digits"); //TODO перевести на урк
+            Popup.wrongInputAlert("Рік повинен містити 4 цифри");
             return;
         }
 
@@ -63,7 +64,7 @@ public class EducationPostgraduateEditController implements Initializable, Contr
         try {
             year = Integer.parseInt(yearStr);
         } catch (NumberFormatException e) {
-            MilitaryOblikKhPIMain.showAlert("Error", "Invalid input", "Year must be a valid integer"); //TODO перевести на урк
+            Popup.wrongInputAlert("Рік повинен бути числом");
             return;
         }
 
@@ -71,7 +72,7 @@ public class EducationPostgraduateEditController implements Initializable, Contr
         String vnz = vnzComboBox.getValue();
 
         if (type == null || vnz == null) {
-            MilitaryOblikKhPIMain.showAlert("Error", "All fields are required", "Please fill in all data"); //TODO перевести на урк
+            Popup.wrongInputAlert("Заповніть обов'язкові поля"); //TODO Позначити у формі обов'язкові поля!!!
             return;
         }
 

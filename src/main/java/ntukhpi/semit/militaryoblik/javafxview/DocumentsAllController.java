@@ -12,6 +12,7 @@ import javafx.scene.text.Text;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.DocumentsAdapter;
 import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
+import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -52,7 +53,7 @@ public class DocumentsAllController {
         if (selectedDocument != null) {
             docsObservableList.remove(selectedDocument);
         } else {
-            MilitaryOblikKhPIMain.noSelectedRowAlert();
+            Popup.noSelectedRowAlert();
         }
     }
 
@@ -68,7 +69,7 @@ public class DocumentsAllController {
         if (selectedDocument != null) {
             MilitaryOblikKhPIMain.openEditWindow(DOCUMENTS_EDIT_JAVAFX, DOCUMENTS_EDIT_JAVAFX_TITLE, this, selectedDocument);
         } else {
-            MilitaryOblikKhPIMain.noSelectedRowAlert();
+            Popup.noSelectedRowAlert();
         }
     }
 

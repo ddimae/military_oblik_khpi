@@ -106,32 +106,6 @@ public class MilitaryOblikKhPIMain extends Application {
         }
     }
 
-    /**
-     * Метод запуска окон для сообщений об ошибке
-     * автор Кулак Анастасия
-     *
-     */
-    public static void showAlert(String title, String headerText, String contentText) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(headerText);
-        alert.setContentText(contentText);
-        alert.showAndWait();
-    }
-
-    /**
-     * Метод виведення повідомлення о помилки про неибраний рядок
-     * автор Степанов Михайло
-     *
-     */
-    public static void noSelectedRowAlert() {   //TODO Можливо краще буде створити окремий клас для різних повідомлень
-        MilitaryOblikKhPIMain.showAlert("Помилка", "Не вибраний рядок", "Натисніть на рядок, щоб його вибрати");
-    }
-
-    public static void wrongInputAlert(String msg) {
-        MilitaryOblikKhPIMain.showAlert("Помилка", "Неправильно введені дані", msg);
-    }
-
     public static String getPIB(Prepod prepod) {    //TODO Точно створити окремий клас!!!
         return prepod.getFam() + " " + prepod.getImya() + " " + prepod.getOtch();
     }

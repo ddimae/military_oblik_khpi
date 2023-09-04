@@ -17,6 +17,7 @@ import ntukhpi.semit.militaryoblik.entity.PersonalData;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Country;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.RegionUkraine;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
+import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.service.*;
 import org.antlr.v4.runtime.misc.Array2DHashSet;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -327,9 +328,10 @@ public class ContactInfoEditController implements ControlledScene {
 
             personalDataService.updatePersonalData(personalData);
 
+            Popup.successSave();
             closeEdit(null);
         } catch (Exception e) {
-            MilitaryOblikKhPIMain.wrongInputAlert(e.getMessage());
+            Popup.wrongInputAlert(e.getMessage());
         }
     }
 

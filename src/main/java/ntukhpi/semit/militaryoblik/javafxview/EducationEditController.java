@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
+import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -53,7 +54,7 @@ public class EducationEditController implements ControlledScene {
         String diplomaNumberStr = diplomaNumberTextField.getText();
 
         if (yearStr.length() != 4 || diplomaNumberStr.length() != 6) {
-            MilitaryOblikKhPIMain.showAlert("Error", "Invalid input", "Year must have 4 digits, and diploma number must have 6 digits"); //TODO перевести на урк
+            Popup.wrongInputAlert("Рік повинен містити 4 цифри. Номер диплома повинен містити 6 цифр");
             return;
         }
 
@@ -64,7 +65,7 @@ public class EducationEditController implements ControlledScene {
             year = Integer.parseInt(yearStr);
             diplomaNumber = Integer.parseInt(diplomaNumberStr);
         } catch (NumberFormatException e) {
-            MilitaryOblikKhPIMain.showAlert("Error", "Invalid input", "Year and diploma number must be valid integers");//TODO перевести на урк
+            Popup.wrongInputAlert("Рік і номер диплома повинні бути числами");
             return;
         }
 
@@ -77,7 +78,7 @@ public class EducationEditController implements ControlledScene {
 
         if (vnz == null || form == null || level == null || diplomaSeries.isEmpty()
                 || specialty.isEmpty() || qualification.isEmpty()) {
-            MilitaryOblikKhPIMain.showAlert("Error", "All fields are required", "Please fill in all data"); //TODO перевести на урк
+            Popup.wrongInputAlert("Заповніть обов'язкові поля"); //TODO Позначити у формі обов'язкові поля!!!
             return;
         }
 
