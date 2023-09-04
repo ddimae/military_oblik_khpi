@@ -10,6 +10,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
+import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import org.springframework.stereotype.Component;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 
@@ -44,7 +45,7 @@ public class EducationAllController {
         if (selectedEducation != null) {
             MilitaryOblikKhPIMain.openEditWindow("/javafxview/EducationEdit.fxml", "Редагувати дані про навчання", this, selectedEducation);
         } else {
-            MilitaryOblikKhPIMain.noSelectedRowAlert();
+            Popup.noSelectedRowAlert();
         }
     }
 
@@ -60,7 +61,7 @@ public class EducationAllController {
         if (selectedEducation != null) {
             educationObservableList.remove(selectedEducation);
         } else {
-            MilitaryOblikKhPIMain.noSelectedRowAlert();
+            Popup.noSelectedRowAlert();
         }
     }
 

@@ -14,9 +14,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="600.0" spacing="10.0" stylesheets="@MOStyles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntukhpi.semit.militaryoblik.javafxview.ContactInfoEditController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="1100.0" spacing="10.0" stylesheets="@MOStyles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntukhpi.semit.militaryoblik.javafxview.ContactInfoEditController">
    <children>
-      <Text fx:id="pibText" strokeType="OUTSIDE" strokeWidth="0.0" text="ДВУХГЛАВОВ Д. Е" textAlignment="CENTER" wrappingWidth="560.0">
+      <Text fx:id="pibText" strokeType="OUTSIDE" strokeWidth="0.0" text="ДВУХГЛАВОВ Д. Е" textAlignment="CENTER" wrappingWidth="1060.0">
          <font>
             <Font size="24.0" />
          </font>
@@ -24,115 +24,110 @@
             <Insets />
          </VBox.margin>
       </Text>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+      <HBox alignment="BOTTOM_CENTER" prefHeight="19.0" prefWidth="960.0">
          <children>
-            <Label text="Дані реєстрації" />
-            <HBox alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="434.0">
-               <children>
-                  <Pane prefHeight="27.0" prefWidth="48.0" styleClass="obligatory-field" />
-                  <Label text=" - Обов'язкове для заповнення поле" />
-               </children>
-            </HBox>
+            <Label prefHeight="27.0" prefWidth="498.0" text="Дані реєстрації" />
+            <Label text="Дані мешкання" />
          </children>
       </HBox>
-      <VBox prefHeight="234.0" prefWidth="560.0" spacing="5.0" style="-fx-border-style: solid inside;">
+      <HBox prefHeight="100.0" prefWidth="200.0" spacing="50.0">
          <children>
-            <HBox prefHeight="100.0" prefWidth="547.0">
+            <VBox prefHeight="234.0" prefWidth="560.0" spacing="5.0" style="-fx-border-style: solid inside;">
                <children>
-                  <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="17.0">
+                  <HBox prefHeight="100.0" prefWidth="547.0">
                      <children>
-                        <Label text="Країна" />
-                        <Label text="Індекс" />
-                        <Label text="Місто" />
-                        <Label text="Область" />
-                        <Label text="Вул, кв, дім">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Label>
+                        <VBox alignment="CENTER_LEFT" prefHeight="315.0" prefWidth="145.0" spacing="5.0">
+                           <children>
+                              <Label prefHeight="40.0" text="Країна" />
+                              <Label prefHeight="40.0" text="Індекс" />
+                              <Label prefHeight="40.0" text="Місто" />
+                              <Label prefHeight="40.0" prefWidth="157.0" text="Область України" textOverrun="CLIP" />
+                              <Label prefHeight="40.0" text="Вул, кв, дім">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label prefHeight="40.0" prefWidth="100.0" text="Телефон 1" />
+                              <Label prefHeight="40.0" prefWidth="100.0" text="Телефон 2" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="174.0" prefWidth="323.0" spacing="5.0">
+                           <children>
+                              <ComboBox fx:id="countryComboBox" onAction="#handleChangeCountry" prefHeight="40.0" prefWidth="362.0" promptText="--Оберіть країну" styleClass="obligatory-field" />
+                              <TextField fx:id="indexTextArea" maxWidth="100.0" prefHeight="40.0" prefWidth="74.0" promptText="00000">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </TextField>
+                              <TextField fx:id="cityTextArea" maxWidth="200.0" promptText="Харків" styleClass="obligatory-field" />
+                              <ComboBox fx:id="regionComboBox" prefHeight="40.0" prefWidth="326.0" promptText="--Оберіть область України" />
+                              <TextField fx:id="addressTextArea" promptText="вул Кирпичова, 2" styleClass="obligatory-field" />
+                              <TextField fx:id="mainPhoneTextArea" maxWidth="180.0" prefHeight="40.0" prefWidth="160.0" promptText="+380123456789" styleClass="obligatory-field" />
+                              <TextField fx:id="secondPhoneTextArea" maxWidth="180.0" prefWidth="160.0" promptText="+380123456789" />
+                           </children>
+                        </VBox>
                      </children>
-                  </VBox>
-                  <VBox prefHeight="174.0" prefWidth="323.0" spacing="5.0">
-                     <children>
-                        <ComboBox fx:id="countryComboBox" prefHeight="40.0" prefWidth="362.0" promptText="--Оберіть країну" styleClass="obligatory-field" />
-                        <TextField fx:id="indexTextArea" maxWidth="70.0" prefHeight="40.0" prefWidth="74.0" promptText="00000">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </TextField>
-                        <TextField fx:id="cityTextArea" maxWidth="200.0" promptText="Харків" />
-                        <TextField fx:id="regionTextArea" promptText="Харківська" styleClass="obligatory-field" />
-                        <TextField fx:id="addressTextArea" promptText="вул Кирпичова, 2" />
-                     </children>
-                  </VBox>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0" />
+                  <HBox prefHeight="40.0" prefWidth="547.0" />
                </children>
-            </HBox>
-            <HBox prefHeight="40.0" prefWidth="547.0">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </VBox>
+            <VBox alignment="CENTER_LEFT" prefHeight="190.0" prefWidth="560.0" spacing="5.0" style="-fx-border-style: solid inside;">
                <children>
-                  <Label prefHeight="40.0" prefWidth="100.0" text="Телефон 1" />
-                  <TextField fx:id="mainPhoneTextArea" prefHeight="40.0" prefWidth="160.0" promptText="+380123456789" styleClass="obligatory-field" />
-                  <Label alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="100.0" text="Телефон 2">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField fx:id="secondPhoneTextArea" prefWidth="160.0" promptText="+380123456789" />
+                  <HBox prefHeight="100.0" prefWidth="547.0">
+                     <children>
+                        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="145.0" spacing="5.0">
+                           <children>
+                              <Label maxHeight="40.0" minHeight="40.0" prefHeight="40.0" text="Країна" />
+                              <Label maxHeight="40.0" minHeight="40.0" text="Індекс" />
+                              <Label maxHeight="40.0" minHeight="40.0" text="Місто" />
+                              <Label maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="150.0" text="Область України" />
+                              <Label maxHeight="40.0" minHeight="40.0" prefHeight="40.0" text="Вул, кв, дім">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="174.0" prefWidth="323.0" spacing="5.0">
+                           <children>
+                              <ComboBox fx:id="countryFactComboBox" onAction="#handleChangeCountry" prefHeight="40.0" prefWidth="362.0" promptText="--Оберіть країну" />
+                              <TextField fx:id="indexFactTextArea" maxWidth="100.0" prefHeight="40.0" prefWidth="74.0" promptText="00000">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </TextField>
+                              <TextField fx:id="cityFactTextArea" maxWidth="200.0" promptText="Харків" />
+                              <ComboBox fx:id="regionFactComboBox" prefHeight="40.0" prefWidth="326.0" promptText="--Оберіть область України" />
+                              <TextField fx:id="addressFactTextArea" promptText="вул Кирпичова, 2" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
                </children>
-            </HBox>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </VBox>
          </children>
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
-      </VBox>
-      <HBox prefHeight="41.0" prefWidth="560.0">
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="41.0" prefWidth="560.0" spacing="20.0">
          <children>
-            <RadioButton fx:id="equalRadioButton" mnemonicParsing="false" text="Дані реєстрації = Дані проживання">
+            <RadioButton fx:id="foreinNumberRadioButton" mnemonicParsing="false" onAction="#handleForeinNumberRadioButton" text="Іноземний номер телефона">
+               <HBox.margin>
+                  <Insets top="20.0" />
+               </HBox.margin>
+            </RadioButton>
+            <RadioButton fx:id="equalRadioButton" mnemonicParsing="false" onAction="#handleEqualRadioButton" text="Дані реєстрації = Дані проживання">
                <HBox.margin>
                   <Insets top="20.0" />
                </HBox.margin>
             </RadioButton>
          </children>
       </HBox>
-      <Label text="Дані мешкання">
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-      </Label>
-      <VBox prefHeight="190.0" prefWidth="560.0" spacing="5.0" style="-fx-border-style: solid inside;">
-         <children>
-            <HBox prefHeight="100.0" prefWidth="547.0">
-               <children>
-                  <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="17.0">
-                     <children>
-                        <Label text="Індекс" />
-                        <Label text="Місто" />
-                        <Label text="Область" />
-                        <Label text="Вул, кв, дім">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="174.0" prefWidth="323.0" spacing="5.0">
-                     <children>
-                        <TextField fx:id="indexFactTextArea" maxWidth="70.0" prefHeight="40.0" prefWidth="74.0" promptText="00000">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </TextField>
-                        <TextField fx:id="cityFactTextArea" maxWidth="200.0" promptText="Харків" />
-                        <TextField fx:id="regionFactTextArea" promptText="Харківська" />
-                        <TextField fx:id="addressFactTextArea" promptText="вул Кирпичова, 2" />
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-         </children>
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
-      </VBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
          <children>
             <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#saveContactInfo" prefWidth="200.0" text="Зберігти">
@@ -153,6 +148,12 @@
                   </ImageView>
                </graphic>
             </Button>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="39.0" prefWidth="960.0">
+         <children>
+            <Pane prefHeight="27.0" prefWidth="48.0" styleClass="obligatory-field" />
+            <Label text=" - Обов'язкове для заповнення поле" />
          </children>
       </HBox>
    </children>

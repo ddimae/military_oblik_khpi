@@ -3,7 +3,6 @@ package ntukhpi.semit.militaryoblik.adapters;
 import lombok.Getter;
 import lombok.Setter;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
-
 /**
  * Автор - Линьков А.
  * Класс для хранения информации о студентах. Временное решение, необходимое для работы с таблицей.
@@ -19,6 +18,7 @@ public class ReservistAdapter {
     private String vos;
     private String type;
     private String category;
+    private String prepodId;
 
     //Поля для фильтрации. В таблице не отображаются.
     private String tck;
@@ -27,7 +27,7 @@ public class ReservistAdapter {
 
     public ReservistAdapter(String pib, String dr, String gender,
                             String trc, String rank, String vos,
-                            String type, String category,
+                            String type, String category, String prepodId,
                             String tck, String institute, String cathedra) {
         this.pib = pib;
         this.dr = dr;
@@ -37,6 +37,7 @@ public class ReservistAdapter {
         this.vos = vos;
         this.type = type;
         this.category = category;
+        this.prepodId = prepodId;
         this.tck = tck;
         this.institute = institute;
         this.cathedra = cathedra;
@@ -67,4 +68,5 @@ public class ReservistAdapter {
         sb.append(')');
         return sb.toString();
     }
+
 }

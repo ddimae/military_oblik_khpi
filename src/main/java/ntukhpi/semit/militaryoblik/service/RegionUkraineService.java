@@ -10,6 +10,8 @@ public interface RegionUkraineService {
 
     RegionUkraine getRegionUkraineById(Long id);
 
+    RegionUkraine getRegionUkraineByName(String name);
+
     List<RegionUkraine> getAllRegionUkraine();
 
     RegionUkraine updateRegionUkraine(Long id, RegionUkraine updatedRegionUkraine);

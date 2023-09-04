@@ -10,6 +10,8 @@ public interface CountryService {
 
     Country getCountryById(Long id);
 
+    Country getCountryByName(String name);
+
     List<Country> getAllCountry();
 
     Country updateCountry(Long id, Country updatedCountry);

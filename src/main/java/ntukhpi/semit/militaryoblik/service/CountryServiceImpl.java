@@ -28,6 +28,11 @@ public class CountryServiceImpl implements CountryService{
     }
 
     @Override
+    public Country getCountryByName(String name) {
+        return countryRepository.findByCountryName(name);
+    }
+
+    @Override
     public List<Country> getAllCountry() {
         return countryRepository.findAll();
     }

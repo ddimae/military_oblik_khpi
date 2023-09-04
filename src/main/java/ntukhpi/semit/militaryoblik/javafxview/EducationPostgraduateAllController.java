@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.EducationPostgraduateAdapter;
+import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class EducationPostgraduateAllController {
         if (selectedEducation != null) {
             MilitaryOblikKhPIMain.openEditWindow("EducationPostgraduateEdit.fxml", "Редагувати дані про навчання", this, selectedEducation);
         } else {
-            MilitaryOblikKhPIMain.noSelectedRowAlert();
+            Popup.noSelectedRowAlert();
         }
     }
 

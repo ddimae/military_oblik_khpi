@@ -31,7 +31,7 @@ public class PersonalData {
     private Prepod prepod;
 
     //дата рождения
-    @Column(name = "data_rozd",nullable = false)
+    @Column(name = "data_rozd")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dr;
 
@@ -54,9 +54,9 @@ public class PersonalData {
 
     @Column(name = "post_index",length = 10)
     private String postIndex;
-    @Column(name="city_name",length = 30)
+    @Column(name="city_name",length = 30, nullable = false)
     private String city;
-    @Column(name="adress")
+    @Column(name="adress", nullable = false)
     private String rowAddress;
 
     //Район Харькова.... Мутное поле.... По идее более важным является данные про то, в каком военкомате находиться человек....
@@ -65,9 +65,15 @@ public class PersonalData {
     @JoinColumn(name = "region_kh_id")
     private RegionKharkiv regionKh;
 
-    /// Адреса фактична
+    //===============================
+    // Адреса фактична
+    //===============================
     @ManyToOne
-    @JoinColumn(name = "oblast_id_fact",nullable = false)
+    @JoinColumn(name = "country_id_fact")
+    private Country country_fact;
+
+    @ManyToOne
+    @JoinColumn(name = "oblast_id_fact")
     private RegionUkraine factOblastUA;
 
     @Column(name = "post_index_fact",length = 10)
@@ -83,7 +89,7 @@ public class PersonalData {
     //телефони
     //Храним в символьном виде, но при вводе проверяем маску - +СтранаОператорНомер
     //+380951203066
-    //Также в базе есть "неполные" номера (0951203066 или 380951203066) и городские (70768453).
+    //Также в базе есть "неполные" номера (0951203066 или 380951203066) и городские (7076845).
     //Неполные мобильные принимать и дописывать нужные цифры и "+"
     //Если городской, то дописывать +38057
     //При вводе нового сотрудника или редактировании существующего контролировать наличие хотя бы одного номера

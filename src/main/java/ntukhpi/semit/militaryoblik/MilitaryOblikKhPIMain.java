@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.SettingsStage;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -105,26 +106,8 @@ public class MilitaryOblikKhPIMain extends Application {
         }
     }
 
-    /**
-     * Метод запуска окон для сообщений об ошибке
-     * автор Кулак Анастасия
-     *
-     */
-    public static void showAlert(String title, String headerText, String contentText) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(headerText);
-        alert.setContentText(contentText);
-        alert.showAndWait();
-    }
-
-    /**
-     * Метод виведення повідомлення о помилки про неибраний рядок
-     * автор Степанов Михайло
-     *
-     */
-    public static void noSelectedRowAlert() {   //TODO Можливо краще буде створити окремий клас для різних повідомлень
-        MilitaryOblikKhPIMain.showAlert("Помилка", "Не вибраний рядок", "Натисніть на рядок, щоб його вибрати");
+    public static String getPIB(Prepod prepod) {    //TODO Точно створити окремий клас!!!
+        return prepod.getFam() + " " + prepod.getImya() + " " + prepod.getOtch();
     }
 
     /**

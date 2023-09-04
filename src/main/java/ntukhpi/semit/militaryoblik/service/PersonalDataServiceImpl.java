@@ -23,4 +23,19 @@ public class PersonalDataServiceImpl implements PersonalDataService {
         List<PersonalData> list = personalDataRepository.findAll();
         return !list.isEmpty()?list.get(0):null;
     }
+
+    @Override
+    public PersonalData getPersonalDataById(Long id) {
+        return personalDataRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public PersonalData createPersonalData(PersonalData personalData) {
+        return personalDataRepository.save(personalData);
+    }
+
+    @Override
+    public PersonalData updatePersonalData(PersonalData updatedPersonalData) {
+        return personalDataRepository.save(updatedPersonalData);
+    }
 }
