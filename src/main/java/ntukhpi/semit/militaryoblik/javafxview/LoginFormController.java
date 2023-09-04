@@ -9,12 +9,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import org.springframework.stereotype.Component;
+
+import java.util.prefs.Preferences;
 
 import static ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain.currentStage;
 
@@ -26,12 +29,45 @@ public class LoginFormController {
     @FXML
     private PasswordField passwordField;
 
-    private static final String CORRECT_LOGIN = "2otdel";
-    private static final String CORRECT_PASSWORD = "oblik";
+    private static final String MILITARY_OBLIK_CORRECT_LOGIN = "2otdel";
+    private static final String MILITARY_OBLIK_CORRECT_PASSWORD = "oblik";
+
+    private final Preferences preferences = Preferences.userNodeForPackage(LoginFormController.class);
+
+    @FXML
+    private void initialize() {
+        loginField.setText(preferences.get("military_oblik_login", ""));
+        passwordField.setText(preferences.get("military_oblik_password", ""));
+
+        // Добавляем обработчик события нажатия клавиши Enter в текстовом поле для логина
+        loginField.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                logIn();
+            }
+        });
+
+        // Добавляем обработчик события нажатия клавиши Enter в текстовом поле для пароля
+        passwordField.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                logIn();
+            }
+        });
+    }
 
     @FXML
     private void logIn() {
-        if (loginField.getText().equals(CORRECT_LOGIN) && passwordField.getText().equals(CORRECT_PASSWORD))
+        String savedLogin = preferences.get("military_oblik_login", "");
+        String savedPassword = preferences.get("military_oblik_password", "");
+
+        if (loginField.getText().trim().equals(MILITARY_OBLIK_CORRECT_LOGIN) &&
+                passwordField.getText().trim().equals(MILITARY_OBLIK_CORRECT_PASSWORD)) {
+
+            preferences.put("military_oblik_login", MILITARY_OBLIK_CORRECT_LOGIN);
+            preferences.put("military_oblik_password", MILITARY_OBLIK_CORRECT_PASSWORD);
+
+            showReservistsForm();
+        }
+        else if (loginField.getText().trim().equals(savedLogin) && passwordField.getText().trim().equals(savedPassword))
             showReservistsForm();
         else
             showInvalidDataWindow();

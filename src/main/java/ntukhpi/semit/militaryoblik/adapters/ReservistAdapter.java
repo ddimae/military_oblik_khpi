@@ -1,7 +1,9 @@
 package ntukhpi.semit.militaryoblik.adapters;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 
 /**
@@ -10,7 +12,9 @@ import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
  */
 @Getter
 @Setter
+@AllArgsConstructor
 public class ReservistAdapter {
+    private long id;
     private String pib;
     private String dr;
     private String gender;
@@ -25,25 +29,9 @@ public class ReservistAdapter {
     private String institute;
     private String cathedra;
 
-    public ReservistAdapter(String pib, String dr, String gender,
-                            String trc, String rank, String vos,
-                            String type, String category,
-                            String tck, String institute, String cathedra) {
-        this.pib = pib;
-        this.dr = dr;
-        this.gender = gender;
-        this.trc = trc;
-        this.rank = rank;
-        this.vos = vos;
-        this.type = type;
-        this.category = category;
-        this.tck = tck;
-        this.institute = institute;
-        this.cathedra = cathedra;
-    }
-
     public ReservistAdapter(Prepod prep) {
-        this.pib = prep.getFam()+" "+prep.getImya()+prep.getOtch();
+        this.id = prep.getId();
+        this.pib = prep.getFam() + " " + prep.getImya() + " " + prep.getOtch();
         this.dr = "01.01.0000";
         this.gender = "муж";
         this.trc = "Десь у Харкові";
@@ -52,8 +40,8 @@ public class ReservistAdapter {
         this.type = "Рядовий та сержантський склад";
         this.category = "інженерно-технічний";
         this.tck = "Просто ТЦК";
-        this.institute = prep.getKafedra().getFakultet().getAbr();
-        this.cathedra = prep.getKafedra().getKabr();
+        this.institute = prep.getKafedra().getFakultet().getFname();
+        this.cathedra = prep.getKafedra().getKname();
     }
 
 
