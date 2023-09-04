@@ -1,9 +1,14 @@
 package ntukhpi.semit.militaryoblik.adapters;
 
+import lombok.Getter;
+import lombok.Setter;
+import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 /**
  * Автор - Линьков А.
  * Класс для хранения информации о студентах. Временное решение, необходимое для работы с таблицей.
  */
+@Getter
+@Setter
 public class ReservistAdapter {
     private String pib;
     private String dr;
@@ -38,100 +43,30 @@ public class ReservistAdapter {
         this.cathedra = cathedra;
     }
 
-    public String getPrepodId() {
-        return prepodId;
+    public ReservistAdapter(Prepod prep) {
+        this.pib = prep.getFam()+" "+prep.getImya()+prep.getOtch();
+        this.dr = "01.01.0000";
+        this.gender = "муж";
+        this.trc = "Десь у Харкові";
+        this.rank = "рядовий";
+        this.vos = "123456";
+        this.type = "Рядовий та сержантський склад";
+        this.category = "інженерно-технічний";
+        this.tck = "Просто ТЦК";
+        this.institute = prep.getKafedra().getFakultet().getAbr();
+        this.cathedra = prep.getKafedra().getKabr();
     }
 
-    public void setPrepodId(String prepodId) {
-        this.prepodId = prepodId;
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ReservistAdapter{");
+        sb.append(pib);
+        sb.append(" ").append(dr);
+        sb.append(" (").append(cathedra);
+        sb.append(", ").append(institute);
+        sb.append(')');
+        return sb.toString();
     }
 
-    public String getPib() {
-        return pib;
-    }
-
-    public void setPib(String pib) {
-        this.pib = pib;
-    }
-
-    public String getDr() {
-        return dr;
-    }
-
-    public void setDr(String dr) {
-        this.dr = dr;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getTrc() {
-        return trc;
-    }
-
-    public void setTrc(String trc) {
-        this.trc = trc;
-    }
-
-    public String getRank() {
-        return rank;
-    }
-
-    public void setRank(String rank) {
-        this.rank = rank;
-    }
-
-    public String getVos() {
-        return vos;
-    }
-
-    public void setVos(String vos) {
-        this.vos = vos;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    // Getters and setters for the new fields
-    public String getTck() {
-        return tck;
-    }
-
-    public void setTck(String tck) {
-        this.tck = tck;
-    }
-
-    public String getInstitute() {
-        return institute;
-    }
-
-    public void setInstitute(String institute) {
-        this.institute = institute;
-    }
-
-    public String getCathedra() {
-        return cathedra;
-    }
-
-    public void setCathedra(String cathedra) {
-        this.cathedra = cathedra;
-    }
 }
