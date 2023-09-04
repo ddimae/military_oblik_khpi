@@ -55,7 +55,7 @@ public class DocumentsEditController implements ControlledScene {
     private void setDocument(DocumentsAdapter document) {
         this.selectedDocument = document;
         editingExistingDocument = true;
-        pibText.setText(document.getPib()); //TODO Ім'я та побатькові зробити ініціалами. Розробити окрему функцію
+//        pibText.setText(document.getPib()); //TODO Ім'я та побатькові зробити ініціалами. Розробити окрему функцію
         typeComboBox.setValue(document.getType());
         numberTextField.setText(document.getNumber());
         whoGivesTextArea.setText(document.getWhoGives());

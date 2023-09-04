@@ -1,6 +1,7 @@
 package ntukhpi.semit.militaryoblik.service;
 
 import ntukhpi.semit.militaryoblik.entity.Document;
+import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.repository.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,11 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public List<Document> getAllDocument() {
         return documentRepository.findAll();
+    }
+
+    @Override
+    public List<Document> getAllDocumentByPrepod(Prepod prepod) {
+        return documentRepository.findAllByPrepod(prepod);
     }
 
     @Override
