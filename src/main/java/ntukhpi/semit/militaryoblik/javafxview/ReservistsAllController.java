@@ -15,11 +15,17 @@ import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Kafedra;
 
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.service.*;
+
+import ntukhpi.semit.militaryoblik.javafxutils.Popup;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain.currentStage;
 
 @Component
 public class ReservistsAllController {
@@ -43,6 +49,12 @@ public class ReservistsAllController {
 
     @FXML
     public TextField filterTextField;
+
+    @FXML
+    public TextField cathedraTextField;
+
+    @FXML
+    public TextField categoryTextField;
 
     @FXML
     public TextField numberOfReservistsTextField;
@@ -74,21 +86,27 @@ public class ReservistsAllController {
     @FXML
     private TableColumn<ReservistAdapter, String> categoryColumn;
 
+    //============================================
+    //    call to detail info about reservist
+    //============================================
+    // Обробка кнопок
+    @FXML
+    private Button educationButton;
+
     //Список для хранения информации о студентах. Заполняется предопределенными значениями.
     // Список используется для заполнения таблицы.
     private ObservableList<ReservistAdapter> reservistsList = FXCollections.observableArrayList();
 
-    @Autowired
-    FakultetServiceImpl fakultetServiceImpl;
+    private static String selectedPrepodId;
 
     @Autowired
-    KafedraServiceImpl kafedraServiceImpl;
+    FakultetRepository fakultetRepository;
 
     @Autowired
-    VoenkomatServiceImpl voenkomatServiceImpl;
+    KafedraRepository kafedraRepository;
 
     @Autowired
-    PrepodServiceImpl prepodServiceImpl;
+    VoenkomatRepository voenkomatRepository;
 
     /**
      * Initializes the conkafedraRepositorytroller class. This method is automatically called
@@ -97,6 +115,7 @@ public class ReservistsAllController {
     @FXML
     private void initialize() {
         ObservableList<String> tckOptions = FXCollections.observableArrayList(
+
                 voenkomatServiceImpl.getAllVoenkomat().stream().map(Voenkomat::getVoenkomatName).sorted().toList()
         );
         ObservableList<String> instituteOptions = FXCollections.observableArrayList(
@@ -138,8 +157,34 @@ public class ReservistsAllController {
         for (Prepod prepod : prepodServiceImpl.getAllPrepod())
             reservistsList.add(new ReservistAdapter(prepod));
 
+
         updateTable(reservistsList);
+
+        //Set handlers for buttons which show details about Reservist
     }
+
+    public String setSelectedPrepodId() {
+        ReservistAdapter reservist = reservistsTableView.getSelectionModel().getSelectedItem();
+
+        if (reservist == null)
+            return null;
+        selectedPrepodId = reservist.getPrepodId();
+
+        return selectedPrepodId;
+    }
+
+    public static Long getSelectedPrepodId() {
+        if (selectedPrepodId == null || selectedPrepodId.isEmpty())
+            return null;
+
+        return Long.parseLong(selectedPrepodId);
+    }
+
+    public void stopApp(ActionEvent actionEvent) {
+        MilitaryOblikKhPIMain.applicationContext.close();
+        Platform.exit();
+    }
+
 
     /**
      * Обработчик событий для фильтрации по выбранным критериям. Срабатывает при выборе значений комбо-бокса.
@@ -193,6 +238,7 @@ public class ReservistsAllController {
         numberOfReservistsTextField.setText(String.valueOf(observableList.size()));
     }
 
+
     @FXML
     public void stopApp(ActionEvent actionEvent) {
         MilitaryOblikKhPIMain.applicationContext.close();
@@ -208,23 +254,29 @@ public class ReservistsAllController {
 
     @FXML
     private void handleEducationButton() {
-        //currentStage.close();
-        MilitaryOblikKhPIMain.showEducationWindow();
+        if (setSelectedPrepodId() != null)
+            MilitaryOblikKhPIMain.showEducationWindow();
+        else
+            Popup.noSelectedRowAlert();
     }
 
     @FXML
     private void handleDocumentsButton() {
-        MilitaryOblikKhPIMain.showDocumentsWindow();
+        if (setSelectedPrepodId() != null)
+            MilitaryOblikKhPIMain.showDocumentsWindow();
+        else
+            Popup.noSelectedRowAlert();
     }
 
     @FXML
-    void handleContactInfoButton(ActionEvent actionEvent) {
-        ReservistAdapter reservist = reservistsTableView.getSelectionModel().getSelectedItem();
-        if (reservist != null) {
-            MilitaryOblikKhPIMain.openEditWindow(CONTACT_INFO_JAVAFX, CONTACT_INFO_JAVAFX_TITLE, this, reservist);
-        } else {
-            MilitaryOblikKhPIMain.noSelectedRowAlert();
+
+    void handleContactInfoButton(ActionEvent event) {
+        if (setSelectedPrepodId() != null) {
+            MilitaryOblikKhPIMain.openEditWindow(CONTACT_INFO_JAVAFX, CONTACT_INFO_JAVAFX_TITLE, this, null);
+
         }
+        else
+            Popup.noSelectedRowAlert();
     }
 
     @FXML
