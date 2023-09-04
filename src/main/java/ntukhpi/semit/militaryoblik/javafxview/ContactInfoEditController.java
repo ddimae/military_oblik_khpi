@@ -18,10 +18,13 @@ import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Country;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.RegionUkraine;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.service.*;
+import org.antlr.v4.runtime.misc.Array2DHashSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.constant.DynamicCallSiteDesc;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -62,11 +65,11 @@ public class ContactInfoEditController implements ControlledScene {
 
         public void setToUkrStandart() {
             if (isNoCountryCodeNumber)
-                number = "+380" + number;
+                number = "+38" + number;
             else if (isNoPlusNumber)
                 number = "+" + number;
             else if (isCityNumber)
-                number = "+38057";
+                number = "+38057" + number;
         }
     }
 
@@ -183,16 +186,23 @@ public class ContactInfoEditController implements ControlledScene {
     }
 
     public void initialize() {
-        ObservableList<String> countryList = FXCollections.observableArrayList(
-                countryService.getAllCountry().stream().map(Country::getCountryName).toList());
-        ObservableList<String> regionList = FXCollections.observableArrayList(
-                regionUkraineService.getAllRegionUkraine().stream().map(RegionUkraine::getCountryName).toList());
+        List<String> countryList = new ArrayList<>();
+        List<String> regionList = new ArrayList<>();
 
-        countryComboBox.setItems(countryList);
-        countryFactComboBox.setItems(countryList);
+        countryList.add("Не визначено");
+        regionList.add("Не визначено");
 
-        regionComboBox.setItems(regionList);
-        regionFactComboBox.setItems(regionList);
+        countryList.addAll(countryService.getAllCountry().stream().map(Country::getCountryName).toList());
+        regionList.addAll(regionUkraineService.getAllRegionUkraine().stream().map(RegionUkraine::getCountryName).toList());
+
+        ObservableList<String> countryObservableList = FXCollections.observableArrayList(countryList);
+        ObservableList<String> regionObservableList = FXCollections.observableArrayList(regionList);
+
+        countryComboBox.setItems(countryObservableList);
+        countryFactComboBox.setItems(countryObservableList);
+
+        regionComboBox.setItems(regionObservableList);
+        regionFactComboBox.setItems(regionObservableList);
 
         selectedPrepodId = ReservistsAllController.getSelectedPrepodId();
 
@@ -229,7 +239,7 @@ public class ContactInfoEditController implements ControlledScene {
         Pattern ukrPhoneFullRegex = Pattern.compile("^(\\+\\d{12})?$");
         Pattern ukrPhoneNoCountryCodeRegex = Pattern.compile("^(\\d{10})?$");
         Pattern ukrPhoneNoPlusRegex = Pattern.compile("^(\\d{12})?$");
-        Pattern ukrPhoneCityRegex = Pattern.compile("^(\\d{8})?$");
+        Pattern ukrPhoneCityRegex = Pattern.compile("^(\\d{7})?$");
 
         Pattern foreinPhoneRegex = Pattern.compile("(^\\+\\d+)?");
         Pattern cityRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії\\s]*$");
@@ -243,7 +253,7 @@ public class ContactInfoEditController implements ControlledScene {
         address = address.trim();
 
         try {
-            if (country.equals("null"))
+            if (country.equals("null") || country.equals("Не визначено"))
                 throw new Exception("Країна реєстрації є обов'язковим полем");
             if (city.isEmpty())
                 throw new Exception("Місто реєстрації є обов'язковим полем");
@@ -260,7 +270,7 @@ public class ContactInfoEditController implements ControlledScene {
                 secondPhone.validateNumber(ukrPhoneFullRegex, ukrPhoneNoCountryCodeRegex, ukrPhoneNoPlusRegex, ukrPhoneCityRegex);
 
                 if (mainPhone.isWrongNumber || (!secondPhone.getNumber().isEmpty() && secondPhone.isWrongNumber))
-                    throw new Exception("Формат телефона повинен виглядати +380951203066, 0951203066, 380951203066, або 70768453");
+                    throw new Exception("Формат телефона повинен виглядати +380951203066, 0951203066, 380951203066, або 7076845");
 
                 mainPhone.setToUkrStandart();
                 secondPhone.setToUkrStandart();
@@ -350,6 +360,8 @@ public class ContactInfoEditController implements ControlledScene {
             regionFactComboBox.setDisable(false);
             addressFactTextArea.setDisable(false);
         }
+
+        handleChangeCountry(null);
     }
 
     @FXML
