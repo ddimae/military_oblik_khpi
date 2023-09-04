@@ -22,13 +22,9 @@ import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain.currentStage;
-
 @Component
 public class ReservistsAllController {
+    //Константи для виклику форм редагування
     private final static String CONTACT_INFO_JAVAFX = "/javafxview/ContactsEdit.fxml";
     private final static String CONTACT_INFO_JAVAFX_TITLE = "Контактна інформація";
 
@@ -49,12 +45,6 @@ public class ReservistsAllController {
 
     @FXML
     public TextField filterTextField;
-
-    @FXML
-    public TextField cathedraTextField;
-
-    @FXML
-    public TextField categoryTextField;
 
     @FXML
     public TextField numberOfReservistsTextField;
@@ -86,27 +76,23 @@ public class ReservistsAllController {
     @FXML
     private TableColumn<ReservistAdapter, String> categoryColumn;
 
-    //============================================
-    //    call to detail info about reservist
-    //============================================
-    // Обробка кнопок
-    @FXML
-    private Button educationButton;
-
-    //Список для хранения информации о студентах. Заполняется предопределенными значениями.
+    //Список для хранения информации о резервистах.
     // Список используется для заполнения таблицы.
     private ObservableList<ReservistAdapter> reservistsList = FXCollections.observableArrayList();
 
-    private static String selectedPrepodId;
+//    private static String selectedPrepodId;
 
     @Autowired
-    FakultetRepository fakultetRepository;
+    FakultetServiceImpl fakultetServiceImpl;
 
     @Autowired
-    KafedraRepository kafedraRepository;
+    KafedraServiceImpl kafedraServiceImpl;
 
     @Autowired
-    VoenkomatRepository voenkomatRepository;
+    VoenkomatServiceImpl voenkomatServiceImpl;
+
+    @Autowired
+    PrepodServiceImpl prepodServiceImpl;
 
     /**
      * Initializes the conkafedraRepositorytroller class. This method is automatically called
@@ -115,7 +101,6 @@ public class ReservistsAllController {
     @FXML
     private void initialize() {
         ObservableList<String> tckOptions = FXCollections.observableArrayList(
-
                 voenkomatServiceImpl.getAllVoenkomat().stream().map(Voenkomat::getVoenkomatName).sorted().toList()
         );
         ObservableList<String> instituteOptions = FXCollections.observableArrayList(
@@ -154,6 +139,7 @@ public class ReservistsAllController {
 
         //FIXME: В случае, если какое-либо поле не будет определено, логика не прописана.
         // Нужно обсудить
+        reservistsList.clear();
         for (Prepod prepod : prepodServiceImpl.getAllPrepod())
             reservistsList.add(new ReservistAdapter(prepod));
 
@@ -163,27 +149,21 @@ public class ReservistsAllController {
         //Set handlers for buttons which show details about Reservist
     }
 
-    public String setSelectedPrepodId() {
-        ReservistAdapter reservist = reservistsTableView.getSelectionModel().getSelectedItem();
-
-        if (reservist == null)
-            return null;
-        selectedPrepodId = reservist.getPrepodId();
-
-        return selectedPrepodId;
-    }
-
-    public static Long getSelectedPrepodId() {
-        if (selectedPrepodId == null || selectedPrepodId.isEmpty())
-            return null;
-
-        return Long.parseLong(selectedPrepodId);
-    }
-
-    public void stopApp(ActionEvent actionEvent) {
-        MilitaryOblikKhPIMain.applicationContext.close();
-        Platform.exit();
-    }
+//    public String setSelectedPrepodId() {
+//        ReservistAdapter reservist = reservistsTableView.getSelectionModel().getSelectedItem();
+//        if (reservist == null)
+//            return null;
+//        selectedPrepodId = reservist.getPrepodId();
+//
+//        return selectedPrepodId;
+//    }
+//
+//    public static Long getSelectedPrepodId() {
+//        if (selectedPrepodId == null || selectedPrepodId.isEmpty())
+//            return null;
+//
+//        return Long.parseLong(selectedPrepodId);
+//    }
 
 
     /**
@@ -248,13 +228,11 @@ public class ReservistsAllController {
     //============================================
     //    call to detail info about reservist
     //============================================
-    // Обробка кнопок
-    @FXML
-    private Button educationButton;
-
     @FXML
     private void handleEducationButton() {
-        if (setSelectedPrepodId() != null)
+//        if (setSelectedPrepodId() != null)
+        ReservistAdapter reservist = reservistsTableView.getSelectionModel().getSelectedItem();
+        if (reservist != null)
             MilitaryOblikKhPIMain.showEducationWindow();
         else
             Popup.noSelectedRowAlert();
@@ -262,18 +240,20 @@ public class ReservistsAllController {
 
     @FXML
     private void handleDocumentsButton() {
-        if (setSelectedPrepodId() != null)
+//        if (setSelectedPrepodId() != null)
+        ReservistAdapter reservist = reservistsTableView.getSelectionModel().getSelectedItem();
+        if (reservist != null)
             MilitaryOblikKhPIMain.showDocumentsWindow();
         else
             Popup.noSelectedRowAlert();
     }
 
     @FXML
-
     void handleContactInfoButton(ActionEvent event) {
-        if (setSelectedPrepodId() != null) {
-            MilitaryOblikKhPIMain.openEditWindow(CONTACT_INFO_JAVAFX, CONTACT_INFO_JAVAFX_TITLE, this, null);
-
+//        if (setSelectedPrepodId() != null) {
+        ReservistAdapter reservist = reservistsTableView.getSelectionModel().getSelectedItem();
+        if (reservist != null) {
+            MilitaryOblikKhPIMain.openEditWindow(CONTACT_INFO_JAVAFX, CONTACT_INFO_JAVAFX_TITLE, this, reservist); //null
         }
         else
             Popup.noSelectedRowAlert();
@@ -283,10 +263,9 @@ public class ReservistsAllController {
     public void handleMilitaryRegistrationEditButton(ActionEvent actionEvent) {
         ReservistAdapter reservist = reservistsTableView.getSelectionModel().getSelectedItem();
         if (reservist != null) {
-            MilitaryOblikKhPIMain.openEditWindow(MILITARY_REGISTRATION_JAVAFX,
-                    MILITARY_REGISTRATION_JAVAFX_TITLE, this, reservist);
+            MilitaryOblikKhPIMain.openEditWindow(MILITARY_REGISTRATION_JAVAFX, MILITARY_REGISTRATION_JAVAFX_TITLE, this, reservist);
         } else {
-            MilitaryOblikKhPIMain.noSelectedRowAlert();
+            Popup.noSelectedRowAlert();
         }
     }
 }

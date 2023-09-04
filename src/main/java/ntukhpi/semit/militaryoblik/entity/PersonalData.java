@@ -30,10 +30,7 @@ public class PersonalData {
     @JoinColumn(name = "prepod_id",unique = true,nullable = false)
     private Prepod prepod;
 
-    //дата рождения
-    @Column(name = "data_rozd")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private LocalDate dr;
+
 
     //адреса
     //Страна - одне обовязкове поле в адресі (так будемо робити!)

@@ -6,6 +6,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 
 @Entity
 //Унікальним робимо ПІБ+кафедра.
@@ -28,6 +31,11 @@ public class Prepod {
     private String imya;
     @Column(length = 30,nullable = false)
     private String otch;
+
+    //дата рождения
+    @Column(name = "data_rozd")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate dr;
 
     //В БД АСУ УПД ХПИ можно получить дані про посаду, яку обіймає співробітник
     //Тобто фіксується поточна (або остання посада) співробітника

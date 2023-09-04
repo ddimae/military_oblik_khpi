@@ -147,9 +147,12 @@ public class ContactInfoEditController implements ControlledScene {
     }
 
     private void setContactInfo(ReservistAdapter reservist) {
-        personalData = personalDataService.getPersonalDataById(selectedPrepodId);
+//        personalData = personalDataService.getPersonalDataById(selectedPrepodId);
+        personalData = personalDataService.getPersonalDataById(reservist.getId());
+        //Якщо немає звязаної інформації, то запускати треба щось на установку нової!!!
 
-        pibText.setText(MilitaryOblikKhPIMain.getPIB(prepodService.getPrepodById(selectedPrepodId)));
+//        pibText.setText(MilitaryOblikKhPIMain.getPIB(prepodService.getPrepodById(selectedPrepodId)));
+        pibText.setText(MilitaryOblikKhPIMain.getPIB(prepodService.getPrepodById(reservist.getId())));
 
         if (personalData == null) {
             personalData = new PersonalData();
@@ -205,7 +208,7 @@ public class ContactInfoEditController implements ControlledScene {
         regionComboBox.setItems(regionObservableList);
         regionFactComboBox.setItems(regionObservableList);
 
-        selectedPrepodId = ReservistsAllController.getSelectedPrepodId();
+//        selectedPrepodId = ReservistsAllController.getSelectedPrepodId();
 
         handleChangeCountry(null);
     }
