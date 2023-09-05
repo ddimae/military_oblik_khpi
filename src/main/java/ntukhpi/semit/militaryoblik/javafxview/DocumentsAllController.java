@@ -4,14 +4,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.DocumentsAdapter;
-import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
 import ntukhpi.semit.militaryoblik.entity.Document;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
@@ -22,8 +21,6 @@ import org.springframework.stereotype.Component;
 
 import javax.print.Doc;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class DocumentsAllController {
@@ -70,6 +67,7 @@ public class DocumentsAllController {
         selectedPrepod = prepodService.getPrepodById(ReservistsAllController.getSelectedPrepodId());
 
         pibText.setText(MilitaryOblikKhPIMain.getPIB(selectedPrepod));
+        docsTableView.setPlaceholder(new Label("Ця людина поки не має жодного документа"));
 
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         numberColumn.setCellValueFactory(new PropertyValueFactory<>("number"));
@@ -78,11 +76,22 @@ public class DocumentsAllController {
 
         docsObservableList = getDocumentsData();
 
-        updateTable(docsObservableList);
+        docsTableView.setItems(docsObservableList);
     }
 
-    private void updateTable(ObservableList<DocumentsAdapter> docs) {
-        docsTableView.setItems(docs);
+    public void refreshDocsTable() {
+        docsTableView.refresh();
+    }
+
+    public void addNewDocument(DocumentsAdapter document) {
+        docsObservableList.add(document);
+        refreshDocsTable();
+    }
+
+    public void updateDocument(DocumentsAdapter oldDocument, DocumentsAdapter newDocument) {
+        docsObservableList.remove(oldDocument);
+        docsObservableList.add(newDocument);
+        refreshDocsTable();
     }
 
     @FXML
@@ -90,8 +99,10 @@ public class DocumentsAllController {
         DocumentsAdapter selectedDocument = docsTableView.getSelectionModel().getSelectedItem();
 
         if (selectedDocument != null) {
-            docsObservableList.remove(selectedDocument);
-            documentService.deleteDocument(selectedDocument.getId());
+            if (Popup.deleteConfirmation()) {
+                docsObservableList.remove(selectedDocument);
+                documentService.deleteDocument(selectedDocument.getId());
+            }
         } else {
             Popup.noSelectedRowAlert();
         }

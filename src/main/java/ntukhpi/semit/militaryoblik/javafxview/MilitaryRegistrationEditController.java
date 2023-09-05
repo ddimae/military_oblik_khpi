@@ -8,6 +8,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
 import ntukhpi.semit.militaryoblik.entity.VZvanie;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
@@ -101,6 +102,7 @@ public class MilitaryRegistrationEditController implements ControlledScene {
     public void closeEdit(ActionEvent actionEvent) {
         try {
             ((Stage) groupComboBox.getScene().getWindow()).close();
+            MilitaryOblikKhPIMain.showReservistsWindow();
         } catch (Exception e) {
             e.printStackTrace();
         }

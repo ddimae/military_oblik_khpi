@@ -13,9 +13,13 @@ import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.SettingsStage;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.sqlite.date.DateParser;
 
 import java.io.IOException;
-import java.util.Objects;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class MilitaryOblikKhPIMain extends Application {
 
@@ -105,10 +109,17 @@ public class MilitaryOblikKhPIMain extends Application {
             Stage stage = new Stage();
             stage.setTitle(title);
             stage.setResizable(false);
+            stage.initStyle(StageStyle.UNDECORATED);
             Scene scene = new Scene(root);
             // Применить стиль
             scene.getStylesheets().add(Objects.requireNonNull(MilitaryOblikKhPIMain.class.getResource(STYLES_JAVAFX)).toExternalForm());
             stage.setScene(scene);
+
+            if (currentStage != null) {
+                currentStage.close();
+
+            }
+            currentStage = stage;
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -117,6 +128,24 @@ public class MilitaryOblikKhPIMain extends Application {
 
     public static String getPIB(Prepod prepod) {    //TODO Точно створити окремий клас!!!
         return prepod.getFam() + " " + prepod.getImya() + " " + prepod.getOtch();
+    }
+
+    public static String localDateToUkStandart(LocalDate date) {
+        List<String> pieces;
+
+        if (date == null)
+            return null;
+
+        try {
+            LocalDate.parse(date.toString());
+            pieces = new ArrayList<>(Arrays.stream(date.toString().split("-")).toList());
+        } catch (Exception e) {
+            return null;
+        }
+
+        System.out.println(pieces.get(2) + "." + pieces.get(1) + "." + pieces.get(0));
+
+        return pieces.get(2) + "." + pieces.get(1) + "." + pieces.get(0);
     }
 
     /**
