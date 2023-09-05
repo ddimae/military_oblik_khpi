@@ -120,7 +120,7 @@ public class ContactInfoEditController implements ControlledScene {
     private TextField secondPhoneTextArea;
 
     private ReservistsAllController mainController;
-    private Long selectedPrepodId;
+    private ReservistAdapter selectedReservist;
     private PersonalData personalData;
 
     @Autowired
@@ -143,16 +143,16 @@ public class ContactInfoEditController implements ControlledScene {
 
     @Override
     public void setData(Object data) {
-        setContactInfo((ReservistAdapter) data);
+        if (data instanceof ReservistAdapter)
+            setContactInfo((ReservistAdapter) data);
     }
 
     private void setContactInfo(ReservistAdapter reservist) {
-//        personalData = personalDataService.getPersonalDataById(selectedPrepodId);
-        personalData = personalDataService.getPersonalDataById(reservist.getId());
+        selectedReservist = reservist;
+        personalData = personalDataService.getPersonalDataById(selectedReservist.getId());
         //Якщо немає звязаної інформації, то запускати треба щось на установку нової!!!
 
-//        pibText.setText(MilitaryOblikKhPIMain.getPIB(prepodService.getPrepodById(selectedPrepodId)));
-        pibText.setText(MilitaryOblikKhPIMain.getPIB(prepodService.getPrepodById(reservist.getId())));
+        pibText.setText(MilitaryOblikKhPIMain.getPIB(prepodService.getPrepodById(selectedReservist.getId())));
 
         if (personalData == null) {
             personalData = new PersonalData();
@@ -207,8 +207,6 @@ public class ContactInfoEditController implements ControlledScene {
 
         regionComboBox.setItems(regionObservableList);
         regionFactComboBox.setItems(regionObservableList);
-
-//        selectedPrepodId = ReservistsAllController.getSelectedPrepodId();
 
         handleChangeCountry(null);
     }
@@ -303,7 +301,7 @@ public class ContactInfoEditController implements ControlledScene {
             personalData.setRowAddress(address);
             personalData.setPhoneMain(mainPhone.getNumber());
             personalData.setPhoneDop(secondPhone.getNumber());
-            personalData.setPrepod(prepodService.getPrepodById(selectedPrepodId));
+            personalData.setPrepod(prepodService.getPrepodById(selectedReservist.getId()));
             if (isUkraine && regionComboBox.getValue() != null)
                 personalData.setOblastUA(regionUkraineService.getRegionUkraineByName(region));
             else
@@ -331,8 +329,8 @@ public class ContactInfoEditController implements ControlledScene {
 
             personalDataService.updatePersonalData(personalData);
 
-            Popup.successSave();
             closeEdit(null);
+            Popup.successSave();
         } catch (Exception e) {
             Popup.wrongInputAlert(e.getMessage());
         }
