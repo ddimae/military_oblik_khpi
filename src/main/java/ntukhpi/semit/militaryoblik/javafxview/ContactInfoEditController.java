@@ -215,6 +215,7 @@ public class ContactInfoEditController implements ControlledScene {
     void closeEdit(ActionEvent event) {
         try {
             ((Stage) countryComboBox.getScene().getWindow()).close();
+            MilitaryOblikKhPIMain.showReservistsWindow();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -256,13 +257,13 @@ public class ContactInfoEditController implements ControlledScene {
 
         try {
             if (country.equals("null") || country.equals("Не визначено"))
-                throw new Exception("Країна реєстрації є обов'язковим полем");
+                throw new Exception("\"Країна реєстрації\" є обов'язковим полем");
             if (city.isEmpty())
-                throw new Exception("Місто реєстрації є обов'язковим полем");
+                throw new Exception("\"Місто реєстрації\" є обов'язковим полем");
             if (address.isEmpty())
-                throw new Exception("Адреса реєстрації є обов'язковим полем");
+                throw new Exception("\"Адреса реєстрації\" є обов'язковим полем");
             if (mainPhone.getNumber().isEmpty())
-                throw new Exception("Телефон 1 є обов'язковим полем");
+                throw new Exception("\"Телефон 1\" є обов'язковим полем");
 
             if ((isUkraine && !ukrIndexRegex.matcher(index).matches()) || ((isUkraineFact && !ukrIndexRegex.matcher(indexFact).matches())))
                 throw new Exception("Індекс повинен складатися із 5 цифр");
@@ -292,7 +293,7 @@ public class ContactInfoEditController implements ControlledScene {
                 throw new Exception("Адресса може містити українські літери, цифри та розділові знаки");
 
 
-            if (countryFact.equals("null"))
+            if (countryFact.equals("null")) //TODO Запитати чи це точно потрібно
                 personalData.setCountry_fact(countryService.getCountryByName("Україна"));
 
             personalData.setCountry(countryService.getCountryByName(country));
