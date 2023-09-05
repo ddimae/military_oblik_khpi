@@ -154,7 +154,6 @@ public class ReservistsAllController {
 
         if (reservist == null)
             return null;
-        System.out.println(reservist.getId());
         selectedPrepodId = reservist.getId();
 
         return reservist;
