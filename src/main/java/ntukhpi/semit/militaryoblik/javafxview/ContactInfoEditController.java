@@ -17,6 +17,7 @@ import ntukhpi.semit.militaryoblik.entity.PersonalData;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Country;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.RegionUkraine;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
+import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.service.*;
 import org.antlr.v4.runtime.misc.Array2DHashSet;
@@ -152,7 +153,7 @@ public class ContactInfoEditController implements ControlledScene {
         personalData = personalDataService.getPersonalDataById(selectedReservist.getId());
         //Якщо немає звязаної інформації, то запускати треба щось на установку нової!!!
 
-        pibText.setText(MilitaryOblikKhPIMain.getPIB(prepodService.getPrepodById(selectedReservist.getId())));
+        pibText.setText(DataFormat.getPIB(prepodService.getPrepodById(selectedReservist.getId())));
 
         if (personalData == null) {
             personalData = new PersonalData();

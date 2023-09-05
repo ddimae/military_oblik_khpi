@@ -14,6 +14,7 @@ import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.DocumentsAdapter;
 import ntukhpi.semit.militaryoblik.entity.Document;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
+import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.service.DocumentServiceImpl;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
@@ -65,7 +66,7 @@ public class DocumentsEditController implements ControlledScene {
     private void setDocument(DocumentsAdapter document) {
         selectedPrepodId = ReservistsAllController.getSelectedPrepodId();
 
-        pibText.setText(MilitaryOblikKhPIMain.getPIB(prepodService.getPrepodById(selectedPrepodId)));
+        pibText.setText(DataFormat.getPIB(prepodService.getPrepodById(selectedPrepodId)));
 
         selectedDocument = document;
         if (selectedDocument == null)
@@ -117,7 +118,7 @@ public class DocumentsEditController implements ControlledScene {
         String number = numberTextField.getText();
         String whoGives = whoGivesTextArea.getText();
         LocalDate date = dateDatePicker.getValue();
-        String dateString = MilitaryOblikKhPIMain.localDateToUkStandart(date);
+        String dateString = DataFormat.localDateToUkStandart(date);
 
           //TODO мейбі перенести після зберігання в бд
 

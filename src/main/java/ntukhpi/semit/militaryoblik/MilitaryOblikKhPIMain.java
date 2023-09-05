@@ -126,28 +126,6 @@ public class MilitaryOblikKhPIMain extends Application {
         }
     }
 
-    public static String getPIB(Prepod prepod) {    //TODO Точно створити окремий клас!!!
-        return prepod.getFam() + " " + prepod.getImya() + " " + prepod.getOtch();
-    }
-
-    public static String localDateToUkStandart(LocalDate date) {
-        List<String> pieces;
-
-        if (date == null)
-            return null;
-
-        try {
-            LocalDate.parse(date.toString());
-            pieces = new ArrayList<>(Arrays.stream(date.toString().split("-")).toList());
-        } catch (Exception e) {
-            return null;
-        }
-
-        System.out.println(pieces.get(2) + "." + pieces.get(1) + "." + pieces.get(0));
-
-        return pieces.get(2) + "." + pieces.get(1) + "." + pieces.get(0);
-    }
-
     /**
      * Метод для создания Stage на основе fxml
      * автор Двухглавов
@@ -199,11 +177,10 @@ public class MilitaryOblikKhPIMain extends Application {
             FXMLLoader loader = new FXMLLoader(MilitaryOblikKhPIMain.class.getResource(settings.getFxmlName()));
             Stage stageForShow = getStageByFXMLName(loader, settings.getTitle(),
                     settings.getWidth(), settings.getHeight(), settings.isFullScreen(), settings.isResizable());
-            if (stageForShow != null) {
-                if (currentStage != null) {
-                    currentStage.close();
 
-                }
+            if (stageForShow != null) {
+                if (currentStage != null)
+                    currentStage.close();
                 currentStage = stageForShow;
                 stageForShow.show();
             }
