@@ -12,9 +12,15 @@ import javafx.scene.text.Text;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.DocumentsAdapter;
 import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
+import ntukhpi.semit.militaryoblik.entity.Document;
+import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
+import ntukhpi.semit.militaryoblik.service.DocumentServiceImpl;
+import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.print.Doc;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,20 +52,53 @@ public class DocumentsAllController {
     @FXML
     private TableView<DocumentsAdapter> docsTableView;
 
+    private ObservableList<DocumentsAdapter> docsObservableList;
+
+    private Prepod selectedPrepod;
+
+    @Autowired
+    DocumentServiceImpl documentService;
+
+    @Autowired
+    PrepodServiceImpl prepodService;
+
+    private ObservableList<DocumentsAdapter> getDocumentsData() {
+        return FXCollections.observableArrayList(documentService.getAllDocumentByPrepod(selectedPrepod).stream().map(DocumentsAdapter::new).toList());
+    }
+
+    public void initialize() {
+        selectedPrepod = prepodService.getPrepodById(ReservistsAllController.getSelectedPrepodId());
+
+        pibText.setText(MilitaryOblikKhPIMain.getPIB(selectedPrepod));
+
+        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+        numberColumn.setCellValueFactory(new PropertyValueFactory<>("number"));
+        givenColumn.setCellValueFactory(new PropertyValueFactory<>("whoGives"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+
+        docsObservableList = getDocumentsData();
+
+        updateTable(docsObservableList);
+    }
+
+    private void updateTable(ObservableList<DocumentsAdapter> docs) {
+        docsTableView.setItems(docs);
+    }
+
     @FXML
     void deleteSelectedRow(ActionEvent event) {
         DocumentsAdapter selectedDocument = docsTableView.getSelectionModel().getSelectedItem();
 
         if (selectedDocument != null) {
             docsObservableList.remove(selectedDocument);
+            documentService.deleteDocument(selectedDocument.getId());
         } else {
             Popup.noSelectedRowAlert();
         }
     }
 
     @FXML
-    void openAddWindow(ActionEvent event) { //FIXME Не працює передача ПІБ, бо не передається взагалі нічого (чекати на рішення від Кулак Анастасії)
-//        MilitaryOblikKhPIMain.openEditWindow("/javafxview/EducationEdit.fxml", "Додати дані про навчання", this, null);
+    void openAddWindow(ActionEvent event) {
         MilitaryOblikKhPIMain.openEditWindow(DOCUMENTS_ADD_JAVAFX, DOCUMENTS_ADD_JAVAFX_TITLE, this, null);
     }
 
@@ -76,28 +115,5 @@ public class DocumentsAllController {
     @FXML
     void returnToMainForm(ActionEvent event) {
         MilitaryOblikKhPIMain.showReservistsWindow();
-    }
-
-    private ObservableList<DocumentsAdapter> docsObservableList = getDocumentsData();
-    private ObservableList<DocumentsAdapter> getDocumentsData() {
-        List<DocumentsAdapter> docList = new ArrayList<>();
-
-        docList.add(new DocumentsAdapter("ДВУХГЛАВОВ Д. Е", "Паперовий паспорт", "МН123456", "7115 УДМС УКРАЇНИ В ЧЕРКАСЬКІЙ ОБЛАСТІ", LocalDate.of(1995, 1, 23)));
-        docList.add(new DocumentsAdapter("ДВУХГЛАВОВ Д. Е", "Закордонний паспорт", "АА573957", "7115 УДМС УКРАЇНИ В ЧЕРКАСЬКІЙ ОБЛАСТІ", LocalDate.of(1999, 5, 3)));
-
-        return FXCollections.observableList(docList);
-    };
-
-    public void initialize() {
-        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-        numberColumn.setCellValueFactory(new PropertyValueFactory<>("number"));
-        givenColumn.setCellValueFactory(new PropertyValueFactory<>("whoGives"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
-
-        updateTable(docsObservableList);
-    }
-
-    private void updateTable(ObservableList<DocumentsAdapter> docs) {
-        docsTableView.setItems(docs);
     }
 }

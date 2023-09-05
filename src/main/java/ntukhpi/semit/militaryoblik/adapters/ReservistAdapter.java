@@ -22,7 +22,6 @@ public class ReservistAdapter {
     private String vos;
     private String type;
     private String category;
-    private String prepodId;
 
     //Поля для фильтрации. В таблице не отображаются.
     private String tck;
@@ -32,7 +31,7 @@ public class ReservistAdapter {
 
     public ReservistAdapter(String pib, String dr, String gender,
                             String trc, String rank, String vos,
-                            String type, String category, String prepodId,
+                            String type, String category,
                             String tck, String institute, String cathedra) {
         this.pib = pib;
         this.dr = dr;
@@ -42,7 +41,6 @@ public class ReservistAdapter {
         this.vos = vos;
         this.type = type;
         this.category = category;
-        this.prepodId = prepodId;
         this.tck = tck;
         this.institute = institute;
         this.cathedra = cathedra;
