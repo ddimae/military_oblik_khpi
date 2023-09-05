@@ -13,6 +13,7 @@ import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.DocumentsAdapter;
 import ntukhpi.semit.militaryoblik.entity.Document;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
+import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.service.DocumentServiceImpl;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
@@ -66,7 +67,7 @@ public class DocumentsAllController {
     public void initialize() {
         selectedPrepod = prepodService.getPrepodById(ReservistsAllController.getSelectedPrepodId());
 
-        pibText.setText(MilitaryOblikKhPIMain.getPIB(selectedPrepod));
+        pibText.setText(DataFormat.getPIB(selectedPrepod));
         docsTableView.setPlaceholder(new Label("Ця людина поки не має жодного документа"));
 
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
