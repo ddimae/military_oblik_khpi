@@ -10,7 +10,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
-import ntukhpi.semit.militaryoblik.adapters.DocumentsAdapter;
+import ntukhpi.semit.militaryoblik.adapters.DocumentAdapter;
 import ntukhpi.semit.militaryoblik.entity.Document;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
@@ -20,51 +20,64 @@ import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.print.Doc;
 import java.time.LocalDate;
 
 @Component
 public class DocumentsAllController {
 
+    // ========== Константи для переходу на форму з редагуванням/додаванням нових документів ==========
     private final static String DOCUMENTS_ADD_JAVAFX = "/javafxview/DocumentsEdit.fxml";
-    private final static String DOCUMENTS_EDIT_JAVAFX = "/javafxview/DocumentsEdit.fxml";
+    private final static String DOCUMENTS_EDIT_JAVAFX = DOCUMENTS_ADD_JAVAFX;
     private final static String DOCUMENTS_ADD_JAVAFX_TITLE = "Додати новий документ";
     private final static String DOCUMENTS_EDIT_JAVAFX_TITLE = "Редагувати документ";
 
+    // ========== Інтерактивні елементи форми ==========
+    @FXML
+    private TableColumn<DocumentAdapter, LocalDate> dateColumn;
 
     @FXML
-    private TableColumn<DocumentsAdapter, LocalDate> dateColumn;
+    private TableColumn<DocumentAdapter, String> givenColumn;
 
     @FXML
-    private TableColumn<DocumentsAdapter, String> givenColumn;
-
-    @FXML
-    private TableColumn<DocumentsAdapter, String> numberColumn;
+    private TableColumn<DocumentAdapter, String> numberColumn;
 
     @FXML
     private Text pibText;
 
     @FXML
-    private TableColumn<DocumentsAdapter, String> typeColumn;
+    private TableColumn<DocumentAdapter, String> typeColumn;
 
     @FXML
-    private TableView<DocumentsAdapter> docsTableView;
+    private TableView<DocumentAdapter> docsTableView;
 
-    private ObservableList<DocumentsAdapter> docsObservableList;
+    // Список для зображення всіх документів в таблиці
+    private ObservableList<DocumentAdapter> docsObservableList;
 
+    // Обраний в ReservistsAll викладач
     private Prepod selectedPrepod;
 
+    // ========== Сервіси для роботи з БД ==========
     @Autowired
     DocumentServiceImpl documentService;
 
     @Autowired
     PrepodServiceImpl prepodService;
 
-    private ObservableList<DocumentsAdapter> getDocumentsData() {
-        return FXCollections.observableArrayList(documentService.getAllDocumentByPrepod(selectedPrepod).stream().map(DocumentsAdapter::new).toList());
+
+    /**
+     * Отримує з БД список всіх документів конкретного викладача та перетворює його на ObservableList
+     * @return ObservableList з усіма документави викладача
+     */
+    private ObservableList<DocumentAdapter> getDocumentsData() {
+        return FXCollections.observableArrayList(documentService.getAllDocumentByPrepod(selectedPrepod).stream().map(DocumentAdapter::new).toList());
     }
 
+
+    /**
+     * Ініціалізація форми
+     */
     public void initialize() {
+        // Зберігання викладача на випадок зміни вибору в формі ReservistsAll
         selectedPrepod = prepodService.getPrepodById(ReservistsAllController.getSelectedPrepodId());
 
         pibText.setText(DataFormat.getPIB(selectedPrepod));
@@ -80,27 +93,49 @@ public class DocumentsAllController {
         docsTableView.setItems(docsObservableList);
     }
 
+    /**
+     * Обновляє таблицю після доданих чи прибраних даних
+     */
     public void refreshDocsTable() {
         docsTableView.refresh();
     }
 
-    public void addNewDocument(DocumentsAdapter document) {
-        docsObservableList.add(document);
+
+    /**
+     * Додавання нового документу до таблиці та БД
+     * @param document Новий документ
+     */
+    public void addNewDocument(Document document) {
+        documentService.createDocument(document);
+
+        docsObservableList.add(new DocumentAdapter(document));
         refreshDocsTable();
     }
 
-    public void updateDocument(DocumentsAdapter oldDocument, DocumentsAdapter newDocument) {
+
+    /**
+     * Обновлення документа в таблиці та БД
+     * @param oldDocument Старий зразок документа
+     * @param newDocument Новий зразок документа
+     */
+    public void updateDocument(DocumentAdapter oldDocument, Document newDocument) {
+        documentService.updateDocument(oldDocument.getId(), newDocument);
+
         docsObservableList.remove(oldDocument);
-        docsObservableList.add(newDocument);
+        docsObservableList.add(new DocumentAdapter(newDocument));
         refreshDocsTable();
     }
 
+    /**
+     * Видаляє обраний документ з таблиці та БД
+     * @param event
+     */
     @FXML
     void deleteSelectedRow(ActionEvent event) {
-        DocumentsAdapter selectedDocument = docsTableView.getSelectionModel().getSelectedItem();
+        DocumentAdapter selectedDocument = docsTableView.getSelectionModel().getSelectedItem();
 
         if (selectedDocument != null) {
-            if (Popup.deleteConfirmation()) {
+            if (Popup.deleteConfirmation()) {   // Питаємо користувача
                 docsObservableList.remove(selectedDocument);
                 documentService.deleteDocument(selectedDocument.getId());
             }
@@ -109,21 +144,32 @@ public class DocumentsAllController {
         }
     }
 
+    /**
+     * Відкриває вікно додавання нового документа
+     * @param event
+     */
     @FXML
     void openAddWindow(ActionEvent event) {
         MilitaryOblikKhPIMain.openEditWindow(DOCUMENTS_ADD_JAVAFX, DOCUMENTS_ADD_JAVAFX_TITLE, this, null);
     }
 
+    /**
+     * Відкриває вікно зміни документа
+     * @param event
+     */
     @FXML
     void openEditWindow(ActionEvent event) {
-        DocumentsAdapter selectedDocument = docsTableView.getSelectionModel().getSelectedItem();
-        if (selectedDocument != null) {
+        DocumentAdapter selectedDocument = docsTableView.getSelectionModel().getSelectedItem();
+        if (selectedDocument != null)
             MilitaryOblikKhPIMain.openEditWindow(DOCUMENTS_EDIT_JAVAFX, DOCUMENTS_EDIT_JAVAFX_TITLE, this, selectedDocument);
-        } else {
+        else
             Popup.noSelectedRowAlert();
-        }
     }
 
+    /**
+     * Відкриває попереднє вікно
+     * @param event
+     */
     @FXML
     void returnToMainForm(ActionEvent event) {
         MilitaryOblikKhPIMain.showReservistsWindow();

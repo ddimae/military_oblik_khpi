@@ -25,8 +25,6 @@ public class DataFormat {
             return null;
         }
 
-        System.out.println(pieces.get(2) + "." + pieces.get(1) + "." + pieces.get(0));
-
         return pieces.get(2) + "." + pieces.get(1) + "." + pieces.get(0);
     }
 }

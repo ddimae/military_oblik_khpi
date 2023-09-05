@@ -11,7 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
-import ntukhpi.semit.militaryoblik.adapters.DocumentsAdapter;
+import ntukhpi.semit.militaryoblik.adapters.DocumentAdapter;
 import ntukhpi.semit.militaryoblik.entity.Document;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
@@ -44,7 +44,7 @@ public class DocumentsEditController implements ControlledScene {
 
     private DocumentsAllController mainController;
     private Long selectedPrepodId;
-    private DocumentsAdapter selectedDocument;
+    private DocumentAdapter selectedDocument;
 //    private boolean editingExistingDocument;
 
     @Autowired
@@ -60,10 +60,10 @@ public class DocumentsEditController implements ControlledScene {
 
     @Override
     public void setData(Object data) {
-        setDocument((DocumentsAdapter) data);
+        setDocument((DocumentAdapter) data);
     }
 
-    private void setDocument(DocumentsAdapter document) {
+    private void setDocument(DocumentAdapter document) {
         selectedPrepodId = ReservistsAllController.getSelectedPrepodId();
 
         pibText.setText(DataFormat.getPIB(prepodService.getPrepodById(selectedPrepodId)));
@@ -181,14 +181,10 @@ public class DocumentsEditController implements ControlledScene {
             newDocument.setKtoVyd(whoGives);
             newDocument.setDataVyd(date);
 
-            if (selectedDocument == null) {
-                documentService.createDocument(newDocument);
-                mainController.addNewDocument(new DocumentsAdapter(newDocument));
-            }
-            else {
-                documentService.updateDocument(selectedDocument.getId(), newDocument);
-                mainController.updateDocument(selectedDocument, new DocumentsAdapter(newDocument));
-            }
+            if (selectedDocument == null)
+                mainController.addNewDocument(newDocument);
+            else
+                mainController.updateDocument(selectedDocument, newDocument);
 
             closeEdit(null);
             Popup.successSave();
