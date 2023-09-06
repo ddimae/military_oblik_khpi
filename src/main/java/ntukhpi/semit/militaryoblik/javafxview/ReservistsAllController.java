@@ -7,6 +7,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
 import ntukhpi.semit.militaryoblik.entity.Voenkomat;
@@ -80,7 +82,7 @@ public class ReservistsAllController {
     // Список используется для заполнения таблицы.
     private ObservableList<ReservistAdapter> reservistsList = FXCollections.observableArrayList();
 
-    private static Long selectedPrepodId;
+    private static ReservistAdapter selectedReservist;
 
     @Autowired
     FakultetServiceImpl fakultetServiceImpl;
@@ -146,7 +148,9 @@ public class ReservistsAllController {
 
         updateTable(reservistsList);
 
-        //Set handlers for buttons which show details about Reservist
+        // Відновлення вибору рядка перед переходом до іншої форми
+        if (selectedReservist != null)
+            reservistsTableView.getSelectionModel().select(selectedReservist);
     }
 
     public ReservistAdapter setSelectedPrepodId() {
@@ -154,15 +158,14 @@ public class ReservistsAllController {
 
         if (reservist == null)
             return null;
-        selectedPrepodId = reservist.getId();
+        selectedReservist = reservist;
 
-        return reservist;
+        return selectedReservist;
     }
 
     public static Long getSelectedPrepodId() {
-        return selectedPrepodId;
+        return selectedReservist.getId();
     }
-
 
     /**
      * Обработчик событий для фильтрации по выбранным критериям. Срабатывает при выборе значений комбо-бокса.
