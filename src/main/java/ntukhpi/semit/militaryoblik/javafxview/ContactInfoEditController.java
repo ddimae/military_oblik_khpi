@@ -31,15 +31,16 @@ public class ContactInfoEditController implements ControlledScene {
 
     @Getter
     @Setter
-    private class PhoneNumber {
-        String number;
-        boolean isFullNumber;
-        boolean isNoCountryCodeNumber;
-        boolean isNoPlusNumber;
-        boolean isCityNumber;
-        boolean isWrongNumber;
+    private class PhoneNumberForm extends FormTextInput {
+        private String number;
+        private boolean isFullNumber;
+        private boolean isNoCountryCodeNumber;
+        private boolean isNoPlusNumber;
+        private boolean isCityNumber;
+        private boolean isWrongNumber;
 
-        public PhoneNumber(String number) {
+        public PhoneNumberForm(String number) {
+            super(-1, false, null, null, null, null);
             this.number = number;
             isFullNumber = false;
             isNoCountryCodeNumber = false;
@@ -48,7 +49,23 @@ public class ContactInfoEditController implements ControlledScene {
             isWrongNumber = false;
         }
 
-        public void validateNumber(Pattern full, Pattern noCountryCode, Pattern noPlus, Pattern city) {
+        public PhoneNumberForm(String number, int maxLength, boolean isNecessary, String fieldName, String errorMsg) {
+            super(maxLength, isNecessary, null, fieldName, number, errorMsg);
+            this.number = number;
+            isFullNumber = false;
+            isNoCountryCodeNumber = false;
+            isNoPlusNumber = false;
+            isCityNumber = false;
+            isWrongNumber = false;
+        }
+
+        public void validateNumber(Pattern full, Pattern noCountryCode, Pattern noPlus, Pattern city) throws Exception {
+            isFullNumber = false;
+            isNoCountryCodeNumber = false;
+            isNoPlusNumber = false;
+            isCityNumber = false;
+            isWrongNumber = false;
+
             if (full != null && full.matcher(number).matches())
                 isFullNumber = true;
             else if (noCountryCode != null && noCountryCode.matcher(number).matches())
@@ -57,8 +74,12 @@ public class ContactInfoEditController implements ControlledScene {
                 isNoPlusNumber = true;
             else if (city != null && city.matcher(number).matches())
                 isCityNumber = true;
-            else
+            else {
                 isWrongNumber = true;
+                throw new Exception(getErrorMsg());
+            }
+
+            validate();
         }
 
         public void setToUkrStandart() {
@@ -68,6 +89,21 @@ public class ContactInfoEditController implements ControlledScene {
                 number = "+" + number;
             else if (isCityNumber)
                 number = "+38057" + number;
+        }
+
+        public void clone(PhoneNumberForm phone) {
+            setMaxLength(phone.getMaxLength());
+            setNecessary(phone.isNecessary());
+            setRegex(phone.getRegex());
+            setFieldName(phone.getFieldName());
+            setTextField(phone.getTextField());
+            setErrorMsg(phone.getErrorMsg());
+
+            isFullNumber = phone.isFullNumber;
+            isNoCountryCodeNumber = phone.isNoCountryCodeNumber;
+            isNoPlusNumber = phone.isNoPlusNumber;
+            isCityNumber = phone.isCityNumber;
+            isWrongNumber = phone.isWrongNumber;
         }
     }
 
@@ -219,9 +255,9 @@ public class ContactInfoEditController implements ControlledScene {
     }
 
     private boolean validateInfo(String country, String index, String city,
-                              String region, String address, String mainPhone,
-                              String secondPhone, String countyFact, String indexFact,
-                              String cityFact, String regionFact, String addressFact,
+                                 String region, String address, PhoneNumberForm mainPhone,
+                                 PhoneNumberForm secondPhone, String countryFact, String indexFact,
+                                 String cityFact, String regionFact, String addressFact,
                                  boolean isForeinNumber) throws Exception {
         Pattern ukrIndexRegex = Pattern.compile("(\\d{5})?");
         Pattern ukrPhoneFullRegex = Pattern.compile("^(\\+\\d{12})?$");
@@ -234,18 +270,18 @@ public class ContactInfoEditController implements ControlledScene {
         Pattern addressRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії\\d,.\\-\\'\\&_\\s]*$");
 
         FormTextInput countryForm = new FormTextInput(30, true, null, "Країна", country, null);
-        FormTextInput indexForm = new FormTextInput(10, false, country.equals("Україна")?ukrIndexRegex:null, "Індекс", index, "Індекс повинен складатися із 5 цифр");
+        FormTextInput indexForm = new FormTextInput(10, false, String.valueOf(country).equals("Україна")?ukrIndexRegex:null, "Індекс", index, "Індекс повинен складатися із 5 цифр");
         FormTextInput cityForm = new FormTextInput(30, true, cityRegex, "Місто", city, "Назва міста повинна містити тільки українські літери");
         FormTextInput regionForm = new FormTextInput(255, false, null, "Область", region, null);
         FormTextInput addressForm = new FormTextInput(255, true, addressRegex, "Адресса", address, "Адресса може містити українські літери, цифри та розділові знаки");
-        PhoneNumber mainPhoneForm = new PhoneNumber(mainPhoneTextField.getText());
-        PhoneNumber secondPhoneForm = new PhoneNumber(secondPhoneTextField.getText());
+        PhoneNumberForm mainPhoneForm = new PhoneNumberForm(mainPhone.getNumber(), 13, true, "Телефон 1", "Формат телефона повинен виглядати +380951203066, 0951203066, 380951203066, або 7076845");
+        PhoneNumberForm secondPhoneForm = new PhoneNumberForm(secondPhone.getNumber(), 13, false, "Телефон 2", "Формат телефона повинен виглядати +380951203066, 0951203066, 380951203066, або 7076845");
 
-        FormTextInput countryFactForm = new FormTextInput(30, false, null, "Країна", country, null);
-        FormTextInput indexFactForm = new FormTextInput(10, false, country.equals("Україна")?ukrIndexRegex:null, "Індекс", index, "Індекс повинен складатися із 5 цифр");
-        FormTextInput cityFactForm = new FormTextInput(30, false, cityRegex, "Місто", city, "Назва міста повинна містити тільки українські літери");
-        FormTextInput regionFactForm = new FormTextInput(255, false, null, "Область", region, null);
-        FormTextInput addressFactForm = new FormTextInput(255, false, addressRegex, "Адресса", address, "Адресса може містити українські літери, цифри та розділові знаки");
+        FormTextInput countryFactForm = new FormTextInput(30, false, null, "Країна", countryFact, null);
+        FormTextInput indexFactForm = new FormTextInput(10, false, String.valueOf(countryFact).equals("Україна")?ukrIndexRegex:null, "Індекс", indexFact, "Індекс повинен складатися із 5 цифр");
+        FormTextInput cityFactForm = new FormTextInput(30, false, cityRegex, "Місто", cityFact, "Назва міста повинна містити тільки українські літери");
+        FormTextInput regionFactForm = new FormTextInput(255, false, null, "Область", regionFact, null);
+        FormTextInput addressFactForm = new FormTextInput(255, false, addressRegex, "Адресса", addressFact, "Адресса може містити українські літери, цифри та розділові знаки");
 
         try {
             countryForm.validate();
@@ -259,21 +295,19 @@ public class ContactInfoEditController implements ControlledScene {
             addressForm.validate();
             addressFactForm.validate();
             if (isForeinNumber) {
-                mainPhoneForm.validateNumber(ukrPhoneFullRegex, ukrPhoneNoCountryCodeRegex, ukrPhoneNoPlusRegex, ukrPhoneCityRegex);
-                secondPhoneForm.validateNumber(ukrPhoneFullRegex, ukrPhoneNoCountryCodeRegex, ukrPhoneNoPlusRegex, ukrPhoneCityRegex);
+                mainPhoneForm.setErrorMsg("Формат іноземного телефона повинен починатися зі знаку '+'");
+                secondPhoneForm.setErrorMsg("Формат іноземного телефона повинен починатися зі знаку '+'");
 
-                if (mainPhoneForm.isWrongNumber || (!secondPhoneForm.getNumber().isEmpty() && secondPhoneForm.isWrongNumber))
-                    throw new Exception("Формат телефона повинен виглядати +380951203066, 0951203066, 380951203066, або 7076845");
-
-                mainPhoneForm.setToUkrStandart();
-                secondPhoneForm.setToUkrStandart();
-            } else {
                 mainPhoneForm.validateNumber(foreinPhoneRegex, null, null, null);
                 secondPhoneForm.validateNumber(foreinPhoneRegex, null, null, null);
-
-                if (mainPhoneForm.isWrongNumber || (!secondPhoneForm.getNumber().isEmpty() && secondPhoneForm.isWrongNumber))
-                    throw new Exception("Формат іноземного телефона повинен починатися зі знаку '+'");
+            } else {
+                mainPhoneForm.validateNumber(ukrPhoneFullRegex, ukrPhoneNoCountryCodeRegex, ukrPhoneNoPlusRegex, ukrPhoneCityRegex);
+                secondPhoneForm.validateNumber(ukrPhoneFullRegex, ukrPhoneNoCountryCodeRegex, ukrPhoneNoPlusRegex, ukrPhoneCityRegex);
             }
+            mainPhone.clone(mainPhoneForm);
+            secondPhone.clone(secondPhoneForm);
+
+
         } catch (Exception e) {
             Popup.wrongInputAlert(e.getMessage());
             return false;
@@ -284,22 +318,23 @@ public class ContactInfoEditController implements ControlledScene {
 
     @FXML
     void saveContactInfo(ActionEvent event) throws Exception {
-        String country = countryComboBox.getValue();
+        String country = DataFormat.getPureValue(countryComboBox);
         String index = indexTextField.getText();
         String city = cityTextField.getText();
-        String region = regionComboBox.getValue();
+        String region = DataFormat.getPureValue(regionComboBox);
         String address = addressTextField.getText();
-        String mainPhone = mainPhoneTextField.getText();
-        String secondPhone = secondPhoneTextField.getText();
+        PhoneNumberForm mainPhone = new PhoneNumberForm(mainPhoneTextField.getText());
+        PhoneNumberForm secondPhone = new PhoneNumberForm(secondPhoneTextField.getText());
 
-        String countryFact = String.valueOf(countryFactComboBox.getValue());
+        String countryFact = DataFormat.getPureValue(countryFactComboBox);
         String indexFact = indexFactTextField.getText();
         String cityFact = cityFactTextField.getText();
-        String regionFact = regionFactComboBox.getValue();
+        String regionFact = DataFormat.getPureValue(regionFactComboBox);
         String addressFact = addressFactTextField.getText();
 
-        boolean isUkraine = country.equals("Україна");
-        boolean isUkraineFact = countryFact.equals("Україна");
+        boolean isUkraine = String.valueOf(country).equals("Україна");
+        boolean isUkraineFact = String.valueOf(countryFact).equals("Україна");
+        boolean isForeinNumber = foreinNumberRadioButton.isSelected();
 
         city = city.trim();
         address = address.trim();
@@ -307,57 +342,21 @@ public class ContactInfoEditController implements ControlledScene {
         if (!validateInfo(country, index, city, region,
                 address, mainPhone, secondPhone,
                 countryFact, indexFact, cityFact,
-                regionFact, addressFact, foreinNumberRadioButton.isSelected()))
+                regionFact, addressFact, isForeinNumber))
             return;
 
+        if (!isForeinNumber) {
+            mainPhone.setToUkrStandart();
+            secondPhone.setToUkrStandart();
+        }
 
         try {
-//            if (country.equals("null") || country.equals("Не визначено"))
-//                throw new Exception("\"Країна реєстрації\" є обов'язковим полем");
-//            if (city.isEmpty())
-//                throw new Exception("\"Місто реєстрації\" є обов'язковим полем");
-//            if (address.isEmpty())
-//                throw new Exception("\"Адреса реєстрації\" є обов'язковим полем");
-//            if (mainPhone.getNumber().isEmpty())
-//                throw new Exception("\"Телефон 1\" є обов'язковим полем");
-//
-//            if ((isUkraine && !ukrIndexRegex.matcher(index).matches()) || ((isUkraineFact && !ukrIndexRegex.matcher(indexFact).matches())))
-//                throw new Exception("Індекс повинен складатися із 5 цифр");
-//
-//            if (!foreinNumberRadioButton.isSelected()) {
-//                mainPhone.validateNumber(ukrPhoneFullRegex, ukrPhoneNoCountryCodeRegex, ukrPhoneNoPlusRegex, ukrPhoneCityRegex);
-//                secondPhone.validateNumber(ukrPhoneFullRegex, ukrPhoneNoCountryCodeRegex, ukrPhoneNoPlusRegex, ukrPhoneCityRegex);
-//
-//                if (mainPhone.isWrongNumber || (!secondPhone.getNumber().isEmpty() && secondPhone.isWrongNumber))
-//                    throw new Exception("Формат телефона повинен виглядати +380951203066, 0951203066, 380951203066, або 7076845");
-//
-//                mainPhone.setToUkrStandart();
-//                secondPhone.setToUkrStandart();
-//            } else {
-//                mainPhone.validateNumber(foreinPhoneRegex, null, null, null);
-//                secondPhone.validateNumber(foreinPhoneRegex, null, null, null);
-//
-//                if (mainPhone.isWrongNumber || (!secondPhone.getNumber().isEmpty() && secondPhone.isWrongNumber))
-//                    throw new Exception("Формат іноземного телефона повинен починатися зі знаку '+'");
-//            }
-//
-//            if (!cityRegex.matcher(city).matches() || !cityRegex.matcher(cityFact).matches())
-//                throw new Exception("Назва міста повинна містити тільки українські літери");
-////            if (!regionRegex.matcher(region).matches() || (!regionRegex.matcher(regionFact).matches()))
-////                throw new Exception("Назва області може містити тільки українські літери та розділові знаки");
-//            if (!addressRegex.matcher(address).matches() || !addressRegex.matcher(addressFact).matches())
-//                throw new Exception("Адресса може містити українські літери, цифри та розділові знаки");
-//
-//
-//            if (countryFact.equals("null")) //TODO Запитати чи це точно потрібно
-//                personalData.setCountry_fact(countryService.getCountryByName("Україна"));
-
             personalData.setCountry(countryService.getCountryByName(country));
             personalData.setPostIndex(index);
             personalData.setCity(city);
             personalData.setRowAddress(address);
-            personalData.setPhoneMain(mainPhone);
-            personalData.setPhoneDop(secondPhone);
+            personalData.setPhoneMain(mainPhone.getNumber());
+            personalData.setPhoneDop(secondPhone.getNumber());
             personalData.setPrepod(prepodService.getPrepodById(selectedReservist.getId()));
             if (isUkraine && regionComboBox.getValue() != null)
                 personalData.setOblastUA(regionUkraineService.getRegionUkraineByName(region));

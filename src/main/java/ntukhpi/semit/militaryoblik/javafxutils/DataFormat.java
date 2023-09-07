@@ -1,5 +1,6 @@
 package ntukhpi.semit.militaryoblik.javafxutils;
 
+import javafx.scene.control.ComboBox;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 
 import java.time.LocalDate;
@@ -26,5 +27,14 @@ public class DataFormat {
         }
 
         return pieces.get(2) + "." + pieces.get(1) + "." + pieces.get(0);
+    }
+
+    public static String getPureValue(ComboBox<String> cb) {
+        String str = cb.getValue();
+
+        if (str == null || str.equals("Не визначено"))
+            return null;
+
+        return str;
     }
 }

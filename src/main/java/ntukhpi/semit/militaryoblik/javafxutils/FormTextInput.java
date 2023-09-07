@@ -4,6 +4,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.regex.Pattern;
@@ -24,13 +25,10 @@ public class FormTextInput {
         if ((textField == null || textField.isBlank()) && isNecessary)
             throw new Exception("\"" + fieldName + "\" є обов'язковим полем");
 
-        if (textField == null)
-            return;
-
         if (regex != null && !regex.matcher(textField).matches())
             throw new Exception(errorMsg);
 
-        if (maxLength != -1 && textField.length() > maxLength)
+        if (maxLength != -1 && textField != null && textField.length() > maxLength)
             throw new Exception("Максимальна довжина поля \"" + fieldName + "\" становить " + maxLength + " символів");
     }
 }
