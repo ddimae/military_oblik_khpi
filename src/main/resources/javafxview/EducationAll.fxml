@@ -8,66 +8,66 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntukhpi.semit.militaryoblik.javafxview.EducationAllController">
-   <children>
-      <GridPane layoutX="-5.0" layoutY="18.0" prefHeight="800.0" prefWidth="1200.0">
-        <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="210.850830078125" minWidth="10.0" prefWidth="45.92692947387695" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="413.8341064453125" minWidth="10.0" prefWidth="396.07307052612305" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="74.6143798828125" minWidth="10.0" prefWidth="46.34002685546875" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="165.74456787109375" minWidth="10.0" prefWidth="141.5093994140625" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="113.65997314453125" minWidth="10.0" prefWidth="36.4906005859375" />
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints maxHeight="22.653602600097656" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="43.849544525146484" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="72.76150512695312" minHeight="10.0" prefHeight="72.76150512695312" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="62.238494873046875" minHeight="10.0" prefHeight="62.238494873046875" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="52.0" minHeight="10.0" prefHeight="52.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="20.614425659179688" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <TextField fx:id="pibTextField" promptText="ПІБ" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="2">
+    <children>
+        <GridPane layoutX="-5.0" layoutY="18.0" prefHeight="800.0" prefWidth="1200.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="210.850830078125" minWidth="10.0" prefWidth="45.92692947387695" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="413.8341064453125" minWidth="10.0" prefWidth="396.07307052612305" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="74.6143798828125" minWidth="10.0" prefWidth="46.34002685546875" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="165.74456787109375" minWidth="10.0" prefWidth="141.5093994140625" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="113.65997314453125" minWidth="10.0" prefWidth="36.4906005859375" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="22.653602600097656" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="43.849544525146484" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="72.76150512695312" minHeight="10.0" prefHeight="72.76150512695312" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="62.238494873046875" minHeight="10.0" prefHeight="62.238494873046875" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="52.0" minHeight="10.0" prefHeight="52.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="20.614425659179688" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Label prefHeight="44.0" prefWidth="377.0" text="Документи про освіту" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="4">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <TableView fx:id="educationTableView" prefHeight="198.0" prefWidth="474.0" GridPane.columnIndex="1" GridPane.columnSpan="6" GridPane.rowIndex="5" GridPane.rowSpan="10">
+                    <columns>
+                        <TableColumn fx:id="vnzColumn" minWidth="0.0" prefWidth="320.0" text="ВНЗ" />
+                        <TableColumn fx:id="yearColumn" minWidth="6.3337554931640625" prefWidth="90.0" text="Рік" />
+                        <TableColumn fx:id="formColumn" minWidth="4.37933349609375" prefWidth="120.0" text="Форма" />
+                        <TableColumn fx:id="specialtyColumn" maxWidth="394.44207763671875" minWidth="0.0" prefWidth="200.0" text="Спеціальність" />
+                        <TableColumn fx:id="qualificationColumn" prefWidth="200.0" text="Кваліфікація" />
+                    </columns>
+                </TableView>
+                <Button mnemonicParsing="false" onAction="#returnToMainForm" prefHeight="50.0" prefWidth="165.0" text="Повернутися" GridPane.columnIndex="8" GridPane.rowIndex="7" />
+                <Button mnemonicParsing="false" onAction="#openAddWindow" prefHeight="50.0" prefWidth="166.0" text="Додати" GridPane.columnIndex="8" GridPane.rowIndex="9" />
+                <Button mnemonicParsing="false" onAction="#openEditWindow" prefHeight="50.0" prefWidth="166.0" text="Змінити" GridPane.columnIndex="8" GridPane.rowIndex="11" />
+                <Button mnemonicParsing="false" onAction="#deleteSelectedRow" prefHeight="50.0" prefWidth="166.0" text="Вилучити" GridPane.columnIndex="8" GridPane.rowIndex="13" />
+            <Text fx:id="pibText" strokeType="OUTSIDE" strokeWidth="0.0" text="ПІБ" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="2">
                <font>
-                  <Font size="24.0" />
+                  <Font size="18.0" />
                </font>
-            </TextField>
-            <Label prefHeight="44.0" prefWidth="377.0" text="Документи про освіту" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="4">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-            <TableView fx:id="educationTableView" prefHeight="198.0" prefWidth="474.0" GridPane.columnIndex="1" GridPane.columnSpan="6" GridPane.rowIndex="5" GridPane.rowSpan="10">
-              <columns>
-                <TableColumn fx:id="vnzColumn" minWidth="0.0" prefWidth="320.0" text="ВНЗ" />
-                <TableColumn fx:id="yearColumn" minWidth="6.3337554931640625" prefWidth="90.0" text="Рік" />
-                  <TableColumn fx:id="formColumn" minWidth="4.37933349609375" prefWidth="120.0" text="Форма" />
-                  <TableColumn fx:id="specialtyColumn" maxWidth="394.44207763671875" minWidth="0.0" prefWidth="200.0" text="Спеціальність" />
-                  <TableColumn fx:id="qualificationColumn" prefWidth="200.0" text="Кваліфікація" />
-              </columns>
-            </TableView>
-            <Button mnemonicParsing="false" onAction="#returnToMainForm" prefHeight="50.0" prefWidth="165.0" text="Повернутися" GridPane.columnIndex="8" GridPane.rowIndex="7" />
-            <Button mnemonicParsing="false" onAction="#openAddWindow" prefHeight="50.0" prefWidth="166.0" text="Додати" GridPane.columnIndex="8" GridPane.rowIndex="9" />
-            <Button mnemonicParsing="false" onAction="#openEditWindow" prefHeight="50.0" prefWidth="166.0" text="Змінити" GridPane.columnIndex="8" GridPane.rowIndex="11" />
-            <Button mnemonicParsing="false" onAction="#deleteSelectedRow" prefHeight="50.0" prefWidth="166.0" text="Вилучити" GridPane.columnIndex="8" GridPane.rowIndex="13" />
-         </children>
-      </GridPane>
-   </children>
+            </Text>
+            </children>
+        </GridPane>
+    </children>
 </AnchorPane>

@@ -1,15 +1,23 @@
 package ntukhpi.semit.militaryoblik.adapters;
 
 
-public class EducationPostgraduateAdapter {
-    Integer year;
-    String type;
-    String vnz;
+import ntukhpi.semit.militaryoblik.entity.Education;
+import ntukhpi.semit.militaryoblik.entity.EducationPostgraduate;
+import ntukhpi.semit.militaryoblik.entity.VNZaklad;
 
-    public EducationPostgraduateAdapter(String type, String vnz, Integer year) {
+public class EducationPostgraduateAdapter {
+    private Integer year;
+    private String type;
+    private VNZaklad vnz;
+
+    public EducationPostgraduateAdapter(String type, VNZaklad vnz, Integer year) {
         this.year = year;
         this.type = type;
         this.vnz = vnz;
+    }
+
+    public EducationPostgraduateAdapter(EducationPostgraduate e) {
+        this(e.getLevelTraining(), e.getVnz(), e.getYearFinish());
     }
 
     public void setYear(Integer year) {
@@ -24,10 +32,10 @@ public class EducationPostgraduateAdapter {
     public String getType() {
         return type;
     }
-    public void setVnz(String vnz) {
+    public void setVnz(VNZaklad vnz) {
         this.vnz = vnz;
     }
-    public String getVnz() {
+    public VNZaklad getVnz() {
         return vnz;
     }
 }

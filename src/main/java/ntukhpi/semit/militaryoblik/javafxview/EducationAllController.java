@@ -4,13 +4,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
+import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
+import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
+import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
+import ntukhpi.semit.militaryoblik.service.EducationServiceImpl;
+import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 
@@ -19,8 +23,10 @@ import java.util.List;
 
 @Component
 public class EducationAllController {
+    private final static String EDUCATION_EDIT_JAVAFX = "/javafxview/EducationEdit.fxml";
+
     @FXML
-    public TextField pibTextField;
+    public Text pibText;
     @FXML
     public TableView<EducationAdapter> educationTableView;
     @FXML
@@ -34,16 +40,50 @@ public class EducationAllController {
     @FXML
     private TableColumn<EducationAdapter, String> qualificationColumn;
 
+    private ObservableList<EducationAdapter> educationObservableList;
+
+    private Prepod selectedPrepod;
+
+    @Autowired
+    EducationServiceImpl educationService;
+
+    @Autowired
+    PrepodServiceImpl prepodService;
+
+    private ObservableList<EducationAdapter> getEducationData() {
+        return FXCollections.observableArrayList(educationService.getAllEducationByPrepod(selectedPrepod).stream().map(EducationAdapter::new).toList());
+    }
+
+    public void initialize() {
+        selectedPrepod = prepodService.getPrepodById(ReservistsAllController.getSelectedPrepodId());
+
+        pibText.setText(MilitaryOblikKhPIMain.getPIB(selectedPrepod));
+
+        vnzColumn.setCellValueFactory(new PropertyValueFactory<>("vnz"));
+        yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
+        formColumn.setCellValueFactory(new PropertyValueFactory<>("form"));
+        specialtyColumn.setCellValueFactory(new PropertyValueFactory<>("speciality"));
+        qualificationColumn.setCellValueFactory(new PropertyValueFactory<>("qualification"));
+
+        educationObservableList = getEducationData();
+
+        updateTable(educationObservableList);
+    }
+
+    private void updateTable(ObservableList<EducationAdapter> educationObservableList) {
+        educationTableView.setItems(educationObservableList);
+    }
+
     @FXML
     private void openAddWindow(ActionEvent event) {
-        MilitaryOblikKhPIMain.openEditWindow("/javafxview/EducationEdit.fxml", "Додати дані про навчання", this, null);
+        MilitaryOblikKhPIMain.openEditWindow(EDUCATION_EDIT_JAVAFX, "Додати дані про навчання", this, null);
     }
 
     @FXML
     private void openEditWindow(ActionEvent event) {
         EducationAdapter selectedEducation = educationTableView.getSelectionModel().getSelectedItem();
         if (selectedEducation != null) {
-            MilitaryOblikKhPIMain.openEditWindow("/javafxview/EducationEdit.fxml", "Редагувати дані про навчання", this, selectedEducation);
+            MilitaryOblikKhPIMain.openEditWindow(EDUCATION_EDIT_JAVAFX, "Редагувати дані про навчання", this, selectedEducation);
         } else {
             Popup.noSelectedRowAlert();
         }
@@ -60,6 +100,7 @@ public class EducationAllController {
 
         if (selectedEducation != null) {
             educationObservableList.remove(selectedEducation);
+//            educationService.deleteEducation(selectedEducation.getVnz());
         } else {
             Popup.noSelectedRowAlert();
         }
@@ -74,32 +115,5 @@ public class EducationAllController {
         educationObservableList.remove(oldEducation);
         educationObservableList.add(newEducation);
         educationTableView.refresh();
-    }
-
-    private ObservableList<EducationAdapter> educationObservableList = getEducationData();
-
-    private ObservableList<EducationAdapter> getEducationData() {
-        List<EducationAdapter> educationArrayList = new ArrayList<>();
-
-        educationArrayList.add(new EducationAdapter(2012, "А12", 120095, "Маркетинг", "Бакалавр з маркетингу", "Харківський національний університет імені В. Н. Каразіна", "Заочна", "бакалавр"));
-        educationArrayList.add(new EducationAdapter(2017, "А03", 432214, "Психологія", "Магістр з психології", "Національний технічний університет «Харківський політехнічний інститут»", "Денна", "магістр"));
-        educationArrayList.add(new EducationAdapter(2022, "А12", 673018, "Інженерія програмного забезпечення", "Бакалавр з інженерії програмного забезпечення", "Харківський національний університет радіоелектроніки", "Денна", "бакалавр"));
-
-        return FXCollections.observableList(educationArrayList);
-    }
-
-
-    public void initialize() {
-        vnzColumn.setCellValueFactory(new PropertyValueFactory<>("vnz"));
-        yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
-        formColumn.setCellValueFactory(new PropertyValueFactory<>("form"));
-        specialtyColumn.setCellValueFactory(new PropertyValueFactory<>("speciality"));
-        qualificationColumn.setCellValueFactory(new PropertyValueFactory<>("qualification"));
-
-        updateTable(educationObservableList);
-    }
-
-    private void updateTable(ObservableList<EducationAdapter> educationObservableList) {
-        educationTableView.setItems(educationObservableList);
     }
 }

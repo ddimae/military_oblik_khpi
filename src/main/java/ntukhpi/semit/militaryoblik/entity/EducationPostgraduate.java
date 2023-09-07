@@ -30,7 +30,7 @@ public class EducationPostgraduate  {
 
     //Рік закінчення
     @Column(name = "year_end",length = 4,nullable = false)
-    private String yearFinish;
+    private Integer yearFinish;
 
     //Рівень навчання - аспірантура, ад'юнктура, докторантура
     //Обирається з переліку (фіксований)

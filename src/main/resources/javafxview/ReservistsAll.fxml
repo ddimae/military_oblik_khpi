@@ -99,7 +99,7 @@
                                 <Insets bottom="10.0" />
                             </GridPane.margin>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="55.0" prefWidth="225.0" text="Дані про післядипломну освіту" wrapText="true" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="6">
+                        <Button mnemonicParsing="false" onAction="#handlePostgraduateEducationButton" prefHeight="55.0" prefWidth="225.0" text="Дані про післядипломну освіту" wrapText="true" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="6">
                             <GridPane.margin>
                                 <Insets />
                             </GridPane.margin>

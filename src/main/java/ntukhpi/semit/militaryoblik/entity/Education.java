@@ -29,12 +29,12 @@ public class Education {
 
     //Рік закінчення
     @Column(name = "year_vypusk",length = 4,nullable = false)
-    private String yearVypusk;
+    private Integer yearVypusk;
     //Серия и номер диплома про закінчення
     @Column(name = "diploma_series",length = 3)
     private String diplomaSeries;
     @Column(name = "diploma_numbers",length = 12)
-    private String diplomaNumber;
+    private Integer diplomaNumber;
 
     //Специальность подготовки
     // У меня - Математичне та програмне забезпечення АСУ

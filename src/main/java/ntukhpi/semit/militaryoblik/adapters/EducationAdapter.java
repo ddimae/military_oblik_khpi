@@ -1,5 +1,8 @@
 package ntukhpi.semit.militaryoblik.adapters;
 
+import ntukhpi.semit.militaryoblik.entity.Education;
+import ntukhpi.semit.militaryoblik.entity.VNZaklad;
+
 public class EducationAdapter {
     private Integer year;
     private String diplomaSeries;
@@ -7,26 +10,32 @@ public class EducationAdapter {
     private String speciality;
     private String qualification;
 
-    private String vnz;
+    private EducationAdapter vnz;
     private String form;
     private String level;
 
     //private String type;
 
-    public EducationAdapter() {
-    }
     public EducationAdapter(Integer year, String diplomaSeries, Integer diplomaNumber,
-                            String speciality, String qualification, String vnz,
+                            String speciality, String qualification, EducationAdapter vnz,
                             String form, String level) {
         this.year = year;
         this.diplomaSeries = diplomaSeries;
         this.diplomaNumber = diplomaNumber;
         this.speciality = speciality;
         this.qualification = qualification;
-        this.vnz =vnz;
+        this.vnz = vnz;
         this.form = form;
         this.level = level;
     }
+
+    public EducationAdapter(Education e) {
+        this(e.getYearVypusk(), e.getDiplomaSeries(), e.getDiplomaNumber(),
+                e.getDiplomaSpeciality(), e.getDiplomaQualification(), e.getVnz(),
+                e.getFormTraining(), e.getLevelTraining());
+    }
+
+    public EducationAdapter() {}
 
     public Integer getYear() {
         return year;
@@ -58,10 +67,11 @@ public class EducationAdapter {
     }
 
 
-    public String getVnz() {
+    public EducationAdapter getVnz() {
         return vnz;
     }
-    public void setVnz(String vnz) {
+
+    public void setVnz(EducationAdapter vnz) {
         this.vnz = vnz;
     }
     public String getForm() {

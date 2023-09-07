@@ -4,19 +4,36 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
+import ntukhpi.semit.militaryoblik.adapters.VNZakladAdapter;
+import ntukhpi.semit.militaryoblik.entity.VNZaklad;
+import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
+import ntukhpi.semit.militaryoblik.service.EducationServiceImpl;
+import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
 
 @Component
 public class EducationEditController implements ControlledScene {
     @FXML
-    public ComboBox<String> vnzComboBox;
+    public Label pibLabel;
+    @FXML
+    public ComboBox<VNZaklad> vnzComboBox;
     @FXML
     public ComboBox<String> formComboBox;
     @FXML
@@ -35,6 +52,15 @@ public class EducationEditController implements ControlledScene {
     private EducationAllController mainController;
     private EducationAdapter selectedEducation;
     private boolean editingExistingEducation;
+
+    private ObservableList<VNZaklad> vnzObservableList;
+
+    private Prepod selectedPrepod;
+
+    @Autowired
+    EducationServiceImpl educationService;
+    @Autowired
+    PrepodServiceImpl prepodService;
 
     @Override
     public void setMainController(Object mainController) {
@@ -72,7 +98,7 @@ public class EducationEditController implements ControlledScene {
         String diplomaSeries = diplomaSeriesTextField.getText();
         String specialty = specialtyTextField.getText();
         String qualification = qualificationTextField.getText();
-        String vnz = vnzComboBox.getValue();
+        EducationAdapter vnz = vnzComboBox.getValue();
         String form = formComboBox.getValue();
         String level = levelComboBox.getValue();
 
@@ -98,7 +124,7 @@ public class EducationEditController implements ControlledScene {
     public void setEducation(EducationAdapter education) {
         this.selectedEducation = education;
         editingExistingEducation = true;
-        vnzComboBox.setValue(education.getVnz());
+        vnzComboBox.setValue((VNZaklad) education.getVnz());
         formComboBox.setValue(education.getForm());
         levelComboBox.setValue(education.getLevel());
         yearTextField.setText(String.valueOf(education.getYear()));
@@ -117,13 +143,16 @@ public class EducationEditController implements ControlledScene {
         }
     }
 
+    private ObservableList<VNZaklad> getAllVNZ() {
+        return FXCollections.observableArrayList(educationService.getAllVNZ());
+    }
+
+    @FXML
+    private void addVNZ(ActionEvent event) {
+        MilitaryOblikKhPIMain.openAddVNZWindow(vnzComboBox, vnzObservableList);
+    }
+
     public void initialize() {
-        ObservableList<String> vnzOptions = FXCollections.observableArrayList(
-                "Харківський національний університет внутрішніх справ",
-                "Харківський національний університет імені В. Н. Каразіна",
-                "Національний технічний університет «Харківський політехнічний інститут»",
-                "Національний університет «Юридична академія України імені Ярослава Мудрого»"
-        );
         ObservableList<String> formOptions = FXCollections.observableArrayList(
                 "Денна",
                 "Заочна"
@@ -134,9 +163,14 @@ public class EducationEditController implements ControlledScene {
                 "спеціаліст"
         );
 
-        vnzComboBox.setItems(vnzOptions);
+        vnzObservableList = getAllVNZ();
+
+        vnzComboBox.setItems(vnzObservableList);
         formComboBox.setItems(formOptions);
         levelComboBox.setItems(levelOptions);
-    }
 
+        selectedPrepod = prepodService.getPrepodById(ReservistsAllController.getSelectedPrepodId());
+
+        pibLabel.setText(MilitaryOblikKhPIMain.getPIB(selectedPrepod));
+    }
 }
