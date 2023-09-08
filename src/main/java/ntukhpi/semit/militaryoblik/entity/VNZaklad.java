@@ -12,7 +12,7 @@ import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Kafedra;
 @Getter
 @Setter
 @NoArgsConstructor
-public class VNZaklad extends EducationAdapter {
+public class VNZaklad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vnz_id")
@@ -44,15 +44,7 @@ public class VNZaklad extends EducationAdapter {
         return vnzShortName + " (" + vnzName + ")";
     }
 
-    public void setName(String name) {
-        this.vnzName = name;
-    }
-
     public void setAbbreviation(String abbreviation) {
         this.vnzShortName = abbreviation;
-    }
-
-    public String getName() {
-        return vnzName;
     }
 }

@@ -4,19 +4,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
-import ntukhpi.semit.militaryoblik.adapters.VNZakladAdapter;
 import ntukhpi.semit.militaryoblik.entity.VNZaklad;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
@@ -25,8 +18,6 @@ import ntukhpi.semit.militaryoblik.service.EducationServiceImpl;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
 
 @Component
 public class EducationEditController implements ControlledScene {
@@ -76,33 +67,28 @@ public class EducationEditController implements ControlledScene {
 
     @FXML
     private void saveEducation() {
-        String yearStr = yearTextField.getText();
-        String diplomaNumberStr = diplomaNumberTextField.getText();
+        String year = yearTextField.getText();
 
-        if (yearStr.length() != 4 || diplomaNumberStr.length() != 6) {
-            Popup.wrongInputAlert("Рік повинен містити 4 цифри. Номер диплома повинен містити 6 цифр");
+        if (year.length() != 4) {
+            Popup.wrongInputAlert("Рік повинен містити 4 цифри");
             return;
         }
 
-        int year;
-        int diplomaNumber;
-
-        try {
-            year = Integer.parseInt(yearStr);
-            diplomaNumber = Integer.parseInt(diplomaNumberStr);
-        } catch (NumberFormatException e) {
-            Popup.wrongInputAlert("Рік і номер диплома повинні бути числами");
-            return;
-        }
-
+        String diplomaNumber = diplomaNumberTextField.getText();
         String diplomaSeries = diplomaSeriesTextField.getText();
+
+        if (!diplomaNumber.matches("^[a-zA-Z0-9]*$") || !diplomaSeries.matches("^[a-zA-Z0-9]*$")) {
+            Popup.wrongInputAlert("Дипломний номер та серія можуть містити лише букви та цифри");
+            return;
+        }
+
         String specialty = specialtyTextField.getText();
         String qualification = qualificationTextField.getText();
-        EducationAdapter vnz = vnzComboBox.getValue();
+        VNZaklad vnz = vnzComboBox.getValue();
         String form = formComboBox.getValue();
         String level = levelComboBox.getValue();
 
-        if (vnz == null || form == null || level == null || diplomaSeries.isEmpty()
+        if (vnz == null || form == null || level == null || diplomaNumber.isEmpty() || diplomaSeries.isEmpty()
                 || specialty.isEmpty() || qualification.isEmpty()) {
             Popup.wrongInputAlert("Заповніть обов'язкові поля"); //TODO Позначити у формі обов'язкові поля!!!
             return;
@@ -120,6 +106,7 @@ public class EducationEditController implements ControlledScene {
 
         ((Stage) vnzComboBox.getScene().getWindow()).close();
     }
+
 
     public void setEducation(EducationAdapter education) {
         this.selectedEducation = education;
