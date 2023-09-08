@@ -23,4 +23,10 @@ public class Stepen {
     private String stepenLong;
     @Column(name="okp_id_nstep")
     private Integer okpIdNaukStepen;
+
+
+    @Override
+    public String toString() {
+        return stepenName;
+    }
 }

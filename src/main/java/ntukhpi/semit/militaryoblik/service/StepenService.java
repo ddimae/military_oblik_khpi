@@ -10,6 +10,8 @@ public interface StepenService {
 
     Stepen getStepenById(Long id);
 
+    Stepen getStepenByName(String stName);
+
     List<Stepen> getAllStepen();
 
     Stepen updateStepen(Long id, Stepen updatedStepen);

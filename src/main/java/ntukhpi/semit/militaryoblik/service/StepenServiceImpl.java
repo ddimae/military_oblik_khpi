@@ -28,6 +28,11 @@ public class StepenServiceImpl implements StepenService {
     }
 
     @Override
+    public Stepen getStepenByName(String stName) {
+        return stepenRepository.getStepenByStepenName(stName);
+    }
+
+    @Override
     public List<Stepen> getAllStepen() {
         return stepenRepository.findAll();
     }

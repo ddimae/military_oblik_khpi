@@ -28,6 +28,11 @@ public class ZvanieServiceImpl implements ZvanieService {
     }
 
     @Override
+    public Zvanie getZvanieByName(String zvName) {
+        return zvanieRepository.getZvanieByZvanieName(zvName);
+    }
+
+    @Override
     public List<Zvanie> getAllZvanie() {
         return zvanieRepository.findAll();
     }

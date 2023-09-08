@@ -7,6 +7,8 @@ import lombok.ToString;
 
 import jakarta.persistence.*;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @Entity
 @Table(name = "military_person")
@@ -24,6 +26,11 @@ public class MilitaryPerson {
     @OneToOne
     @JoinColumn(name = "prepod_id",unique = true,nullable = false)
     private Prepod prepod;
+
+    //ВОС - військово-облікова спеціальність, строго 6 цифр, може починатися з нуля,
+    //тому треба зберігати в строковому вигляді.
+    @Column(length = 6,name="vos",nullable = false)
+    private String vos;
 
     //Категорія обліку - 1 або 2 (2 у більшості)
     //Обирається з переліку (фіксований) - 1 або 2
@@ -61,6 +68,11 @@ public class MilitaryPerson {
     @ManyToOne
     @JoinColumn(name = "voenkomat_id",nullable = false)
     private Voenkomat voenkomat;
+
+    //Перебування на спеціальному обліку - по замовчуванню немає
+    @Column(name = "reserv")
+    @ColumnDefault(value = "немає")
+    private String reserv;
 
     //Придатність
     //Обирається з переліку (фіксований) -  придатний; обмежено-придатний; непридатний

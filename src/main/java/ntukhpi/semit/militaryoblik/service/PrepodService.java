@@ -14,5 +14,7 @@ public interface PrepodService {
     void deletePrepodById(Long id);
     Prepod getPrepodByExapmle(Prepod prepod);
 
+    Prepod getPrepodByExapmleWithDr(Prepod prepod);
+
     void savePrepodToDB(List<Prepod> list);
 }

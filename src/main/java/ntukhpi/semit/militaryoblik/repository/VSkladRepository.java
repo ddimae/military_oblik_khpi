@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface VSkladRepository extends JpaRepository<VSklad, Long> {
+    VSklad findVSkladBySkladName(String vskladName);
+
 }

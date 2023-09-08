@@ -16,5 +16,6 @@ public interface KafedraService {
 
     void deleteKafedra(Long id);
 
+    Kafedra getKafedraByName(String kname);
 
 }

@@ -29,6 +29,11 @@ public class VoenkomatServiceImpl implements VoenkomatService {
     }
 
     @Override
+    public Voenkomat getVoenkomatByName(String voenkomatName) {
+        return voenkomatRepository.findVoenkomatByVoenkomatName(voenkomatName);
+    }
+
+    @Override
     public List<Voenkomat> getAllVoenkomat() {
         return voenkomatRepository.findAll();
     }

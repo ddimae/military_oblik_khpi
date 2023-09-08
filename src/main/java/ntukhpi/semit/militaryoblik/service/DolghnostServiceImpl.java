@@ -46,4 +46,9 @@ public class DolghnostServiceImpl implements DolghnostService {
     public void deleteDolghnost(Long id) {
         dolghnostRepository.deleteById(id);
     }
+
+    @Override
+    public Dolghnost getDolghnostByName(String posadaName) {
+        return dolghnostRepository.getDolghnostByDolghnName(posadaName);
+    }
 }

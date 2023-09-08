@@ -15,4 +15,6 @@ public interface DolghnostService {
     Dolghnost updateDolghnost(Long id, Dolghnost updatedDolghnost);
 
     void deleteDolghnost(Long id);
+
+    Dolghnost getDolghnostByName(String posadaName);
 }

@@ -10,6 +10,8 @@ public interface ZvanieService {
 
     Zvanie getZvanieById(Long id);
 
+    Zvanie getZvanieByName(String zvName);
+
     List<Zvanie> getAllZvanie();
 
     Zvanie updateZvanie(Long id, Zvanie updatedZvanie);

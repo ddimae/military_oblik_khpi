@@ -49,4 +49,9 @@ public class KafedraServiceImpl implements KafedraService {
     public void deleteKafedra(Long id) {
         kafedraRepository.deleteById(id);
     }
+
+    @Override
+    public Kafedra getKafedraByName(String kname) {
+        return kafedraRepository.getKafedraByKname(kname);
+    }
 }

@@ -9,6 +9,7 @@ public interface VSkladService {
     VSklad createVSklad(VSklad vSklad);
 
     VSklad getVSkladById(Long id);
+    VSklad getVSkladByName(String zvanieName);
 
     List<VSklad> getAllVSklad();
 

@@ -28,6 +28,11 @@ public class VZvanieServiceImpl implements VZvanieService {
     }
 
     @Override
+    public VZvanie getVzvanieByName(String vzvanieName) {
+        return vZvanieRepository.findByZvanieName(vzvanieName);
+    }
+
+    @Override
     public List<VZvanie> getAllVZvanie() {
         return vZvanieRepository.findAll();
     }
@@ -46,5 +51,11 @@ public class VZvanieServiceImpl implements VZvanieService {
     @Override
     public void deleteVZvanie(Long id) {
         vZvanieRepository.deleteById(id);
+    }
+
+    @Override
+    public Long getIdVZvanieByName(String vzvanieName) {
+        VZvanie vzv = vZvanieRepository.findByZvanieName(vzvanieName);
+        return vzv!=null?vzv.getId():0L;
     }
 }

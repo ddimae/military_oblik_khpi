@@ -25,4 +25,8 @@ public class VZvanie {
     @Column(name="show_order",nullable = false,unique = true)
     private Integer numOrderShow;
 
+    //Код, до якого відноситься склад: і
+    @Column(name="kod_skladu",nullable = false)
+    private Integer kodSkladu;
+
 }

@@ -21,4 +21,9 @@ public class Dolghnost {
     @Column(length = 40, name="dolghn_name",nullable = false)
     private String dolghnName;
 
+
+    @Override
+    public String toString() {
+        return dolghnName;
+    }
 }

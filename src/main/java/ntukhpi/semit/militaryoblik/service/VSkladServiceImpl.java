@@ -28,6 +28,11 @@ public class VSkladServiceImpl implements VSkladService {
     }
 
     @Override
+    public VSklad getVSkladByName(String vskladName) {
+        return vSkladRepository.findVSkladBySkladName(vskladName);
+    }
+
+    @Override
     public List<VSklad> getAllVSklad() {
         return vSkladRepository.findAll();
     }

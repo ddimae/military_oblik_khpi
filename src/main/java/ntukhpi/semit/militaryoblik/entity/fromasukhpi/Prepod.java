@@ -1,14 +1,12 @@
 package ntukhpi.semit.militaryoblik.entity.fromasukhpi;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 //Унікальним робимо ПІБ+кафедра.
@@ -17,6 +15,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
 public class Prepod {
 
@@ -67,7 +66,6 @@ public class Prepod {
     private String email;
 
     public Prepod(String fam, String imya, String otch, Kafedra kafedra, Dolghnost dolghnost, Zvanie zvanie, Stepen stepen, String email) {
-        id = 0L;
         this.fam = fam;
         this.imya = imya;
         this.otch = otch;
@@ -91,6 +89,19 @@ public class Prepod {
         this.otch = otch;
         this.kafedra = kafedra;
         this.dolghnost = dolghnost;
+    }
+    public Prepod(String fam, String imya, String otch, LocalDate dr,
+                  Kafedra kafedra, Dolghnost dolghnost,
+                  Stepen stepen, Zvanie zvanie,String email) {
+        this.fam = fam;
+        this.imya = imya;
+        this.otch = otch;
+        this.dr = dr;
+        this.kafedra = kafedra;
+        this.dolghnost = dolghnost;
+        this.stepen = stepen;
+        this.zvanie =zvanie;
+        this.email = email;
     }
 
     @Override

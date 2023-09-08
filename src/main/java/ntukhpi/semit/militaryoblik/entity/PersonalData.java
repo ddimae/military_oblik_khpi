@@ -13,6 +13,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
+// После определенных раздумий данная таблица превратилась в таблицу КОНТАКТЫ по сути
+// В план на изменение, но не сейчас
 @Entity
 @Table(name = "person_data")
 @Getter

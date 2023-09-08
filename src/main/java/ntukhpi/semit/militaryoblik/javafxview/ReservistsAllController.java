@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
+import ntukhpi.semit.militaryoblik.entity.MilitaryPerson;
 import ntukhpi.semit.militaryoblik.entity.Voenkomat;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Fakultet;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Kafedra;
@@ -94,6 +95,9 @@ public class ReservistsAllController {
     @Autowired
     PrepodServiceImpl prepodServiceImpl;
 
+    @Autowired
+    MilitaryPersonServiceImpl militaryPersonServiceImpl;
+
     /**
      * Initializes the conkafedraRepositorytroller class. This method is automatically called
      * after the fxml file has been loaded.
@@ -140,8 +144,13 @@ public class ReservistsAllController {
         //FIXME: В случае, если какое-либо поле не будет определено, логика не прописана.
         // Нужно обсудить
         reservistsList.clear();
-        for (Prepod prepod : prepodServiceImpl.getAllPrepod())
-            reservistsList.add(new ReservistAdapter(prepod));
+        for (Prepod prepod : prepodServiceImpl.getAllPrepod()) {
+            MilitaryPerson mp = militaryPersonServiceImpl.getMilitaryPersonByPrepod(prepod);
+            //Виводяться лише ті, хто є військовозабовязаними, тобто мають створений обєкт MilitaryPerson
+            if (mp!=null)
+            reservistsList.add(new ReservistAdapter(mp));
+        }
+
 
 
         updateTable(reservistsList);

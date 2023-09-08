@@ -10,6 +10,8 @@ public interface VoenkomatService {
 
     Voenkomat getVoenkomatById(Long id);
 
+    Voenkomat getVoenkomatByName(String voenkomatName);
+
     List<Voenkomat> getAllVoenkomat();
 
     Voenkomat updateVoenkomat(Long id, Voenkomat updatedVoenkomat);

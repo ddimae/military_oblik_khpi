@@ -24,5 +24,9 @@ public class Zvanie {
     @Column(name="okp_id_uzvan",nullable = false,unique = true)
     private Integer okpIdUchZvan;
 
+    @Override
+    public String toString() {
+        return zvanieName;
+    }
 
 }

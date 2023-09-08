@@ -4,7 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import ntukhpi.semit.militaryoblik.entity.MilitaryPerson;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
+
+import java.time.format.DateTimeFormatter;
+
 /**
  * Автор - Линьков А.
  * Класс для хранения информации о студентах. Временное решение, необходимое для работы с таблицей.
@@ -46,17 +50,19 @@ public class ReservistAdapter {
         this.cathedra = cathedra;
     }
 
-    public ReservistAdapter(Prepod prep) {
+    public ReservistAdapter(MilitaryPerson militaryPerson) {
+        Prepod prep = militaryPerson.getPrepod();
         this.id = prep.getId();
         this.pib = prep.getFam() + " " + prep.getImya() + " " + prep.getOtch();
-        this.dr = "01.01.0000";
-        this.gender = "муж";
-        this.trc = "Десь у Харкові";
-        this.rank = "рядовий";
-        this.vos = "123456";
-        this.type = "Рядовий та сержантський склад";
-        this.category = "інженерно-технічний";
-        this.tck = "Просто ТЦК";
+        this.dr = prep.getDr().toString(); // format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));//"01.01.0000";
+        this.gender = "муж"; // DDE - Еще бы понять, откуда брать значение...
+        this.trc = militaryPerson.getVoenkomat().getVoenkomatName();
+        this.rank = militaryPerson.getVZvanie().getZvanieName();
+        this.vos = militaryPerson.getVos();
+        int kodSkladu = militaryPerson.getVZvanie().getKodSkladu();
+        this.type = kodSkladu == 1 ? "Офіцерський склад" : "Рядовий та сержантський склад";
+        this.category = "" + militaryPerson.getVCategory();
+        this.tck = this.trc; //<=== DDE ??? Внимательно присмотревшись так и не понял ШО ЦЕ?
         this.institute = prep.getKafedra().getFakultet().getFname();
         this.cathedra = prep.getKafedra().getKname();
     }

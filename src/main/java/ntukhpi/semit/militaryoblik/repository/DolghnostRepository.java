@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DolghnostRepository extends JpaRepository<Dolghnost, Long> {
+
+    Dolghnost getDolghnostByDolghnName(String posada);
+
 }
