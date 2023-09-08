@@ -19,9 +19,13 @@ import ntukhpi.semit.militaryoblik.javafxview.AddVNZController;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.sqlite.date.DateParser;
 
 import java.io.IOException;
-import java.util.Objects;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class MilitaryOblikKhPIMain extends Application {
 
@@ -119,10 +123,17 @@ public class MilitaryOblikKhPIMain extends Application {
             Stage stage = new Stage();
             stage.setTitle(title);
             stage.setResizable(false);
+            stage.initStyle(StageStyle.UNDECORATED);
             Scene scene = new Scene(root);
             // Применить стиль
             scene.getStylesheets().add(Objects.requireNonNull(MilitaryOblikKhPIMain.class.getResource(STYLES_JAVAFX)).toExternalForm());
             stage.setScene(scene);
+
+            if (currentStage != null) {
+                currentStage.close();
+
+            }
+            currentStage = stage;
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -146,9 +157,10 @@ public class MilitaryOblikKhPIMain extends Application {
         }
     }
 
-    public static String getPIB(Prepod prepod) {    //TODO Точно створити окремий клас!!!
-        return prepod.getFam() + " " + prepod.getImya() + " " + prepod.getOtch();
-    }
+//     public static String getPIB(Prepod prepod) {    //TODO Точно створити окремий клас!!!
+//         return prepod.getFam() + " " + prepod.getImya() + " " + prepod.getOtch();
+//     }
+
 
     /**
      * Метод для создания Stage на основе fxml
@@ -201,11 +213,10 @@ public class MilitaryOblikKhPIMain extends Application {
             FXMLLoader loader = new FXMLLoader(MilitaryOblikKhPIMain.class.getResource(settings.getFxmlName()));
             Stage stageForShow = getStageByFXMLName(loader, settings.getTitle(),
                     settings.getWidth(), settings.getHeight(), settings.isFullScreen(), settings.isResizable());
-            if (stageForShow != null) {
-                if (currentStage != null) {
-                    currentStage.close();
 
-                }
+            if (stageForShow != null) {
+                if (currentStage != null)
+                    currentStage.close();
                 currentStage = stageForShow;
                 stageForShow.show();
             }

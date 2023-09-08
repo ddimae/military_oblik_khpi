@@ -5,20 +5,19 @@ import lombok.Setter;
 import ntukhpi.semit.militaryoblik.entity.Document;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Getter
 @Setter
-public class DocumentsAdapter {
+public class DocumentAdapter {
     private Long id;
     private String type;
     private String number;
     private String whoGives;
     private LocalDate date;
 
-    public DocumentsAdapter() {}
+    public DocumentAdapter() {}
 
-    public DocumentsAdapter(Long id, String type, String number, String whoGives, LocalDate date) {
+    public DocumentAdapter(Long id, String type, String number, String whoGives, LocalDate date) {
         this.id = id;
         this.type = type;
         this.number = number;
@@ -26,7 +25,7 @@ public class DocumentsAdapter {
         this.date = date;
     }
 
-    public DocumentsAdapter(Document d) {
+    public DocumentAdapter(Document d) {
         this(d.getId(), d.getDocType(), d.getDocNumber(), d.getKtoVyd(), d.getDataVyd());
     }
 }

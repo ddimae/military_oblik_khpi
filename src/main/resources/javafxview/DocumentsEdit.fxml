@@ -17,7 +17,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="600.0" stylesheets="@MOStyles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntukhpi.semit.militaryoblik.javafxview.DocumentsEditController">
    <children>
-      <Text fx:id="pibText" strokeType="OUTSIDE" strokeWidth="0.0" text="ДВУХГЛАВОВ Д. Е" textAlignment="CENTER" wrappingWidth="560.0">
+      <Text fx:id="pibText" strokeType="OUTSIDE" strokeWidth="0.0" text="NONE" textAlignment="CENTER" wrappingWidth="560.0">
          <font>
             <Font size="24.0" />
          </font></Text>
@@ -26,7 +26,7 @@
             <Insets left="30.0" top="20.0" />
          </padding>
       </Label>
-      <ComboBox fx:id="typeComboBox" prefHeight="40.0" prefWidth="580.0" promptText="--Оберіть тип документу" styleClass="obligatory-field" />
+      <ComboBox fx:id="typeComboBox" onAction="#handleTypeChange" prefHeight="40.0" prefWidth="580.0" promptText="--Оберіть тип документу" styleClass="obligatory-field" />
       <HBox prefHeight="50.0" prefWidth="200.0">
          <children>
             <Label prefHeight="27.0" prefWidth="160.0" text="Серія та номер">
@@ -44,7 +44,7 @@
       </HBox>
       <HBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="200.0" spacing="40.0">
          <children>
-            <TextField fx:id="numberTextField" prefHeight="40.0" prefWidth="200.0" promptText="АА123456" styleClass="obligatory-field" />
+            <TextField fx:id="numberTextField" prefHeight="40.0" prefWidth="200.0" promptText="МГ123456" styleClass="obligatory-field" />
          </children>
       </HBox>
       <Label prefWidth="200.0" text="Ким видан">
@@ -55,7 +55,7 @@
             <Insets left="30.0" />
          </padding>
       </Label>
-      <TextArea fx:id="whoGivesTextArea" prefHeight="157.0" prefWidth="560.0" wrapText="true" />
+      <TextArea fx:id="whoGivesTextArea" maxWidth="500.0" minWidth="500.0" prefHeight="109.0" prefWidth="500.0" promptText="Назва органу" styleClass="obligatory-field" />
       <Label prefHeight="48.0" prefWidth="200.0" text="Дата видачі">
          <VBox.margin>
             <Insets top="10.0" />
@@ -64,9 +64,9 @@
             <Insets left="30.0" />
          </padding>
       </Label>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+      <HBox alignment="CENTER" prefHeight="58.0" prefWidth="560.0">
          <children>
-            <DatePicker fx:id="dateDatePicker" prefHeight="40.0" prefWidth="200.0" promptText="23-01-2004" styleClass="obligatory-field" />
+            <DatePicker fx:id="dateDatePicker" prefHeight="40.0" prefWidth="200.0" promptText="23.01.2004" styleClass="obligatory-field" />
             <HBox alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="434.0">
                <children>
                   <Pane maxHeight="30.0" prefHeight="30.0" prefWidth="50.0" styleClass="obligatory-field" />

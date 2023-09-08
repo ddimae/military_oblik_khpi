@@ -113,6 +113,7 @@ public class EducationPostgraduateEditController implements Initializable, Contr
     private void closeEdit(ActionEvent event) {
         try {
             ((Stage) typeComboBox.getScene().getWindow()).close();
+//            MilitaryOblikKhPIMain;
         } catch (Exception e) {
             e.printStackTrace();
         }
