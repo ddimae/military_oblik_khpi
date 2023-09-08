@@ -39,7 +39,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public Document updateDocument(Long id, Document updatedDocument) {
+    public Document updateDocument(Long id, Document updatedDocument) {     //TODO Чи точно потрібно так складно?
         Document existingDocument = documentRepository.findById(id).orElse(null);
         if (existingDocument != null) {
             updatedDocument.setId(existingDocument.getId());

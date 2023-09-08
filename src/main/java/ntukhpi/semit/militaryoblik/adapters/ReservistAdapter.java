@@ -1,10 +1,10 @@
 package ntukhpi.semit.militaryoblik.adapters;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
+
+import java.util.Objects;
+
 /**
  * Автор - Линьков А.
  * Класс для хранения информации о студентах. Временное решение, необходимое для работы с таблицей.
@@ -12,6 +12,7 @@ import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 @Getter
 @Setter
 @AllArgsConstructor
+@EqualsAndHashCode
 public class ReservistAdapter {
     private long id;
     private String pib;
@@ -72,5 +73,4 @@ public class ReservistAdapter {
         sb.append(')');
         return sb.toString();
     }
-
 }
