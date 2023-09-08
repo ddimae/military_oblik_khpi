@@ -10,13 +10,19 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import ntukhpi.semit.militaryoblik.adapters.DocumentsAdapter;
-import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
+import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
+import ntukhpi.semit.militaryoblik.adapters.DocumentAdapter;
+import ntukhpi.semit.militaryoblik.entity.Document;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
-import org.springframework.cglib.core.Local;
+import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
+import ntukhpi.semit.militaryoblik.javafxutils.Popup;
+import ntukhpi.semit.militaryoblik.service.DocumentServiceImpl;
+import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.regex.Pattern;
 
 @Component
 public class DocumentsEditController implements ControlledScene {
@@ -37,8 +43,15 @@ public class DocumentsEditController implements ControlledScene {
     private ComboBox<String> typeComboBox;
 
     private DocumentsAllController mainController;
-    private DocumentsAdapter selectedDocument;
-    private boolean editingExistingDocument;
+    private Long selectedPrepodId;
+    private DocumentAdapter selectedDocument;
+//    private boolean editingExistingDocument;
+
+    @Autowired
+    PrepodServiceImpl prepodService;
+
+    @Autowired
+    DocumentServiceImpl documentService;
 
     @Override
     public void setMainController(Object mainController) {
@@ -47,91 +60,137 @@ public class DocumentsEditController implements ControlledScene {
 
     @Override
     public void setData(Object data) {
-        if (data instanceof DocumentsAdapter) {
-            setDocument((DocumentsAdapter) data);
-        }
+        setDocument((DocumentAdapter) data);
     }
 
-    private void setDocument(DocumentsAdapter document) {
-        this.selectedDocument = document;
-        editingExistingDocument = true;
-//        pibText.setText(document.getPib()); //TODO Ім'я та побатькові зробити ініціалами. Розробити окрему функцію
-        typeComboBox.setValue(document.getType());
-        numberTextField.setText(document.getNumber());
-        whoGivesTextArea.setText(document.getWhoGives());
-        dateDatePicker.setValue(document.getDate());
+    private void setDocument(DocumentAdapter document) {
+        selectedPrepodId = ReservistsAllController.getSelectedPrepodId();
+
+        pibText.setText(DataFormat.getPIB(prepodService.getPrepodById(selectedPrepodId)));
+
+        selectedDocument = document;
+        if (selectedDocument == null)
+            return;
+
+        typeComboBox.setValue(selectedDocument.getType());
+        numberTextField.setText(selectedDocument.getNumber());
+        whoGivesTextArea.setText(selectedDocument.getWhoGives());
+        dateDatePicker.setValue(selectedDocument.getDate());
     }
 
     @FXML
     void closeEdit(ActionEvent event) {
         try {
             ((Stage) typeComboBox.getScene().getWindow()).close();
+            MilitaryOblikKhPIMain.showDocumentsWindow();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @FXML
+    void handleTypeChange(ActionEvent event) {
+        String type = typeComboBox.getValue();
+        switch (type) {
+            case "ID картка":
+                numberTextField.setPromptText("123456789");
+                whoGivesTextArea.setPromptText("1234");
+                break;
+            case "Закордонний паспорт":
+                numberTextField.setPromptText("VG123456");
+                whoGivesTextArea.setPromptText("1234");
+                break;
+            case "Паперовий паспорт":
+            case "Посвідчення особи офіцера":
+            case "Військовий квиток":
+            default:
+                numberTextField.setPromptText("МГ123456");
+                whoGivesTextArea.setPromptText("Назва органу");
+                break;
+        }
+    }
+
+    @FXML
     void saveDocuments(ActionEvent event) {
-        //TODO валідація введених даних
-//        try {
-//            String docType = typeComboBox.getValue();
-//            //TODO Брати із БД список всіх доків особи, дивитись які є і вилучати
-//
-//            String number = numberTextField.getText();
-//            String whoGives = whoGivesTextArea.getText();
-//            String dateString = dateDatePicker.getAccessibleText();
-//            LocalDate date;
-//
-//            try {   //TODO Недороблені останні кейси
-//                switch (docType) {
-//                    case "Паперовий паспорт":
-////                        if (!series.matches("^$"))
-////                            throw new Exception("Серія паперового паспорта повинна містити 2 великі українські літери");
-//                        if (!number.matches("^[А-ЩЬЮЯҐЄІЇ]{2}\\d{6}$"))
-//                            throw new Exception("Серія та номер паперовога паспорта повинні містити 2 великі українські літери та 6 цифр");
-//                        if (!whoGives.matches("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії0-9\\s.,]{0,255}$"))
-//                            throw new Exception("Поле \"Ким видан\" може містити українські літери, цифри, розділові знаки (максимум 255 символів)");
-//                        break;
-//                    case "ID картка":
-//                        if (!number.matches("^\\d{9}$"))
-//                            throw new Exception("Номер ID картки повинен містити 9 цифр");
-//                        if (!whoGives.matches("^\\d{4}$"))
-//                            throw new Exception("Поле \"Ким видан\" може містити тільки 4 цифри");
-//                        break;
-//                    case "Закордонний паспорт":
-//                        if (!number.matches("^[A-Z]{2}\\d{6}$"))
-//                            throw new Exception("Серія та номер закордонного паспорта повинні містити 2 великі латинські літери та 6 цифр");
-//                        if (!whoGives.matches("^\\d{4}$"))
-//                            throw new Exception("Поле \"Ким видан\" може містити тільки 4 цифри");
-//                        break;
-//                    case "Посвідчення особи офіцера":
-//                        if (!number.matches("^[А-ЩЬЮЯҐЄІЇ]{2}\\d{6}$"))
-//                            throw new Exception("Серія та номер посвідчення повинні містити 2 великі українські літери та 6 цифр");
-//                        if (!whoGives.matches("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії0-9\\s.,]{0,255}$"))
-//                            throw new Exception("Поле \"Ким видан\" може містити українські літери, цифри, розділові знаки (максимум 255 символів)");
-//                        break;
-//                    case "Військовий квиток":
-//                        if (!number.matches("^[А-ЩЬЮЯҐЄІЇ]{2}\\d{6}$"))
-//                            throw new Exception("Серія та номер посвідчення повинні містити 2 великі українські літери та 6 цифр");
-//                        if (!whoGives.matches("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії0-9\\s.,]{0,255}$"))
-//                            throw new Exception("Поле \"Ким видан\" може містити українські літери, цифри, розділові знаки (максимум 255 символів)");
-//                        break;
-//                }
-//                try {
-//                    date = LocalDate.parse(dateString);
-//                } catch (Exception e) {
-//                    throw new Exception("Неправильний формат дати: dd.mm.yyyy");
-//                }
-//            } catch (Exception e) {
-//                System.out.println(e.getMessage());
-//            }
-//
-//
-////            DocumentsAdapter editedDocument = new DocumentsAdapter(pibText.getText(), , , , , );
-//        } catch (Exception e) {
-//            System.out.println("Error here");
-//        }
+        String docType = String.valueOf(typeComboBox.getValue());
+        //TODO Брати із БД список всіх доків особи, дивитись які є і вилучати
+
+        String number = numberTextField.getText();
+        String whoGives = whoGivesTextArea.getText();
+        LocalDate date = dateDatePicker.getValue();
+        String dateString = DataFormat.localDateToUkStandart(date);
+
+          //TODO мейбі перенести після зберігання в бд
+
+        Pattern ukrOldSeriesNumberRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇ]{2}\\d{6}$");
+        Pattern ukrOldWhoGivesRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії0-9\\\\s.,]{1,255}$");
+        Pattern newSeriesRegex = Pattern.compile("^\\d{9}$");
+        Pattern newWhoGivesRegex = Pattern.compile("^\\d{4}$");
+        Pattern enOldSeriesNumberRegex = Pattern.compile("^[A-Z]{2}\\d{6}$");
+
+        number = number.trim();
+        whoGives = whoGives.trim();
+
+        try {
+            if (docType.equals("null") || docType.isEmpty())
+                throw new Exception("\"Тип документа\" є обов'язковим полем");
+            if (number.isEmpty())
+                throw new Exception("\"Серія та номер\" є обов'язковим полем");
+            if (whoGives.isEmpty())
+                throw new Exception("\"Ким видан\" є обов'язковим полем");
+            if (date == null) {
+                dateDatePicker.setValue(null);
+                throw new Exception("Неправильний формат дати: dd.mm.yyyy");
+            }
+            if (dateString == null || dateString.isEmpty())
+                throw new Exception("\"Дата видачі\" є обов'язковим полем");
+
+            switch (docType) {
+                case "Паперовий паспорт":
+                    if (!ukrOldSeriesNumberRegex.matcher(number).matches())
+                        throw new Exception("Серія та номер паперовога паспорта повинні містити 2 великі українські літери та 6 цифр");
+                    if (!ukrOldWhoGivesRegex.matcher(whoGives).matches())
+                        throw new Exception("Поле \"Ким видан\" може містити українські літери, цифри, розділові знаки (максимум 255 символів)");
+                    break;
+                case "ID картка":
+                    if (!newSeriesRegex.matcher(number).matches())
+                        throw new Exception("Номер ID картки повинен містити 9 цифр");
+                    if (!newWhoGivesRegex.matcher(whoGives).matches())
+                        throw new Exception("Поле \"Ким видан\" може містити тільки 4 цифри");
+                    break;
+                case "Закордонний паспорт":
+                    if (!enOldSeriesNumberRegex.matcher(number).matches())
+                        throw new Exception("Серія та номер закордонного паспорта повинні містити 2 великі латинські літери та 6 цифр");
+                    if (!newWhoGivesRegex.matcher(whoGives).matches())
+                        throw new Exception("Поле \"Ким видан\" може містити тільки 4 цифри");
+                    break;
+                case "Посвідчення особи офіцера":
+                case "Військовий квиток":
+                    if (!ukrOldSeriesNumberRegex.matcher(number).matches())
+                        throw new Exception("Серія та номер посвідчення повинні містити 2 великі українські літери та 6 цифр");
+                    if (!ukrOldWhoGivesRegex.matcher(whoGives).matches())
+                        throw new Exception("Поле \"Ким видан\" може містити українські літери, цифри, розділові знаки (максимум 255 символів)");
+                    break;
+            }
+
+            Document newDocument = new Document();
+
+            newDocument.setPrepod(prepodService.getPrepodById(selectedPrepodId));
+            newDocument.setDocType(docType);
+            newDocument.setDocNumber(number);
+            newDocument.setKtoVyd(whoGives);
+            newDocument.setDataVyd(date);
+
+            if (selectedDocument == null)
+                mainController.addNewDocument(newDocument);
+            else
+                mainController.updateDocument(selectedDocument, newDocument);
+
+            closeEdit(null);
+            Popup.successSave();
+        } catch (Exception e) {
+            Popup.wrongInputAlert(e.getMessage());
+        }
     }
 
     public void initialize() {
