@@ -26,7 +26,7 @@ public class FormTextInput {
             throw new Exception("\"" + fieldName + "\" є обов'язковим полем");
 
         if (regex != null && !regex.matcher(textField).matches())
-            throw new Exception(errorMsg);
+            throw new Exception("\"" + fieldName + "\" " + errorMsg);
 
         if (maxLength != -1 && textField != null && textField.length() > maxLength)
             throw new Exception("Максимальна довжина поля \"" + fieldName + "\" становить " + maxLength + " символів");

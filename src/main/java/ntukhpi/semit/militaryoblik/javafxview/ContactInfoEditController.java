@@ -269,19 +269,19 @@ public class ContactInfoEditController implements ControlledScene {
         Pattern regionRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії,.\\s]*$");
         Pattern addressRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії\\d,.\\-\\'\\&_\\s]*$");
 
-        FormTextInput countryForm = new FormTextInput(30, true, null, "Країна", country, null);
-        FormTextInput indexForm = new FormTextInput(10, false, String.valueOf(country).equals("Україна")?ukrIndexRegex:null, "Індекс", index, "Індекс повинен складатися із 5 цифр");
-        FormTextInput cityForm = new FormTextInput(30, true, cityRegex, "Місто", city, "Назва міста повинна містити тільки українські літери");
+        FormTextInput countryForm = new FormTextInput(-1, true, null, "Країна", country, null);
+        FormTextInput indexForm = new FormTextInput(10, false, String.valueOf(country).equals("Україна")?ukrIndexRegex:null, "Індекс", index, "повинно складатися із 5 цифр");
+        FormTextInput cityForm = new FormTextInput(30, true, cityRegex, "Місто", city, "повинно містити тільки українські літери");
         FormTextInput regionForm = new FormTextInput(255, false, null, "Область", region, null);
-        FormTextInput addressForm = new FormTextInput(255, true, addressRegex, "Адресса", address, "Адресса може містити українські літери, цифри та розділові знаки");
-        PhoneNumberForm mainPhoneForm = new PhoneNumberForm(mainPhone.getNumber(), 13, true, "Телефон 1", "Формат телефона повинен виглядати +380951203066, 0951203066, 380951203066, або 7076845");
-        PhoneNumberForm secondPhoneForm = new PhoneNumberForm(secondPhone.getNumber(), 13, false, "Телефон 2", "Формат телефона повинен виглядати +380951203066, 0951203066, 380951203066, або 7076845");
+        FormTextInput addressForm = new FormTextInput(255, true, addressRegex, "Адресса", address, "може містити українські літери, цифри та розділові знаки");
+        PhoneNumberForm mainPhoneForm = new PhoneNumberForm(mainPhone.getNumber(), 13, true, "Телефон 1", "повинно мати форму: +380951203066, 0951203066, 380951203066 або 7076845");
+        PhoneNumberForm secondPhoneForm = new PhoneNumberForm(secondPhone.getNumber(), 13, false, "Телефон 2", "повинно мати форму: +380951203066, 0951203066, 380951203066, або 7076845");
 
-        FormTextInput countryFactForm = new FormTextInput(30, false, null, "Країна", countryFact, null);
-        FormTextInput indexFactForm = new FormTextInput(10, false, String.valueOf(countryFact).equals("Україна")?ukrIndexRegex:null, "Індекс", indexFact, "Індекс повинен складатися із 5 цифр");
-        FormTextInput cityFactForm = new FormTextInput(30, false, cityRegex, "Місто", cityFact, "Назва міста повинна містити тільки українські літери");
+        FormTextInput countryFactForm = new FormTextInput(-1, false, null, "Країна", countryFact, null);
+        FormTextInput indexFactForm = new FormTextInput(10, false, String.valueOf(countryFact).equals("Україна")?ukrIndexRegex:null, "Індекс", indexFact, "повинно складатися із 5 цифр");
+        FormTextInput cityFactForm = new FormTextInput(30, false, cityRegex, "Місто", cityFact, "повинно містити тільки українські літери");
         FormTextInput regionFactForm = new FormTextInput(255, false, null, "Область", regionFact, null);
-        FormTextInput addressFactForm = new FormTextInput(255, false, addressRegex, "Адресса", addressFact, "Адресса може містити українські літери, цифри та розділові знаки");
+        FormTextInput addressFactForm = new FormTextInput(255, false, addressRegex, "Адресса", addressFact, "може містити українські літери, цифри та розділові знаки");
 
         try {
             countryForm.validate();
@@ -295,8 +295,8 @@ public class ContactInfoEditController implements ControlledScene {
             addressForm.validate();
             addressFactForm.validate();
             if (isForeinNumber) {
-                mainPhoneForm.setErrorMsg("Формат іноземного телефона повинен починатися зі знаку '+'");
-                secondPhoneForm.setErrorMsg("Формат іноземного телефона повинен починатися зі знаку '+'");
+                mainPhoneForm.setErrorMsg("має іноземний формат та повинен починатися зі знаку '+'");
+                secondPhoneForm.setErrorMsg("має іноземний формат та повинен починатися зі знаку '+'");
 
                 mainPhoneForm.validateNumber(foreinPhoneRegex, null, null, null);
                 secondPhoneForm.validateNumber(foreinPhoneRegex, null, null, null);
@@ -310,6 +310,7 @@ public class ContactInfoEditController implements ControlledScene {
 
         } catch (Exception e) {
             Popup.wrongInputAlert(e.getMessage());
+
             return false;
         }
 
@@ -318,18 +319,18 @@ public class ContactInfoEditController implements ControlledScene {
 
     @FXML
     void saveContactInfo(ActionEvent event) throws Exception {
-        String country = DataFormat.getPureValue(countryComboBox);
+        String country = DataFormat.getPureComboboxValue(countryComboBox);
         String index = indexTextField.getText();
         String city = cityTextField.getText();
-        String region = DataFormat.getPureValue(regionComboBox);
+        String region = DataFormat.getPureComboboxValue(regionComboBox);
         String address = addressTextField.getText();
         PhoneNumberForm mainPhone = new PhoneNumberForm(mainPhoneTextField.getText());
         PhoneNumberForm secondPhone = new PhoneNumberForm(secondPhoneTextField.getText());
 
-        String countryFact = DataFormat.getPureValue(countryFactComboBox);
+        String countryFact = DataFormat.getPureComboboxValue(countryFactComboBox);
         String indexFact = indexFactTextField.getText();
         String cityFact = cityFactTextField.getText();
-        String regionFact = DataFormat.getPureValue(regionFactComboBox);
+        String regionFact = DataFormat.getPureComboboxValue(regionFactComboBox);
         String addressFact = addressFactTextField.getText();
 
         boolean isUkraine = String.valueOf(country).equals("Україна");

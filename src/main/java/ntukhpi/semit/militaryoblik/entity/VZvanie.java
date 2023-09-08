@@ -29,4 +29,7 @@ public class VZvanie {
     @Column(name="kod_skladu",nullable = false)
     private Integer kodSkladu;
 
+    public String getSkladName() {
+        return kodSkladu == 1 ? "Офіцерський склад" : "Рядовий та сержантський склад";
+    }
 }
