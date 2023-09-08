@@ -2,15 +2,21 @@ package ntukhpi.semit.militaryoblik;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import ntukhpi.semit.militaryoblik.entity.VNZaklad;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.SettingsStage;
+import ntukhpi.semit.militaryoblik.javafxview.AddVNZController;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.sqlite.date.DateParser;
@@ -64,8 +70,16 @@ public class MilitaryOblikKhPIMain extends Application {
 //
 //    private static SettingsStage registrationAll =
 //            new SettingsStage(MILITARY_REGISTRATION_JAVAFX, MILITARY_REGISTRATION_JAVAFX_TITLE, 0, 0, false, true);
-//    private final static String EDUCATION_POSTGRADUATE_JAVAFX = "/javafxview/EducationPostgraduateAll.fxml";
-//    private final static String EDUCATION_POSTGRADUATE_JAVAFX_TITLE = "Післядипломна освіта";
+    //============================
+    private final static String EDUCATION_POSTGRADUATE_JAVAFX = "/javafxview/EducationPostgraduateAll.fxml";
+    private final static String EDUCATION_POSTGRADUATE_JAVAFX_TITLE = "Післядипломна освіта";
+    private static SettingsStage educationPostgraduateAll =
+            new SettingsStage(EDUCATION_POSTGRADUATE_JAVAFX, EDUCATION_POSTGRADUATE_JAVAFX_TITLE,
+                    0, 0, false, true);
+    //============================
+    private final static String VNZ_ADD_JAVAFX = "/javafxview/AddVNZ.fxml";
+    private final static String VNZ_ADD_JAVAFX_TITLE = "Додати ВНЗ";
+    //============================
 
     public static ConfigurableApplicationContext applicationContext; //was private
     static Parent rootNode; //was private
@@ -125,6 +139,28 @@ public class MilitaryOblikKhPIMain extends Application {
             e.printStackTrace();
         }
     }
+
+
+    public static void openAddVNZWindow(ComboBox<VNZaklad> comboBox, ObservableList<VNZaklad> observableList) {
+        try {
+            FXMLLoader loader = new FXMLLoader(MilitaryOblikKhPIMain.class.getResource(VNZ_ADD_JAVAFX));
+            Parent root = loader.load();
+
+            AddVNZController addVNZController = loader.getController();
+            addVNZController.setVNZData(comboBox, observableList);
+
+            Stage stage = new Stage();
+            stage.setTitle(VNZ_ADD_JAVAFX_TITLE);
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+ //   public static String getPIB(Prepod prepod) {    //TODO Точно створити окремий клас!!!
+ //       return prepod.getFam() + " " + prepod.getImya() + " " + prepod.getOtch();
+ //   }
 
     /**
      * Метод для создания Stage на основе fxml
@@ -225,6 +261,10 @@ public class MilitaryOblikKhPIMain extends Application {
 
     public static void showEducationWindow() {
         showStage(educationAll);
+    }
+
+    public static void showPostgraduateEducationWindow() {
+        showStage(educationPostgraduateAll);
     }
 
     public static void showDocumentsWindow() {
