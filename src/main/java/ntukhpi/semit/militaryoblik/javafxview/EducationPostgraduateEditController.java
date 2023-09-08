@@ -73,19 +73,10 @@ public class EducationPostgraduateEditController implements Initializable, Contr
 
     @FXML
     private void saveEducation() {
-        String yearStr = yearTextField.getText();
+        String year = yearTextField.getText();
 
-        if (yearStr.length() != 4) {
+        if (year.length() != 4) {
             Popup.wrongInputAlert("Рік повинен містити 4 цифри");
-            return;
-        }
-
-        int year;
-
-        try {
-            year = Integer.parseInt(yearStr);
-        } catch (NumberFormatException e) {
-            Popup.wrongInputAlert("Рік повинен бути числом");
             return;
         }
 

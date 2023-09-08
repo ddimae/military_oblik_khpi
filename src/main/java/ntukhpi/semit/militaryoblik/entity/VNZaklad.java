@@ -44,7 +44,15 @@ public class VNZaklad {
         return vnzShortName + " (" + vnzName + ")";
     }
 
+    public void setName(String name) {
+        this.vnzName = name;
+    }
+
     public void setAbbreviation(String abbreviation) {
         this.vnzShortName = abbreviation;
+    }
+
+    public String getName() {
+        return vnzName;
     }
 }
