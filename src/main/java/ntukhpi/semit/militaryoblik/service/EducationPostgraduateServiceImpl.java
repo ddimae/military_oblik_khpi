@@ -1,7 +1,11 @@
 package ntukhpi.semit.militaryoblik.service;
 
+import ntukhpi.semit.militaryoblik.entity.Education;
 import ntukhpi.semit.militaryoblik.entity.EducationPostgraduate;
+import ntukhpi.semit.militaryoblik.entity.VNZaklad;
+import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.repository.EducationPostgraduateRepository;
+import ntukhpi.semit.militaryoblik.repository.VNZakladRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +37,11 @@ public class EducationPostgraduateServiceImpl implements EducationPostgraduateSe
     }
 
     @Override
+    public List<EducationPostgraduate> getAllEducationPostgraduateByPrepod(Prepod prepod) {
+        return educationPostgraduateRepository.findAllByPrepod(prepod);
+    }
+
+    @Override
     public EducationPostgraduate updateEducationPostgraduate(Long id, EducationPostgraduate updatedEducationPostgraduate) {
         EducationPostgraduate existingEducationPostgraduate = educationPostgraduateRepository.findById(id).orElse(null);
         if (existingEducationPostgraduate != null) {
@@ -46,5 +55,12 @@ public class EducationPostgraduateServiceImpl implements EducationPostgraduateSe
     @Override
     public void deleteEducationPostgraduate(Long id) {
         educationPostgraduateRepository.deleteById(id);
+    }
+
+    @Autowired
+    private VNZakladRepository vnzakladRepository;
+
+    public List<VNZaklad> getAllVNZ() {
+        return vnzakladRepository.findAll();
     }
 }

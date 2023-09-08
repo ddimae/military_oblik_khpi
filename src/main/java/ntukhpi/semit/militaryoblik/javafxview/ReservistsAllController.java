@@ -247,6 +247,14 @@ public class ReservistsAllController {
     }
 
     @FXML
+    private void handlePostgraduateEducationButton() {
+        if (setSelectedPrepodId() != null)
+            MilitaryOblikKhPIMain.showPostgraduateEducationWindow();
+        else
+            Popup.noSelectedRowAlert();
+    }
+
+    @FXML
     private void handleDocumentsButton() {
         if (setSelectedPrepodId() != null)
             MilitaryOblikKhPIMain.showDocumentsWindow();
