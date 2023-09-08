@@ -125,6 +125,7 @@ public class EducationEditController implements ControlledScene {
     private void closeEdit(ActionEvent event) {
         try {
             ((Stage) vnzComboBox.getScene().getWindow()).close();
+            MilitaryOblikKhPIMain.showEducationWindow();
         } catch (Exception e) {
             e.printStackTrace();
         }
