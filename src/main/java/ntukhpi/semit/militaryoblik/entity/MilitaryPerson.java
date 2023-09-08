@@ -78,11 +78,4 @@ public class MilitaryPerson {
     //Обирається з переліку (фіксований) -  придатний; обмежено-придатний; непридатний
     @Column(name = "v_prydatnist")
     private String vPrydatnist;
-
-
-
-
-
-
-
 }

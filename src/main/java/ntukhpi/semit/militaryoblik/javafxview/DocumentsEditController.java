@@ -13,11 +13,14 @@ import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.DocumentAdapter;
 import ntukhpi.semit.militaryoblik.entity.Document;
+import ntukhpi.semit.militaryoblik.entity.MilitaryPerson;
+import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.FormTextInput;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.service.DocumentServiceImpl;
+import ntukhpi.semit.militaryoblik.service.MilitaryPersonServiceImpl;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,6 +29,7 @@ import java.text.Normalizer;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.regex.Pattern;
 
 @Component
@@ -47,7 +51,7 @@ public class DocumentsEditController implements ControlledScene {
     private ComboBox<String> typeComboBox;
 
     private DocumentsAllController mainController;
-    private Long selectedPrepodId;
+    private Prepod selectedPrepod;
     private DocumentAdapter selectedDocument;
 
     @Autowired
@@ -55,6 +59,9 @@ public class DocumentsEditController implements ControlledScene {
 
     @Autowired
     DocumentServiceImpl documentService;
+
+    @Autowired
+    MilitaryPersonServiceImpl militaryPersonService;
 
     @Override
     public void setMainController(Object mainController) {
@@ -67,11 +74,37 @@ public class DocumentsEditController implements ControlledScene {
     }
 
     private void setDocument(DocumentAdapter document) {
-        selectedPrepodId = ReservistsAllController.getSelectedPrepodId();
+        selectedPrepod = prepodService.getPrepodById(ReservistsAllController.getSelectedPrepodId());
 
-        pibText.setText(DataFormat.getPIB(prepodService.getPrepodById(selectedPrepodId)));
-
+        pibText.setText(DataFormat.getPIB(selectedPrepod));
         selectedDocument = document;
+
+        for (Document doc : documentService.getAllDocumentByPrepod(selectedPrepod)) {
+            if (selectedDocument == null || !selectedDocument.getType().equals(doc.getDocType())) {
+                System.out.println("Remove " + doc.getDocType());
+                typeComboBox.getItems().remove(doc.getDocType());
+            }
+            if (selectedDocument == null)
+                switch (doc.getDocType()) {
+                    case "Паперовий паспорт":
+                        System.out.println("Remove idcard");
+                        typeComboBox.getItems().remove("ID картка");
+                        break;
+                    case "ID картка":
+                        System.out.println("Remove paper passpoert");
+                        typeComboBox.getItems().remove("Паперовий паспорт");
+                }
+        }
+        switch (militaryPersonService.getMilitaryPersonByPrepod(selectedPrepod).getVZvanie().getSkladName()) {
+            case "Офіцерський склад":
+                System.out.println("remove kvytok");
+                typeComboBox.getItems().remove("Військовий квиток");
+                break;
+            case "Рядовий та сержантський склад":
+                System.out.println("Remove posvidchennya");
+                typeComboBox.getItems().remove("Посвідчення особи офіцера");
+                break;
+        }
         if (selectedDocument == null)
             return;
 
@@ -177,7 +210,6 @@ public class DocumentsEditController implements ControlledScene {
     @FXML
     void saveDocuments(ActionEvent event) {
         String docType = DataFormat.getPureComboboxValue(typeComboBox);
-        //TODO Брати із БД список всіх доків особи, дивитись які є і вилучати
 
         String number = numberTextField.getText();
         String whoGives = whoGivesTextArea.getText();
@@ -192,7 +224,7 @@ public class DocumentsEditController implements ControlledScene {
         try {
             Document newDocument = new Document();
 
-            newDocument.setPrepod(prepodService.getPrepodById(selectedPrepodId));
+            newDocument.setPrepod(selectedPrepod);
             newDocument.setDocType(docType);
             newDocument.setDocNumber(number);
             newDocument.setKtoVyd(whoGives);
