@@ -15,13 +15,17 @@ import ntukhpi.semit.militaryoblik.adapters.DocumentAdapter;
 import ntukhpi.semit.militaryoblik.entity.Document;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
+import ntukhpi.semit.militaryoblik.javafxutils.FormTextInput;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.service.DocumentServiceImpl;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.Normalizer;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 
 @Component
@@ -45,7 +49,6 @@ public class DocumentsEditController implements ControlledScene {
     private DocumentsAllController mainController;
     private Long selectedPrepodId;
     private DocumentAdapter selectedDocument;
-//    private boolean editingExistingDocument;
 
     @Autowired
     PrepodServiceImpl prepodService;
@@ -110,76 +113,90 @@ public class DocumentsEditController implements ControlledScene {
         }
     }
 
+    private boolean validateDocument(String docType, String number, String whoGives, String date) {
+        Pattern ukrOldSeriesNumberRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇ]{2}\\d{6}$");
+        Pattern ukrOldWhoGivesRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії0-9\\s.,]+$");
+        Pattern newSeriesRegex = Pattern.compile("^\\d{9}$");
+        Pattern newWhoGivesRegex = Pattern.compile("^\\d{4}$");
+        Pattern enOldSeriesNumberRegex = Pattern.compile("^[A-Z]{2}\\d{6}$");
+        Pattern ukrDateRegex = Pattern.compile("^\\d{2}\\.\\d{2}\\.\\d{4}$");
+
+        FormTextInput docTypeForm = new FormTextInput(-1, true, null, "Тип документу", docType, null);
+        FormTextInput numberForm = new FormTextInput(10, true, null, "Серія та номер", number, null);
+        FormTextInput whoGivesForm = new FormTextInput(255, true, null, "Ким видан", whoGives, null);
+        FormTextInput dateForm = new FormTextInput(10, true, ukrDateRegex, "Дата видачі", date, "повинен мати формат дати: dd.mm.yyyy");
+
+        try {
+            docTypeForm.validate();
+
+            switch (docType) {
+                case "Паперовий паспорт":
+                    numberForm.setRegex(ukrOldSeriesNumberRegex);
+                    numberForm.setErrorMsg("паперовога паспорта повинно містити 2 великі українські літери та 6 цифр");
+                    whoGivesForm.setRegex(ukrOldWhoGivesRegex);
+                    whoGivesForm.setErrorMsg("може містити українські літери, цифри, розділові знаки");
+                    break;
+                case "ID картка":
+                    numberForm.setRegex(newSeriesRegex);
+                    numberForm.setErrorMsg("ID картки повинно містити 9 цифр");
+                    whoGivesForm.setRegex(newWhoGivesRegex);
+                    whoGivesForm.setErrorMsg("повинно містити тільки 4 цифри");
+                    break;
+                case "Закордонний паспорт":
+                    numberForm.setRegex(enOldSeriesNumberRegex);
+                    numberForm.setErrorMsg("закордонного паспорта повинно містити 2 великі латинські літери та 6 цифр");
+                    whoGivesForm.setRegex(newWhoGivesRegex);
+                    whoGivesForm.setErrorMsg("повинно містити тільки 4 цифри");
+                    break;
+                case "Посвідчення особи офіцера":
+                case "Військовий квиток":
+                    numberForm.setRegex(ukrOldSeriesNumberRegex);
+                    numberForm.setErrorMsg("Серія та номер посвідчення повинні містити 2 великі українські літери та 6 цифр");
+                    whoGivesForm.setRegex(ukrOldWhoGivesRegex);
+                    whoGivesForm.setErrorMsg("може містити українські літери, цифри, розділові знаки");
+                    break;
+            }
+
+            numberForm.validate();
+            whoGivesForm.validate();
+            dateForm.validate();
+            System.out.println(date + " " + DataFormat.localDateToUkStandart(LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.yyyy"))));
+            if (!date.equals(DataFormat.localDateToUkStandart(LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.yyyy")))))
+                throw new Exception(dateForm.getErrorMsg());
+        } catch (DateTimeParseException e) {
+            Popup.wrongInputAlert(dateForm.getErrorMsg());
+            return false;
+        }
+        catch (Exception e) {
+            Popup.wrongInputAlert(e.getMessage());
+            return false;
+        }
+
+        return true;
+    }
     @FXML
     void saveDocuments(ActionEvent event) {
-        String docType = String.valueOf(typeComboBox.getValue());
+        String docType = DataFormat.getPureComboboxValue(typeComboBox);
         //TODO Брати із БД список всіх доків особи, дивитись які є і вилучати
 
         String number = numberTextField.getText();
         String whoGives = whoGivesTextArea.getText();
-        LocalDate date = dateDatePicker.getValue();
-        String dateString = DataFormat.localDateToUkStandart(date);
-
-          //TODO мейбі перенести після зберігання в бд
-
-        Pattern ukrOldSeriesNumberRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇ]{2}\\d{6}$");
-        Pattern ukrOldWhoGivesRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії0-9\\\\s.,]{1,255}$");
-        Pattern newSeriesRegex = Pattern.compile("^\\d{9}$");
-        Pattern newWhoGivesRegex = Pattern.compile("^\\d{4}$");
-        Pattern enOldSeriesNumberRegex = Pattern.compile("^[A-Z]{2}\\d{6}$");
+        String date = dateDatePicker.getEditor().getText();
 
         number = number.trim();
         whoGives = whoGives.trim();
 
+        if (!validateDocument(docType, number, whoGives, date))
+            return;
+
         try {
-            if (docType.equals("null") || docType.isEmpty())
-                throw new Exception("\"Тип документа\" є обов'язковим полем");
-            if (number.isEmpty())
-                throw new Exception("\"Серія та номер\" є обов'язковим полем");
-            if (whoGives.isEmpty())
-                throw new Exception("\"Ким видан\" є обов'язковим полем");
-            if (date == null) {
-                dateDatePicker.setValue(null);
-                throw new Exception("Неправильний формат дати: dd.mm.yyyy");
-            }
-            if (dateString == null || dateString.isEmpty())
-                throw new Exception("\"Дата видачі\" є обов'язковим полем");
-
-            switch (docType) {
-                case "Паперовий паспорт":
-                    if (!ukrOldSeriesNumberRegex.matcher(number).matches())
-                        throw new Exception("Серія та номер паперовога паспорта повинні містити 2 великі українські літери та 6 цифр");
-                    if (!ukrOldWhoGivesRegex.matcher(whoGives).matches())
-                        throw new Exception("Поле \"Ким видан\" може містити українські літери, цифри, розділові знаки (максимум 255 символів)");
-                    break;
-                case "ID картка":
-                    if (!newSeriesRegex.matcher(number).matches())
-                        throw new Exception("Номер ID картки повинен містити 9 цифр");
-                    if (!newWhoGivesRegex.matcher(whoGives).matches())
-                        throw new Exception("Поле \"Ким видан\" може містити тільки 4 цифри");
-                    break;
-                case "Закордонний паспорт":
-                    if (!enOldSeriesNumberRegex.matcher(number).matches())
-                        throw new Exception("Серія та номер закордонного паспорта повинні містити 2 великі латинські літери та 6 цифр");
-                    if (!newWhoGivesRegex.matcher(whoGives).matches())
-                        throw new Exception("Поле \"Ким видан\" може містити тільки 4 цифри");
-                    break;
-                case "Посвідчення особи офіцера":
-                case "Військовий квиток":
-                    if (!ukrOldSeriesNumberRegex.matcher(number).matches())
-                        throw new Exception("Серія та номер посвідчення повинні містити 2 великі українські літери та 6 цифр");
-                    if (!ukrOldWhoGivesRegex.matcher(whoGives).matches())
-                        throw new Exception("Поле \"Ким видан\" може містити українські літери, цифри, розділові знаки (максимум 255 символів)");
-                    break;
-            }
-
             Document newDocument = new Document();
 
             newDocument.setPrepod(prepodService.getPrepodById(selectedPrepodId));
             newDocument.setDocType(docType);
             newDocument.setDocNumber(number);
             newDocument.setKtoVyd(whoGives);
-            newDocument.setDataVyd(date);
+            newDocument.setDataVyd(dateDatePicker.getValue());
 
             if (selectedDocument == null)
                 mainController.addNewDocument(newDocument);

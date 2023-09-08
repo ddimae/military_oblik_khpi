@@ -29,7 +29,7 @@ public class DataFormat {
         return pieces.get(2) + "." + pieces.get(1) + "." + pieces.get(0);
     }
 
-    public static String getPureValue(ComboBox<String> cb) {
+    public static String getPureComboboxValue(ComboBox<String> cb) {
         String str = cb.getValue();
 
         if (str == null || str.equals("Не визначено"))
