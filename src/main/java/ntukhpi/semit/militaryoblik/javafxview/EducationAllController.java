@@ -11,6 +11,7 @@ import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
 import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
+import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.service.EducationServiceImpl;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
@@ -57,7 +58,7 @@ public class EducationAllController {
     public void initialize() {
         selectedPrepod = prepodService.getPrepodById(ReservistsAllController.getSelectedPrepodId());
 
-        pibText.setText(MilitaryOblikKhPIMain.getPIB(selectedPrepod));
+        pibText.setText(DataFormat.getPIB(selectedPrepod));
 
         vnzColumn.setCellValueFactory(new PropertyValueFactory<>("vnz"));
         yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));

@@ -13,6 +13,7 @@ import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
 import ntukhpi.semit.militaryoblik.entity.VNZaklad;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
+import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.service.EducationServiceImpl;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
@@ -159,6 +160,6 @@ public class EducationEditController implements ControlledScene {
 
         selectedPrepod = prepodService.getPrepodById(ReservistsAllController.getSelectedPrepodId());
 
-        pibLabel.setText(MilitaryOblikKhPIMain.getPIB(selectedPrepod));
+        pibLabel.setText(DataFormat.getPIB(selectedPrepod));
     }
 }

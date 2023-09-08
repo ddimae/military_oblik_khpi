@@ -10,6 +10,7 @@ import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
 import ntukhpi.semit.militaryoblik.adapters.EducationPostgraduateAdapter;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
+import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.service.EducationPostgraduateServiceImpl;
 import ntukhpi.semit.militaryoblik.service.EducationServiceImpl;
@@ -97,7 +98,7 @@ public class EducationPostgraduateAllController {
     public void initialize() {
         selectedPrepod = prepodService.getPrepodById(ReservistsAllController.getSelectedPrepodId());
 
-        pibLabel.setText(MilitaryOblikKhPIMain.getPIB(selectedPrepod));
+        pibLabel.setText(DataFormat.getPIB(selectedPrepod));
 
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         vnzColumn.setCellValueFactory(new PropertyValueFactory<>("vnz"));

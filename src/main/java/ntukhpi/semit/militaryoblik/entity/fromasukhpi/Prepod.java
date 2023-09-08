@@ -65,7 +65,8 @@ public class Prepod {
     @Column
     private String email;
 
-    public Prepod(String fam, String imya, String otch, Kafedra kafedra, Dolghnost dolghnost, Zvanie zvanie, Stepen stepen, String email) {
+    public Prepod(String fam, String imya, String otch,
+                  Kafedra kafedra, Dolghnost dolghnost, Zvanie zvanie, Stepen stepen, String email) {
         this.fam = fam;
         this.imya = imya;
         this.otch = otch;

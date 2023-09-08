@@ -17,6 +17,7 @@ import ntukhpi.semit.militaryoblik.adapters.EducationPostgraduateAdapter;
 import ntukhpi.semit.militaryoblik.entity.VNZaklad;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
+import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.service.EducationPostgraduateServiceImpl;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
@@ -126,7 +127,7 @@ public class EducationPostgraduateEditController implements Initializable, Contr
         vnzObservableList = FXCollections.observableArrayList(educationPostgraduateService.getAllVNZ());
 
         selectedPrepod = prepodService.getPrepodById(ReservistsAllController.getSelectedPrepodId());
-        pibLabel.setText(MilitaryOblikKhPIMain.getPIB(selectedPrepod));
+        pibLabel.setText(DataFormat.getPIB(selectedPrepod));
 
         typeComboBox.setItems(typeOptions);
         vnzComboBox.setItems(vnzObservableList);
