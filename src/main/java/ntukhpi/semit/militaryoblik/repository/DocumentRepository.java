@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface DocumentRepository extends JpaRepository<Document, Long> {
     List<Document> findAllByPrepod(Prepod prepod);
+
+    List<Document> findAllByPrepodId(Long id);
 }

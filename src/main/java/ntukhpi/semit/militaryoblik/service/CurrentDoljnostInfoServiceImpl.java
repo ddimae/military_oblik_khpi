@@ -48,4 +48,9 @@ public class CurrentDoljnostInfoServiceImpl implements CurrentDoljnostInfoServic
     public void deleteCurrentDoljnostInfo(Long id) {
         currentDoljnostInfoRepository.deleteById(id);
     }
+
+    @Override
+    public CurrentDoljnostInfo getCurrentDoljnostInfoByPrepodId(Long id) {
+        return currentDoljnostInfoRepository.findCurrentDoljnostInfoByPrepodId(id);
+    }
 }

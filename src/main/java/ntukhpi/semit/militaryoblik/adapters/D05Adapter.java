@@ -9,24 +9,24 @@ import java.lang.reflect.Field;
 @Setter
 public class D05Adapter {
 
-    private String column01;
-    private String column02;
-    private String column03;
-    private String column04;
-    private String column05;
-    private String column06;
-    private String column07;
-    private String column08;
-    private String column09;
-    private String column10;
-    private String column11;
-    private String column12;
-    private String column13;
-    private String column14;
-    private String column15;
-    private String column16;
-    private String column17;
-    private String column18;
+    private String poriad_nom;
+    private String zvannia;
+    private String pib;
+    private String birthDate;
+    private String reestNom;
+    private String vos;
+    private String sklad;
+    private String katObl;
+    private String osvita;
+    private String pasport;
+    private String regAddress;
+    private String actAddress;
+    private String terCentr;
+    private String specObl;
+    private String prudat;
+    private String simStan;
+    private String posada;
+    private String priznach;
 
     public D05Adapter() {
     }
@@ -49,9 +49,9 @@ public class D05Adapter {
     }
 
     public String[] objectToList() {
-        return new String[]{getColumn01(), getColumn02(), getColumn03(), getColumn04(), getColumn05(), getColumn06(), getColumn07(),
-                getColumn08(), getColumn09(), getColumn10(), getColumn11(), getColumn12(), getColumn13(), getColumn14(), getColumn15(),
-                getColumn16(), getColumn17(), getColumn18()};
+        return new String[]{getPoriad_nom(), getZvannia(), getPib(), getBirthDate(), getReestNom(), getVos(), getSklad(),
+                getKatObl(), getOsvita(), getPasport(), getRegAddress(), getActAddress(), getTerCentr(), getSpecObl(), getPrudat(),
+                getSimStan(), getPosada(), getPriznach()};
     }
 
     @Override
