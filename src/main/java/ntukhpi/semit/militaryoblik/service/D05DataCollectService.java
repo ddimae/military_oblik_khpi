@@ -70,7 +70,7 @@ public class D05DataCollectService {
         adapter.setPrudat(person.getVPrydatnist());
         adapter.setSimStan(concatFamilyState(familyState));
         adapter.setPosada(concatPosada(person.getPrepod(), currentDoljnostInfo));
-        adapter.setPriznach(concatCurrentDoljnostInfo(currentDoljnostInfo));
+        adapter.setPriznach(concatPriznach(currentDoljnostInfo));
         return adapter;
     }
 
@@ -118,13 +118,11 @@ public class D05DataCollectService {
         return pib;
     }
 
-    private String concatCurrentDoljnostInfo(CurrentDoljnostInfo currentDoljnostInfo) {
+    private String concatPriznach(CurrentDoljnostInfo currentDoljnostInfo) {
         String p = "";
         if (currentDoljnostInfo != null) {
             if (currentDoljnostInfo.getCommentStop() != null) {
                 p = String.format("%s, наказ %s від %s", currentDoljnostInfo.getCommentStop(), currentDoljnostInfo.getNumNakazStop(), currentDoljnostInfo.getDateStop());
-            } else if (currentDoljnostInfo.getCommentStart() != null) {
-                p = String.format("%s, наказ %s від %s", currentDoljnostInfo.getCommentStart(), currentDoljnostInfo.getNumNakazStart(), currentDoljnostInfo.getDateStart());
             }
         }
         return p;
@@ -136,7 +134,7 @@ public class D05DataCollectService {
         posada.append(prepod.getDolghnost().getDolghnName()).append(", ");
         posada.append(prepod.getKafedra().getKname()).append(", ");
         if (currentDoljnostInfo != null) {
-            nakaz = String.format(" наказ %s від %s", currentDoljnostInfo.getNumNakazStart(), currentDoljnostInfo.getDateStart());
+            nakaz = String.format("наказ %s від %s", currentDoljnostInfo.getNumNakazStart(), currentDoljnostInfo.getDateStart());
         }
 
         posada.append(nakaz);
