@@ -2,8 +2,6 @@ package ntukhpi.semit.militaryoblik.service;
 
 import ntukhpi.semit.militaryoblik.entity.PersonalData;
 
-import java.util.List;
-
 public interface PersonalDataService {
 
     PersonalData getPersonalData();
@@ -13,4 +11,6 @@ public interface PersonalDataService {
     PersonalData createPersonalData(PersonalData personalData);
 
     PersonalData updatePersonalData(PersonalData updatedPersonalData);
+
+    PersonalData getPersonalDataByPrepodId(Long id);
 }

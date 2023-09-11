@@ -1,6 +1,5 @@
 package ntukhpi.semit.militaryoblik.service;
 
-import ntukhpi.semit.militaryoblik.entity.CurrentDoljnostInfo;
 import ntukhpi.semit.militaryoblik.entity.PersonalData;
 import ntukhpi.semit.militaryoblik.repository.PersonalDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +36,10 @@ public class PersonalDataServiceImpl implements PersonalDataService {
     @Override
     public PersonalData updatePersonalData(PersonalData updatedPersonalData) {
         return personalDataRepository.save(updatedPersonalData);
+    }
+
+    @Override
+    public PersonalData getPersonalDataByPrepodId(Long id) {
+        return personalDataRepository.findPersonalDataByPrepodId(id);
     }
 }

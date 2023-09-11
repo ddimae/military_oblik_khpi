@@ -2,8 +2,6 @@ package ntukhpi.semit.militaryoblik.service;
 
 import ntukhpi.semit.militaryoblik.entity.FamilyState;
 
-import java.util.List;
-
 public interface FamilyStateService {
 
     FamilyState createFamilyState(FamilyState familyState);
@@ -15,4 +13,6 @@ public interface FamilyStateService {
     FamilyState updateFamilyState(Long id, FamilyState updatedFamilyState);
 
     void deleteFamilyState(Long id);
+
+    FamilyState getFamilyStateByPrepodId(Long id);
 }

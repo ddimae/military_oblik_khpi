@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class EducationServiceImpl implements EducationService {
@@ -55,6 +54,11 @@ public class EducationServiceImpl implements EducationService {
     @Override
     public void deleteEducation(Long id) {
         educationRepository.deleteById(id);
+    }
+
+    @Override
+    public Education getEducationByPrepodId(Long id) {
+        return educationRepository.findEducationByPrepodId(id);
     }
 
     @Autowired
