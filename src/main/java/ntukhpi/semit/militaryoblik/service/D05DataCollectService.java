@@ -31,6 +31,7 @@ public class D05DataCollectService {
         this.currentDoljnostInfoService = currentDoljnostInfoService;
     }
 
+    // Метод збору данних з бд для запису в додаток 5. Аргументом метод приймає список id MilitaryPerson.
     @Transactional
     public List<D05Adapter> collectD05Adapter(List<Integer> miliratiPersonIds) {
         List<D05Adapter> adapters = new ArrayList<>();
@@ -50,6 +51,7 @@ public class D05DataCollectService {
         return adapters;
     }
 
+    // Маппінг отриманих данних з бд в D05Adapter
     private D05Adapter mappedToAdapter(MilitaryPerson person, PersonalData personalData, Education education, FamilyState familyState,
                                        List<Document> documents, CurrentDoljnostInfo currentDoljnostInfo) {
         D05Adapter adapter = new D05Adapter();
@@ -74,6 +76,7 @@ public class D05DataCollectService {
         return adapter;
     }
 
+    // Форматування данних про сім’ю відповідно заданному шаблону.
     private String concatFamilyState(FamilyState familyState) {
         String fam = "";
         if (familyState != null) {
@@ -91,6 +94,7 @@ public class D05DataCollectService {
         return fam;
     }
 
+    // Форматування данних про документ відповідно заданному шаблону.
     private String concatDocument(List<Document> documents) {
         String doc = "";
         for (Document document : documents) {
@@ -101,6 +105,7 @@ public class D05DataCollectService {
         return doc;
     }
 
+    // Форматування данних про освіту відповідно заданному шаблону.
     private String concatEducation(Education education) {
         String ed = "";
         if (education != null) {
@@ -110,6 +115,7 @@ public class D05DataCollectService {
         return ed;
     }
 
+    // Форматування данних про ПІБ відповідно заданному шаблону.
     private String concatPib(MilitaryPerson person) {
         String pib = "";
         if (person.getPrepod() != null) {
@@ -118,16 +124,18 @@ public class D05DataCollectService {
         return pib;
     }
 
+    // Форматування данних про призначення відповідно заданному шаблону.
     private String concatPriznach(CurrentDoljnostInfo currentDoljnostInfo) {
-        String p = "";
+        String priznach = "";
         if (currentDoljnostInfo != null) {
             if (currentDoljnostInfo.getCommentStop() != null) {
-                p = String.format("%s, наказ %s від %s", currentDoljnostInfo.getCommentStop(), currentDoljnostInfo.getNumNakazStop(), currentDoljnostInfo.getDateStop());
+                priznach = String.format("%s, наказ %s від %s", currentDoljnostInfo.getCommentStop(), currentDoljnostInfo.getNumNakazStop(), currentDoljnostInfo.getDateStop());
             }
         }
-        return p;
+        return priznach;
     }
 
+    // Форматування данних про посаду відповідно заданному шаблону.
     private String concatPosada(Prepod prepod, CurrentDoljnostInfo currentDoljnostInfo) {
         String nakaz = "";
         StringBuilder posada = new StringBuilder();
