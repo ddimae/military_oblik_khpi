@@ -35,16 +35,18 @@ public class D05DataCollectService {
     @Transactional
     public List<D05Adapter> collectD05Adapter(List<Integer> miliratiPersonIds) {
         List<D05Adapter> adapters = new ArrayList<>();
+        int num = 0;
         if (miliratiPersonIds != null) {
             for (Integer id : miliratiPersonIds) {
                 MilitaryPerson person = militaryPersonService.getMilitaryPersonById(id.longValue());
                 if (person.getPrepod().getId() != null) {
+                    num++;
                     PersonalData personalData = personalDataService.getPersonalDataByPrepodId(person.getPrepod().getId());
                     Education education = educationService.getEducationByPrepodId(person.getPrepod().getId());
                     FamilyState familyState = familyStateService.getFamilyStateByPrepodId(person.getPrepod().getId());
                     List<Document> documents = documentService.getDocumentsByPrepodId(person.getPrepod().getId());
                     CurrentDoljnostInfo currentDoljnostInfo = currentDoljnostInfoService.getCurrentDoljnostInfoByPrepodId(person.getPrepod().getId());
-                    adapters.add(mappedToAdapter(person, personalData, education, familyState, documents, currentDoljnostInfo));
+                    adapters.add(mappedToAdapter(String.valueOf(num), person, personalData, education, familyState, documents, currentDoljnostInfo));
                 }
             }
         }
@@ -52,9 +54,10 @@ public class D05DataCollectService {
     }
 
     // Маппінг отриманих данних з бд в D05Adapter
-    private D05Adapter mappedToAdapter(MilitaryPerson person, PersonalData personalData, Education education, FamilyState familyState,
+    private D05Adapter mappedToAdapter(String nom, MilitaryPerson person, PersonalData personalData, Education education, FamilyState familyState,
                                        List<Document> documents, CurrentDoljnostInfo currentDoljnostInfo) {
         D05Adapter adapter = new D05Adapter();
+        adapter.setPoriad_nom(nom);
         adapter.setZvannia(person.getVZvanie().getZvanieName());
         adapter.setPib(concatPib(person));
         adapter.setBirthDate(person.getPrepod().getDr().toString());
