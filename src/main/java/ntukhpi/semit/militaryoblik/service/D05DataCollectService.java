@@ -129,7 +129,7 @@ public class D05DataCollectService {
         String nakaz = "";
         StringBuilder posada = new StringBuilder();
         posada.append(prepod.getDolghnost().getDolghnName()).append(", ");
-        posada.append(prepod.getKafedra().getKname()).append(", ");
+        posada.append(prepod.getKafedra().getKabr()).append(", ");
         if (currentDoljnostInfo != null) {
             if(currentDoljnostInfo.getNumNakazStart() != null && currentDoljnostInfo.getDateStart() != null) {
                 nakaz = String.format("наказ %s від %s", currentDoljnostInfo.getNumNakazStart(), currentDoljnostInfo.getDateStart());

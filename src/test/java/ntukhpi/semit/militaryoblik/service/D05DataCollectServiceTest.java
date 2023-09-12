@@ -102,7 +102,7 @@ class D05DataCollectServiceTest {
         Dolghnost dolghnost = new Dolghnost();
         dolghnost.setDolghnName("назва посади" + count);
         Kafedra kafedra = new Kafedra();
-        kafedra.setKname("кафедра" + count);
+        kafedra.setKabr("кафедра" + count);
         prepod.setDolghnost(dolghnost);
         prepod.setKafedra(kafedra);
         prepod.setId((long) count);
