@@ -75,7 +75,6 @@ class D05DataCollectServiceTest {
         assertEquals("одружений2;\nрідство2 - прізвище2 ім’я2 по батькові2, 1992 ", actual.get(1).getSimStan());
         assertEquals("назва посади1, кафедра1, наказ №443344 від 2021-04-19", actual.get(0).getPosada());
         assertEquals("", actual.get(1).getPriznach());
-        assertEquals("закінчення, наказ №3333333 від 2022-07-10", actual.get(0).getPriznach());
     }
 
     private MilitaryPerson generateMilitary(int count) {
@@ -162,9 +161,6 @@ class D05DataCollectServiceTest {
         currentDoljnostInfo.setCommentStart("початок");
         currentDoljnostInfo.setNumNakazStart("№443344");
         currentDoljnostInfo.setDateStart(LocalDate.of(2021, Month.APRIL, 19));
-        currentDoljnostInfo.setCommentStop("закінчення");
-        currentDoljnostInfo.setNumNakazStop("№3333333");
-        currentDoljnostInfo.setDateStop(LocalDate.of(2022, Month.JULY, 10));
         return currentDoljnostInfo;
     }
 

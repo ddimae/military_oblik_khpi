@@ -72,7 +72,7 @@ public class D05DataCollectService {
         adapter.setPrudat(person.getVPrydatnist());
         adapter.setSimStan(concatFamilyState(familyState));
         adapter.setPosada(concatPosada(person.getPrepod(), currentDoljnostInfo));
-        adapter.setPriznach(concatPriznach(currentDoljnostInfo));
+        adapter.setPriznach("");
         return adapter;
     }
 
@@ -124,17 +124,6 @@ public class D05DataCollectService {
         return pib;
     }
 
-    // Форматування данних про призначення відповідно заданному шаблону.
-    private String concatPriznach(CurrentDoljnostInfo currentDoljnostInfo) {
-        String priznach = "";
-        if (currentDoljnostInfo != null) {
-            if (currentDoljnostInfo.getCommentStop() != null) {
-                priznach = String.format("%s, наказ %s від %s", currentDoljnostInfo.getCommentStop(), currentDoljnostInfo.getNumNakazStop(), currentDoljnostInfo.getDateStop());
-            }
-        }
-        return priznach;
-    }
-
     // Форматування данних про посаду відповідно заданному шаблону.
     private String concatPosada(Prepod prepod, CurrentDoljnostInfo currentDoljnostInfo) {
         String nakaz = "";
@@ -142,7 +131,11 @@ public class D05DataCollectService {
         posada.append(prepod.getDolghnost().getDolghnName()).append(", ");
         posada.append(prepod.getKafedra().getKname()).append(", ");
         if (currentDoljnostInfo != null) {
-            nakaz = String.format("наказ %s від %s", currentDoljnostInfo.getNumNakazStart(), currentDoljnostInfo.getDateStart());
+            if(currentDoljnostInfo.getNumNakazStart() != null && currentDoljnostInfo.getDateStart() != null) {
+                nakaz = String.format("наказ %s від %s", currentDoljnostInfo.getNumNakazStart(), currentDoljnostInfo.getDateStart());
+            } else if (currentDoljnostInfo.getNumNakazStop() != null && currentDoljnostInfo.getDateStop() != null) {
+                nakaz = String.format("наказ %s від %s", currentDoljnostInfo.getNumNakazStop(), currentDoljnostInfo.getDateStop());
+            }
         }
 
         posada.append(nakaz);

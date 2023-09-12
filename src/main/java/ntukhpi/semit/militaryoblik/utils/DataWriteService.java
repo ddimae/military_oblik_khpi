@@ -20,6 +20,7 @@ public class DataWriteService {
         this.d05DataCollectService = d05DataCollectService;
     }
 
+    // Запис данних з бд до файлу додатку 5. Аргументи: тип сортування по імені "name" по ТЦК "tck, та список id miliratiPersonIds які потрібно вивести.
     public void writeDataToExcel(String sortType, List<Integer> miliratiPersonIds) {
         List<D05Adapter> sortedAdapters = dataPreparer.sortD5AdapterByUAAlphabet(d05DataCollectService.collectD05Adapter(miliratiPersonIds), sortType);
         String[][] workingData = dataPreparer.listToArray(sortedAdapters);
