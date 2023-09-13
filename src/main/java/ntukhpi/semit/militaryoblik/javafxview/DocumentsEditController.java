@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.DocumentAdapter;
 import ntukhpi.semit.militaryoblik.entity.Document;
-import ntukhpi.semit.militaryoblik.entity.MilitaryPerson;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
@@ -25,11 +24,9 @@ import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.text.Normalizer;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.List;
 import java.util.regex.Pattern;
 
 @Component
@@ -204,7 +201,7 @@ public class DocumentsEditController implements ControlledScene {
     }
     @FXML
     void saveDocuments(ActionEvent event) {
-        String docType = DataFormat.getPureComboboxValue(typeComboBox);
+        String docType = DataFormat.getPureComboBoxValue(typeComboBox);
 
         String number = numberTextField.getText();
         String whoGives = whoGivesTextArea.getText();
