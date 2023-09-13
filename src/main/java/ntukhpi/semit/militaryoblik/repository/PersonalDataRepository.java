@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PersonalDataRepository extends JpaRepository<PersonalData, Long> {
+
+    PersonalData findPersonalDataByPrepodId(Long id);
 }

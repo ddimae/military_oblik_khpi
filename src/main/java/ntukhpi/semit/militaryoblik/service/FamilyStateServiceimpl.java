@@ -47,4 +47,9 @@ public class FamilyStateServiceimpl implements FamilyStateService {
     public void deleteFamilyState(Long id) {
         familyStateRepository.deleteById(id);
     }
+
+    @Override
+    public FamilyState getFamilyStateByPrepodId(Long id) {
+        return familyStateRepository.findFamilyStateByPrepodId(id);
+    }
 }

@@ -53,4 +53,9 @@ public class DocumentServiceImpl implements DocumentService {
     public void deleteDocument(Long id) {
         documentRepository.deleteById(id);
     }
+
+    @Override
+    public List<Document> getDocumentsByPrepodId(Long id) {
+        return documentRepository.findAllByPrepodId(id);
+    }
 }

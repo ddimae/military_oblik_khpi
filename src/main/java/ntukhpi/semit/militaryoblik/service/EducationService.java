@@ -18,4 +18,6 @@ public interface EducationService {
     Education updateEducation(Long id, Education updatedEducation);
 
     void deleteEducation(Long id);
+
+    Education getEducationByPrepodId(Long id);
 }

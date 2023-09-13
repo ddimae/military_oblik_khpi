@@ -1,6 +1,5 @@
 package ntukhpi.semit.militaryoblik.repository;
 
-import ntukhpi.semit.militaryoblik.entity.Document;
 import ntukhpi.semit.militaryoblik.entity.Education;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,5 +9,7 @@ import java.util.List;
 
 @Repository
 public interface EducationRepository extends JpaRepository<Education, Long> {
+
+    Education findEducationByPrepodId(Long id);
     List<Education> findAllByPrepod(Prepod prepod);
 }

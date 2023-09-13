@@ -16,7 +16,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="1100.0" spacing="10.0" stylesheets="@MOStyles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntukhpi.semit.militaryoblik.javafxview.ContactInfoEditController">
    <children>
-      <Text fx:id="pibText" strokeType="OUTSIDE" strokeWidth="0.0" text="ДВУХГЛАВОВ Д. Е" textAlignment="CENTER" wrappingWidth="1060.0">
+      <Text fx:id="pibText" strokeType="OUTSIDE" strokeWidth="0.0" text="NONE" textAlignment="CENTER" wrappingWidth="1060.0">
          <font>
             <Font size="24.0" />
          </font>
@@ -53,7 +53,7 @@
                         </VBox>
                         <VBox prefHeight="174.0" prefWidth="323.0" spacing="5.0">
                            <children>
-                              <ComboBox fx:id="countryComboBox" onAction="#handleChangeCountry" prefHeight="40.0" prefWidth="362.0" promptText="--Оберіть країну" styleClass="obligatory-field" />
+                              <ComboBox fx:id="countryComboBox" onAction="#handleChangeCountry" prefHeight="40.0" prefWidth="323.0" promptText="--Оберіть країну" styleClass="obligatory-field" />
                               <TextField fx:id="indexTextField" maxWidth="100.0" prefHeight="40.0" prefWidth="74.0" promptText="00000">
                                  <font>
                                     <Font size="24.0" />

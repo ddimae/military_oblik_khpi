@@ -18,4 +18,6 @@ public interface DocumentService {
     Document updateDocument(Long id, Document updatedDocument);
 
     void deleteDocument(Long id);
+
+    List<Document> getDocumentsByPrepodId(Long id);
 }
