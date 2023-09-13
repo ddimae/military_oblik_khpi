@@ -81,27 +81,23 @@ public class DocumentsEditController implements ControlledScene {
 
         for (Document doc : documentService.getAllDocumentByPrepod(selectedPrepod)) {
             if (selectedDocument == null || !selectedDocument.getType().equals(doc.getDocType())) {
-                System.out.println("Remove " + doc.getDocType());
                 typeComboBox.getItems().remove(doc.getDocType());
             }
-            if (selectedDocument == null)
+            if (selectedDocument == null || !selectedDocument.getType().equals(doc.getDocType()))
                 switch (doc.getDocType()) {
                     case "Паперовий паспорт":
-                        System.out.println("Remove idcard");
                         typeComboBox.getItems().remove("ID картка");
                         break;
                     case "ID картка":
-                        System.out.println("Remove paper passpoert");
                         typeComboBox.getItems().remove("Паперовий паспорт");
+                        break;
                 }
         }
         switch (militaryPersonService.getMilitaryPersonByPrepod(selectedPrepod).getVZvanie().getSkladName()) {
             case "Офіцерський склад":
-                System.out.println("remove kvytok");
                 typeComboBox.getItems().remove("Військовий квиток");
                 break;
             case "Рядовий та сержантський склад":
-                System.out.println("Remove posvidchennya");
                 typeComboBox.getItems().remove("Посвідчення особи офіцера");
                 break;
         }
@@ -193,7 +189,6 @@ public class DocumentsEditController implements ControlledScene {
             numberForm.validate();
             whoGivesForm.validate();
             dateForm.validate();
-            System.out.println(date + " " + DataFormat.localDateToUkStandart(LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.yyyy"))));
             if (!date.equals(DataFormat.localDateToUkStandart(LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.yyyy")))))
                 throw new Exception(dateForm.getErrorMsg());
         } catch (DateTimeParseException e) {

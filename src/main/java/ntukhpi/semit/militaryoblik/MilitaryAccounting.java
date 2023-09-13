@@ -1,7 +1,6 @@
 package ntukhpi.semit.militaryoblik;
 
 import javafx.application.Application;
-import ntukhpi.semit.militaryoblik.service.Test;
 import ntukhpi.semit.militaryoblik.utils.DataPreparer;
 import ntukhpi.semit.militaryoblik.utils.DataWriteService;
 import org.springframework.boot.SpringApplication;
