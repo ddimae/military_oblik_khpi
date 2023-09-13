@@ -41,7 +41,7 @@
             <Label text="Придатність" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <ComboBox fx:id="groupComboBox" prefWidth="225.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1" />
             <ComboBox fx:id="categoryComboBox" prefWidth="225.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-            <ComboBox fx:id="staffComboBox" prefWidth="225.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+            <ComboBox fx:id="vSkladComboBox" prefWidth="225.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3" />
             <ComboBox fx:id="rankComboBox" prefWidth="225.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="4" />
             <ComboBox fx:id="validityComboBox" prefWidth="225.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="5" />
             <Button maxHeight="45.0" maxWidth="250.0" mnemonicParsing="false" onAction="#closeEdit" text="Повернутись" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="7" />

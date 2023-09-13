@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
@@ -51,6 +52,18 @@ public class ReservistsAllController {
 
     @FXML
     public TextField numberOfReservistsTextField;
+
+    @FXML
+    public Label instituteLabel;
+
+    @FXML
+    public Label tckLabel;
+
+    @FXML
+    public Label typeLabel;
+
+    @FXML
+    public Label cathedraLabel;
 
     @FXML
     private TableView<ReservistAdapter> reservistsTableView;
@@ -149,13 +162,14 @@ public class ReservistsAllController {
         for (Prepod prepod : prepodServiceImpl.getAllPrepod()) {
             MilitaryPerson mp = militaryPersonServiceImpl.getMilitaryPersonByPrepod(prepod);
             //Виводяться лише ті, хто є військовозабовязаними, тобто мають створений обєкт MilitaryPerson
-            if (mp!=null)
-            reservistsList.add(new ReservistAdapter(mp));
+            if (mp!=null && mp.getVSklad() != null)
+                reservistsList.add(new ReservistAdapter(mp));
         }
 
-
-
         updateTable(reservistsList);
+
+        instituteLabel.setWrapText(true);
+        cathedraLabel.setWrapText(true);
 
         // Відновлення вибору рядка перед переходом до іншої форми
         if (selectedReservist != null)
@@ -186,21 +200,29 @@ public class ReservistsAllController {
         String selectedCathedra = cathedraComboBox.getSelectionModel().getSelectedItem();
         String selectedType = typeComboBox.getSelectionModel().getSelectedItem();
 
-        StringBuilder filterText = new StringBuilder();
+//        StringBuilder filterText = new StringBuilder();
+//
+//        if (selectedInstitute != null && !selectedInstitute.equals("-не обрано"))
+//            filterText.append(" Інститут: ").append(selectedInstitute);
+//
+//        if (selectedCathedra != null && !selectedCathedra.equals("-не обрано"))
+//            filterText.append(" Кафедра: ").append(selectedCathedra);
+//
+//        if (selectedTck != null && !selectedTck.equals("-не обрано"))
+//            filterText.append(" ТЦК: ").append(selectedTck);
+//
+//        if (selectedType != null && !selectedType.equals("-не обрано"))
+//            filterText.append(" Тип: ").append(selectedType);
+//
+//        filterTextField.setText(filterText.toString());
 
-        if (selectedInstitute != null && !selectedInstitute.equals("-не обрано"))
-            filterText.append(" Інститут: ").append(selectedInstitute);
+        //StringBuilder filterText = new StringBuilder();
 
-        if (selectedCathedra != null && !selectedCathedra.equals("-не обрано"))
-            filterText.append(" Кафедра: ").append(selectedCathedra);
+        instituteLabel.setText(selectedInstitute != null && !selectedInstitute.equals("-не обрано") ? "Інститут: " + selectedInstitute : "Інститут: ");
+        cathedraLabel.setText(selectedCathedra != null && !selectedCathedra.equals("-не обрано") ? "Кафедра: " + selectedCathedra : "Кафедра: ");
+        tckLabel.setText(selectedTck != null && !selectedTck.equals("-не обрано") ? "ТЦК: " + selectedTck : "ТЦК: ");
+        typeLabel.setText(selectedType != null && !selectedType.equals("-не обрано") ? "Тип: " + selectedType : "Тип: ");
 
-        if (selectedTck != null && !selectedTck.equals("-не обрано"))
-            filterText.append(" ТЦК: ").append(selectedTck);
-
-        if (selectedType != null && !selectedType.equals("-не обрано"))
-            filterText.append(" Тип: ").append(selectedType);
-
-        filterTextField.setText(filterText.toString());
 
         ObservableList<ReservistAdapter> filteredList = reservistsList.filtered(reservistAdapter ->
                 (selectedInstitute == null || selectedInstitute.equals("-не обрано") ||
