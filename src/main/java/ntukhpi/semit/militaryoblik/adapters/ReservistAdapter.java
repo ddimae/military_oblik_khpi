@@ -32,6 +32,13 @@ public class ReservistAdapter {
     private String institute;
     private String cathedra;
 
+    // AlLink
+    // Новые поля. Необходимы для вывода в окне редактирования данных о воинском учете.
+    // Класс MilitaryRegistrationEditController
+
+    private String vGrupa;
+    private String vPrydatnist;
+    private String vSklad;
 
     public ReservistAdapter(String pib, String dr, String gender,
                             String trc, String rank, String vos,
@@ -61,10 +68,14 @@ public class ReservistAdapter {
         this.vos = militaryPerson.getVos();
         int kodSkladu = militaryPerson.getVZvanie().getKodSkladu();
         this.type = kodSkladu == 1 ? "Офіцерський склад" : "Рядовий та сержантський склад";
-        this.category = "" + militaryPerson.getVCategory();
+        this.category = militaryPerson.getVCategory().toString();
         this.tck = this.trc; //<=== DDE ??? Внимательно присмотревшись так и не понял ШО ЦЕ?
         this.institute = prep.getKafedra().getFakultet().getFname();
         this.cathedra = prep.getKafedra().getKname();
+
+        this.vGrupa = militaryPerson.getVGrupa();
+        this.vSklad = militaryPerson.getVSklad().getSkladName();
+        this.vPrydatnist = militaryPerson.getVPrydatnist();
     }
 
     @Override
