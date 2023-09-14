@@ -4,6 +4,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -15,18 +17,46 @@
          <columns>
             <TableColumn fx:id="typeColumn" prefWidth="177.6000121831894" text="Вид" />
             <TableColumn fx:id="numberColumn" prefWidth="111.19996643066406" text="Номер" />
-            <TableColumn fx:id="givenColumn" prefWidth="297.6000061035156" text="Ким видан" />
-            <TableColumn fx:id="dateColumn" minWidth="0.0" prefWidth="148.79998779296875" text="Дата видачі" />
+            <TableColumn fx:id="givenColumn" prefWidth="301.6000061035156" text="Ким видан" />
+            <TableColumn fx:id="dateColumn" minWidth="0.0" prefWidth="122.4000122070313" text="Дата видачі" />
          </columns>
       </TableView>
    </center>
    <right>
-      <VBox alignment="TOP_CENTER" prefHeight="376.0" prefWidth="219.0" spacing="30.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" prefHeight="296.0" prefWidth="250.0" spacing="30.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#returnToMainForm" prefWidth="165.0" text="Повернутися" />
-            <Button mnemonicParsing="false" onAction="#openAddWindow" prefWidth="165.0" text="Додати" />
-            <Button mnemonicParsing="false" onAction="#openEditWindow" prefWidth="165.0" text="Змінити" />
-            <Button mnemonicParsing="false" onAction="#deleteSelectedRow" prefWidth="165.0" text="Вилучити" />
+            <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#returnToMainForm" prefHeight="40.0" prefWidth="200.0" text="Повернутися">
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@/icons/go-back-1.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#openAddWindow" prefHeight="40.0" prefWidth="200.0" text="Додати">
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@/icons/circle-add.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#openEditWindow" prefHeight="40.0" prefWidth="200.0" text="Змінити">
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@/icons/change.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#deleteSelectedRow" prefHeight="40.0" prefWidth="200.0" text="Вилучити">
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@/icons/trash.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
          </children>
       </VBox>
    </right>
@@ -34,10 +64,10 @@
       <Insets />
    </opaqueInsets>
    <padding>
-      <Insets bottom="40.0" left="35.0" right="7.0" top="20.0" />
+      <Insets bottom="40.0" left="35.0" top="20.0" />
    </padding>
    <top>
-      <Text fx:id="pibText" strokeType="OUTSIDE" strokeWidth="0.0" text="NONE" textAlignment="CENTER" wrappingWidth="930.0" BorderPane.alignment="CENTER">
+      <Text fx:id="pibText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="pib-field" text="П.І.Б" textAlignment="CENTER" wrappingWidth="930.0" BorderPane.alignment="CENTER">
          <font>
             <Font size="24.0" />
          </font>

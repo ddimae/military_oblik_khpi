@@ -1,9 +1,13 @@
 */*.label, .button,.text-field, .password-field*/
 {
-    -fx-font-size: 14;
+    -fx-font-size: 18;
 }
 
 .obligatory-field
 {
     -fx-border-color: darkorange;
+}
+
+.pib-field {
+    -fx-font-size: 24;
 }

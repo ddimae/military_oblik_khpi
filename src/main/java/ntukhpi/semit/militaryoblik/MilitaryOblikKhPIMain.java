@@ -47,7 +47,7 @@ public class MilitaryOblikKhPIMain extends Application {
 
     private static SettingsStage militaryOblik =
             new SettingsStage(MILITARY_OBLIK_LIST_JAVAFX, MILITARY_OBLIK_LIST_JAVAFX_TITLE,
-                    1200, 800, true, true);
+                    1500, 720, true, true);
     //============================
     private final static String EDUCATION_JAVAFX = "/javafxview/EducationAll.fxml";
     private final static String EDUCATION_JAVAFX_TITLE = "Освіта";
