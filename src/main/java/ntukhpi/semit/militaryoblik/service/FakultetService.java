@@ -17,5 +17,12 @@ public interface FakultetService {
 
     void deleteFakultet(Long id);
 
+    //For add new Reservist
+    Long findIDFakultetByFname(String fakName);
+
+    Long findIDFakultetByAbr(String fakAbr);
+
+    Long findIDFakultetByOid(String fakOid);
+
 
 }

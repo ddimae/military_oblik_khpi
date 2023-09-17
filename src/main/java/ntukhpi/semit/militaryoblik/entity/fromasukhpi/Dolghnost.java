@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
@@ -21,6 +22,9 @@ public class Dolghnost {
     @Column(length = 40, name="dolghn_name",nullable = false)
     private String dolghnName;
 
+    @Column(name="kat_sotr")
+    @ColumnDefault(value="1")
+    private int categoryEmployees;
 
     @Override
     public String toString() {

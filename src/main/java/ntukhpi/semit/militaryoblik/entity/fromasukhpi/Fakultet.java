@@ -19,7 +19,7 @@ public class Fakultet {
     private Long fid;
 
     //Скорочене найменування
-    @Column(length = 10, nullable = false)
+    @Column(length = 10, nullable = false, unique = true)
     private String abr;
 
     //??? true (1) = ???
@@ -31,7 +31,7 @@ public class Fakultet {
     private Boolean sm_v;
 
     //Найменування факультету
-    @Column(length = 100, nullable = false)
+    @Column(length = 100, nullable = false, unique = true)
     private String fname;
 
     //Імя та ПРІЗВИЩЕ декана
@@ -60,7 +60,7 @@ public class Fakultet {
 
     //Ідентифікатор факультету в НТУ "ХПі" - код підрозділу для діловодства
     //Опис в конструкторі : "oid"       smallint,  <=== чому в лапках?!
-    @Column(name = "oid")
+    @Column(name = "oid", nullable = false, unique = true)
     private String oid;
 
     //ENGLISH

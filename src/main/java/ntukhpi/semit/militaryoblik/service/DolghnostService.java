@@ -17,4 +17,7 @@ public interface DolghnostService {
     void deleteDolghnost(Long id);
 
     Dolghnost getDolghnostByName(String posadaName);
+
+    Long findIDPosadaByName(String posadaName);
+
 }
