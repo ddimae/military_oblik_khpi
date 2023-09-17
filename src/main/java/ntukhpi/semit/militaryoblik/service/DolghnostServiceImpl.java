@@ -51,4 +51,9 @@ public class DolghnostServiceImpl implements DolghnostService {
     public Dolghnost getDolghnostByName(String posadaName) {
         return dolghnostRepository.getDolghnostByDolghnName(posadaName);
     }
+
+    public Long findIDPosadaByName(String posadaName) {
+        Dolghnost posadaInDB = dolghnostRepository.getDolghnostByDolghnName(posadaName);
+        return posadaInDB!=null?posadaInDB.getId():null;
+    }
 }

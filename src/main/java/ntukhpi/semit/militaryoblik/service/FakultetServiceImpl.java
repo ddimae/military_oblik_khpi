@@ -49,4 +49,25 @@ public class FakultetServiceImpl implements FakultetService {
     public void deleteFakultet(Long id) {
         fakultetRepository.deleteById(id);
     }
+
+
+    //For add new Reservist
+
+    @Override
+    public Long findIDFakultetByFname(String fakName) {
+        Fakultet fakInID = fakultetRepository.getFakultetByFname(fakName);
+        return fakInID!=null?fakInID.getFid():null;
+    }
+
+    @Override
+    public Long findIDFakultetByAbr(String fakAbr) {
+        Fakultet fakInID = fakultetRepository.getFakultetByAbr(fakAbr);
+        return fakInID!=null?fakInID.getFid():null;
+    }
+
+    @Override
+    public Long findIDFakultetByOid(String fakOid) {
+        Fakultet fakInID = fakultetRepository.getFakultetByOid(fakOid);
+        return fakInID!=null?fakInID.getFid():null;
+    }
 }

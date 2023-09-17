@@ -16,6 +16,16 @@ public interface KafedraService {
 
     void deleteKafedra(Long id);
 
-    Kafedra getKafedraByName(String kname);
+    Kafedra getKafedraByName(String kafName);
+
+    //for filtering
+    List<Kafedra> findKafedrasOfFakultet(String fakName);
+
+    //For insert new cafedra
+    Long findIDKafedraByKname(String kafName);
+
+    Long findIDKafedraByKabr(String kafAbr);
+
+    Long findIDKafedraByOid(String kafOid);
 
 }

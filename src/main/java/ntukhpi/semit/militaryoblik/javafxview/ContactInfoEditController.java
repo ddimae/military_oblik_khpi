@@ -182,11 +182,10 @@ public class ContactInfoEditController implements ControlledScene {
 
     private void setContactInfo(ReservistAdapter reservist) {
         selectedReservist = reservist;
-        personalData = personalDataService.getPersonalDataById(selectedReservist.getId());
+        personalData = personalDataService.getPersonalDataByPrepodId(selectedReservist.getId());
         //Якщо немає звязаної інформації, то запускати треба щось на установку нової!!!
 
         pibText.setText(DataFormat.getPIB(prepodService.getPrepodById(selectedReservist.getId())));
-
         if (personalData == null) {
             personalData = new PersonalData();
             return;
@@ -218,6 +217,15 @@ public class ContactInfoEditController implements ControlledScene {
 
         mainPhoneTextField.setText(personalData.getPhoneMain());
         secondPhoneTextField.setText(personalData.getPhoneDop());
+
+        if (countryComboBox.getValue() == countryFactComboBox.getValue() &&
+            indexTextField.getText().equals(indexFactTextField.getText()) &&
+            cityTextField.getText().equals(cityFactTextField.getText()) &&
+            regionComboBox.getValue() == regionFactComboBox.getValue() &&
+            addressTextField.getText().equals(addressFactTextField.getText())) {
+                equalRadioButton.setSelected(true);
+                handleEqualRadioButton(null);
+        }
 
         handleChangeCountry(null);
     }
@@ -319,18 +327,18 @@ public class ContactInfoEditController implements ControlledScene {
 
     @FXML
     void saveContactInfo(ActionEvent event) throws Exception {
-        String country = DataFormat.getPureComboboxValue(countryComboBox);
+        String country = DataFormat.getPureComboBoxValue(countryComboBox);
         String index = indexTextField.getText();
         String city = cityTextField.getText();
-        String region = DataFormat.getPureComboboxValue(regionComboBox);
+        String region = DataFormat.getPureComboBoxValue(regionComboBox);
         String address = addressTextField.getText();
         PhoneNumberForm mainPhone = new PhoneNumberForm(mainPhoneTextField.getText());
         PhoneNumberForm secondPhone = new PhoneNumberForm(secondPhoneTextField.getText());
 
-        String countryFact = DataFormat.getPureComboboxValue(countryFactComboBox);
+        String countryFact = DataFormat.getPureComboBoxValue(countryFactComboBox);
         String indexFact = indexFactTextField.getText();
         String cityFact = cityFactTextField.getText();
-        String regionFact = DataFormat.getPureComboboxValue(regionFactComboBox);
+        String regionFact = DataFormat.getPureComboBoxValue(regionFactComboBox);
         String addressFact = addressFactTextField.getText();
 
         boolean isUkraine = String.valueOf(country).equals("Україна");
@@ -421,7 +429,7 @@ public class ContactInfoEditController implements ControlledScene {
             addressFactTextField.setDisable(false);
         }
 
-        handleChangeCountry(null);
+//        handleChangeCountry(null);
     }
 
     @FXML
@@ -442,7 +450,7 @@ public class ContactInfoEditController implements ControlledScene {
             regionComboBox.setDisable(true);
         }
 
-        if (String.valueOf(countryFactComboBox.getValue()).equals("Україна")) {
+        if (String.valueOf(countryFactComboBox.getValue()).equals("Україна") && !equalRadioButton.isSelected()) {
             regionFactComboBox.setDisable(false);
         } else {
             regionFactComboBox.setDisable(true);

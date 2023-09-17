@@ -16,7 +16,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="1100.0" spacing="10.0" stylesheets="@MOStyles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntukhpi.semit.militaryoblik.javafxview.ContactInfoEditController">
    <children>
-      <Text fx:id="pibText" strokeType="OUTSIDE" strokeWidth="0.0" text="ДВУХГЛАВОВ Д. Е" textAlignment="CENTER" wrappingWidth="1060.0">
+      <Text fx:id="pibText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="pib-field" text="П.І.Б" textAlignment="CENTER" wrappingWidth="1060.0">
          <font>
             <Font size="24.0" />
          </font>
@@ -53,17 +53,17 @@
                         </VBox>
                         <VBox prefHeight="174.0" prefWidth="323.0" spacing="5.0">
                            <children>
-                              <ComboBox fx:id="countryComboBox" onAction="#handleChangeCountry" prefHeight="40.0" prefWidth="362.0" promptText="--Оберіть країну" styleClass="obligatory-field" />
-                              <TextField fx:id="indexTextField" maxWidth="100.0" prefHeight="40.0" prefWidth="74.0" promptText="00000">
+                              <ComboBox fx:id="countryComboBox" maxHeight="40.0" minHeight="40.0" onAction="#handleChangeCountry" prefHeight="40.0" prefWidth="323.0" promptText="--Оберіть країну" styleClass="obligatory-field" />
+                              <TextField fx:id="indexTextField" maxHeight="40.0" maxWidth="100.0" minHeight="40.0" prefHeight="40.0" prefWidth="74.0" promptText="00000">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </TextField>
-                              <TextField fx:id="cityTextField" maxWidth="200.0" promptText="Харків" styleClass="obligatory-field" />
-                              <ComboBox fx:id="regionComboBox" prefHeight="40.0" prefWidth="326.0" promptText="--Оберіть область України" />
-                              <TextField fx:id="addressTextField" promptText="вул Кирпичова, 2" styleClass="obligatory-field" />
-                              <TextField fx:id="mainPhoneTextField" maxWidth="180.0" prefHeight="40.0" prefWidth="160.0" promptText="+380123456789" styleClass="obligatory-field" />
-                              <TextField fx:id="secondPhoneTextField" maxWidth="180.0" prefWidth="160.0" promptText="+380123456789" />
+                              <TextField fx:id="cityTextField" maxHeight="40.0" maxWidth="200.0" minHeight="40.0" promptText="Харків" styleClass="obligatory-field" />
+                              <ComboBox fx:id="regionComboBox" maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="326.0" promptText="--Оберіть область України" />
+                              <TextField fx:id="addressTextField" maxHeight="40.0" minHeight="40.0" promptText="вул Кирпичова, 2" styleClass="obligatory-field" />
+                              <TextField fx:id="mainPhoneTextField" maxHeight="40.0" maxWidth="180.0" minHeight="40.0" prefHeight="40.0" prefWidth="160.0" promptText="+380123456789" styleClass="obligatory-field" />
+                              <TextField fx:id="secondPhoneTextField" maxHeight="40.0" maxWidth="180.0" minHeight="40.0" prefWidth="160.0" promptText="+380123456789" />
                            </children>
                         </VBox>
                      </children>
@@ -94,15 +94,15 @@
                         </VBox>
                         <VBox prefHeight="174.0" prefWidth="323.0" spacing="5.0">
                            <children>
-                              <ComboBox fx:id="countryFactComboBox" onAction="#handleChangeCountry" prefHeight="40.0" prefWidth="362.0" promptText="--Оберіть країну" />
-                              <TextField fx:id="indexFactTextField" maxWidth="100.0" prefHeight="40.0" prefWidth="74.0" promptText="00000">
+                              <ComboBox fx:id="countryFactComboBox" maxHeight="40.0" minHeight="40.0" onAction="#handleChangeCountry" prefHeight="40.0" prefWidth="362.0" promptText="--Оберіть країну" />
+                              <TextField fx:id="indexFactTextField" maxHeight="40.0" maxWidth="100.0" minHeight="40.0" prefHeight="40.0" prefWidth="74.0" promptText="00000">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </TextField>
-                              <TextField fx:id="cityFactTextField" maxWidth="200.0" promptText="Харків" />
-                              <ComboBox fx:id="regionFactComboBox" prefHeight="40.0" prefWidth="326.0" promptText="--Оберіть область України" />
-                              <TextField fx:id="addressFactTextField" promptText="вул Кирпичова, 2" />
+                              <TextField fx:id="cityFactTextField" maxHeight="40.0" maxWidth="200.0" minHeight="40.0" promptText="Харків" />
+                              <ComboBox fx:id="regionFactComboBox" maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="326.0" promptText="--Оберіть область України" />
+                              <TextField fx:id="addressFactTextField" maxHeight="40.0" minHeight="40.0" promptText="вул Кирпичова, 2" />
                            </children>
                         </VBox>
                      </children>
@@ -130,11 +130,11 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
          <children>
-            <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#saveContactInfo" prefWidth="200.0" text="Зберігти">
+            <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#saveContactInfo" prefWidth="200.0" text="Зберегти">
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@/icons/cicle-check.png" />
+                        <Image url="@/icons/circle-check.png" />
                      </image>
                   </ImageView>
                </graphic>

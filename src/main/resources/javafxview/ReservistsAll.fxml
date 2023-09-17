@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane minHeight="600.0" minWidth="700.0" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntukhpi.semit.militaryoblik.javafxview.ReservistsAllController">
+<AnchorPane minHeight="720.0" minWidth="1280.0" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@MOStyles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntukhpi.semit.militaryoblik.javafxview.ReservistsAllController">
     <children>
         <AnchorPane prefHeight="1080.0" prefWidth="1920.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -34,22 +34,28 @@
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="105.0" minHeight="10.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="121.0" minHeight="10.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="106.0" minHeight="10.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="77.0" minHeight="10.0" prefHeight="77.0" valignment="TOP" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <TableView fx:id="reservistsTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="9" GridPane.rowIndex="3" GridPane.rowSpan="8">
+                        <TableView fx:id="reservistsTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="9" GridPane.rowIndex="4" GridPane.rowSpan="11">
                             <columns>
                                 <TableColumn fx:id="pibColumn" prefWidth="256.0" text="ПІБ" />
                                 <TableColumn fx:id="drColumn" prefWidth="164.0" text="ДР" />
@@ -69,45 +75,45 @@
                                 <Insets />
                             </GridPane.margin>
                         </ComboBox>
-                        <Button fx:id="educationButton" mnemonicParsing="false" onAction="#handleEducationButton" prefHeight="55.0" prefWidth="225.0" text="Дані про посаду" textAlignment="CENTER" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="9">
-                            <GridPane.margin>
-                                <Insets bottom="10.0" />
-                            </GridPane.margin>
+                        <Button fx:id="educationButton" minHeight="45.0" minWidth="250.0" mnemonicParsing="false" onAction="#handleEducationButton" prefHeight="45.0" prefWidth="250.0" text="Дані про посаду" textAlignment="CENTER" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="13">
+                     <GridPane.margin>
+                        <Insets left="15.0" top="15.0" />
+                     </GridPane.margin>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#handleEducationButton" prefHeight="55.0" prefWidth="225.0" text="Дані про освіту" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="5">
-                            <GridPane.margin>
-                                <Insets bottom="10.0" />
-                            </GridPane.margin>
+                        <Button minHeight="45.0" minWidth="250.0" mnemonicParsing="false" onAction="#handleEducationButton" prefHeight="45.0" prefWidth="250.0" text="Дані про освіту" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="9">
+                     <GridPane.margin>
+                        <Insets left="15.0" top="15.0" />
+                     </GridPane.margin>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="55.0" prefWidth="225.0" text="Дані про родину" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="8">
-                            <GridPane.margin>
-                                <Insets bottom="10.0" />
-                            </GridPane.margin>
+                        <Button minHeight="45.0" minWidth="250.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="250.0" text="Дані про родину" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="12">
+                     <GridPane.margin>
+                        <Insets left="15.0" top="15.0" />
+                     </GridPane.margin>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#handleContactInfoButton" prefHeight="55.0" prefWidth="225.0" text="Адреси та телефони" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="7">
-                            <GridPane.margin>
-                                <Insets bottom="10.0" />
-                            </GridPane.margin>
+                        <Button minHeight="45.0" minWidth="250.0" mnemonicParsing="false" onAction="#handleContactInfoButton" prefHeight="45.0" prefWidth="250.0" text="Адреси та телефони" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="11">
+                     <GridPane.margin>
+                        <Insets left="15.0" top="15.0" />
+                     </GridPane.margin>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="55.0" prefWidth="225.0" text="Облікові дані ТРЦ" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="10">
-                            <GridPane.margin>
-                                <Insets bottom="10.0" />
-                            </GridPane.margin>
+                        <Button minHeight="45.0" minWidth="250.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="250.0" text="Облікові дані ТРЦ" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="14">
+                     <GridPane.margin>
+                        <Insets left="15.0" top="15.0" />
+                     </GridPane.margin>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#handleDocumentsButton" prefHeight="55.0" prefWidth="225.0" text="Документи" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="4">
-                            <GridPane.margin>
-                                <Insets bottom="10.0" />
-                            </GridPane.margin>
+                        <Button minHeight="45.0" minWidth="250.0" mnemonicParsing="false" onAction="#handleDocumentsButton" prefHeight="45.0" prefWidth="250.0" text="Документи" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="8">
+                     <GridPane.margin>
+                        <Insets left="15.0" top="15.0" />
+                     </GridPane.margin>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#handlePostgraduateEducationButton" prefHeight="55.0" prefWidth="225.0" text="Дані про післядипломну освіту" wrapText="true" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="6">
-                            <GridPane.margin>
-                                <Insets />
-                            </GridPane.margin>
+                        <Button minHeight="45.0" minWidth="250.0" mnemonicParsing="false" onAction="#handlePostgraduateEducationButton" prefHeight="45.0" prefWidth="250.0" text="Аспірантура, тощо" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="10">
+                     <GridPane.margin>
+                        <Insets left="15.0" top="15.0" />
+                     </GridPane.margin>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#handleMilitaryRegistrationEditButton" prefHeight="55.0" prefWidth="225.0" text="Дані військового обліку" textAlignment="CENTER" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="3">
-                            <GridPane.margin>
-                                <Insets bottom="10.0" />
-                            </GridPane.margin>
+                        <Button minHeight="45.0" minWidth="250.0" mnemonicParsing="false" onAction="#handleMilitaryRegistrationEditButton" prefHeight="45.0" prefWidth="250.0" text="Дані військового обліку" textAlignment="CENTER" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="7">
+                     <GridPane.margin>
+                        <Insets left="15.0" top="15.0" />
+                     </GridPane.margin>
                         </Button>
                         <Label prefHeight="50.0" prefWidth="40.0" text="АБО" GridPane.columnIndex="3" GridPane.rowIndex="1">
                             <GridPane.margin>
@@ -119,32 +125,60 @@
                                 <Insets left="10.0" />
                             </GridPane.margin>
                         </Label>
-                        <Label text="Фільтр:" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                        <Label text="Кількість:" GridPane.columnIndex="8" GridPane.rowIndex="15">
                             <GridPane.margin>
                                 <Insets right="5.0" top="40.0" />
                             </GridPane.margin>
                         </Label>
-                        <Label text="Категорія:" GridPane.columnIndex="6" GridPane.rowIndex="11">
-                            <GridPane.margin>
-                                <Insets right="5.0" top="40.0" />
-                            </GridPane.margin>
-                        </Label>
-                        <Label text="Кількість:" GridPane.columnIndex="8" GridPane.rowIndex="11">
-                            <GridPane.margin>
-                                <Insets right="5.0" top="40.0" />
-                            </GridPane.margin>
-                        </Label>
-                        <TextField fx:id="filterTextField" prefHeight="31.0" prefWidth="617.0" GridPane.columnIndex="2" GridPane.columnSpan="6" GridPane.rowIndex="11">
+                        <TextField fx:id="numberOfReservistsTextField" GridPane.columnIndex="9" GridPane.rowIndex="15">
                             <GridPane.margin>
                                 <Insets top="40.0" />
                             </GridPane.margin>
                         </TextField>
-                        <TextField fx:id="numberOfReservistsTextField" GridPane.columnIndex="9" GridPane.rowIndex="11">
-                            <GridPane.margin>
-                                <Insets top="40.0" />
-                            </GridPane.margin>
-                        </TextField>
-                        <Button fx:id="exitButton" mnemonicParsing="false" onAction="#stopApp" prefHeight="55.0" prefWidth="222.0" text="ВИХІД" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="12" />
+                        <Button fx:id="exitButton" mnemonicParsing="false" onAction="#stopApp" prefHeight="40.0" prefWidth="300.0" text="ВИХІД" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="16" />
+                  <GridPane GridPane.columnIndex="1" GridPane.columnSpan="7" GridPane.rowIndex="15" GridPane.rowSpan="3">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label fx:id="tckLabel" text="ТЦК:">
+                           <GridPane.margin>
+                              <Insets top="35.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label fx:id="typeLabel" text="Тип обліку:" GridPane.columnIndex="1">
+                           <GridPane.margin>
+                              <Insets left="25.0" top="35.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label fx:id="instituteLabel" text="Інститут:" GridPane.rowIndex="1" GridPane.rowSpan="2">
+                           <GridPane.margin>
+                              <Insets top="35.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label fx:id="cathedraLabel" text="Кафедра:" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="2">
+                           <GridPane.margin>
+                              <Insets left="25.0" top="35.0" />
+                           </GridPane.margin>
+                        </Label>
+                     </children>
+                  </GridPane>
+                  <Button minHeight="45.0" minWidth="250.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="250.0" text="Сформувати додаток 5" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="4" GridPane.rowSpan="2">
+                     <GridPane.margin>
+                        <Insets left="15.0" top="-25.0" />
+                     </GridPane.margin>
+                  </Button>
+                  <Button minHeight="45.0" minWidth="250.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="250.0" text="Додати нового працівника " GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="6">
+                     <GridPane.margin>
+                        <Insets left="15.0" top="15.0" />
+                     </GridPane.margin>
+                  </Button>
                     </children>
                 </GridPane>
             </children>

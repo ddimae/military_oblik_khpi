@@ -7,3 +7,7 @@
 {
     -fx-border-color: darkorange;
 }
+
+.pib-field {
+    -fx-font-size: 24;
+}

@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.DocumentAdapter;
 import ntukhpi.semit.militaryoblik.entity.Document;
-import ntukhpi.semit.militaryoblik.entity.MilitaryPerson;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
@@ -25,11 +24,9 @@ import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.text.Normalizer;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.List;
 import java.util.regex.Pattern;
 
 @Component
@@ -81,27 +78,23 @@ public class DocumentsEditController implements ControlledScene {
 
         for (Document doc : documentService.getAllDocumentByPrepod(selectedPrepod)) {
             if (selectedDocument == null || !selectedDocument.getType().equals(doc.getDocType())) {
-                System.out.println("Remove " + doc.getDocType());
                 typeComboBox.getItems().remove(doc.getDocType());
             }
-            if (selectedDocument == null)
+            if (selectedDocument == null || !selectedDocument.getType().equals(doc.getDocType()))
                 switch (doc.getDocType()) {
                     case "Паперовий паспорт":
-                        System.out.println("Remove idcard");
                         typeComboBox.getItems().remove("ID картка");
                         break;
                     case "ID картка":
-                        System.out.println("Remove paper passpoert");
                         typeComboBox.getItems().remove("Паперовий паспорт");
+                        break;
                 }
         }
         switch (militaryPersonService.getMilitaryPersonByPrepod(selectedPrepod).getVZvanie().getSkladName()) {
             case "Офіцерський склад":
-                System.out.println("remove kvytok");
                 typeComboBox.getItems().remove("Військовий квиток");
                 break;
             case "Рядовий та сержантський склад":
-                System.out.println("Remove posvidchennya");
                 typeComboBox.getItems().remove("Посвідчення особи офіцера");
                 break;
         }
@@ -193,7 +186,6 @@ public class DocumentsEditController implements ControlledScene {
             numberForm.validate();
             whoGivesForm.validate();
             dateForm.validate();
-            System.out.println(date + " " + DataFormat.localDateToUkStandart(LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.yyyy"))));
             if (!date.equals(DataFormat.localDateToUkStandart(LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.yyyy")))))
                 throw new Exception(dateForm.getErrorMsg());
         } catch (DateTimeParseException e) {
@@ -209,7 +201,7 @@ public class DocumentsEditController implements ControlledScene {
     }
     @FXML
     void saveDocuments(ActionEvent event) {
-        String docType = DataFormat.getPureComboboxValue(typeComboBox);
+        String docType = DataFormat.getPureComboBoxValue(typeComboBox);
 
         String number = numberTextField.getText();
         String whoGives = whoGivesTextArea.getText();

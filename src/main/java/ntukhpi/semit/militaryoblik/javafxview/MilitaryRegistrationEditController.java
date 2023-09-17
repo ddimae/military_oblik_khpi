@@ -28,7 +28,7 @@ public class MilitaryRegistrationEditController implements ControlledScene {
     @FXML
     public ComboBox<String> categoryComboBox;
     @FXML
-    public ComboBox<String> staffComboBox;
+    public ComboBox<String> vSkladComboBox;
     @FXML
     public ComboBox<String> rankComboBox;
     @FXML
@@ -63,7 +63,7 @@ public class MilitaryRegistrationEditController implements ControlledScene {
         pibLabel.setText(reservist.getPib());
         groupComboBox.setValue("-не обрано");
         categoryComboBox.setValue(reservist.getCategory());
-        staffComboBox.setValue(reservist.getType());
+        vSkladComboBox.setValue(reservist.getType());
         rankComboBox.setValue(reservist.getRank());
         validityComboBox.setValue("Придатний до військової служби");
 
@@ -79,7 +79,7 @@ public class MilitaryRegistrationEditController implements ControlledScene {
     public void initialize() {
         groupComboBox.getItems().addAll("1", "2");
         categoryComboBox.getItems().addAll();
-        staffComboBox.getItems().addAll(
+        vSkladComboBox.getItems().addAll(
                 "-не обрано",
                 "Рядовий та сержантський склад",
                 "Командний",

@@ -18,7 +18,7 @@ public class Kafedra {
     private Long kid;
 
     //Найменування кафедри повне
-    @Column(length = 100, nullable = false)
+    @Column(length = 100, nullable = false,unique = true)
     private String kname;
 
     //Зв"язок із факультетом-інститутом
@@ -27,12 +27,12 @@ public class Kafedra {
     private Fakultet fakultet;
 
     //Скорочене найменування кафедри
-    @Column(length = 10, nullable = false)
+    @Column(length = 10, nullable = false,unique = true)
     private String kabr;
 
     //Ідентифікатор кафедри в НТУ "ХПI" - код підрозділу для діловодства
     //Опис в конструкторі : "oid"       smallint,  <=== чому в лапках?!
-    @Column(name = "oidkafedra")
+    @Column(name = "oidkafedra",nullable = false, unique = true)
     private String oid;
 
     @Override

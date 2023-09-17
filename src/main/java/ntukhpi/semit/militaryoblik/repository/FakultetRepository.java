@@ -7,4 +7,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FakultetRepository extends JpaRepository<Fakultet,Long> {
 
+    Fakultet getFakultetByFname(String fakName);
+    Fakultet getFakultetByAbr(String fakAbr);
+
+    Fakultet getFakultetByOid(String fakOid);
+
 }
