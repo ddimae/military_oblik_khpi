@@ -10,4 +10,5 @@ public interface VoenkomatRepository extends JpaRepository<Voenkomat,Long> {
 
     Voenkomat findVoenkomatByVoenkomatName(String voenkomatName);
 
+
 }

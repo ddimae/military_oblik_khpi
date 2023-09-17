@@ -1,6 +1,7 @@
 package ntukhpi.semit.militaryoblik.service;
 
 
+import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Fakultet;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Kafedra;
 import ntukhpi.semit.militaryoblik.repository.KafedraRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,32 @@ public class KafedraServiceImpl implements KafedraService {
     }
 
     @Override
-    public Kafedra getKafedraByName(String kname) {
-        return kafedraRepository.getKafedraByKname(kname);
+    public Kafedra getKafedraByName(String kafName) {
+        return kafedraRepository.getKafedraByKname(kafName);
     }
+
+    @Override
+    public List<Kafedra> findKafedrasOfFakultet(String fakName) {
+        return kafedraRepository.getAllByFakultet_Fname(fakName);
+    }
+
+
+    @Override
+    public Long findIDKafedraByKname(String kafName) {
+        Kafedra kafInID = kafedraRepository.getKafedraByKname(kafName);
+        return kafInID!=null?kafInID.getKid():null;
+    }
+
+    @Override
+    public Long findIDKafedraByKabr(String kafAbr) {
+        Kafedra kafInID = kafedraRepository.getKafedraByKabr(kafAbr);
+        return kafInID!=null?kafInID.getKid():null;
+    }
+
+    @Override
+    public Long findIDKafedraByOid(String kafOid) {
+        Kafedra kafInID = kafedraRepository.getKafedraByOid(kafOid);
+        return kafInID!=null?kafInID.getKid():null;
+    }
+
 }

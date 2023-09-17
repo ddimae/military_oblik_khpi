@@ -16,14 +16,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 @SpringBootTest
 public class DBTest {
 
     @Autowired
     FakultetRepository fakultetRepository;
+
+    @Autowired
+    FakultetServiceImpl fakultetServiceImpl;
 
     @Test
     void showFakultet() {
@@ -191,7 +196,7 @@ public class DBTest {
         if (prepodInDB != null) {
             System.out.println(prepod.getFam() + " --> " + prepodInDB.getId());
             MilitaryPerson mp = militaryPersonServiceImpl.getMilitaryPersonByPrepod(prepodInDB);
-            if (mp!=null) {
+            if (mp != null) {
                 ReservistAdapter reserv = new ReservistAdapter(mp);
                 System.out.println(reserv);
             } else {
@@ -205,7 +210,7 @@ public class DBTest {
         if (prepodInDB != null) {
             System.out.println(prepod.getFam() + " --> " + prepodInDB.getId());
             MilitaryPerson mp = militaryPersonServiceImpl.getMilitaryPersonByPrepod(prepodInDB);
-            if (mp!=null) {
+            if (mp != null) {
                 ReservistAdapter reserv = new ReservistAdapter(mp);
                 System.out.println(reserv);
             } else {
@@ -220,8 +225,8 @@ public class DBTest {
     @Test
     void saveMilitaryPerson() {
         Prepod prep = prepodServiceImpl.getPrepodById(5l);
-        militaryPersonServiceImpl.saveMilitaryInfo(prep, "Шевченківський РТЦК та СП","полковник", "командний",
-                "530200", 1, "військовозобов\'язаний","придатний", "немає");
+        militaryPersonServiceImpl.saveMilitaryInfo(prep, "Шевченківський РТЦК та СП", "полковник", "командний",
+                "530200", 1, "військовозобов\'язаний", "придатний", "немає");
 
     }
 
@@ -256,5 +261,57 @@ public class DBTest {
             System.out.println(mp.getPrepod().getFam() + " " + mp.getVos() + " " + mp.getVoenkomat().getVoenkomatName());
         }
     }
+
+
+    @Test
+    void testFindFakultets() {
+        assertEquals(fakultetServiceImpl.findIDFakultetByFname("Навчально-науковий інститут соціально-гуманітарних технологій"), 20L);
+        assertEquals(fakultetServiceImpl.findIDFakultetByFname("Новий інститут"), null);
+        assertEquals(fakultetServiceImpl.findIDFakultetByAbr("СГТ"), 20L);
+        assertNotEquals(fakultetServiceImpl.findIDFakultetByAbr("КН"), null);
+        assertEquals(fakultetServiceImpl.findIDFakultetByOid("300"), 20L);
+        assertNotEquals(fakultetServiceImpl.findIDFakultetByOid("320"), null);
+    }
+
+    @Test
+    void testFindKafedras() {
+        assertEquals(kafedraServiceImpl.findIDKafedraByKname("Кібербезпека"), 287L);
+        assertEquals(kafedraServiceImpl.findIDKafedraByKname("Нова кафедра"), null);
+        assertEquals(kafedraServiceImpl.findIDKafedraByKabr("КБ"), 287L);
+        assertNotEquals(kafedraServiceImpl.findIDKafedraByKabr("ІСТ"), null);
+        assertEquals(kafedraServiceImpl.findIDKafedraByOid("328"), 287L);
+        assertNotEquals(kafedraServiceImpl.findIDKafedraByOid("329"), null);
+    }
+
+    @Test
+    void testFindKafedrasFacultet() {
+        String fakName = "Навчально-науковий інститут соціально-гуманітарних технологій";
+        System.out.println("\nФакультет: " + fakName);
+        System.out.println("\nKafedra list in SQLite:");
+        List<Kafedra> kafedraList = kafedraServiceImpl.findKafedrasOfFakultet(fakName);
+        for (Kafedra kaf : kafedraList) {
+            System.out.println(kaf);
+        }
+
+    }
+
+    @Test
+    void testFindPosada() {
+        assertEquals(dolghnostServiceImpl.findIDPosadaByName("доцент"), 3L);
+        assertEquals(dolghnostServiceImpl.findIDPosadaByName("завідувач кафедри"), 5L);
+        assertEquals(dolghnostServiceImpl.findIDPosadaByName("препод"), null);
+        assertNotEquals(dolghnostServiceImpl.findIDPosadaByName("викладач"), null);
+    }
+
+    @Autowired
+    VoenkomatServiceImpl voenkomatServiceImpl;
+
+    @Test
+    void testFindTCK() {
+        assertEquals(voenkomatServiceImpl.getIDVoenkomatByName("Шевченківський РТЦК та СП"), 7L);
+        assertEquals(voenkomatServiceImpl.getIDVoenkomatByName("Київський РТЦК та СП"), 6L);
+        assertEquals(voenkomatServiceImpl.getIDVoenkomatByName("TCK"), null);
+    }
+
 
 }
