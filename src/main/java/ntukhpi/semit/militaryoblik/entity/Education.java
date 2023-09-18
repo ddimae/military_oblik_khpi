@@ -54,4 +54,25 @@ public class Education {
     //Обирається з переліку (фіксований)
     private String levelTraining;
 
+    //Однаковим вважати записи, в яких співпадає Препод, ВНЗ та рік
+    // Можно одночасно отримати в один рік два дипломи, але у різних вузах
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Education education = (Education) o;
+
+        if (!prepod.equals(education.prepod)) return false;
+        if (!vnz.equals(education.vnz)) return false;
+        return yearVypusk.equals(education.yearVypusk);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = prepod.hashCode();
+        result = 31 * result + vnz.hashCode();
+        result = 31 * result + yearVypusk.hashCode();
+        return result;
+    }
 }

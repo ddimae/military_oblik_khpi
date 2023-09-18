@@ -52,4 +52,5 @@ public class VSkladServiceImpl implements VSkladService {
     public void deleteVSklad(Long id) {
         vSkladRepository.deleteById(id);
     }
+
 }

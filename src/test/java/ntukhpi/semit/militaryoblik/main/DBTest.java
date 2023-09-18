@@ -313,5 +313,17 @@ public class DBTest {
         assertEquals(voenkomatServiceImpl.getIDVoenkomatByName("TCK"), null);
     }
 
+    @Autowired
+    VNZakladServiceImpl vNZakladServiceImpl;
+
+    @Test
+    void testFindVNZ() {
+        assertEquals(vNZakladServiceImpl.findVNZakladByVnzName("Харківський військовий університет"), 3L);
+        assertEquals(vNZakladServiceImpl.findVNZakladByVnzName("Інститут"), null);
+        assertNotEquals(vNZakladServiceImpl.findVNZakladByVnzName("Харківський університет Повітряних Сил"), null);
+        assertEquals(vNZakladServiceImpl.findVNZakladByVnzShortName("ХУПС"), 4L);
+        assertEquals(vNZakladServiceImpl.findVNZakladByVnzShortName("КІвХ"), null);
+        assertNotEquals(vNZakladServiceImpl.findVNZakladByVnzShortName("ХВУ"), null);
+    }
 
 }

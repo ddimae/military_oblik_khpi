@@ -18,35 +18,32 @@ public class D05DataCollectService {
     private final PersonalDataService personalDataService;
     private final DocumentService documentService;
     private final EducationService educationService;
-    private final FamilyStateService familyStateService;
     private final CurrentDoljnostInfoService currentDoljnostInfoService;
 
     @Autowired
-    public D05DataCollectService(MilitaryPersonService militaryPersonService, PersonalDataService personalDataService, DocumentService documentService, EducationService educationService, FamilyStateService familyStateService, CurrentDoljnostInfoService currentDoljnostInfoService) {
+    public D05DataCollectService(MilitaryPersonService militaryPersonService, PersonalDataService personalDataService, DocumentService documentService, EducationService educationService, CurrentDoljnostInfoService currentDoljnostInfoService) {
         this.militaryPersonService = militaryPersonService;
         this.personalDataService = personalDataService;
         this.documentService = documentService;
         this.educationService = educationService;
-        this.familyStateService = familyStateService;
         this.currentDoljnostInfoService = currentDoljnostInfoService;
     }
 
     // Метод збору данних з бд для запису в додаток 5. Аргументом метод приймає список id MilitaryPerson.
     @Transactional
-    public List<D05Adapter> collectD05Adapter(List<Integer> miliratiPersonIds) {
+    public List<D05Adapter> collectD05Adapter(List<Long> miliratiPersonIds) {
         List<D05Adapter> adapters = new ArrayList<>();
         int num = 0;
         if (miliratiPersonIds != null) {
-            for (Integer id : miliratiPersonIds) {
-                MilitaryPerson person = militaryPersonService.getMilitaryPersonById(id.longValue());
+            for (Long id : miliratiPersonIds) {
+                MilitaryPerson person = militaryPersonService.getMilitaryPersonById(id);
                 if (person.getPrepod().getId() != null) {
                     num++;
                     PersonalData personalData = personalDataService.getPersonalDataByPrepodId(person.getPrepod().getId());
                     Education education = educationService.getEducationByPrepodId(person.getPrepod().getId());
-                    FamilyState familyState = familyStateService.getFamilyStateByPrepodId(person.getPrepod().getId());
                     List<Document> documents = documentService.getDocumentsByPrepodId(person.getPrepod().getId());
                     CurrentDoljnostInfo currentDoljnostInfo = currentDoljnostInfoService.getCurrentDoljnostInfoByPrepodId(person.getPrepod().getId());
-                    adapters.add(mappedToAdapter(String.valueOf(num), person, personalData, education, familyState, documents, currentDoljnostInfo));
+                    adapters.add(mappedToAdapter(String.valueOf(num), person, personalData, education, documents, currentDoljnostInfo));
                 }
             }
         }
@@ -54,7 +51,7 @@ public class D05DataCollectService {
     }
 
     // Маппінг отриманих данних з бд в D05Adapter
-    private D05Adapter mappedToAdapter(String nom, MilitaryPerson person, PersonalData personalData, Education education, FamilyState familyState,
+    private D05Adapter mappedToAdapter(String nom, MilitaryPerson person, PersonalData personalData, Education education,
                                        List<Document> documents, CurrentDoljnostInfo currentDoljnostInfo) {
         D05Adapter adapter = new D05Adapter();
         adapter.setPoriad_nom(nom);
@@ -73,26 +70,27 @@ public class D05DataCollectService {
         adapter.setTerCentr(person.getVoenkomat().getVoenkomatName());
         adapter.setSpecObl(person.getReserv());
         adapter.setPrudat(person.getVPrydatnist());
-        adapter.setSimStan(concatFamilyState(familyState));
+        adapter.setSimStan(concatFamilyList(person.getPrepod()));
         adapter.setPosada(concatPosada(person.getPrepod(), currentDoljnostInfo));
         adapter.setPriznach("");
         return adapter;
     }
 
     // Форматування данних про сім’ю відповідно заданному шаблону.
-    private String concatFamilyState(FamilyState familyState) {
+    // Не піде - подивись приклад: може не бути прізвища, году нарождення
+    private String concatFamilyList(Prepod prepod) {
         String fam = "";
-        if (familyState != null) {
-            Set<FamilyMember> members = familyState.getFamily();
+//        if (familyState != null) {
+            Set<FamilyMember> members = prepod.getFamily();
             StringBuilder family = new StringBuilder();
-            family.append(familyState.getFamilyState()).append(";\n");
+//            family.append(familyState.getFamilyState()).append(";\n");
             for (FamilyMember member : members) {
                 String famMember = String.format("%s - %s %s %s, %s ", member.getVid_ridstva(), member.getMem_fam(),
                         member.getMem_imya(), member.getMem_otch(), member.getRikNarodz());
                 family.append(famMember);
             }
             fam = family.toString();
-        }
+//        }
 
         return fam;
     }
@@ -109,6 +107,10 @@ public class D05DataCollectService {
     }
 
     // Форматування данних про освіту відповідно заданному шаблону.
+    // Не піде - у людини може бути декілька вузів, які закінчені
+    // Наприклад, офіцер може закінчити один вуз на тактичний рівень, а потім - на стратегічний. Для офіцерів важливо
+    // Не піде 2 - треба враховувати, що чогось немає....- номера, спеціальності, квалифікації, году. ДД
+    // Треба, як у попередньому випадку - з освітою
     private String concatEducation(Education education) {
         String ed = "";
         if (education != null) {
@@ -132,12 +134,12 @@ public class D05DataCollectService {
         String nakaz = "";
         StringBuilder posada = new StringBuilder();
         posada.append(prepod.getDolghnost().getDolghnName()).append(", ");
-        posada.append(prepod.getKafedra().getKabr()).append(", ");
+        posada.append(prepod.getKafedra().getKabr());
         if (currentDoljnostInfo != null) {
             if(currentDoljnostInfo.getNumNakazStart() != null && currentDoljnostInfo.getDateStart() != null) {
-                nakaz = String.format("наказ %s від %s", currentDoljnostInfo.getNumNakazStart(), currentDoljnostInfo.getDateStart());
+                nakaz = String.format(", наказ %s від %s", currentDoljnostInfo.getNumNakazStart(), currentDoljnostInfo.getDateStart());
             } else if (currentDoljnostInfo.getNumNakazStop() != null && currentDoljnostInfo.getDateStop() != null) {
-                nakaz = String.format("наказ %s від %s", currentDoljnostInfo.getNumNakazStop(), currentDoljnostInfo.getDateStop());
+                nakaz = String.format(", звільнення: наказ %s від %s", currentDoljnostInfo.getNumNakazStop(), currentDoljnostInfo.getDateStop());
             }
         }
 

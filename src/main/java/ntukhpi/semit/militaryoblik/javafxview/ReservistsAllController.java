@@ -23,8 +23,12 @@ import ntukhpi.semit.militaryoblik.service.*;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 
 
+import ntukhpi.semit.militaryoblik.utils.DataPreparer;
+import ntukhpi.semit.militaryoblik.utils.DataWriteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class ReservistsAllController {
@@ -161,7 +165,7 @@ public class ReservistsAllController {
         reservistsList.clear();
         for (Prepod prepod : prepodServiceImpl.getAllPrepod()) {
             MilitaryPerson mp = militaryPersonServiceImpl.getMilitaryPersonByPrepod(prepod);
-            //Виводяться лише ті, хто є військовозабовязаними, тобто мають створений обєкт MilitaryPerson
+            //Виводяться лише ті, хто є військовозабовязаними, тобто мають створений об'єкт MilitaryPerson
             if (mp!=null && mp.getVSklad() != null)
                 reservistsList.add(new ReservistAdapter(mp));
         }
@@ -302,5 +306,17 @@ public class ReservistsAllController {
         } else {
             Popup.noSelectedRowAlert();
         }
+    }
+
+    @Autowired
+    DataPreparer dataPreparer;
+
+    @Autowired
+    D05DataCollectService d05DataCollectService;
+    @FXML
+    private void handlePrintDodatok05Button() {
+        System.out.println("handlePrintDodatok05Button");
+        ObservableList<ReservistAdapter> listToSave = reservistsTableView.getItems();
+        (new DataWriteService(dataPreparer,d05DataCollectService)).writeDataToExcelBase(listToSave);
     }
 }

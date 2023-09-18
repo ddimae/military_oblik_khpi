@@ -17,7 +17,9 @@ import java.time.format.DateTimeFormatter;
 @Setter
 @AllArgsConstructor
 public class ReservistAdapter {
-    private long id;
+    private Long id;
+
+    private Long militaryPersonId;
     private String pib;
     private String dr;
     private String gender;
@@ -60,8 +62,9 @@ public class ReservistAdapter {
     public ReservistAdapter(MilitaryPerson militaryPerson) {
         Prepod prep = militaryPerson.getPrepod();
         this.id = prep.getId();
+        this.militaryPersonId = militaryPerson.getId();
         this.pib = prep.getFam() + " " + prep.getImya() + " " + prep.getOtch();
-        this.dr = prep.getDr().toString(); // format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));//"01.01.0000";
+        this.dr = prep.getDr().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));//"01.01.0000";
         this.gender = "муж"; // DDE - Еще бы понять, откуда брать значение...
         this.trc = militaryPerson.getVoenkomat().getVoenkomatName();
         this.rank = militaryPerson.getVZvanie().getZvanieName();

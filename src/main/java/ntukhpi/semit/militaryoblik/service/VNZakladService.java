@@ -15,4 +15,9 @@ public interface VNZakladService {
     VNZaklad updateVNZaklad(Long id, VNZaklad updatedVNZaklad);
 
     void deleteVNZaklad(Long id);
+
+
+    Long findVNZakladByVnzName(String vnzName);
+
+    Long findVNZakladByVnzShortName(String vnzShortName);
 }

@@ -33,8 +33,8 @@ class D05DataCollectServiceTest {
     private DocumentService documentService;
     @Mock
     private EducationService educationService;
-    @Mock
-    private FamilyStateService familyStateService;
+//    @Mock
+//    private FamilyStateService familyStateService;
     @Mock
     private CurrentDoljnostInfoService currentDoljnostInfoService;
 
@@ -50,14 +50,14 @@ class D05DataCollectServiceTest {
         doReturn(generatePersonalData(2)).when(personalDataService).getPersonalDataByPrepodId(2L);
         doReturn(generateEducation(1)).when(educationService).getEducationByPrepodId(1L);
         doReturn(generateEducation(2)).when(educationService).getEducationByPrepodId(2L);
-        doReturn(generateFamilyState(1)).when(familyStateService).getFamilyStateByPrepodId(1L);
-        doReturn(generateFamilyState(2)).when(familyStateService).getFamilyStateByPrepodId(2L);
+//        doReturn(generateFamilyState(1)).when(familyStateService).getFamilyStateByPrepodId(1L);
+//        doReturn(generateFamilyState(2)).when(familyStateService).getFamilyStateByPrepodId(2L);
         doReturn(generateDocument(1, "Паперовий паспорт")).when(documentService).getDocumentsByPrepodId(1L);
         doReturn(generateDocument(2, "ID картка")).when(documentService).getDocumentsByPrepodId(2L);
         doReturn(generateCurrentDoljnostInfo()).when(currentDoljnostInfoService).getCurrentDoljnostInfoByPrepodId(1L);
         doReturn(new CurrentDoljnostInfo()).when(currentDoljnostInfoService).getCurrentDoljnostInfoByPrepodId(2L);
 
-        List<Integer> ids = Arrays.asList(1, 2);
+        List<Long> ids = Arrays.asList(1L, 2L);
         List<D05Adapter> actual = service.collectD05Adapter(ids);
 
         assertEquals("звання1", actual.get(0).getZvannia());
@@ -132,20 +132,20 @@ class D05DataCollectServiceTest {
         return education;
     }
 
-    private FamilyState generateFamilyState(int count) {
-        FamilyState familyState = new FamilyState();
-        FamilyMember familyMember = new FamilyMember();
-        familyMember.setVid_ridstva("рідство" + count);
-        familyMember.setMem_fam("прізвище" + count);
-        familyMember.setMem_imya("ім’я" + count);
-        familyMember.setMem_otch("по батькові" + count);
-        familyMember.setRikNarodz("199" + count);
-        familyState.setFamilyState("одружений" + count);
-        Set<FamilyMember> members = new HashSet<>();
-        members.add(familyMember);
-        familyState.setFamily(members);
-        return familyState;
-    }
+//    private FamilyState generateFamilyState(int count) {
+//        FamilyState familyState = new FamilyState();
+//        FamilyMember familyMember = new FamilyMember();
+//        familyMember.setVid_ridstva("рідство" + count);
+//        familyMember.setMem_fam("прізвище" + count);
+//        familyMember.setMem_imya("ім’я" + count);
+//        familyMember.setMem_otch("по батькові" + count);
+//        familyMember.setRikNarodz("199" + count);
+//        familyState.setFamilyState("одружений" + count);
+//        Set<FamilyMember> members = new HashSet<>();
+//        members.add(familyMember);
+//        familyState.setFamily(members);
+//        return familyState;
+//    }
 
     private List<Document> generateDocument(int count, String docType) {
         Document document = new Document();

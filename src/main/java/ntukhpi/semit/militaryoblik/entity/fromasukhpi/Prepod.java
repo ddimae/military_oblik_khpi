@@ -3,10 +3,16 @@ package ntukhpi.semit.militaryoblik.entity.fromasukhpi;
 import lombok.*;
 
 import jakarta.persistence.*;
+import ntukhpi.semit.militaryoblik.entity.Education;
+import ntukhpi.semit.militaryoblik.entity.EducationPostgraduate;
+import ntukhpi.semit.militaryoblik.entity.FamilyMember;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Entity
 //Унікальним робимо ПІБ+кафедра.
@@ -65,6 +71,19 @@ public class Prepod {
     @Column
     private String email;
 
+    //Склад родини -
+    @OneToMany(mappedBy = "prepod")
+    private Set<FamilyMember> family = new LinkedHashSet<>();
+    // Перелік вузів, які були закінчені
+    @OneToMany(mappedBy = "prepod")
+    private Set<Education> educationList = new LinkedHashSet<>();;
+
+    // Дані про навчання в аспірантурі (адюнктурі) та докторантурі
+    @OneToMany(mappedBy = "prepod")
+    private Set<EducationPostgraduate> educationPostList = new LinkedHashSet<>();
+
+
+
     public Prepod(String fam, String imya, String otch,
                   Kafedra kafedra, Dolghnost dolghnost, Zvanie zvanie, Stepen stepen, String email) {
         this.fam = fam;
@@ -105,6 +124,43 @@ public class Prepod {
         this.email = email;
     }
 
+    //Для складу родини
+    public Set<FamilyMember> getFamily() {
+        return Collections.unmodifiableSet(family);
+    }
+
+    public void addMember(FamilyMember member) {
+        family.add(member);
+    }
+
+    public void delMember(FamilyMember member) {
+        family.remove(member);
+    }
+
+    //Для переліку вузів, що закінчені
+    public Set<Education> getEducationList() {
+        return Collections.unmodifiableSet(educationList);
+    }
+    public void addEducation(Education education) {
+        educationList.add(education);
+    }
+
+    public void delEducation(Education education) {
+        educationList.remove(education);
+    }
+
+    //Для даних про навчання в аспірантурі (адюнктурі) та докторантурі
+    public Set<EducationPostgraduate> getEducationPostList() {
+        return Collections.unmodifiableSet(educationPostList);
+    }
+    public void addEducationPost(EducationPostgraduate education) {
+        educationPostList.add(education);
+    }
+
+    public void delEducationPost(EducationPostgraduate education) {
+        educationPostList.remove(education);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -126,4 +182,6 @@ public class Prepod {
         result = 31 * result + kafedra.hashCode();
         return result;
     }
+
+
 }

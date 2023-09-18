@@ -47,4 +47,17 @@ public class VNZakladServiceImpl implements VNZakladService {
     public void deleteVNZaklad(Long id) {
         vnZakladRepository.deleteById(id);
     }
+
+
+    @Override
+    public Long findVNZakladByVnzName(String vnzName) {
+        VNZaklad vnzInDB = vnZakladRepository.getVNZakladByVnzName(vnzName);
+        return vnzInDB!=null?vnzInDB.getId():null;
+    }
+
+    @Override
+    public Long findVNZakladByVnzShortName(String vnzShortName) {
+        VNZaklad vnzInDB = vnZakladRepository.getVNZakladByVnzShortName(vnzShortName);
+        return vnzInDB!=null?vnzInDB.getId():null;
+    }
 }
