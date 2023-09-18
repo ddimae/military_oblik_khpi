@@ -17,6 +17,7 @@ import ntukhpi.semit.militaryoblik.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -88,11 +89,13 @@ public class EmployeeAddController implements ControlledScene {
     }
 
     public void initialize() {
-        instituteComboBox.getItems().add("Не визначено");
-        instituteComboBox.getItems().addAll(FXCollections.observableArrayList(fakultetService.getAllFak().stream().map(Fakultet::toString).sorted().toList()));
+        Collator ukrCollator = DataFormat.getUkrCollator();
 
-        degreeComboBox.setItems(FXCollections.observableArrayList(stepenService.getAllStepen().stream().map(Stepen::toString).sorted().toList()));
-        statusComboBox.setItems(FXCollections.observableArrayList(zvanieService.getAllZvanie().stream().map(Zvanie::toString).sorted().toList()));
+        instituteComboBox.getItems().add("Не визначено");
+        instituteComboBox.getItems().addAll(FXCollections.observableArrayList(fakultetService.getAllFak().stream().map(Fakultet::toString).sorted(ukrCollator).toList()));
+
+        degreeComboBox.setItems(FXCollections.observableArrayList(stepenService.getAllStepen().stream().map(Stepen::toString).sorted(ukrCollator).toList()));
+        statusComboBox.setItems(FXCollections.observableArrayList(zvanieService.getAllZvanie().stream().map(Zvanie::toString).sorted(ukrCollator).toList()));
 
         degreeComboBox.getItems().remove("не має");
         degreeComboBox.getItems().add(0,"не має");
@@ -162,12 +165,17 @@ public class EmployeeAddController implements ControlledScene {
             prepod.setOtch(midname);
             prepod.setDr(birthDatePicker.getValue());
             prepod.setKafedra(kafedraService.getKafedraByName(cathedra));
-            prepod.setStepen(stepenService.getStepenByName(degree));
-            prepod.setZvanie(zvanieService.getZvanieByName(status));
 
             if (position == null)
                 position = positionComboBox.getItems().get(0);
+            if (degree == null)
+                degree = degreeComboBox.getItems().get(0);
+            if (status == null)
+                status = statusComboBox.getItems().get(0);
+
             prepod.setDolghnost(dolghnostService.getDolghnostByName(position));
+            prepod.setStepen(stepenService.getStepenByName(degree));
+            prepod.setZvanie(zvanieService.getZvanieByName(status));
 
             prepodService.savePrepod(prepod);
 

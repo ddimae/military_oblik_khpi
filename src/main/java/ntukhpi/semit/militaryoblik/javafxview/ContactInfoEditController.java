@@ -22,6 +22,7 @@ import ntukhpi.semit.militaryoblik.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -231,23 +232,15 @@ public class ContactInfoEditController implements ControlledScene {
     }
 
     public void initialize() {
-        List<String> countryList = new ArrayList<>();
-        List<String> regionList = new ArrayList<>();
+        Collator ukrCollator = DataFormat.getUkrCollator();
 
-        countryList.add("Не визначено");
-        regionList.add("Не визначено");
+        countryComboBox.getItems().add("Не визначено");
+        countryComboBox.getItems().addAll(countryService.getAllCountry().stream().map(Country::toString).sorted(ukrCollator).toList());
+        countryFactComboBox.setItems(countryComboBox.getItems());
 
-        countryList.addAll(countryService.getAllCountry().stream().map(Country::toString).toList());
-        regionList.addAll(regionUkraineService.getAllRegionUkraine().stream().map(RegionUkraine::toString).toList());
-
-        ObservableList<String> countryObservableList = FXCollections.observableArrayList(countryList);
-        ObservableList<String> regionObservableList = FXCollections.observableArrayList(regionList);
-
-        countryComboBox.setItems(countryObservableList);
-        countryFactComboBox.setItems(countryObservableList);
-
-        regionComboBox.setItems(regionObservableList);
-        regionFactComboBox.setItems(regionObservableList);
+        regionComboBox.getItems().add("Не визначено");
+        regionComboBox.getItems().addAll(regionUkraineService.getAllRegionUkraine().stream().map(RegionUkraine::toString).sorted(ukrCollator).toList());
+        regionFactComboBox.setItems(regionComboBox.getItems());
 
         handleChangeCountry(null);
     }

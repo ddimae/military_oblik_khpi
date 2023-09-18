@@ -4,11 +4,13 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableCell;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 
+import java.text.Collator;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class DataFormat {
     public static String getPIB(Prepod prepod) {    //TODO Точно створити окремий клас!!!
@@ -54,5 +56,9 @@ public class DataFormat {
                     setText("");
             }
         };
+    }
+
+    public static Collator getUkrCollator() {
+        return Collator.getInstance(new Locale("uk", "UA"));
     }
 }
