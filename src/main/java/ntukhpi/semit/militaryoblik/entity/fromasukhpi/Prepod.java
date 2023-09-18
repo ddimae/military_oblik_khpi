@@ -3,9 +3,7 @@ package ntukhpi.semit.militaryoblik.entity.fromasukhpi;
 import lombok.*;
 
 import jakarta.persistence.*;
-import ntukhpi.semit.militaryoblik.entity.Education;
-import ntukhpi.semit.militaryoblik.entity.EducationPostgraduate;
-import ntukhpi.semit.militaryoblik.entity.FamilyMember;
+import ntukhpi.semit.militaryoblik.entity.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -72,16 +70,24 @@ public class Prepod {
     private String email;
 
     //Склад родини -
-    @OneToMany(mappedBy = "prepod")
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "prepod")
     private Set<FamilyMember> family = new LinkedHashSet<>();
     // Перелік вузів, які були закінчені
-    @OneToMany(mappedBy = "prepod")
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "prepod")
     private Set<Education> educationList = new LinkedHashSet<>();;
 
     // Дані про навчання в аспірантурі (адюнктурі) та докторантурі
-    @OneToMany(mappedBy = "prepod")
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "prepod")
     private Set<EducationPostgraduate> educationPostList = new LinkedHashSet<>();
 
+    // Документи
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "prepod")
+    private Set<Document> documents = new LinkedHashSet<>();
+
+    //Дані про накази
+
+    @OneToOne(fetch = FetchType.EAGER,mappedBy = "prepod")
+    private CurrentDoljnostInfo posadaNakazy;
 
 
     public Prepod(String fam, String imya, String otch,

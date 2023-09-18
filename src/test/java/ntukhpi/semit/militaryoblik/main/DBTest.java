@@ -1,6 +1,7 @@
 package ntukhpi.semit.militaryoblik.main;
 
 import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
+import ntukhpi.semit.militaryoblik.entity.CurrentDoljnostInfo;
 import ntukhpi.semit.militaryoblik.entity.MilitaryPerson;
 import ntukhpi.semit.militaryoblik.entity.VZvanie;
 import ntukhpi.semit.militaryoblik.entity.Voenkomat;
@@ -324,6 +325,32 @@ public class DBTest {
         assertEquals(vNZakladServiceImpl.findVNZakladByVnzShortName("ХУПС"), 4L);
         assertEquals(vNZakladServiceImpl.findVNZakladByVnzShortName("КІвХ"), null);
         assertNotEquals(vNZakladServiceImpl.findVNZakladByVnzShortName("ХВУ"), null);
+    }
+
+    @Autowired
+    CurrentDoljnostInfoServiceImpl currentDoljnostInfoServiceImpl;
+    @Test
+    void testSaveDates() {
+        Long posadaInfoId = 1L;
+        String nakazStr = "2392";
+        String dateStr = "21.12.2016";
+        Long prepodId = 23L;
+        Prepod prep = prepodServiceImpl.getPrepodById(prepodId);
+        System.out.println(prep.getFam());
+        //LocalDate dateForSave = LocalDate.parse(dateStr,DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+//        LocalDate dateForSave = LocalDate.of(2016,12,21);
+//        CurrentDoljnostInfo posadaInfoNew = new CurrentDoljnostInfo();
+//        posadaInfoNew.setId(posadaInfoId);
+//        posadaInfoNew.setPrepod(new Prepod());
+//        posadaInfoNew.setNumNakazStart(nakazStr);
+//        posadaInfoNew.setDateStart(dateForSave);
+//        //currentDoljnostInfoServiceImpl.updateCurrentDoljnostInfo(posadaInfoId,posadaInfoNew);
+//        currentDoljnostInfoServiceImpl.createCurrentDoljnostInfo(posadaInfoNew);
+//        CurrentDoljnostInfo posadaInfoFromDb = currentDoljnostInfoServiceImpl.getCurrentDoljnostInfoById(posadaInfoId);
+//        System.out.println(posadaInfoFromDb);
+
+
+
     }
 
 }
