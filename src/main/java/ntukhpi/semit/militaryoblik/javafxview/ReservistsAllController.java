@@ -265,6 +265,22 @@ public class ReservistsAllController {
     //    call to detail info about reservist
     //============================================
     @FXML
+    private void handlePositionButton() {
+        if (setSelectedPrepodId() != null)
+            MilitaryOblikKhPIMain.showPositionWindow();
+        else
+            Popup.noSelectedRowAlert();
+    }
+
+    @FXML
+    private void handleFamilyButton() {
+        if (setSelectedPrepodId() != null)
+            MilitaryOblikKhPIMain.showFamilyWindow();
+        else
+            Popup.noSelectedRowAlert();
+    }
+
+    @FXML
     private void handleEducationButton() {
         if (setSelectedPrepodId() != null)
             MilitaryOblikKhPIMain.showEducationWindow();

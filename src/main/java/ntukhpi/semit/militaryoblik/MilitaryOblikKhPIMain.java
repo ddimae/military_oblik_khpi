@@ -57,6 +57,22 @@ public class MilitaryOblikKhPIMain extends Application {
                     0, 0, false, true);
 
     //============================
+    private final static String POSITION_JAVAFX = "/javafxview/PositionEdit.fxml";
+    private final static String POSITION_JAVAFX_TITLE = "Посада";
+
+    private static SettingsStage positionEdit =
+            new SettingsStage(POSITION_JAVAFX, POSITION_JAVAFX_TITLE,
+                    0,0,false, true);
+
+    //============================
+    private final static String FAMILY_JAVAFX = "/javafxview/FamilyCompositionAll.fxml";
+    private final static String FAMILY_JAVAFX_TITLE = "Родина";
+
+    private static SettingsStage familyAll =
+            new SettingsStage(FAMILY_JAVAFX, FAMILY_JAVAFX_TITLE,
+                    0,0,false, true);
+
+    //============================
     private final static String DOCUMENTS_JAVAFX = "/javafxview/DocumentsAll.fxml";
     private final static String DOCUMENTS_JAVAFX_TITLE = "Документи";
 
@@ -263,6 +279,12 @@ public class MilitaryOblikKhPIMain extends Application {
         showStage(educationAll);
     }
 
+    public static void showPositionWindow() {
+        showStage(positionEdit);
+    }
+    public static void showFamilyWindow() {
+        showStage(familyAll);
+    }
     public static void showPostgraduateEducationWindow() {
         showStage(educationPostgraduateAll);
     }

@@ -78,10 +78,10 @@ public class EducationEditController implements ControlledScene {
         String diplomaNumber = diplomaNumberTextField.getText();
         String diplomaSeries = diplomaSeriesTextField.getText();
 
-        if (!diplomaNumber.matches("^[a-zA-Z0-9]*$") || !diplomaSeries.matches("^[a-zA-Z0-9]*$")) {
-            Popup.wrongInputAlert("Дипломний номер та серія можуть містити лише букви та цифри");
-            return;
-        }
+//        if (!diplomaNumber.matches("^[a-zA-Z0-9]*$") || !diplomaSeries.matches("^[a-zA-Z0-9]*$")) {
+//            Popup.wrongInputAlert("Дипломний номер та серія можуть містити лише букви та цифри");
+//            return;
+//        }
 
         String specialty = specialtyTextField.getText();
         String qualification = qualificationTextField.getText();
@@ -105,7 +105,7 @@ public class EducationEditController implements ControlledScene {
             mainController.addEducation(education);
         }
 
-        ((Stage) vnzComboBox.getScene().getWindow()).close();
+        closeEdit(null);
     }
 
 
