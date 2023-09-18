@@ -16,7 +16,7 @@ import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Country;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.RegionUkraine;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
-import ntukhpi.semit.militaryoblik.javafxutils.FormTextInput;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.TextFieldValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class ContactInfoEditController implements ControlledScene {
 
     @Getter
     @Setter
-    private class PhoneNumberForm extends FormTextInput {
+    private class PhoneNumberForm extends TextFieldValidator {
         private String number;
         private boolean isFullNumber;
         private boolean isNoCountryCodeNumber;
@@ -237,8 +237,8 @@ public class ContactInfoEditController implements ControlledScene {
         countryList.add("Не визначено");
         regionList.add("Не визначено");
 
-        countryList.addAll(countryService.getAllCountry().stream().map(Country::getCountryName).toList());
-        regionList.addAll(regionUkraineService.getAllRegionUkraine().stream().map(RegionUkraine::getCountryName).toList());
+        countryList.addAll(countryService.getAllCountry().stream().map(Country::toString).toList());
+        regionList.addAll(regionUkraineService.getAllRegionUkraine().stream().map(RegionUkraine::toString).toList());
 
         ObservableList<String> countryObservableList = FXCollections.observableArrayList(countryList);
         ObservableList<String> regionObservableList = FXCollections.observableArrayList(regionList);
@@ -277,19 +277,19 @@ public class ContactInfoEditController implements ControlledScene {
         Pattern regionRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії,.\\s]*$");
         Pattern addressRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії\\d,.\\-\\'\\&_\\s]*$");
 
-        FormTextInput countryForm = new FormTextInput(-1, true, null, "Країна", country, null);
-        FormTextInput indexForm = new FormTextInput(10, false, String.valueOf(country).equals("Україна")?ukrIndexRegex:null, "Індекс", index, "повинно складатися із 5 цифр");
-        FormTextInput cityForm = new FormTextInput(30, true, cityRegex, "Місто", city, "повинно містити тільки українські літери");
-        FormTextInput regionForm = new FormTextInput(255, false, null, "Область", region, null);
-        FormTextInput addressForm = new FormTextInput(255, true, addressRegex, "Адресса", address, "може містити українські літери, цифри та розділові знаки");
+        TextFieldValidator countryForm = new TextFieldValidator(-1, true, null, "Країна", country, null);
+        TextFieldValidator indexForm = new TextFieldValidator(10, false, String.valueOf(country).equals("Україна")?ukrIndexRegex:null, "Індекс", index, "повинно складатися із 5 цифр");
+        TextFieldValidator cityForm = new TextFieldValidator(30, true, cityRegex, "Місто", city, "повинно містити тільки українські літери");
+        TextFieldValidator regionForm = new TextFieldValidator(255, false, null, "Область", region, null);
+        TextFieldValidator addressForm = new TextFieldValidator(255, true, addressRegex, "Адресса", address, "може містити українські літери, цифри та розділові знаки");
         PhoneNumberForm mainPhoneForm = new PhoneNumberForm(mainPhone.getNumber(), 13, true, "Телефон 1", "повинно мати форму: +380951203066, 0951203066, 380951203066 або 7076845");
         PhoneNumberForm secondPhoneForm = new PhoneNumberForm(secondPhone.getNumber(), 13, false, "Телефон 2", "повинно мати форму: +380951203066, 0951203066, 380951203066, або 7076845");
 
-        FormTextInput countryFactForm = new FormTextInput(-1, false, null, "Країна", countryFact, null);
-        FormTextInput indexFactForm = new FormTextInput(10, false, String.valueOf(countryFact).equals("Україна")?ukrIndexRegex:null, "Індекс", indexFact, "повинно складатися із 5 цифр");
-        FormTextInput cityFactForm = new FormTextInput(30, false, cityRegex, "Місто", cityFact, "повинно містити тільки українські літери");
-        FormTextInput regionFactForm = new FormTextInput(255, false, null, "Область", regionFact, null);
-        FormTextInput addressFactForm = new FormTextInput(255, false, addressRegex, "Адресса", addressFact, "може містити українські літери, цифри та розділові знаки");
+        TextFieldValidator countryFactForm = new TextFieldValidator(-1, false, null, "Країна", countryFact, null);
+        TextFieldValidator indexFactForm = new TextFieldValidator(10, false, String.valueOf(countryFact).equals("Україна")?ukrIndexRegex:null, "Індекс", indexFact, "повинно складатися із 5 цифр");
+        TextFieldValidator cityFactForm = new TextFieldValidator(30, false, cityRegex, "Місто", cityFact, "повинно містити тільки українські літери");
+        TextFieldValidator regionFactForm = new TextFieldValidator(255, false, null, "Область", regionFact, null);
+        TextFieldValidator addressFactForm = new TextFieldValidator(255, false, addressRegex, "Адресса", addressFact, "може містити українські літери, цифри та розділові знаки");
 
         try {
             countryForm.validate();
@@ -397,7 +397,8 @@ public class ContactInfoEditController implements ControlledScene {
             closeEdit(null);
             Popup.successSave();
         } catch (Exception e) {
-            Popup.wrongInputAlert(e.getMessage());
+            e.printStackTrace();
+            Popup.internalAlert(e.getMessage());
         }
     }
 

@@ -32,7 +32,7 @@
                <children>
                   <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
-                        <ComboBox fx:id="instituteComboBox" maxHeight="40.0" maxWidth="250.0" minHeight="40.0" minWidth="250.0" prefHeight="40.0" prefWidth="250.0" promptText="--Оберіть інститут" styleClass="obligatory-field" />
+                        <ComboBox fx:id="instituteComboBox" maxHeight="40.0" maxWidth="250.0" minHeight="40.0" minWidth="250.0" onAction="#handleInstituteChange" prefHeight="40.0" prefWidth="250.0" promptText="--Оберіть інститут" styleClass="obligatory-field" />
                         <Button maxWidth="40.0" minWidth="40.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0">
                            <graphic>
                               <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">

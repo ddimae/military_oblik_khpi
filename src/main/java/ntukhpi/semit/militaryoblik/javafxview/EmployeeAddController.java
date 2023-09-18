@@ -1,22 +1,25 @@
 package ntukhpi.semit.militaryoblik.javafxview;
 
+import com.sun.tools.jconsole.JConsoleContext;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
-import ntukhpi.semit.militaryoblik.entity.VNZaklad;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.*;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.DateFieldValidator;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.TextFieldValidator;
+import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Component
 public class EmployeeAddController implements ControlledScene {
@@ -54,6 +57,8 @@ public class EmployeeAddController implements ControlledScene {
     @FXML
     private TextField surnameTextField;
 
+    private ReservistsAllController mainController;
+
     @Autowired
     FakultetServiceImpl fakultetService;
 
@@ -69,9 +74,12 @@ public class EmployeeAddController implements ControlledScene {
     @Autowired
     ZvanieServiceImpl zvanieService;
 
+    @Autowired
+    PrepodServiceImpl prepodService;
+
     @Override
     public void setMainController(Object mainController) {
-
+        this.mainController = (ReservistsAllController) mainController;
     }
 
     @Override
@@ -80,31 +88,18 @@ public class EmployeeAddController implements ControlledScene {
     }
 
     public void initialize() {
-        List<String> institutesList = new ArrayList<>();
-        List<String> cathedrasList = new ArrayList<>();
-        List<String> degreesList = new ArrayList<>();
-        List<String> statusList = new ArrayList<>();
+        instituteComboBox.getItems().add("Не визначено");
+        instituteComboBox.getItems().addAll(FXCollections.observableArrayList(fakultetService.getAllFak().stream().map(Fakultet::toString).sorted().toList()));
 
-        institutesList.add("Не визначено");
-        cathedrasList.add("Не визначено");
-//        degreesList.add("Не визначено");
-//        statusList.add("Не визначено");
+        degreeComboBox.setItems(FXCollections.observableArrayList(stepenService.getAllStepen().stream().map(Stepen::toString).sorted().toList()));
+        statusComboBox.setItems(FXCollections.observableArrayList(zvanieService.getAllZvanie().stream().map(Zvanie::toString).sorted().toList()));
 
-        institutesList.addAll(fakultetService.getAllFak().stream().map(Fakultet::getFname).sorted().toList());
-        cathedrasList.addAll(kafedraService.getAllKafedra().stream().map(Kafedra::getKname).sorted().toList());
-        degreesList.addAll(stepenService.getAllStepen().stream().map(Stepen::getStepenLong).sorted().toList());
-        statusList.addAll(zvanieService.getAllZvanie().stream().map(Zvanie::getZvanieName).sorted().toList());
+        degreeComboBox.getItems().remove("не має");
+        degreeComboBox.getItems().add(0,"не має");
+        statusComboBox.getItems().remove("не визначено");
+        statusComboBox.getItems().add(0,"не визначено");
 
-        degreesList.remove("не має");
-        degreesList.add(0, "не має");
-        statusList.remove("не визначено");
-        statusList.add(0, "не визначено");
-
-        instituteComboBox.setItems(FXCollections.observableArrayList(institutesList));
-        cathedraComboBox.setItems(FXCollections.observableArrayList(cathedrasList));
-        degreeComboBox.setItems(FXCollections.observableArrayList(degreesList));
-        statusComboBox.setItems(FXCollections.observableArrayList(statusList));
-
+        handleInstituteChange(null);
         handleTypeChange(null);
     }
 
@@ -118,13 +113,70 @@ public class EmployeeAddController implements ControlledScene {
         }
     }
 
-    private boolean validateInfo() {
+    private boolean validateInfo(String institute, String cathedra, String surname,
+                                 String name, String midname, String date) {
+        Pattern ukrWords = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії\\-\\s]+$");
+        Pattern ukrDateRegex = Pattern.compile("^\\d{2}\\.\\d{2}\\.\\d{4}$");
+
+        TextFieldValidator instituteValidator = new TextFieldValidator(-1, true, null, "Інститут", institute, null);
+        TextFieldValidator cathedraValidator = new TextFieldValidator(-1, true, null, "Кафедра", cathedra, null);
+        TextFieldValidator surnameValidator = new TextFieldValidator(40, true, ukrWords, "Прізвище", surname, "повинно містити українські літери");
+        TextFieldValidator nameValidator = new TextFieldValidator(30, true, ukrWords, "Ім'я", name, "повинно містити українські літери");
+        TextFieldValidator midnameValidator = new TextFieldValidator(30, true, ukrWords, "По батькові", midname, "повинно містити українські літери");
+        DateFieldValidator dateValidator = new DateFieldValidator(false, ukrDateRegex, "Дата народження", date, "повинно мати формат дати: dd.mm.yyyy");
+
+        try {
+            instituteValidator.validate();
+            cathedraValidator.validate();
+            surnameValidator.validate();
+            nameValidator.validate();
+            midnameValidator.validate();
+            dateValidator.validate();
+        } catch (Exception e) {
+            Popup.wrongInputAlert(e.getMessage());
+            return false;
+        }
         return true;
     }
 
     @FXML
     void saveEmployee(ActionEvent event) {
+        String institute = DataFormat.getPureComboBoxValue(instituteComboBox);
+        String cathedra = DataFormat.getPureComboBoxValue(cathedraComboBox);
+        String surname = surnameTextField.getText().trim();
+        String name = nameTextField.getText().trim();
+        String midname = midnameTextField.getText().trim();
+        String birthDate = birthDatePicker.getEditor().getText();
+        String position = positionComboBox.getValue();
+        String degree = degreeComboBox.getValue();
+        String status = statusComboBox.getValue();
 
+        if (!validateInfo(institute, cathedra, surname, name, midname, birthDate) || !Popup.saveConfirmation())
+            return;
+
+        try {
+            Prepod prepod = new Prepod();
+
+            prepod.setFam(surname);
+            prepod.setImya(name);
+            prepod.setOtch(midname);
+            prepod.setDr(birthDatePicker.getValue());
+            prepod.setKafedra(kafedraService.getKafedraByName(cathedra));
+            prepod.setStepen(stepenService.getStepenByName(degree));
+            prepod.setZvanie(zvanieService.getZvanieByName(status));
+
+            if (position == null)
+                position = positionComboBox.getItems().get(0);
+            prepod.setDolghnost(dolghnostService.getDolghnostByName(position));
+
+            prepodService.savePrepod(prepod);
+
+            closeEdit(null);
+            Popup.successSave();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Popup.internalAlert(e.getMessage());
+        }
     }
 
     @FXML
@@ -145,5 +197,21 @@ public class EmployeeAddController implements ControlledScene {
             degreeComboBox.setDisable(false);
             statusComboBox.setDisable(false);
         }
+    }
+
+    @FXML
+    void handleInstituteChange(ActionEvent event) {
+        boolean isFirst = cathedraComboBox.getValue() != null;
+
+        cathedraComboBox.getItems().clear();
+        cathedraComboBox.getItems().add(0, "Не визначено");
+        cathedraComboBox.getItems().addAll(FXCollections.observableArrayList(kafedraService.getAllKafedra().
+                                                                                            stream().
+                                                                                            filter(k -> k.getFakultet().toString().equals(instituteComboBox.getValue())).
+                                                                                            map(Kafedra::getKname).
+                                                                                            sorted().
+                                                                                            toList()));
+        if (isFirst)
+            cathedraComboBox.getSelectionModel().selectFirst();
     }
 }

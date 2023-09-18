@@ -57,11 +57,13 @@ public class Prepod {
     private Dolghnost dolghnost;
 
     //Вчене звання - це доцент, професор, старший науковий співробітник, академік, тощо
+    //Якщо не вибрано, то записувати null
     @ManyToOne
     @JoinColumn(name = "zvanie_id")
     private Zvanie zvanie;
 
     //Науковий ступінь - кандидат технічних наук, доктор технічних наук
+    //Якщо не вибрано, то записувати null
     @ManyToOne
     @JoinColumn(name = "stepen_id")
     private Stepen stepen;
