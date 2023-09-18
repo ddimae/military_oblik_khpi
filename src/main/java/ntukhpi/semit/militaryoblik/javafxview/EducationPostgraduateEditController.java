@@ -98,14 +98,14 @@ public class EducationPostgraduateEditController implements Initializable, Contr
             mainController.addPostgraduateEducation(education);
         }
 
-        ((Stage) vnzComboBox.getScene().getWindow()).close();
+        closeEdit(null);
     }
 
     @FXML
     private void closeEdit(ActionEvent event) {
         try {
             ((Stage) typeComboBox.getScene().getWindow()).close();
-//            MilitaryOblikKhPIMain;
+            MilitaryOblikKhPIMain.showPostgraduateEducationWindow();
         } catch (Exception e) {
             e.printStackTrace();
         }

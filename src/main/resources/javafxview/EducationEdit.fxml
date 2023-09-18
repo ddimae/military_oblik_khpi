@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
@@ -10,71 +11,155 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntukhpi.semit.militaryoblik.javafxview.EducationEditController">
     <children>
-        <GridPane prefHeight="399.0" prefWidth="600.0">
+        <GridPane prefHeight="500.0" prefWidth="800.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="127.0" minWidth="10.0" prefWidth="127.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="242.0" minWidth="10.0" prefWidth="221.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="157.0" minWidth="0.0" prefWidth="0.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="94.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="34.0" minWidth="0.0" prefWidth="21.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="232.0" minWidth="10.0" prefWidth="141.3252410888672" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="210.32522583007812" minWidth="0.0" prefWidth="197.6747589111328" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="325.6504821777344" minWidth="10.0" prefWidth="311.00347900390625" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="157.0" minWidth="0.0" prefWidth="8.373779296875" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="121.626220703125" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="34.0" minWidth="0.0" prefWidth="0.0" />
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="56.66087341308594" minHeight="10.0" prefHeight="55.32868957519531" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="45.328704833984375" minHeight="10.0" prefHeight="38.667816162109375" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="51.332183837890625" minHeight="10.0" prefHeight="51.332183837890625" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="1.0" prefHeight="1.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Button mnemonicParsing="false" onAction="#saveEducation" prefHeight="27.0" prefWidth="100.0" text="Зберегти" GridPane.columnIndex="2" GridPane.rowIndex="8">
-                    <GridPane.margin>
-                        <Insets left="10.0" />
-                    </GridPane.margin></Button>
-                <Button mnemonicParsing="false" onAction="#closeEdit" prefHeight="27.0" prefWidth="100.0" text="Повернутися" GridPane.columnIndex="3" GridPane.rowIndex="8">
-                    <GridPane.margin>
-                        <Insets left="130.0" />
-                    </GridPane.margin></Button>
-                <Label text="ВНЗ" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <Label text="Форма" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <Label text="Рік" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                <Label text="Рівень" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                <Label text="Диплом" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                <Label text="Спеціальність" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                <Label text="Кваліфікація" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                <ComboBox fx:id="vnzComboBox" prefHeight="27.0" prefWidth="348.0" promptText="--Оберіть ВНЗ" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                <Label text="    ВНЗ" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <font>
+                        <Font size="18.0" />
+                    </font></Label>
+                <Label text="    Форма" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                    <font>
+                        <Font size="18.0" />
+                    </font></Label>
+                <Label text="    Рік" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                    <font>
+                        <Font size="18.0" />
+                    </font></Label>
+                <Label text="    Рівень" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <font>
+                        <Font size="18.0" />
+                    </font></Label>
+                <Label text="    Диплом" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                    <font>
+                        <Font size="18.0" />
+                    </font></Label>
+                <Label text="    Спеціальність" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                    <font>
+                        <Font size="18.0" />
+                    </font></Label>
+                <Label text="    Кваліфікація" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                    <font>
+                        <Font size="18.0" />
+                    </font></Label>
+                <ComboBox fx:id="vnzComboBox" maxHeight="35.0" minHeight="35.0" prefHeight="35.0" prefWidth="505.0" promptText="--Оберіть ВНЗ" styleClass="obligatory-field" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1">
                     <GridPane.margin>
                         <Insets />
                     </GridPane.margin></ComboBox>
-                <ComboBox fx:id="formComboBox" prefHeight="27.0" prefWidth="183.0" promptText="--Оберіть форму" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-                <ComboBox fx:id="levelComboBox" prefHeight="27.0" prefWidth="183.0" promptText="--Оберіть рівень" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-                <TextField fx:id="yearTextField" prefHeight="27.0" prefWidth="275.0" promptText="ХХХХ" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                <TextField fx:id="diplomaSeriesTextField" promptText="введіть серію" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                <TextField fx:id="diplomaNumberTextField" prefHeight="27.0" prefWidth="0.0" promptText="введіть номер" GridPane.columnIndex="3" GridPane.rowIndex="5">
+                <ComboBox fx:id="formComboBox" minHeight="35.0" prefHeight="35.0" prefWidth="200.0" promptText="--Оберіть форму" styleClass="obligatory-field" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+                <ComboBox fx:id="levelComboBox" minHeight="35.0" prefHeight="35.0" prefWidth="200.0" promptText="--Оберіть рівень" styleClass="obligatory-field" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                <TextField fx:id="yearTextField" prefHeight="27.0" prefWidth="275.0" promptText="ХХХХ" styleClass="obligatory-field" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                    <font>
+                        <Font size="18.0" />
+                    </font></TextField>
+                <TextField fx:id="diplomaSeriesTextField" promptText="введіть серію" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                    <font>
+                        <Font size="18.0" />
+                    </font></TextField>
+                <TextField fx:id="diplomaNumberTextField" prefHeight="27.0" prefWidth="210.0" promptText="введіть номер" styleClass="obligatory-field" GridPane.columnIndex="3" GridPane.rowIndex="5">
                     <GridPane.margin>
                         <Insets left="100.0" right="5.0" />
-                    </GridPane.margin></TextField>
-                <Label prefHeight="17.0" prefWidth="112.0" text="                       Серія" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                <Label prefHeight="17.0" prefWidth="101.0" text="                 Номер" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-                <TextField fx:id="specialtyTextField" prefWidth="340.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="6">
+                    </GridPane.margin>
+                    <font>
+                        <Font size="18.0" />
+                    </font></TextField>
+                <Label prefHeight="23.0" prefWidth="135.0" text="                       Серія" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                    <font>
+                        <Font size="18.0" />
+                    </font></Label>
+                <Label prefHeight="17.0" prefWidth="101.0" text="          Номер" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="5">
+                    <font>
+                        <Font size="18.0" />
+                    </font></Label>
+                <TextField fx:id="specialtyTextField" prefWidth="340.0" styleClass="obligatory-field" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="6">
                     <GridPane.margin>
                         <Insets right="5.0" />
-                    </GridPane.margin></TextField>
-                <TextField fx:id="qualificationTextField" prefWidth="340.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="7">
+                    </GridPane.margin>
+                    <font>
+                        <Font size="18.0" />
+                    </font></TextField>
+                <TextField fx:id="qualificationTextField" prefWidth="340.0" styleClass="obligatory-field" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="7">
                     <GridPane.margin>
                         <Insets right="5.0" />
-                    </GridPane.margin></TextField>
-                <Label fx:id="pibLabel" prefHeight="17.0" prefWidth="182.0" GridPane.columnIndex="3" GridPane.columnSpan="2">
+                    </GridPane.margin>
+                    <font>
+                        <Font size="18.0" />
+                    </font></TextField>
+                <Label fx:id="pibLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="23.0" prefWidth="467.0" text="ПІБ" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.columnSpan="2">
                     <font>
                         <Font size="18.0" />
                     </font>
+                    <GridPane.margin>
+                        <Insets top="10.0" />
+                    </GridPane.margin>
                 </Label>
-                <Button fx:id="addButton" mnemonicParsing="false" prefHeight="27.0" prefWidth="101.0" text="Додати" GridPane.columnIndex="5" GridPane.rowIndex="1" onAction="#addVNZ" />
+                <Button fx:id="addButton" mnemonicParsing="false" onAction="#addVNZ" prefHeight="27.0" prefWidth="101.0" text="Додати" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                    <font>
+                        <Font size="18.0" />
+                    </font></Button>
+                <HBox alignment="CENTER" prefHeight="39.0" prefWidth="960.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="9">
+                    <children>
+                        <Pane maxHeight="25.0" maxWidth="25.0" prefHeight="25.0" prefWidth="25.0" styleClass="obligatory-field">
+                            <HBox.margin>
+                                <Insets top="10.0" />
+                            </HBox.margin>
+                        </Pane>
+                        <Label text=" - Обов'язкове для заповнення поле">
+                            <HBox.margin>
+                                <Insets top="10.0" />
+                            </HBox.margin>
+                        </Label>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="8">
+                    <children>
+                        <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#saveEducation" prefWidth="200.0" text="Зберегти">
+                            <graphic>
+                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@/icons/circle-check.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Button>
+                        <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#closeEdit" prefWidth="200.0" text="Відміна">
+                            <graphic>
+                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@/icons/circle-xmark.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </HBox>
             </children>
         </GridPane>
     </children>

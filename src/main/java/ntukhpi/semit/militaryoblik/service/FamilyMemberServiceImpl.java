@@ -1,6 +1,7 @@
 package ntukhpi.semit.militaryoblik.service;
 
 import ntukhpi.semit.militaryoblik.entity.FamilyMember;
+import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.repository.FamilyMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,11 @@ public class FamilyMemberServiceImpl implements FamilyMemberService {
     @Override
     public List<FamilyMember> getAllFamilyMember() {
         return familyMemberRepository.findAll();
+    }
+
+    @Override
+    public List<FamilyMember> getAllFamilyMembersByPrepod(Prepod prepod) {
+        return familyMemberRepository.findAllByPrepod(prepod);
     }
 
     @Override
