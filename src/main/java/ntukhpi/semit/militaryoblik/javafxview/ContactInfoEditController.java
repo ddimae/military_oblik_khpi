@@ -236,43 +236,41 @@ public class ContactInfoEditController implements ControlledScene {
 
         countryComboBox.getItems().add("Не визначено");
         countryComboBox.getItems().addAll(countryService.getAllCountry().stream().map(Country::toString).sorted(ukrCollator).toList());
+        countryComboBox.getItems().remove("Україна");
+        countryComboBox.getItems().add(1, "Україна");
         countryFactComboBox.setItems(countryComboBox.getItems());
 
         regionComboBox.getItems().add("Не визначено");
         regionComboBox.getItems().addAll(regionUkraineService.getAllRegionUkraine().stream().map(RegionUkraine::toString).sorted(ukrCollator).toList());
         regionFactComboBox.setItems(regionComboBox.getItems());
 
+        blockRegistrationCountry("Україна");
         handleChangeCountry(null);
     }
 
-    @FXML
-    void closeEdit(ActionEvent event) {
-        try {
-            ((Stage) countryComboBox.getScene().getWindow()).close();
-            MilitaryOblikKhPIMain.showReservistsWindow();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private void blockRegistrationCountry(String value) {
+        countryComboBox.setValue(value);
+        countryComboBox.setDisable(true);
     }
 
     private boolean validateInfo(String country, String index, String city,
                                  String region, String address, PhoneNumberForm mainPhone,
                                  PhoneNumberForm secondPhone, String countryFact, String indexFact,
                                  String cityFact, String regionFact, String addressFact,
-                                 boolean isForeinNumber) throws Exception {
+                                 boolean isForeinNumber) {
         Pattern ukrIndexRegex = Pattern.compile("(\\d{5})?");
         Pattern ukrPhoneFullRegex = Pattern.compile("^(\\+\\d{12})?$");
         Pattern ukrPhoneNoCountryCodeRegex = Pattern.compile("^(\\d{10})?$");
         Pattern ukrPhoneNoPlusRegex = Pattern.compile("^(\\d{12})?$");
         Pattern ukrPhoneCityRegex = Pattern.compile("^(\\d{7})?$");
         Pattern foreinPhoneRegex = Pattern.compile("(^\\+\\d+)?");
-        Pattern cityRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії\\s]*$");
+        Pattern cityRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії,.\\-`'_\\s]*$");
         Pattern regionRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії,.\\s]*$");
-        Pattern addressRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії\\d,.\\-\\'\\&_\\s]*$");
+        Pattern addressRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії\\d,.\\-`'\\&_\\s]*$");
 
         TextFieldValidator countryForm = new TextFieldValidator(-1, true, null, "Країна", country, null);
         TextFieldValidator indexForm = new TextFieldValidator(10, false, String.valueOf(country).equals("Україна")?ukrIndexRegex:null, "Індекс", index, "повинно складатися із 5 цифр");
-        TextFieldValidator cityForm = new TextFieldValidator(30, true, cityRegex, "Місто", city, "повинно містити тільки українські літери");
+        TextFieldValidator cityForm = new TextFieldValidator(30, true, cityRegex, "Місто", city, "повинно містити тільки українські літери та розділові знаки");
         TextFieldValidator regionForm = new TextFieldValidator(255, false, null, "Область", region, null);
         TextFieldValidator addressForm = new TextFieldValidator(255, true, addressRegex, "Адресса", address, "може містити українські літери, цифри та розділові знаки");
         PhoneNumberForm mainPhoneForm = new PhoneNumberForm(mainPhone.getNumber(), 13, true, "Телефон 1", "повинно мати форму: +380951203066, 0951203066, 380951203066 або 7076845");
@@ -280,7 +278,7 @@ public class ContactInfoEditController implements ControlledScene {
 
         TextFieldValidator countryFactForm = new TextFieldValidator(-1, false, null, "Країна", countryFact, null);
         TextFieldValidator indexFactForm = new TextFieldValidator(10, false, String.valueOf(countryFact).equals("Україна")?ukrIndexRegex:null, "Індекс", indexFact, "повинно складатися із 5 цифр");
-        TextFieldValidator cityFactForm = new TextFieldValidator(30, false, cityRegex, "Місто", cityFact, "повинно містити тільки українські літери");
+        TextFieldValidator cityFactForm = new TextFieldValidator(30, false, cityRegex, "Місто", cityFact, "повинно містити тільки українські літери та розділові знаки");
         TextFieldValidator regionFactForm = new TextFieldValidator(255, false, null, "Область", regionFact, null);
         TextFieldValidator addressFactForm = new TextFieldValidator(255, false, addressRegex, "Адресса", addressFact, "може містити українські літери, цифри та розділові знаки");
 
@@ -403,18 +401,6 @@ public class ContactInfoEditController implements ControlledScene {
             cityFactTextField.setDisable(true);
             regionFactComboBox.setDisable(true);
             addressFactTextField.setDisable(true);
-
-//            countryFactComboBox.setValue(countryComboBox.getValue());
-//            indexFactTextArea.setText(indexTextArea.getText());
-//            cityFactTextArea.setText(cityTextArea.getText());
-//            regionFactTextArea.setText(regionTextArea.getText());
-//            addressFactTextArea.setText(addressTextArea.getText());
-
-//            countryFactComboBox.setValue("");
-//            indexFactTextArea.setText("");
-//            cityFactTextArea.setText("");
-//            regionFactTextArea.setText("");
-//            addressFactTextArea.setText("");
         } else {
             countryFactComboBox.setDisable(false);
             indexFactTextField.setDisable(false);
@@ -422,8 +408,6 @@ public class ContactInfoEditController implements ControlledScene {
             regionFactComboBox.setDisable(false);
             addressFactTextField.setDisable(false);
         }
-
-//        handleChangeCountry(null);
     }
 
     @FXML
@@ -448,6 +432,16 @@ public class ContactInfoEditController implements ControlledScene {
             regionFactComboBox.setDisable(false);
         } else {
             regionFactComboBox.setDisable(true);
+        }
+    }
+
+    @FXML
+    void closeEdit(ActionEvent event) {
+        try {
+            ((Stage) countryComboBox.getScene().getWindow()).close();
+            MilitaryOblikKhPIMain.showReservistsWindow();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

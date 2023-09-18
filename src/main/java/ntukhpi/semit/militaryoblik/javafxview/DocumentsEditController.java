@@ -138,7 +138,7 @@ public class DocumentsEditController implements ControlledScene {
 
     private boolean validateDocument(String docType, String number, String whoGives, String date) {
         Pattern ukrOldSeriesNumberRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇ]{2}\\d{6}$");
-        Pattern ukrOldWhoGivesRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії0-9\\s.,]+$");
+        Pattern ukrOldWhoGivesRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії0-9\\s.,'`_\\-]+$");
         Pattern newSeriesRegex = Pattern.compile("^\\d{9}$");
         Pattern newWhoGivesRegex = Pattern.compile("^\\d{4}$");
         Pattern enOldSeriesNumberRegex = Pattern.compile("^[A-Z]{2}\\d{6}$");

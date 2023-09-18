@@ -62,8 +62,8 @@
                               <TextField fx:id="cityTextField" maxHeight="40.0" maxWidth="200.0" minHeight="40.0" promptText="Харків" styleClass="obligatory-field" />
                               <ComboBox fx:id="regionComboBox" maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="326.0" promptText="--Оберіть область України" />
                               <TextField fx:id="addressTextField" maxHeight="40.0" minHeight="40.0" promptText="вул Кирпичова, 2" styleClass="obligatory-field" />
-                              <TextField fx:id="mainPhoneTextField" maxHeight="40.0" maxWidth="180.0" minHeight="40.0" prefHeight="40.0" prefWidth="160.0" promptText="+380123456789" styleClass="obligatory-field" />
-                              <TextField fx:id="secondPhoneTextField" maxHeight="40.0" maxWidth="180.0" minHeight="40.0" prefWidth="160.0" promptText="+380123456789" />
+                              <TextField fx:id="mainPhoneTextField" maxHeight="40.0" maxWidth="180.0" minHeight="40.0" prefHeight="40.0" prefWidth="160.0" promptText="+380577004033" styleClass="obligatory-field" text="+380577004033" />
+                              <TextField fx:id="secondPhoneTextField" maxHeight="40.0" maxWidth="180.0" minHeight="40.0" prefWidth="160.0" promptText="+380577004033" />
                            </children>
                         </VBox>
                      </children>
@@ -75,7 +75,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </VBox>
-            <VBox alignment="CENTER_LEFT" prefHeight="190.0" prefWidth="560.0" spacing="5.0" style="-fx-border-style: solid inside;">
+            <VBox prefHeight="190.0" prefWidth="560.0" spacing="5.0" style="-fx-border-style: solid inside;">
                <children>
                   <HBox prefHeight="100.0" prefWidth="547.0">
                      <children>
