@@ -40,10 +40,9 @@ public class D05DataCollectService {
                 if (person.getPrepod().getId() != null) {
                     num++;
                     PersonalData personalData = personalDataService.getPersonalDataByPrepodId(person.getPrepod().getId());
-                    Education education = educationService.getEducationByPrepodId(person.getPrepod().getId());
                     List<Document> documents = documentService.getDocumentsByPrepodId(person.getPrepod().getId());
                     CurrentDoljnostInfo currentDoljnostInfo = currentDoljnostInfoService.getCurrentDoljnostInfoByPrepodId(person.getPrepod().getId());
-                    adapters.add(mappedToAdapter(String.valueOf(num), person, personalData, education, documents, currentDoljnostInfo));
+                    adapters.add(mappedToAdapter(String.valueOf(num), person, personalData, documents, currentDoljnostInfo));
                 }
             }
         }
@@ -51,7 +50,7 @@ public class D05DataCollectService {
     }
 
     // Маппінг отриманих данних з бд в D05Adapter
-    private D05Adapter mappedToAdapter(String nom, MilitaryPerson person, PersonalData personalData, Education education,
+    private D05Adapter mappedToAdapter(String nom, MilitaryPerson person, PersonalData personalData,
                                        List<Document> documents, CurrentDoljnostInfo currentDoljnostInfo) {
         D05Adapter adapter = new D05Adapter();
         adapter.setPoriad_nom(nom);
@@ -61,16 +60,16 @@ public class D05DataCollectService {
         adapter.setVos(person.getVos());
         adapter.setSklad(person.getVSklad().getSkladName());
         adapter.setKatObl(person.getVCategory().toString());
-        adapter.setOsvita(concatEducation(education));
+        adapter.setOsvita(concatEducation(person.getPrepod().getEducationList()));
         adapter.setPasport(concatDocument(documents));
         if (personalData != null) {
-            adapter.setRegAddress(personalData.getRowAddress());
-            adapter.setActAddress(personalData.getFactRowAddress());
+            adapter.setRegAddress(concatRezAddress(personalData));
+            adapter.setActAddress(concatFactAddress(personalData));
         }
         adapter.setTerCentr(person.getVoenkomat().getVoenkomatName());
         adapter.setSpecObl(person.getReserv());
         adapter.setPrudat(person.getVPrydatnist());
-        adapter.setSimStan(concatFamilyList(person.getPrepod()));
+        adapter.setSimStan(concatFamilyList(person));
         adapter.setPosada(concatPosada(person.getPrepod(), currentDoljnostInfo));
         adapter.setPriznach("");
         return adapter;
@@ -78,21 +77,20 @@ public class D05DataCollectService {
 
     // Форматування данних про сім’ю відповідно заданному шаблону.
     // Не піде - подивись приклад: може не бути прізвища, году нарождення
-    private String concatFamilyList(Prepod prepod) {
-        String fam = "";
-//        if (familyState != null) {
-            Set<FamilyMember> members = prepod.getFamily();
-            StringBuilder family = new StringBuilder();
-//            family.append(familyState.getFamilyState()).append(";\n");
-            for (FamilyMember member : members) {
-                String famMember = String.format("%s - %s %s %s, %s ", member.getVid_ridstva(), member.getMem_fam(),
-                        member.getMem_imya(), member.getMem_otch(), member.getRikNarodz());
-                family.append(famMember);
+    private String concatFamilyList(MilitaryPerson person) {
+        Set<FamilyMember> members = person.getPrepod().getFamily();
+        StringBuilder family = new StringBuilder();
+        family.append(person.getFamilyState() != null ? person.getFamilyState() + ";" : "").append("\n");
+        for (FamilyMember member : members) {
+            if (member != null) {
+                family.append(member.getVid_ridstva() != null ? member.getVid_ridstva() : "").append(" - ");
+                family.append(member.getMem_fam() != null ? member.getMem_fam() : "");
+                family.append(member.getMem_imya() != null ? " " + member.getMem_imya() : "");
+                family.append(member.getMem_otch() != null ? " " + member.getMem_otch() : "");
+                family.append(member.getRikNarodz() != null ? ", " + member.getRikNarodz() + "р.н." : "").append("; ");
             }
-            fam = family.toString();
-//        }
-
-        return fam;
+        }
+        return family.toString();
     }
 
     // Форматування данних про документ відповідно заданному шаблону.
@@ -106,25 +104,59 @@ public class D05DataCollectService {
         return doc;
     }
 
+    // Форматування данних про адресу реєстрації
+    private String concatRezAddress(PersonalData personalData) {
+        StringBuilder address = new StringBuilder();
+        if (personalData != null) {
+            if (personalData.getOblastUA() != null) {
+                address.append(personalData.getOblastUA().getCountryName() != null ? personalData.getOblastUA().getCountryName() + " обл., " : "");
+            }
+            address.append(personalData.getCity() != null ? personalData.getCity() : "").append(", ");
+            address.append(personalData.getRowAddress() != null ? personalData.getRowAddress() : "");
+        }
+        return address.toString();
+    }
+
+    // Форматування данних про поточну адресу проживання
+    private String concatFactAddress(PersonalData personalData) {
+        StringBuilder address = new StringBuilder();
+        if (personalData != null) {
+            if (personalData.getFactOblastUA() != null) {
+                address.append(personalData.getFactOblastUA().getCountryName() != null ? personalData.getFactOblastUA().getCountryName() + " обл., " : "");
+            }
+            address.append(personalData.getFactCity() != null ? personalData.getFactCity() : "").append(", ");
+            address.append(personalData.getFactRowAddress() != null ? personalData.getFactRowAddress() : "");
+        }
+        return address.toString();
+    }
+
     // Форматування данних про освіту відповідно заданному шаблону.
     // Не піде - у людини може бути декілька вузів, які закінчені
     // Наприклад, офіцер може закінчити один вуз на тактичний рівень, а потім - на стратегічний. Для офіцерів важливо
     // Не піде 2 - треба враховувати, що чогось немає....- номера, спеціальності, квалифікації, году. ДД
     // Треба, як у попередньому випадку - з освітою
-    private String concatEducation(Education education) {
-        String ed = "";
-        if (education != null) {
-            ed = String.format("%s, %s у %s, %s, %s", education.getLevelTraining(), education.getVnz().getVnzShortName(),
-                    education.getYearVypusk(), education.getDiplomaSeries(), education.getDiplomaSpeciality());
+    private String concatEducation(Set<Education> educations) {
+        StringBuilder osvita = new StringBuilder();
+        for (Education education : educations) {
+            if (education != null) {
+                osvita.append(education.getLevelTraining() != null ? education.getLevelTraining() + ", " : "");
+                if (education.getVnz() != null) {
+                    osvita.append(education.getVnz().getVnzShortName() != null ? education.getVnz().getVnzShortName() : "");
+                    osvita.append(education.getYearVypusk() != null ? " у " + education.getYearVypusk() : "");
+                }
+                osvita.append(education.getDiplomaSeries() != null ? ", " + education.getDiplomaSeries() : "");
+                osvita.append(education.getDiplomaSpeciality() != null ? ", " + education.getDiplomaSpeciality() : "");
+            }
+            osvita.append("; ");
         }
-        return ed;
+        return osvita.toString();
     }
 
     // Форматування данних про ПІБ відповідно заданному шаблону.
     private String concatPib(MilitaryPerson person) {
         String pib = "";
         if (person.getPrepod() != null) {
-            pib = String.format("%s %s %s", person.getPrepod().getFam(), person.getPrepod().getImya(), person.getPrepod().getOtch());
+            pib = String.format("%s %s %s", person.getPrepod().getFam().toUpperCase(), person.getPrepod().getImya(), person.getPrepod().getOtch());
         }
         return pib;
     }
@@ -136,7 +168,7 @@ public class D05DataCollectService {
         posada.append(prepod.getDolghnost().getDolghnName()).append(", ");
         posada.append(prepod.getKafedra().getKabr());
         if (currentDoljnostInfo != null) {
-            if(currentDoljnostInfo.getNumNakazStart() != null && currentDoljnostInfo.getDateStart() != null) {
+            if (currentDoljnostInfo.getNumNakazStart() != null && currentDoljnostInfo.getDateStart() != null) {
                 nakaz = String.format(", наказ %s від %s", currentDoljnostInfo.getNumNakazStart(), currentDoljnostInfo.getDateStart());
             } else if (currentDoljnostInfo.getNumNakazStop() != null && currentDoljnostInfo.getDateStop() != null) {
                 nakaz = String.format(", звільнення: наказ %s від %s", currentDoljnostInfo.getNumNakazStop(), currentDoljnostInfo.getDateStop());

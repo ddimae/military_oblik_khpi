@@ -30,7 +30,11 @@ public class ExcelWriter {
                 Row newRow = sheet.createRow(lastRowNum);
                 for (int cellNum = 0; cellNum < tableData.length; cellNum++) {
                     Cell cell = newRow.createCell(cellNum);
-                    cell.setCellValue(tableData[cellNum]);
+                    if (tableData[cellNum] != null) {
+                        cell.setCellValue(tableData[cellNum]);
+                    } else {
+                        cell.setCellValue("");
+                    }
                     cell.setCellStyle(wrapStyle);
                 }
                 lastRowNum = lastRowNum + 1;
