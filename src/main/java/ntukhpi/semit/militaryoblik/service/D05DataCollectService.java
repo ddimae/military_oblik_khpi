@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -17,15 +18,13 @@ public class D05DataCollectService {
     private final MilitaryPersonService militaryPersonService;
     private final PersonalDataService personalDataService;
     private final DocumentService documentService;
-    private final EducationService educationService;
     private final CurrentDoljnostInfoService currentDoljnostInfoService;
 
     @Autowired
-    public D05DataCollectService(MilitaryPersonService militaryPersonService, PersonalDataService personalDataService, DocumentService documentService, EducationService educationService, CurrentDoljnostInfoService currentDoljnostInfoService) {
+    public D05DataCollectService(MilitaryPersonService militaryPersonService, PersonalDataService personalDataService, DocumentService documentService, CurrentDoljnostInfoService currentDoljnostInfoService) {
         this.militaryPersonService = militaryPersonService;
         this.personalDataService = personalDataService;
         this.documentService = documentService;
-        this.educationService = educationService;
         this.currentDoljnostInfoService = currentDoljnostInfoService;
     }
 
@@ -33,16 +32,14 @@ public class D05DataCollectService {
     @Transactional
     public List<D05Adapter> collectD05Adapter(List<Long> miliratiPersonIds) {
         List<D05Adapter> adapters = new ArrayList<>();
-        int num = 0;
         if (miliratiPersonIds != null) {
             for (Long id : miliratiPersonIds) {
                 MilitaryPerson person = militaryPersonService.getMilitaryPersonById(id);
                 if (person.getPrepod().getId() != null) {
-                    num++;
                     PersonalData personalData = personalDataService.getPersonalDataByPrepodId(person.getPrepod().getId());
                     List<Document> documents = documentService.getDocumentsByPrepodId(person.getPrepod().getId());
                     CurrentDoljnostInfo currentDoljnostInfo = currentDoljnostInfoService.getCurrentDoljnostInfoByPrepodId(person.getPrepod().getId());
-                    adapters.add(mappedToAdapter(String.valueOf(num), person, personalData, documents, currentDoljnostInfo));
+                    adapters.add(mappedToAdapter(person, personalData, documents, currentDoljnostInfo));
                 }
             }
         }
@@ -50,13 +47,12 @@ public class D05DataCollectService {
     }
 
     // Маппінг отриманих данних з бд в D05Adapter
-    private D05Adapter mappedToAdapter(String nom, MilitaryPerson person, PersonalData personalData,
+    private D05Adapter mappedToAdapter(MilitaryPerson person, PersonalData personalData,
                                        List<Document> documents, CurrentDoljnostInfo currentDoljnostInfo) {
         D05Adapter adapter = new D05Adapter();
-        adapter.setPoriad_nom(nom);
         adapter.setZvannia(person.getVZvanie().getZvanieName());
         adapter.setPib(concatPib(person));
-        adapter.setBirthDate(person.getPrepod().getDr().toString());
+        adapter.setBirthDate(person.getPrepod().getDr().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         adapter.setVos(person.getVos());
         adapter.setSklad(person.getVSklad().getSkladName());
         adapter.setKatObl(person.getVCategory().toString());
@@ -168,10 +164,12 @@ public class D05DataCollectService {
         posada.append(prepod.getDolghnost().getDolghnName()).append(", ");
         posada.append(prepod.getKafedra().getKabr());
         if (currentDoljnostInfo != null) {
-            if (currentDoljnostInfo.getNumNakazStart() != null && currentDoljnostInfo.getDateStart() != null) {
-                nakaz = String.format(", наказ %s від %s", currentDoljnostInfo.getNumNakazStart(), currentDoljnostInfo.getDateStart());
-            } else if (currentDoljnostInfo.getNumNakazStop() != null && currentDoljnostInfo.getDateStop() != null) {
-                nakaz = String.format(", звільнення: наказ %s від %s", currentDoljnostInfo.getNumNakazStop(), currentDoljnostInfo.getDateStop());
+            if (currentDoljnostInfo.getNumNakazStop() != null && currentDoljnostInfo.getDateStop() != null) {
+                nakaz = String.format(", звільнення: наказ %s від %s", currentDoljnostInfo.getNumNakazStop(),
+                        currentDoljnostInfo.getDateStop().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+            } else if (currentDoljnostInfo.getNumNakazStart() != null && currentDoljnostInfo.getDateStart() != null) {
+                nakaz = String.format(", наказ %s від %s", currentDoljnostInfo.getNumNakazStart(),
+                        currentDoljnostInfo.getDateStart().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
             }
         }
 
