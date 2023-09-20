@@ -19,4 +19,8 @@ public class RegionUkraine {
     @Column(length = 40, name="oname",nullable = false)
     private String countryName;
 
+    @Override
+    public String toString() {
+        return countryName;
+    }
 }

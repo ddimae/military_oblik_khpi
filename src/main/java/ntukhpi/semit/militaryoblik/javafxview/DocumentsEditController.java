@@ -14,18 +14,15 @@ import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.DocumentAdapter;
 import ntukhpi.semit.militaryoblik.entity.Document;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
-import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
-import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
-import ntukhpi.semit.militaryoblik.javafxutils.FormTextInput;
-import ntukhpi.semit.militaryoblik.javafxutils.Popup;
+import ntukhpi.semit.militaryoblik.javafxutils.*;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.DateFieldValidator;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.TextFieldValidator;
 import ntukhpi.semit.militaryoblik.service.DocumentServiceImpl;
 import ntukhpi.semit.militaryoblik.service.MilitaryPersonServiceImpl;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 
@@ -141,56 +138,51 @@ public class DocumentsEditController implements ControlledScene {
 
     private boolean validateDocument(String docType, String number, String whoGives, String date) {
         Pattern ukrOldSeriesNumberRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇ]{2}\\d{6}$");
-        Pattern ukrOldWhoGivesRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії0-9\\s.,]+$");
+        Pattern ukrOldWhoGivesRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії0-9\\s.,'`_\\-]+$");
         Pattern newSeriesRegex = Pattern.compile("^\\d{9}$");
         Pattern newWhoGivesRegex = Pattern.compile("^\\d{4}$");
         Pattern enOldSeriesNumberRegex = Pattern.compile("^[A-Z]{2}\\d{6}$");
         Pattern ukrDateRegex = Pattern.compile("^\\d{2}\\.\\d{2}\\.\\d{4}$");
 
-        FormTextInput docTypeForm = new FormTextInput(-1, true, null, "Тип документу", docType, null);
-        FormTextInput numberForm = new FormTextInput(10, true, null, "Серія та номер", number, null);
-        FormTextInput whoGivesForm = new FormTextInput(255, true, null, "Ким видан", whoGives, null);
-        FormTextInput dateForm = new FormTextInput(10, true, ukrDateRegex, "Дата видачі", date, "повинен мати формат дати: dd.mm.yyyy");
+        TextFieldValidator docTypeValidator = new TextFieldValidator(-1, true, null, "Тип документу", docType, null);
+        TextFieldValidator numberValidator = new TextFieldValidator(10, true, null, "Серія та номер", number, null);
+        TextFieldValidator whoGivesValidator = new TextFieldValidator(255, true, null, "Ким видан", whoGives, null);
+        DateFieldValidator dateValidator = new DateFieldValidator(true, ukrDateRegex, "Дата видачі", date, "повинно мати формат дати: dd.mm.yyyy");
 
         try {
-            docTypeForm.validate();
+            docTypeValidator.validate();
 
             switch (docType) {
                 case "Паперовий паспорт":
-                    numberForm.setRegex(ukrOldSeriesNumberRegex);
-                    numberForm.setErrorMsg("паперовога паспорта повинно містити 2 великі українські літери та 6 цифр");
-                    whoGivesForm.setRegex(ukrOldWhoGivesRegex);
-                    whoGivesForm.setErrorMsg("може містити українські літери, цифри, розділові знаки");
+                    numberValidator.setRegex(ukrOldSeriesNumberRegex);
+                    numberValidator.setErrorMsg("паперовога паспорта повинно містити 2 великі українські літери та 6 цифр");
+                    whoGivesValidator.setRegex(ukrOldWhoGivesRegex);
+                    whoGivesValidator.setErrorMsg("може містити українські літери, цифри, розділові знаки");
                     break;
                 case "ID картка":
-                    numberForm.setRegex(newSeriesRegex);
-                    numberForm.setErrorMsg("ID картки повинно містити 9 цифр");
-                    whoGivesForm.setRegex(newWhoGivesRegex);
-                    whoGivesForm.setErrorMsg("повинно містити тільки 4 цифри");
+                    numberValidator.setRegex(newSeriesRegex);
+                    numberValidator.setErrorMsg("ID картки повинно містити 9 цифр");
+                    whoGivesValidator.setRegex(newWhoGivesRegex);
+                    whoGivesValidator.setErrorMsg("повинно містити тільки 4 цифри");
                     break;
                 case "Закордонний паспорт":
-                    numberForm.setRegex(enOldSeriesNumberRegex);
-                    numberForm.setErrorMsg("закордонного паспорта повинно містити 2 великі латинські літери та 6 цифр");
-                    whoGivesForm.setRegex(newWhoGivesRegex);
-                    whoGivesForm.setErrorMsg("повинно містити тільки 4 цифри");
+                    numberValidator.setRegex(enOldSeriesNumberRegex);
+                    numberValidator.setErrorMsg("закордонного паспорта повинно містити 2 великі латинські літери та 6 цифр");
+                    whoGivesValidator.setRegex(newWhoGivesRegex);
+                    whoGivesValidator.setErrorMsg("повинно містити тільки 4 цифри");
                     break;
                 case "Посвідчення особи офіцера":
                 case "Військовий квиток":
-                    numberForm.setRegex(ukrOldSeriesNumberRegex);
-                    numberForm.setErrorMsg("Серія та номер посвідчення повинні містити 2 великі українські літери та 6 цифр");
-                    whoGivesForm.setRegex(ukrOldWhoGivesRegex);
-                    whoGivesForm.setErrorMsg("може містити українські літери, цифри, розділові знаки");
+                    numberValidator.setRegex(ukrOldSeriesNumberRegex);
+                    numberValidator.setErrorMsg("Серія та номер посвідчення повинні містити 2 великі українські літери та 6 цифр");
+                    whoGivesValidator.setRegex(ukrOldWhoGivesRegex);
+                    whoGivesValidator.setErrorMsg("може містити українські літери, цифри, розділові знаки");
                     break;
             }
 
-            numberForm.validate();
-            whoGivesForm.validate();
-            dateForm.validate();
-            if (!date.equals(DataFormat.localDateToUkStandart(LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.yyyy")))))
-                throw new Exception(dateForm.getErrorMsg());
-        } catch (DateTimeParseException e) {
-            Popup.wrongInputAlert(dateForm.getErrorMsg());
-            return false;
+            numberValidator.validate();
+            whoGivesValidator.validate();
+            dateValidator.validate();
         }
         catch (Exception e) {
             Popup.wrongInputAlert(e.getMessage());
@@ -203,12 +195,9 @@ public class DocumentsEditController implements ControlledScene {
     void saveDocuments(ActionEvent event) {
         String docType = DataFormat.getPureComboBoxValue(typeComboBox);
 
-        String number = numberTextField.getText();
-        String whoGives = whoGivesTextArea.getText();
+        String number = numberTextField.getText().trim();
+        String whoGives = whoGivesTextArea.getText().trim();
         String date = dateDatePicker.getEditor().getText();
-
-        number = number.trim();
-        whoGives = whoGives.trim();
 
         if (!validateDocument(docType, number, whoGives, date))
             return;
@@ -230,7 +219,8 @@ public class DocumentsEditController implements ControlledScene {
             closeEdit(null);
             Popup.successSave();
         } catch (Exception e) {
-            Popup.wrongInputAlert(e.getMessage());
+            e.printStackTrace();
+            Popup.internalAlert(e.getMessage());
         }
     }
 

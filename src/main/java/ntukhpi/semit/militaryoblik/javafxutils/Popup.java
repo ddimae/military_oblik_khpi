@@ -48,6 +48,10 @@ public class Popup {
         showAlert(Alert.AlertType.ERROR, "Помилка", "Неправильно введені дані", msg);
     }
 
+    public static void internalAlert(String msg) {
+        showAlert(Alert.AlertType.ERROR, "Помилка", "Внутрішня помилка програми", msg);
+    }
+
     /**
      * Метод виведення повідомлення о підтвержені збереження даних
      * автор Степанов Михайло
@@ -58,5 +62,9 @@ public class Popup {
 
     public static boolean deleteConfirmation() {
         return showDialog(Alert.AlertType.CONFIRMATION, "Підтвердіть дію", "Обраний рядок буде безповоротно видалений", "Ви впевнені в своїх діях?");
+    }
+
+    public static boolean saveConfirmation() {
+        return showDialog(Alert.AlertType.CONFIRMATION, "Підтвердіть дію", "Заповнена форма буде збережена і не підлягатиме редагуванню", "Ви впевнені в своїх діях?");
     }
 }

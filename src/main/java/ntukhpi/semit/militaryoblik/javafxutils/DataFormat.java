@@ -1,12 +1,16 @@
 package ntukhpi.semit.militaryoblik.javafxutils;
 
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableCell;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 
+import java.text.Collator;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class DataFormat {
     public static String getPIB(Prepod prepod) {    //TODO Точно створити окремий клас!!!
@@ -36,5 +40,25 @@ public class DataFormat {
             return null;
 
         return str;
+    }
+
+    public static <T> TableCell<T, LocalDate> getTableDateCellFactory() {
+        return new TableCell<T, LocalDate>() {
+            @Override
+            protected void updateItem(LocalDate date, boolean empty) {
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+                super.updateItem(date, empty);
+
+                if (date != null && !empty)
+                    setText(dateFormatter.format(date));
+                else
+                    setText("");
+            }
+        };
+    }
+
+    public static Collator getUkrCollator() {
+        return Collator.getInstance(new Locale("uk", "UA"));
     }
 }

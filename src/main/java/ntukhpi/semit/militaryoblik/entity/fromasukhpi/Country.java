@@ -22,5 +22,8 @@ public class Country {
     @Column(length = 40, name="co_name_e",nullable = false)
     private String countryNameEn;
 
-
+    @Override
+    public String toString() {
+        return countryName;
+    }
 }

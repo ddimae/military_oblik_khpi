@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="610.0" prefWidth="550.0" spacing="20.0" stylesheets="@MOStyles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntukhpi.semit.militaryoblik.javafxview.EmployeeAddController">
+   <children>
+      <HBox alignment="CENTER" minWidth="450.0" prefHeight="100.0" prefWidth="450.0">
+         <children>
+            <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="150.0" spacing="5.0">
+               <children>
+                  <Label prefHeight="40.0" text="Інститут" />
+                  <Label prefHeight="40.0" text="Кафедра" />
+                  <Label prefHeight="40.0" text="Прізвище" />
+                  <Label prefHeight="40.0" text="Ім'я" />
+                  <Label prefHeight="40.0" text="По батькові" />
+                  <Label prefHeight="40.0" text="Дата народження" />
+               </children></VBox>
+            <VBox prefHeight="200.0" prefWidth="300.0" spacing="5.0">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <ComboBox fx:id="instituteComboBox" maxHeight="40.0" maxWidth="250.0" minHeight="40.0" minWidth="250.0" onAction="#handleInstituteChange" prefHeight="40.0" prefWidth="250.0" promptText="--Оберіть інститут" styleClass="obligatory-field" />
+                        <Button maxWidth="40.0" minWidth="40.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0">
+                           <graphic>
+                              <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@/icons/circle-add.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <ComboBox fx:id="cathedraComboBox" maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="250.0" promptText="--Оберіть кафедру" styleClass="obligatory-field" />
+                        <Button maxWidth="40.0" minWidth="40.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0">
+                           <graphic>
+                              <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@/icons/circle-add.png" />
+                                 </image></ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <TextField fx:id="surnameTextField" promptText="Шевченко" styleClass="obligatory-field" />
+                  <TextField fx:id="nameTextField" promptText="Микола" styleClass="obligatory-field" />
+                  <TextField fx:id="midnameTextField" promptText="Іванович" styleClass="obligatory-field" />
+                  <DatePicker fx:id="birthDatePicker" maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="150.0" promptText="23.01.2004" />
+               </children></VBox>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="20.0" prefWidth="560.0" spacing="50.0">
+         <children>
+            <RadioButton fx:id="nppRadioButton" mnemonicParsing="false" onAction="#handleTypeChange" selected="true" text="НПП">
+               <tooltip>
+                  <Tooltip text="Науково-педагогічний працівник" />
+               </tooltip>
+               <toggleGroup>
+                  <ToggleGroup fx:id="employeeType" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="itcRadioButton" mnemonicParsing="false" onAction="#handleTypeChange" text="ІТС" toggleGroup="$employeeType">
+               <tooltip>
+                  <Tooltip text="Інженерно-технічний працівник" />
+               </tooltip>
+            </RadioButton>
+         </children></HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="150.0" spacing="5.0">
+               <children>
+                  <Label prefHeight="40.0" text="Посада" />
+                  <Label prefHeight="40.0" text="Науковий ступінь" />
+                  <Label prefHeight="40.0" text="Вчене звання" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="300.0" spacing="5.0">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <ComboBox fx:id="positionComboBox" maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="250.0" promptText="--Оберіть посаду" />
+                        <Button maxWidth="40.0" minWidth="40.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0">
+                           <graphic>
+                              <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@/icons/circle-add.png" />
+                                 </image></ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <ComboBox fx:id="degreeComboBox" maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="300.0" promptText="--Оберіть науковий ступінь" />
+                  <ComboBox fx:id="statusComboBox" maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="300.0" promptText="--Оберіть вчене звання" />
+               </children>
+            </VBox>
+         </children></HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
+         <children>
+            <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#saveEmployee" prefWidth="200.0" text="Зберегти">
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@/icons/circle-check.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#closeEdit" prefWidth="200.0" text="Відміна">
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@/icons/circle-xmark.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="27.0" prefWidth="434.0">
+         <children>
+            <Pane maxHeight="30.0" prefHeight="30.0" prefWidth="30.0" styleClass="obligatory-field" />
+            <Label text=" - Обов'язкове для заповнення поле" />
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+</VBox>

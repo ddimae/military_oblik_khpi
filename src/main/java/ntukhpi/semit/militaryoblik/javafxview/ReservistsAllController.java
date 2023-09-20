@@ -39,6 +39,9 @@ public class ReservistsAllController {
     private final static String MILITARY_REGISTRATION_JAVAFX = "/javafxview/MilitaryRegistration.fxml";
     private final static String MILITARY_REGISTRATION_JAVAFX_TITLE = "Дані військового обліку";
 
+    private final static String EMPLOYEE_ADD_JAVAFX = "/javafxview/EmployeeAdd.fxml";
+    private final static String EMPLOYEE_ADD_JAVAFX_TITLE = "Додати нового працівника";
+
     @FXML
     public ComboBox<String> tckComboBox;
 
@@ -322,6 +325,12 @@ public class ReservistsAllController {
         } else {
             Popup.noSelectedRowAlert();
         }
+    }
+
+    @FXML
+    void handleOblikButton(ActionEvent event) {
+        ReservistAdapter reservist = setSelectedPrepodId();
+        MilitaryOblikKhPIMain.openEditWindow(EMPLOYEE_ADD_JAVAFX, EMPLOYEE_ADD_JAVAFX_TITLE, this, reservist);
     }
 
     @Autowired
