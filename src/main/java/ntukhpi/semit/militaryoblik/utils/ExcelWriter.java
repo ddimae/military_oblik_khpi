@@ -25,9 +25,11 @@ public class ExcelWriter {
 
             // Знаходимо останній номер рядка
             int lastRowNum = sheet.getLastRowNum();
-
+            int num = 1;
             for (String[] tableData : data) {
                 Row newRow = sheet.createRow(lastRowNum);
+                tableData[0] = Integer.toString(num);
+                num++;
                 for (int cellNum = 0; cellNum < tableData.length; cellNum++) {
                     Cell cell = newRow.createCell(cellNum);
                     if (tableData[cellNum] != null) {
