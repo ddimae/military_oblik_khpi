@@ -17,7 +17,11 @@ public class DateFieldValidator extends TextFieldValidator {
 
         boolean isBlank = getTextField() == null || getTextField().isBlank();
 
-        if (!isBlank && !getTextField().equals(DataFormat.localDateToUkStandart(LocalDate.parse(getTextField(), DateTimeFormatter.ofPattern("dd.MM.yyyy")))))
+        try {
+            if (!isBlank && !getTextField().equals(DataFormat.localDateToUkStandart(LocalDate.parse(getTextField(), DateTimeFormatter.ofPattern("dd.MM.yyyy")))))
+                throw new Exception(getErrorMsg());
+        } catch (Exception e) {
             throw new Exception(getErrorMsg());
+        }
     }
 }
