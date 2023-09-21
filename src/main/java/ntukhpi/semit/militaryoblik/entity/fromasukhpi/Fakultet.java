@@ -1,5 +1,6 @@
 package ntukhpi.semit.militaryoblik.entity.fromasukhpi;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import jakarta.persistence.*;
 @Table(name = "fakult")
 @Getter
 @Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 public class Fakultet {
 

@@ -1,7 +1,5 @@
 package ntukhpi.semit.militaryoblik.javafxview;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -23,8 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.Collator;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Pattern;
 
 @Component
@@ -318,18 +314,18 @@ public class ContactInfoEditController implements ControlledScene {
 
     @FXML
     void saveContactInfo(ActionEvent event) throws Exception {
-        String country = DataFormat.getPureComboBoxValue(countryComboBox);
+        String country = DataFormat.getPureValue(countryComboBox.getValue());
         String index = indexTextField.getText();
         String city = cityTextField.getText();
-        String region = DataFormat.getPureComboBoxValue(regionComboBox);
+        String region = DataFormat.getPureValue(regionComboBox.getValue());
         String address = addressTextField.getText();
         PhoneNumberForm mainPhone = new PhoneNumberForm(mainPhoneTextField.getText());
         PhoneNumberForm secondPhone = new PhoneNumberForm(secondPhoneTextField.getText());
 
-        String countryFact = DataFormat.getPureComboBoxValue(countryFactComboBox);
+        String countryFact = DataFormat.getPureValue(countryFactComboBox.getValue());
         String indexFact = indexFactTextField.getText();
         String cityFact = cityFactTextField.getText();
-        String regionFact = DataFormat.getPureComboBoxValue(regionFactComboBox);
+        String regionFact = DataFormat.getPureValue(regionFactComboBox.getValue());
         String addressFact = addressFactTextField.getText();
 
         boolean isUkraine = String.valueOf(country).equals("Україна");

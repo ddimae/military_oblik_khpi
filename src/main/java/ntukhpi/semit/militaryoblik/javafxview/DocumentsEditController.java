@@ -23,7 +23,8 @@ import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.format.DateTimeParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
 
 @Component
@@ -193,7 +194,7 @@ public class DocumentsEditController implements ControlledScene {
     }
     @FXML
     void saveDocuments(ActionEvent event) {
-        String docType = DataFormat.getPureComboBoxValue(typeComboBox);
+        String docType = DataFormat.getPureValue(typeComboBox.getValue());
 
         String number = numberTextField.getText().trim();
         String whoGives = whoGivesTextArea.getText().trim();
@@ -209,7 +210,7 @@ public class DocumentsEditController implements ControlledScene {
             newDocument.setDocType(docType);
             newDocument.setDocNumber(number);
             newDocument.setKtoVyd(whoGives);
-            newDocument.setDataVyd(dateDatePicker.getValue());
+            newDocument.setDataVyd(LocalDate.parse(dateDatePicker.getEditor().getText(), DateTimeFormatter.ofPattern("dd.MM.yyyy")));
 
             if (selectedDocument == null)
                 mainController.addNewDocument(newDocument);
