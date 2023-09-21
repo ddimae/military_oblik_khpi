@@ -25,7 +25,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 
 @Component
@@ -195,7 +194,7 @@ public class DocumentsEditController implements ControlledScene {
     }
     @FXML
     void saveDocuments(ActionEvent event) {
-        String docType = DataFormat.getPureComboBoxValue(typeComboBox);
+        String docType = DataFormat.getPureValue(typeComboBox.getValue());
 
         String number = numberTextField.getText().trim();
         String whoGives = whoGivesTextArea.getText().trim();

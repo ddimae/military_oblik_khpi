@@ -1,6 +1,5 @@
 package ntukhpi.semit.militaryoblik.javafxutils;
 
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableCell;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 
@@ -33,9 +32,7 @@ public class DataFormat {
         return pieces.get(2) + "." + pieces.get(1) + "." + pieces.get(0);
     }
 
-    public static String getPureComboBoxValue(ComboBox<String> cb) {
-        String str = cb.getValue();
-
+    public static String getPureValue(String str) {
         if (str == null || str.equals("Не визначено"))
             return null;
 

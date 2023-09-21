@@ -9,22 +9,17 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
-import ntukhpi.semit.militaryoblik.adapters.DocumentAdapter;
 import ntukhpi.semit.militaryoblik.adapters.FamilyAdapter;
-import ntukhpi.semit.militaryoblik.entity.Document;
 import ntukhpi.semit.militaryoblik.entity.FamilyMember;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
-import ntukhpi.semit.militaryoblik.service.DocumentServiceImpl;
 import ntukhpi.semit.militaryoblik.service.FamilyMemberServiceImpl;
 import ntukhpi.semit.militaryoblik.service.MilitaryPersonServiceImpl;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.swing.plaf.PanelUI;
 
 @Component
 public class FamilyCompositionEditController implements ControlledScene {
@@ -87,7 +82,7 @@ public class FamilyCompositionEditController implements ControlledScene {
 
     @FXML
     void saveDocuments(ActionEvent event) {
-        String vidRidstva = DataFormat.getPureComboBoxValue(relationshipComboBox);
+        String vidRidstva = DataFormat.getPureValue(relationshipComboBox.getValue());
 
         String surname = surnameTextField.getText();
         String name = nameTextField.getText();

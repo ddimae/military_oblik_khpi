@@ -20,7 +20,6 @@ import org.springframework.stereotype.Component;
 import java.text.Collator;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -31,13 +30,13 @@ public class EmployeeAddController implements ControlledScene {
     private DatePicker birthDatePicker;
 
     @FXML
-    private ComboBox<String> cathedraComboBox;
+    private ComboBox<Kafedra> cathedraComboBox;
 
     @FXML
     private ComboBox<String> degreeComboBox;
 
     @FXML
-    private ComboBox<String> instituteComboBox;
+    private ComboBox<Fakultet> instituteComboBox;
 
     @FXML
     private RadioButton itcRadioButton;
@@ -80,6 +79,11 @@ public class EmployeeAddController implements ControlledScene {
     @Autowired
     PrepodServiceImpl prepodService;
 
+    private Fakultet emptyInstitute;
+    private Kafedra emptyCathedra;
+    private Collator ukrCollator;
+    private boolean isChangeCombobox;
+
     @Override
     public void setMainController(Object mainController) {
         this.mainController = (ReservistsAllController) mainController;
@@ -91,13 +95,26 @@ public class EmployeeAddController implements ControlledScene {
     }
 
     public void initialize() {
-        Collator ukrCollator = DataFormat.getUkrCollator();
+        emptyInstitute = new Fakultet() {
+            @Override
+            public String toString() {
+                return "Не визначено";
+            }
+        };
+        emptyCathedra = new Kafedra() {
+            @Override
+            public String toString() {
+                return "Не визначено";
+            }
+        };
+        ukrCollator = DataFormat.getUkrCollator();
+        isChangeCombobox = false;
 
-        instituteComboBox.getItems().add("Не визначено");
-        instituteComboBox.getItems().addAll(FXCollections.observableArrayList(fakultetService.getAllFak().stream().map(Fakultet::toString).sorted(ukrCollator).toList()));
+        instituteComboBox.getItems().add(emptyInstitute);
+        instituteComboBox.getItems().addAll(FXCollections.observableArrayList(fakultetService.getAllFak().stream().sorted((a, b) -> ukrCollator.compare(a.toString(), b.toString())).toList()));
 
-        degreeComboBox.setItems(FXCollections.observableArrayList(stepenService.getAllStepen().stream().map(Stepen::toString).sorted(ukrCollator).toList()));
-        statusComboBox.setItems(FXCollections.observableArrayList(zvanieService.getAllZvanie().stream().map(Zvanie::toString).sorted(ukrCollator).toList()));
+        degreeComboBox.setItems(FXCollections.observableArrayList(stepenService.getAllStepen().stream().map(Stepen::toString).sorted(ukrCollator).toList()));   //TODO мейбі переробити під <Stepen>
+        statusComboBox.setItems(FXCollections.observableArrayList(zvanieService.getAllZvanie().stream().map(Zvanie::toString).sorted(ukrCollator).toList()));   //TODO мейбі переробити під <Zvanie>
 
         degreeComboBox.getItems().remove("не має");
         degreeComboBox.getItems().add(0,"не має");
@@ -146,8 +163,8 @@ public class EmployeeAddController implements ControlledScene {
 
     @FXML
     void saveEmployee(ActionEvent event) {
-        String institute = DataFormat.getPureComboBoxValue(instituteComboBox);
-        String cathedra = DataFormat.getPureComboBoxValue(cathedraComboBox);
+        String institute = instituteComboBox.getValue() != null ? DataFormat.getPureValue(instituteComboBox.getValue().toString()) : null;
+        String cathedra = cathedraComboBox.getValue() != null ? DataFormat.getPureValue(cathedraComboBox.getValue().toString()) : null;
         String surname = surnameTextField.getText().trim();
         String name = nameTextField.getText().trim();
         String midname = midnameTextField.getText().trim();
@@ -165,8 +182,8 @@ public class EmployeeAddController implements ControlledScene {
             prepod.setFam(surname);
             prepod.setImya(name);
             prepod.setOtch(midname);
-            prepod.setDr(LocalDate.parse(birthDatePicker.getEditor().getText(), DateTimeFormatter.ofPattern("dd.MM.yyyy")));
-            prepod.setKafedra(kafedraService.getKafedraByName(cathedra));
+            prepod.setDr(LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+            prepod.setKafedra(cathedraComboBox.getValue());
 
             if (position == null)
                 position = positionComboBox.getItems().get(0);
@@ -211,17 +228,40 @@ public class EmployeeAddController implements ControlledScene {
 
     @FXML
     void handleInstituteChange(ActionEvent event) {
+        if (isChangeCombobox)
+            return;
+        isChangeCombobox = true;
+
         boolean isFirst = cathedraComboBox.getValue() != null;
 
         cathedraComboBox.getItems().clear();
-        cathedraComboBox.getItems().add(0, "Не визначено");
+        cathedraComboBox.getItems().add(emptyCathedra);
         cathedraComboBox.getItems().addAll(FXCollections.observableArrayList(kafedraService.getAllKafedra().
                                                                                             stream().
-                                                                                            filter(k -> k.getFakultet().toString().equals(instituteComboBox.getValue())).
-                                                                                            map(Kafedra::getKname).
-                                                                                            sorted().
+                                                                                            filter(k -> instituteComboBox.getValue() == null || DataFormat.getPureValue(instituteComboBox.getValue().toString()) == null || k.getFakultet().toString().equals(instituteComboBox.getValue().toString())).
+                                                                                            sorted((a, b) -> ukrCollator.compare(a.toString(), b.toString())).
                                                                                             toList()));
         if (isFirst)
             cathedraComboBox.getSelectionModel().selectFirst();
+
+        isChangeCombobox = false;
+    }
+
+    @FXML
+    void handleCathedraChange(ActionEvent event) {
+        if (isChangeCombobox || cathedraComboBox.getValue().getFakultet() == null)
+            return;
+        isChangeCombobox = true;
+
+        instituteComboBox.getSelectionModel().select(cathedraComboBox.getValue().getFakultet());
+        Kafedra currentCathedra = cathedraComboBox.getValue();
+
+        isChangeCombobox = false;
+        handleInstituteChange(null);
+        isChangeCombobox = true;
+
+        cathedraComboBox.getSelectionModel().select(currentCathedra);
+
+        isChangeCombobox = false;
     }
 }
