@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class DataFormat {
-    public static String getPIB(Prepod prepod) {    //TODO Точно створити окремий клас!!!
+    public static String getPIB(Prepod prepod) {
         return prepod.getFam() + " " + prepod.getImya() + " " + prepod.getOtch();
     }
 

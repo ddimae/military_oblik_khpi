@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.Collator;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -163,7 +165,7 @@ public class EmployeeAddController implements ControlledScene {
             prepod.setFam(surname);
             prepod.setImya(name);
             prepod.setOtch(midname);
-            prepod.setDr(birthDatePicker.getValue());
+            prepod.setDr(LocalDate.parse(birthDatePicker.getEditor().getText(), DateTimeFormatter.ofPattern("dd.MM.yyyy")));
             prepod.setKafedra(kafedraService.getKafedraByName(cathedra));
 
             if (position == null)
