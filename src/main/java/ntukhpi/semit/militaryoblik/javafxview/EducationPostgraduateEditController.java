@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.EducationPostgraduateAdapter;
+import ntukhpi.semit.militaryoblik.entity.EducationPostgraduate;
 import ntukhpi.semit.militaryoblik.entity.VNZaklad;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
@@ -21,6 +22,7 @@ import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.service.EducationPostgraduateServiceImpl;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
+import ntukhpi.semit.militaryoblik.service.VNZakladServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +31,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Component
-public class EducationPostgraduateEditController implements Initializable, ControlledScene {
+public class EducationPostgraduateEditController implements ControlledScene {
     @FXML
     private Label pibLabel;
     @FXML
@@ -51,14 +53,8 @@ public class EducationPostgraduateEditController implements Initializable, Contr
     EducationPostgraduateServiceImpl educationPostgraduateService;
     @Autowired
     PrepodServiceImpl prepodService;
-
-    public void setPostgraduateEducation(EducationPostgraduateAdapter postgraduateEducation) {
-        this.selectedEducation = postgraduateEducation;
-        editingExistingEducation = true;
-        typeComboBox.setValue(postgraduateEducation.getType());
-        vnzComboBox.setValue(postgraduateEducation.getVnz());
-        yearTextField.setText(String.valueOf(postgraduateEducation.getYear()));
-    }
+    @Autowired
+    VNZakladServiceImpl vnZakladService;
 
     @Override
     public void setMainController(Object mainController) {
@@ -70,6 +66,17 @@ public class EducationPostgraduateEditController implements Initializable, Contr
         if (data instanceof EducationPostgraduateAdapter) {
             setPostgraduateEducation((EducationPostgraduateAdapter) data);
         }
+    }
+    public void setPostgraduateEducation(EducationPostgraduateAdapter postgraduateEducation) {
+        selectedEducation = postgraduateEducation;
+        pibLabel.setText(DataFormat.getPIB(prepodService.getPrepodById(selectedPrepod.getId())));
+
+        VNZaklad vnz = postgraduateEducation.getVnz();
+        if (vnz != null) vnzComboBox.setValue(vnz);
+
+        typeComboBox.setValue(postgraduateEducation.getType());
+        vnzComboBox.setValue(postgraduateEducation.getVnz());
+        yearTextField.setText(postgraduateEducation.getYear());
     }
 
     @FXML
@@ -85,20 +92,28 @@ public class EducationPostgraduateEditController implements Initializable, Contr
         VNZaklad vnz = vnzComboBox.getValue();
 
         if (type == null || vnz == null) {
-            Popup.wrongInputAlert("Заповніть обов'язкові поля"); //TODO Позначити у формі обов'язкові поля!!!
+            Popup.wrongInputAlert("Заповніть обов'язкові поля");
             return;
         }
 
-        EducationPostgraduateAdapter education = new EducationPostgraduateAdapter(type, vnz, year);
+        try {
+            EducationPostgraduate newEducation = new EducationPostgraduate();
 
-        if (editingExistingEducation) {
-            selectedEducation.setVnz(vnzComboBox.getValue());
-            mainController.updatePostgraduateEducation(selectedEducation, education);
-        } else {
-            mainController.addPostgraduateEducation(education);
+            newEducation.setPrepod(selectedPrepod);
+            newEducation.setYearFinish(year);
+            newEducation.setLevelTraining(type);
+            newEducation.setVnz(vnz);
+
+            if (selectedEducation == null) {
+                mainController.addPostgraduateEducation(newEducation);
+            } else {
+                mainController.updatePostgraduateEducation(selectedEducation, newEducation);
+            }
+            closeEdit(null);
+            Popup.successSave();
+        } catch (Exception e) {
+            Popup.wrongInputAlert(e.getMessage());
         }
-
-        closeEdit(null);
     }
 
     @FXML
@@ -111,20 +126,23 @@ public class EducationPostgraduateEditController implements Initializable, Contr
         }
     }
 
-    @FXML
-    private void addVNZ(ActionEvent event) {
-        MilitaryOblikKhPIMain.openAddVNZWindow(vnzComboBox, vnzObservableList);
+    private ObservableList<VNZaklad> getAllVNZ() {
+        return FXCollections.observableArrayList(educationPostgraduateService.getAllVNZ());
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    @FXML
+    private void addVNZ(ActionEvent event) {
+        MilitaryOblikKhPIMain.showAddVNZWindow(vnzComboBox, vnzObservableList);
+    }
+
+    public void initialize() {
         ObservableList<String> typeOptions = FXCollections.observableArrayList(
                 "Адʼюнктура",
                 "Аспірантура",
                 "Докторантура"
         );
 
-        vnzObservableList = FXCollections.observableArrayList(educationPostgraduateService.getAllVNZ());
+        vnzObservableList = getAllVNZ();
 
         selectedPrepod = prepodService.getPrepodById(ReservistsAllController.getSelectedPrepodId());
         pibLabel.setText(DataFormat.getPIB(selectedPrepod));

@@ -40,10 +40,10 @@ public class D05DataCollectService {
                 if (person.getPrepod().getId() != null) {
                     num++;
                     PersonalData personalData = personalDataService.getPersonalDataByPrepodId(person.getPrepod().getId());
-                    Education education = educationService.getEducationByPrepodId(person.getPrepod().getId());
+//                    Education education = educationService.getEducationByPrepodId(person.getPrepod().getId());
                     List<Document> documents = documentService.getDocumentsByPrepodId(person.getPrepod().getId());
                     CurrentDoljnostInfo currentDoljnostInfo = currentDoljnostInfoService.getCurrentDoljnostInfoByPrepodId(person.getPrepod().getId());
-                    adapters.add(mappedToAdapter(String.valueOf(num), person, personalData, education, documents, currentDoljnostInfo));
+//                    adapters.add(mappedToAdapter(String.valueOf(num), person, personalData, education, documents, currentDoljnostInfo));
                 }
             }
         }
