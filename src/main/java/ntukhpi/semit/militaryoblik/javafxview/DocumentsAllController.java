@@ -16,7 +16,9 @@ import javafx.util.converter.DateStringConverter;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.DocumentAdapter;
 import ntukhpi.semit.militaryoblik.entity.Document;
+import ntukhpi.semit.militaryoblik.entity.MilitaryPerson;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
+import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
@@ -54,10 +56,7 @@ public class DocumentsAllController implements ControlledScene {
     @FXML
     private TableView<DocumentAdapter> docsTableView;
 
-    // Список для зображення всіх документів в таблиці
     private ObservableList<DocumentAdapter> docsObservableList;
-
-    // Обраний в ReservistsAll викладач
     private Prepod selectedPrepod;
 
     // ========== Сервіси для роботи з БД ==========
@@ -176,7 +175,7 @@ public class DocumentsAllController implements ControlledScene {
      */
     @FXML
     void openAddWindow(ActionEvent event) {
-//        MilitaryOblikKhPIMain.openEditWindow(DOCUMENTS_ADD_JAVAFX, DOCUMENTS_ADD_JAVAFX_TITLE, this, null);
+        MilitaryOblikKhPIMain.showStage(AllStageSettings.documentsAdd, currentStage, this, null);
     }
 
     /**
@@ -185,11 +184,11 @@ public class DocumentsAllController implements ControlledScene {
      */
     @FXML
     void openEditWindow(ActionEvent event) {
-//        DocumentAdapter selectedDocument = docsTableView.getSelectionModel().getSelectedItem();
-//        if (selectedDocument != null)
-//            MilitaryOblikKhPIMain.openEditWindow(DOCUMENTS_EDIT_JAVAFX, DOCUMENTS_EDIT_JAVAFX_TITLE, this, selectedDocument);
-//        else
-//            Popup.noSelectedRowAlert();
+        DocumentAdapter selectedDocument = docsTableView.getSelectionModel().getSelectedItem();
+        if (selectedDocument != null)
+            MilitaryOblikKhPIMain.showStage(AllStageSettings.documentsEdit, currentStage, this, selectedDocument);
+        else
+            Popup.noSelectedRowAlert();
     }
 
     /**

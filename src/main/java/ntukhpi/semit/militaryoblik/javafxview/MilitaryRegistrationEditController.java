@@ -1,4 +1,3 @@
-/*
 package ntukhpi.semit.militaryoblik.javafxview;
 
 import javafx.collections.FXCollections;
@@ -48,6 +47,8 @@ public class MilitaryRegistrationEditController implements ControlledScene {
 
     private ReservistsAllController mainController;
     private ReservistAdapter selectedReservist;
+    private Stage mainStage;
+    private Stage currentStage;
 
     @Override
     public void setMainController(Object mainController) {
@@ -58,6 +59,16 @@ public class MilitaryRegistrationEditController implements ControlledScene {
     public void setData(Object data) {
         if (data instanceof ReservistAdapter)
             setMilitaryRegistrationInfo((ReservistAdapter) data);
+    }
+
+    @Override
+    public void setMainStage(Stage stage) {
+        mainStage = stage;
+    }
+
+    @Override
+    public void setCurrentStage(Stage stage) {
+        currentStage = stage;
     }
 
     private void setMilitaryRegistrationInfo(ReservistAdapter reservist) {
@@ -101,16 +112,10 @@ public class MilitaryRegistrationEditController implements ControlledScene {
 
     @FXML
     public void closeEdit(ActionEvent actionEvent) {
-        try {
-            ((Stage) groupComboBox.getScene().getWindow()).close();
-            MilitaryOblikKhPIMain.showReservistsWindow();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
     }
 
     public void saveMilitaryRegistrationInfo(ActionEvent actionEvent) {
 
     }
 }
-*/

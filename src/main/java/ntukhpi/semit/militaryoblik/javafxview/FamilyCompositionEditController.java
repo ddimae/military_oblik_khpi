@@ -1,4 +1,3 @@
-/*
 package ntukhpi.semit.militaryoblik.javafxview;
 
 import javafx.collections.FXCollections;
@@ -38,6 +37,8 @@ public class FamilyCompositionEditController implements ControlledScene {
     public TextField yearTextField;
 
     private FamilyCompositionAllController mainController;
+    private Stage mainStage;
+    private Stage currentStage;
     private Prepod selectedPrepod;
     private FamilyAdapter selectedMember;
 
@@ -58,6 +59,16 @@ public class FamilyCompositionEditController implements ControlledScene {
         setFamilyMembers((FamilyAdapter) data);
     }
 
+    @Override
+    public void setMainStage(Stage stage) {
+        mainStage = stage;
+    }
+
+    @Override
+    public void setCurrentStage(Stage stage) {
+        currentStage = stage;
+    }
+
     private void setFamilyMembers(FamilyAdapter family) {
         selectedPrepod = prepodService.getPrepodById(ReservistsAllController.getSelectedPrepodId());
 
@@ -73,12 +84,7 @@ public class FamilyCompositionEditController implements ControlledScene {
 
     @FXML
     void closeEdit(ActionEvent event) {
-        try {
-            ((Stage) relationshipComboBox.getScene().getWindow()).close();
-            MilitaryOblikKhPIMain.showFamilyWindow();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
     }
 
     @FXML
@@ -125,4 +131,3 @@ public class FamilyCompositionEditController implements ControlledScene {
         relationshipComboBox.setItems(typesOptions);
     }
 }
-*/

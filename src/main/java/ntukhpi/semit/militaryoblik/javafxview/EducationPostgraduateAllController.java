@@ -1,4 +1,3 @@
-/*
 package ntukhpi.semit.militaryoblik.javafxview;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -8,10 +7,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.EducationPostgraduateAdapter;
 import ntukhpi.semit.militaryoblik.entity.EducationPostgraduate;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
+import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
+import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.service.EducationPostgraduateServiceImpl;
@@ -22,8 +24,7 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-public class EducationPostgraduateAllController {
-
+public class EducationPostgraduateAllController implements ControlledScene {
     @FXML
     public Label pibLabel;
     @FXML
@@ -32,7 +33,6 @@ public class EducationPostgraduateAllController {
     private TableColumn<EducationPostgraduateAdapter, String> shortNameColumn;
     @FXML
     private TableColumn<EducationPostgraduateAdapter, String> yearColumn;
-
     @FXML
     public Label fullNameLabel;
     @FXML
@@ -43,13 +43,34 @@ public class EducationPostgraduateAllController {
     public Label typeLabel;
 
     private ObservableList<EducationPostgraduateAdapter> postgraduateEducationObservableList;
-
     private Prepod selectedPrepod;
+    private ReservistsAllController mainController;
+    private Stage mainStage;
+    private Stage currentStage;
 
     @Autowired
     EducationPostgraduateServiceImpl educationPostgraduateService;
+
     @Autowired
     PrepodServiceImpl prepodService;
+
+    @Override
+    public void setMainController(Object controller) {
+        mainController = (ReservistsAllController) controller;
+    }
+
+    @Override
+    public void setData(Object data) {}
+
+    @Override
+    public void setMainStage(Stage stage) {
+        mainStage = stage;
+    }
+
+    @Override
+    public void setCurrentStage(Stage stage) {
+        currentStage = stage;
+    }
 
     private ObservableList<EducationPostgraduateAdapter> getEducationPostgraduateData() {
         return FXCollections.observableArrayList(educationPostgraduateService.getAllEducationPostgraduateByPrepod(selectedPrepod).stream().map(EducationPostgraduateAdapter::new).toList());
@@ -106,14 +127,14 @@ public class EducationPostgraduateAllController {
 
     @FXML
     private void openAddWindow(ActionEvent event) {
-        MilitaryOblikKhPIMain.openEditWindow(EDUCATION_POSTGRADUATE_EDIT_JAVAFX, "Додати дані про післядипломне навчання", this, null);
+        MilitaryOblikKhPIMain.showStage(AllStageSettings.educationPostgraduateAdd, currentStage, this, null);
     }
 
     @FXML
     private void openEditWindow(ActionEvent event) {
         EducationPostgraduateAdapter selectedEducation = vnzTableView.getSelectionModel().getSelectedItem();
         if (selectedEducation != null) {
-            MilitaryOblikKhPIMain.openEditWindow(EDUCATION_POSTGRADUATE_EDIT_JAVAFX, "Редагувати дані про навчання", this, selectedEducation);
+            MilitaryOblikKhPIMain.showStage(AllStageSettings.educationPostgraduateEdit, currentStage, this, selectedEducation);
         } else {
             Popup.noSelectedRowAlert();
         }
@@ -121,7 +142,7 @@ public class EducationPostgraduateAllController {
 
     @FXML
     private void returnToMainForm(ActionEvent event) {
-        MilitaryOblikKhPIMain.showReservistsWindow();
+        MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
     }
 
     @FXML
@@ -160,4 +181,3 @@ public class EducationPostgraduateAllController {
         vnzTableView.refresh();
     }
 }
-*/

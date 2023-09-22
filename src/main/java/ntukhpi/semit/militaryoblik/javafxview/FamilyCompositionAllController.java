@@ -1,4 +1,3 @@
-/*
 package ntukhpi.semit.militaryoblik.javafxview;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -12,12 +11,15 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.DocumentAdapter;
 import ntukhpi.semit.militaryoblik.adapters.FamilyAdapter;
 import ntukhpi.semit.militaryoblik.entity.Document;
 import ntukhpi.semit.militaryoblik.entity.FamilyMember;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
+import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
+import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.service.FamilyMemberServiceImpl;
@@ -27,8 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FamilyCompositionAllController {
-
+public class FamilyCompositionAllController implements ControlledScene {
     @FXML
     private Label pibLabel;
     @FXML
@@ -45,11 +46,32 @@ public class FamilyCompositionAllController {
     private ObservableList<FamilyAdapter> familyObservableList;
 
     private Prepod selectedPrepod;
+    private ReservistsAllController mainController;
+    private Stage mainStage;
+    private Stage currentStage;
 
     @Autowired
     PrepodServiceImpl prepodService;
     @Autowired
     FamilyMemberServiceImpl familyMemberService;
+
+    @Override
+    public void setMainController(Object controller) {
+        mainController = (ReservistsAllController) controller;
+    }
+
+    @Override
+    public void setData(Object data) {}
+
+    @Override
+    public void setMainStage(Stage stage) {
+        mainStage = stage;
+    }
+
+    @Override
+    public void setCurrentStage(Stage stage) {
+        currentStage = stage;
+    }
 
     private ObservableList<FamilyAdapter> getFamilyObservableList() {
         return FXCollections.observableArrayList(familyMemberService.getAllFamilyMembersByPrepod(selectedPrepod).stream().map(FamilyAdapter::new).toList());
@@ -109,21 +131,20 @@ public class FamilyCompositionAllController {
 
     @FXML
     private void openAddWindow(ActionEvent event) {
-        MilitaryOblikKhPIMain.openEditWindow(FAMILY_ADD_JAVAFX, FAMILY_ADD_JAVAFX_TITLE, this, null);
+        MilitaryOblikKhPIMain.showStage(AllStageSettings.familyAdd, currentStage, this, null);
     }
 
     @FXML
     private void openEditWindow(ActionEvent event) {
         FamilyAdapter selectedItem = familyTableView.getSelectionModel().getSelectedItem();
         if (selectedItem != null)
-            MilitaryOblikKhPIMain.openEditWindow(FAMILY_EDIT_JAVAFX, FAMILY_EDIT_JAVAFX_TITLE, this, selectedItem);
+            MilitaryOblikKhPIMain.showStage(AllStageSettings.familyEdit, currentStage, this, selectedItem);
         else
             Popup.noSelectedRowAlert();
     }
 
     @FXML
     void returnToMainForm(ActionEvent event) {
-        MilitaryOblikKhPIMain.showReservistsWindow();
+        MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
     }
 }
-*/

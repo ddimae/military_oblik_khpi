@@ -282,34 +282,34 @@ public class ReservistsAllController implements ControlledScene {
     //============================================
     @FXML
     private void handlePositionButton() {
-//        if (setSelectedPrepodId() != null)
-//            MilitaryOblikKhPIMain.showPositionWindow();
-//        else
-//            Popup.noSelectedRowAlert();
+        if (setSelectedPrepodId() != null)
+            MilitaryOblikKhPIMain.showStage(AllStageSettings.positionEdit, currentStage, this, null);
+        else
+            Popup.noSelectedRowAlert();
     }
 
     @FXML
     private void handleFamilyButton() {
-//        if (setSelectedPrepodId() != null)
-//            MilitaryOblikKhPIMain.showFamilyWindow();
-//        else
-//            Popup.noSelectedRowAlert();
+        if (setSelectedPrepodId() != null)
+            MilitaryOblikKhPIMain.showStage(AllStageSettings.familyAll, currentStage, this, null);
+        else
+            Popup.noSelectedRowAlert();
     }
 
     @FXML
     private void handleEducationButton() {
-//        if (setSelectedPrepodId() != null)
-//            MilitaryOblikKhPIMain.showEducationWindow();
-//        else
-//            Popup.noSelectedRowAlert();
+        if (setSelectedPrepodId() != null)
+            MilitaryOblikKhPIMain.showStage(AllStageSettings.educationAll, currentStage, this, null);
+        else
+            Popup.noSelectedRowAlert();
     }
 
     @FXML
     private void handlePostgraduateEducationButton() {
-//        if (setSelectedPrepodId() != null)
-//            MilitaryOblikKhPIMain.showPostgraduateEducationWindow();
-//        else
-//            Popup.noSelectedRowAlert();
+        if (setSelectedPrepodId() != null)
+            MilitaryOblikKhPIMain.showStage(AllStageSettings.educationPostgraduateAll, currentStage, this, null);
+        else
+            Popup.noSelectedRowAlert();
     }
 
     @FXML
@@ -322,28 +322,27 @@ public class ReservistsAllController implements ControlledScene {
 
     @FXML
     void handleContactInfoButton(ActionEvent event) {
-//        ReservistAdapter reservist = setSelectedPrepodId();
-//        if (reservist != null) {
-//            MilitaryOblikKhPIMain.openEditWindow(CONTACT_INFO_JAVAFX, CONTACT_INFO_JAVAFX_TITLE, this, reservist);
-//        }
-//        else
-//            Popup.noSelectedRowAlert();
+        ReservistAdapter reservist = setSelectedPrepodId();
+        if (reservist != null) {
+            MilitaryOblikKhPIMain.showStage(AllStageSettings.contactInfoEdit, currentStage, this, reservist);
+        }
+        else
+            Popup.noSelectedRowAlert();
     }
 
     @FXML
     public void handleMilitaryRegistrationEditButton(ActionEvent actionEvent) {
-//        ReservistAdapter reservist = setSelectedPrepodId();
-//        if (reservist != null) {
-//            MilitaryOblikKhPIMain.openEditWindow(MILITARY_REGISTRATION_JAVAFX, MILITARY_REGISTRATION_JAVAFX_TITLE, this, reservist);
-//        } else {
-//            Popup.noSelectedRowAlert();
-//        }
+        ReservistAdapter reservist = setSelectedPrepodId();
+        if (reservist != null) {
+            MilitaryOblikKhPIMain.showStage(AllStageSettings.militaryRegistrationEdit, currentStage, this, reservist);
+        } else {
+            Popup.noSelectedRowAlert();
+        }
     }
 
     @FXML
     void handleOblikButton(ActionEvent event) {
-//        ReservistAdapter reservist = setSelectedPrepodId();
-//        MilitaryOblikKhPIMain.openEditWindow(EMPLOYEE_ADD_JAVAFX, EMPLOYEE_ADD_JAVAFX_TITLE, this, reservist);
+        MilitaryOblikKhPIMain.showStage(AllStageSettings.employeeAdd, currentStage, this, null);
     }
 
     @Autowired

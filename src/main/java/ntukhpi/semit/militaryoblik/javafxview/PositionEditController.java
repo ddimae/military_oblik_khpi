@@ -1,4 +1,3 @@
-/*
 package ntukhpi.semit.militaryoblik.javafxview;
 
 import javafx.event.ActionEvent;
@@ -39,6 +38,8 @@ public class PositionEditController implements ControlledScene {
 
     private Prepod selectedPrepod;
     private CurrentDoljnostInfo selectedDoljnost;
+    private Stage mainStage;
+    private Stage currentStage;
 
     @Autowired
     PrepodServiceImpl prepodService;
@@ -58,6 +59,16 @@ public class PositionEditController implements ControlledScene {
     public void setData(Object data) {
         if (data instanceof DoljnostAdapter)
             setCurrentDoljnostInfo((DoljnostAdapter) data);
+    }
+
+    @Override
+    public void setMainStage(Stage stage) {
+        mainStage = stage;
+    }
+
+    @Override
+    public void setCurrentStage(Stage stage) {
+        currentStage = stage;
     }
 
     private void setCurrentDoljnostInfo(DoljnostAdapter position) {
@@ -107,12 +118,7 @@ public class PositionEditController implements ControlledScene {
 
     @FXML
     void closeEdit(ActionEvent event) {
-        try {
-            ((Stage) commentTextArea.getScene().getWindow()).close();
-            MilitaryOblikKhPIMain.showReservistsWindow();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
     }
 }
 
@@ -236,4 +242,3 @@ public class PositionEditController implements ControlledScene {
 //        }
 //    }
 
-*/
