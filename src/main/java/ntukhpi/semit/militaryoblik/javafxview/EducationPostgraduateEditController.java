@@ -13,6 +13,7 @@ import ntukhpi.semit.militaryoblik.adapters.EducationPostgraduateAdapter;
 import ntukhpi.semit.militaryoblik.entity.EducationPostgraduate;
 import ntukhpi.semit.militaryoblik.entity.VNZaklad;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
+import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
@@ -34,6 +35,8 @@ public class EducationPostgraduateEditController implements ControlledScene {
     private TextField yearTextField;
 
     private EducationPostgraduateAllController mainController;
+    private Stage mainStage;
+    private Stage currentStage;
     private EducationPostgraduateAdapter selectedEducation;
 
     private ObservableList<VNZaklad> vnzObservableList;
@@ -58,6 +61,17 @@ public class EducationPostgraduateEditController implements ControlledScene {
             setPostgraduateEducation((EducationPostgraduateAdapter) data);
         }
     }
+
+    @Override
+    public void setMainStage(Stage stage) {
+        mainStage = stage;
+    }
+
+    @Override
+    public void setCurrentStage(Stage stage) {
+        currentStage = stage;
+    }
+
     public void setPostgraduateEducation(EducationPostgraduateAdapter postgraduateEducation) {
         selectedEducation = postgraduateEducation;
         pibLabel.setText(DataFormat.getPIB(prepodService.getPrepodById(selectedPrepod.getId())));
@@ -109,12 +123,7 @@ public class EducationPostgraduateEditController implements ControlledScene {
 
     @FXML
     private void closeEdit(ActionEvent event) {
-        try {
-            ((Stage) typeComboBox.getScene().getWindow()).close();
-            MilitaryOblikKhPIMain.showPostgraduateEducationWindow();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
     }
 
     private ObservableList<VNZaklad> getAllVNZ() {
@@ -123,7 +132,8 @@ public class EducationPostgraduateEditController implements ControlledScene {
 
     @FXML
     private void addVNZ(ActionEvent event) {
-        MilitaryOblikKhPIMain.showAddVNZWindow(vnzComboBox, vnzObservableList);
+        Object[] arr = {vnzComboBox, vnzObservableList};
+        MilitaryOblikKhPIMain.showStage(AllStageSettings.vnzAdd, currentStage, this, arr);
     }
 
     public void initialize() {

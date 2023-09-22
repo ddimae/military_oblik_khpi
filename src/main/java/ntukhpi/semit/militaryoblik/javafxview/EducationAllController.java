@@ -7,9 +7,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
+import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
 import ntukhpi.semit.militaryoblik.entity.Education;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
+import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
+import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.service.EducationServiceImpl;
@@ -21,9 +26,7 @@ import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import java.util.Optional;
 
 @Component
-public class EducationAllController {
-    private final static String EDUCATION_EDIT_JAVAFX = "/javafxview/EducationEdit.fxml";
-
+public class EducationAllController implements ControlledScene {
     @FXML
     public Label pibLabel;
     @FXML
@@ -52,13 +55,35 @@ public class EducationAllController {
     private TableColumn<EducationAdapter, String> yearColumn;
 
     private ObservableList<EducationAdapter> educationObservableList;
+
     private Prepod selectedPrepod;
+    private ReservistsAllController mainController;
+    private Stage mainStage;
+    private Stage currentStage;
 
     @Autowired
     EducationServiceImpl educationService;
 
     @Autowired
     PrepodServiceImpl prepodService;
+
+    @Override
+    public void setMainController(Object controller) {
+        mainController = (ReservistsAllController) controller;
+    }
+
+    @Override
+    public void setData(Object data) {}
+
+    @Override
+    public void setMainStage(Stage stage) {
+        mainStage = stage;
+    }
+
+    @Override
+    public void setCurrentStage(Stage stage) {
+        currentStage = stage;
+    }
 
     private ObservableList<EducationAdapter> getEducationData() {
         return FXCollections.observableArrayList(educationService.getAllEducationByPrepod(selectedPrepod).stream().map(EducationAdapter::new).toList());
@@ -119,14 +144,14 @@ public class EducationAllController {
 
     @FXML
     private void openAddWindow(ActionEvent event) {
-        MilitaryOblikKhPIMain.openEditWindow(EDUCATION_EDIT_JAVAFX, "Додати дані про навчання", this, null);
+        MilitaryOblikKhPIMain.showStage(AllStageSettings.educationAdd, currentStage, this, null);
     }
 
     @FXML
     private void openEditWindow(ActionEvent event) {
         EducationAdapter selectedEducation = vnzTableView.getSelectionModel().getSelectedItem();
         if (selectedEducation != null) {
-            MilitaryOblikKhPIMain.openEditWindow(EDUCATION_EDIT_JAVAFX, "Редагувати дані про навчання", this, selectedEducation);
+            MilitaryOblikKhPIMain.showStage(AllStageSettings.educationEdit, currentStage, this, selectedEducation);
         } else {
             Popup.noSelectedRowAlert();
         }
@@ -134,7 +159,7 @@ public class EducationAllController {
 
     @FXML
     private void returnToMainForm(ActionEvent event) {
-        MilitaryOblikKhPIMain.showReservistsWindow();
+        MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
     }
 
     @FXML

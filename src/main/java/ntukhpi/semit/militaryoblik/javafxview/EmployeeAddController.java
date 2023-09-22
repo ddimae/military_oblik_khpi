@@ -59,8 +59,6 @@ public class EmployeeAddController implements ControlledScene {
     @FXML
     private TextField surnameTextField;
 
-    private ReservistsAllController mainController;
-
     @Autowired
     FakultetServiceImpl fakultetService;
 
@@ -83,6 +81,9 @@ public class EmployeeAddController implements ControlledScene {
     private Kafedra emptyCathedra;
     private Collator ukrCollator;
     private boolean isChangeCombobox;
+    private ReservistsAllController mainController;
+    private Stage mainStage;
+    private Stage currentStage;
 
     @Override
     public void setMainController(Object mainController) {
@@ -92,6 +93,16 @@ public class EmployeeAddController implements ControlledScene {
     @Override
     public void setData(Object data) {
 
+    }
+
+    @Override
+    public void setMainStage(Stage stage) {
+        mainStage = stage;
+    }
+
+    @Override
+    public void setCurrentStage(Stage stage) {
+        currentStage = stage;
     }
 
     public void initialize() {
@@ -127,12 +138,7 @@ public class EmployeeAddController implements ControlledScene {
 
     @FXML
     void closeEdit(ActionEvent event) {
-        try {
-            ((Stage) cathedraComboBox.getScene().getWindow()).close();
-            MilitaryOblikKhPIMain.showReservistsWindow();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
     }
 
     private boolean validateInfo(String institute, String cathedra, String surname,

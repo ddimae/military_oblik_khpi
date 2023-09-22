@@ -11,11 +11,15 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.converter.DateStringConverter;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.DocumentAdapter;
 import ntukhpi.semit.militaryoblik.entity.Document;
+import ntukhpi.semit.militaryoblik.entity.MilitaryPerson;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
+import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
+import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.service.DocumentServiceImpl;
@@ -31,13 +35,7 @@ import java.util.Date;
 import java.util.Locale;
 
 @Component
-public class DocumentsAllController {
-
-    // ========== Константи для переходу на форму з редагуванням/додаванням нових документів ==========
-    private final static String DOCUMENTS_ADD_JAVAFX = "/javafxview/DocumentsEdit.fxml";
-    private final static String DOCUMENTS_EDIT_JAVAFX = DOCUMENTS_ADD_JAVAFX;
-    private final static String DOCUMENTS_ADD_JAVAFX_TITLE = "Додати новий документ";
-    private final static String DOCUMENTS_EDIT_JAVAFX_TITLE = "Редагувати документ";
+public class DocumentsAllController implements ControlledScene {
 
     // ========== Інтерактивні елементи форми ==========
     @FXML
@@ -58,10 +56,7 @@ public class DocumentsAllController {
     @FXML
     private TableView<DocumentAdapter> docsTableView;
 
-    // Список для зображення всіх документів в таблиці
     private ObservableList<DocumentAdapter> docsObservableList;
-
-    // Обраний в ReservistsAll викладач
     private Prepod selectedPrepod;
 
     // ========== Сервіси для роботи з БД ==========
@@ -71,6 +66,27 @@ public class DocumentsAllController {
     @Autowired
     PrepodServiceImpl prepodService;
 
+    private ReservistsAllController mainController;
+    private Stage mainStage;
+    private Stage currentStage;
+
+    @Override
+    public void setMainController(Object controller) {
+        mainController = (ReservistsAllController) controller;
+    }
+
+    @Override
+    public void setData(Object data) {}
+
+    @Override
+    public void setMainStage(Stage stage) {
+        mainStage = stage;
+    }
+
+    @Override
+    public void setCurrentStage(Stage stage) {
+        currentStage = stage;
+    }
 
     /**
      * Отримує з БД список всіх документів конкретного викладача та перетворює його на ObservableList
@@ -159,7 +175,7 @@ public class DocumentsAllController {
      */
     @FXML
     void openAddWindow(ActionEvent event) {
-        MilitaryOblikKhPIMain.openEditWindow(DOCUMENTS_ADD_JAVAFX, DOCUMENTS_ADD_JAVAFX_TITLE, this, null);
+        MilitaryOblikKhPIMain.showStage(AllStageSettings.documentsAdd, currentStage, this, null);
     }
 
     /**
@@ -170,7 +186,7 @@ public class DocumentsAllController {
     void openEditWindow(ActionEvent event) {
         DocumentAdapter selectedDocument = docsTableView.getSelectionModel().getSelectedItem();
         if (selectedDocument != null)
-            MilitaryOblikKhPIMain.openEditWindow(DOCUMENTS_EDIT_JAVAFX, DOCUMENTS_EDIT_JAVAFX_TITLE, this, selectedDocument);
+            MilitaryOblikKhPIMain.showStage(AllStageSettings.documentsEdit, currentStage, this, selectedDocument);
         else
             Popup.noSelectedRowAlert();
     }
@@ -181,6 +197,6 @@ public class DocumentsAllController {
      */
     @FXML
     void returnToMainForm(ActionEvent event) {
-        MilitaryOblikKhPIMain.showReservistsWindow();
+        MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
     }
 }

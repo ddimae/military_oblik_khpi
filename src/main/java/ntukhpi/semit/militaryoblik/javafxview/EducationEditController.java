@@ -13,6 +13,7 @@ import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
 import ntukhpi.semit.militaryoblik.entity.Education;
 import ntukhpi.semit.militaryoblik.entity.VNZaklad;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
+import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
@@ -44,6 +45,8 @@ public class EducationEditController implements ControlledScene {
     public TextField qualificationTextField;
 
     private EducationAllController mainController;
+    private Stage mainStage;
+    private Stage currentStage;
     private EducationAdapter selectedEducation;
 
     private ObservableList<VNZaklad> vnzObservableList;
@@ -66,6 +69,16 @@ public class EducationEditController implements ControlledScene {
         if (data instanceof EducationAdapter) {
             setEducation((EducationAdapter) data);
         }
+    }
+
+    @Override
+    public void setMainStage(Stage stage) {
+        mainStage = stage;
+    }
+
+    @Override
+    public void setCurrentStage(Stage stage) {
+        currentStage = stage;
     }
 
     public void setEducation(EducationAdapter education) {
@@ -140,12 +153,7 @@ public class EducationEditController implements ControlledScene {
 
     @FXML
     private void closeEdit(ActionEvent event) {
-        try {
-            ((Stage) vnzComboBox.getScene().getWindow()).close();
-            MilitaryOblikKhPIMain.showEducationWindow();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
     }
 
     private ObservableList<VNZaklad> getAllVNZ() {
@@ -154,7 +162,8 @@ public class EducationEditController implements ControlledScene {
 
     @FXML
     private void addVNZ(ActionEvent event) {
-        MilitaryOblikKhPIMain.showAddVNZWindow(vnzComboBox, vnzObservableList);
+        Object[] arr = {vnzComboBox, vnzObservableList};
+        MilitaryOblikKhPIMain.showStage(AllStageSettings.vnzAdd, currentStage, this, arr);
     }
 
     public void initialize() {

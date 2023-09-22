@@ -48,6 +48,8 @@ public class DocumentsEditController implements ControlledScene {
     private DocumentsAllController mainController;
     private Prepod selectedPrepod;
     private DocumentAdapter selectedDocument;
+    private Stage mainStage;
+    private Stage currentStage;
 
     @Autowired
     PrepodServiceImpl prepodService;
@@ -66,6 +68,16 @@ public class DocumentsEditController implements ControlledScene {
     @Override
     public void setData(Object data) {
         setDocument((DocumentAdapter) data);
+    }
+
+    @Override
+    public void setMainStage(Stage stage) {
+        mainStage = stage;
+    }
+
+    @Override
+    public void setCurrentStage(Stage stage) {
+        currentStage = stage;
     }
 
     private void setDocument(DocumentAdapter document) {
@@ -107,12 +119,7 @@ public class DocumentsEditController implements ControlledScene {
 
     @FXML
     void closeEdit(ActionEvent event) {
-        try {
-            ((Stage) typeComboBox.getScene().getWindow()).close();
-            MilitaryOblikKhPIMain.showDocumentsWindow();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
     }
 
     @FXML

@@ -15,15 +15,15 @@ import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
+import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
+import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
+import ntukhpi.semit.militaryoblik.javafxutils.SettingsStage;
 import org.springframework.stereotype.Component;
 
 import java.util.prefs.Preferences;
 
-import static ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain.currentStage;
-
 @Component
-public class LoginFormController {
-
+public class LoginFormController implements ControlledScene {
     @FXML
     private TextField loginField;
     @FXML
@@ -31,8 +31,26 @@ public class LoginFormController {
 
     private static final String MILITARY_OBLIK_CORRECT_LOGIN = "2otdel";
     private static final String MILITARY_OBLIK_CORRECT_PASSWORD = "oblik";
-
     private final Preferences preferences = Preferences.userNodeForPackage(LoginFormController.class);
+
+    private Stage mainStage;
+    private Stage currentStage;
+
+    @Override
+    public void setMainController(Object controller) {}
+
+    @Override
+    public void setData(Object data) {}
+
+    @Override
+    public void setMainStage(Stage stage) {
+        mainStage = stage;
+    }
+
+    @Override
+    public void setCurrentStage(Stage stage) {
+        currentStage = stage;
+    }
 
     @FXML
     private void initialize() {
@@ -73,8 +91,8 @@ public class LoginFormController {
             showInvalidDataWindow();
     }
 
-    private static void showReservistsForm() {
-        MilitaryOblikKhPIMain.showReservistsWindow();
+    private void showReservistsForm() {
+        MilitaryOblikKhPIMain.showStage(AllStageSettings.militaryOblikSettings, currentStage, this, null);
     }
 
     //TODO Нужна форма JavaFX!!!! Для универсальности!!!
@@ -115,8 +133,7 @@ public class LoginFormController {
         });
 
         exitButton.setOnAction(e -> {
-            invalidDataStage.close();
-            Platform.exit();
+            closeForm(null);
         });
 
         Scene scene = new Scene(grid, 400, 200);
@@ -127,7 +144,6 @@ public class LoginFormController {
 
     @FXML
     public void closeForm(ActionEvent actionEvent) {
-        MilitaryOblikKhPIMain.applicationContext.close();
-        Platform.exit();
+        MilitaryOblikKhPIMain.exitApplication();
     }
 }
