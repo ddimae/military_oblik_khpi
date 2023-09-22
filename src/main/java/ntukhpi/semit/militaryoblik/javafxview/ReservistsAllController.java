@@ -18,6 +18,7 @@ import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Fakultet;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Kafedra;
 
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
+import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.service.*;
 
@@ -33,16 +34,6 @@ import java.util.List;
 
 @Component
 public class ReservistsAllController implements ControlledScene {
-    //Константи для виклику форм редагування
-    private final static String CONTACT_INFO_JAVAFX = "/javafxview/ContactsEdit.fxml";
-    private final static String CONTACT_INFO_JAVAFX_TITLE = "Контактна інформація";
-
-    private final static String MILITARY_REGISTRATION_JAVAFX = "/javafxview/MilitaryRegistration.fxml";
-    private final static String MILITARY_REGISTRATION_JAVAFX_TITLE = "Дані військового обліку";
-
-    private final static String EMPLOYEE_ADD_JAVAFX = "/javafxview/EmployeeAdd.fxml";
-    private final static String EMPLOYEE_ADD_JAVAFX_TITLE = "Додати нового працівника";
-
     @FXML
     public ComboBox<String> tckComboBox;
 
@@ -126,8 +117,8 @@ public class ReservistsAllController implements ControlledScene {
     MilitaryPersonServiceImpl militaryPersonServiceImpl;
 
     @Override
-    public void setMainController(Object mainController) {
-        this.mainController = (LoginFormController) mainController;
+    public void setMainController(Object controller) {
+        mainController = (LoginFormController) controller;
     }
 
     @Override
@@ -323,10 +314,10 @@ public class ReservistsAllController implements ControlledScene {
 
     @FXML
     private void handleDocumentsButton() {
-//        if (setSelectedPrepodId() != null)
-//            MilitaryOblikKhPIMain.showDocumentsWindow();
-//        else
-//            Popup.noSelectedRowAlert();
+        if (setSelectedPrepodId() != null)
+            MilitaryOblikKhPIMain.showStage(AllStageSettings.documentsAll, currentStage, this, null);
+        else
+            Popup.noSelectedRowAlert();
     }
 
     @FXML

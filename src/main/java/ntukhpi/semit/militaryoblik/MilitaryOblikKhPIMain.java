@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ntukhpi.semit.militaryoblik.entity.VNZaklad;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
+import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.SettingsStage;
 //import ntukhpi.semit.militaryoblik.javafxview.AddVNZController;
@@ -28,63 +29,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class MilitaryOblikKhPIMain extends Application {
-    public final static String STYLES_JAVAFX = "/javafxview/MOStyles.css";
-    //============================
-    public final static String LOGIN_JAVAFX = "/javafxview/LoginForm.fxml";
-    public final static String LOGIN_JAVAFX_TITLE = "Вхід в застосунок";
-    private SettingsStage loginSettings =
-            new SettingsStage(LOGIN_JAVAFX, LOGIN_JAVAFX_TITLE,
-                    400, 300, false, false);
 
-    //============================
-
-    private final static String EDUCATION_JAVAFX = "/javafxview/EducationAll.fxml";
-    private final static String EDUCATION_JAVAFX_TITLE = "Освіта";
-
-    private static SettingsStage educationAll =
-            new SettingsStage(EDUCATION_JAVAFX, EDUCATION_JAVAFX_TITLE,
-                    0, 0, false, true);
-
-    //============================
-    private final static String POSITION_JAVAFX = "/javafxview/PositionEdit.fxml";
-    private final static String POSITION_JAVAFX_TITLE = "Посада";
-
-    private static SettingsStage positionEdit =
-            new SettingsStage(POSITION_JAVAFX, POSITION_JAVAFX_TITLE,
-                    0,0,false, true);
-
-    //============================
-    private final static String FAMILY_JAVAFX = "/javafxview/FamilyCompositionAll.fxml";
-    private final static String FAMILY_JAVAFX_TITLE = "Родина";
-
-    private static SettingsStage familyAll =
-            new SettingsStage(FAMILY_JAVAFX, FAMILY_JAVAFX_TITLE,
-                    0,0,false, true);
-
-    //============================
-    private final static String DOCUMENTS_JAVAFX = "/javafxview/DocumentsAll.fxml";
-    private final static String DOCUMENTS_JAVAFX_TITLE = "Документи";
-
-    private static SettingsStage documentsAll =
-            new SettingsStage(DOCUMENTS_JAVAFX, DOCUMENTS_JAVAFX_TITLE,
-                    0, 0, false, true);
-
-    //============================
-//    private final static String MILITARY_REGISTRATION_JAVAFX = "/javafxview/MilitaryRegistration.fxml";
-//    private final static String MILITARY_REGISTRATION_JAVAFX_TITLE = "Дані військового обліку";
-//
-//    private static SettingsStage registrationAll =
-//            new SettingsStage(MILITARY_REGISTRATION_JAVAFX, MILITARY_REGISTRATION_JAVAFX_TITLE, 0, 0, false, true);
-    //============================
-    private final static String EDUCATION_POSTGRADUATE_JAVAFX = "/javafxview/EducationPostgraduateAll.fxml";
-    private final static String EDUCATION_POSTGRADUATE_JAVAFX_TITLE = "Післядипломна освіта";
-    private static SettingsStage educationPostgraduateAll =
-            new SettingsStage(EDUCATION_POSTGRADUATE_JAVAFX, EDUCATION_POSTGRADUATE_JAVAFX_TITLE,
-                    0, 0, false, true);
-    //============================
-    private final static String VNZ_ADD_JAVAFX = "/javafxview/AddVNZ.fxml";
-    private final static String VNZ_ADD_JAVAFX_TITLE = "Додати ВНЗ";
-    //============================
 
     public static ConfigurableApplicationContext applicationContext; //was private
     static Parent rootNode; //was private
@@ -188,7 +133,7 @@ public class MilitaryOblikKhPIMain extends Application {
                 scene = new Scene(rootNode);
 
             // Применить стиль
-            scene.getStylesheets().add(Objects.requireNonNull(MilitaryOblikKhPIMain.class.getResource(STYLES_JAVAFX)).toExternalForm());
+            scene.getStylesheets().add(Objects.requireNonNull(MilitaryOblikKhPIMain.class.getResource(AllStageSettings.STYLES_JAVAFX)).toExternalForm());
             stage.setScene(scene);
             stage.setFullScreen(settings.isFullScreen());
             stage.setResizable(settings.isResizable());
@@ -219,10 +164,10 @@ public class MilitaryOblikKhPIMain extends Application {
         try {
             newStage = getStageBySettings(settings, currentStage, controller, data);
 
+            newStage.show();
+
             if (currentStage != null)
                 currentStage.hide();
-
-            newStage.show();
         } catch (Exception exception) {
             System.err.println("Помилка створення форми " + settings.getFxmlName());
         }
@@ -231,8 +176,8 @@ public class MilitaryOblikKhPIMain extends Application {
     }
 
     public static void showPreviousStage(Stage previousStage, Stage currentStage) {
-        currentStage.close();
         previousStage.show();
+        currentStage.close();
     }
 
     public static void exitApplication() {
@@ -266,7 +211,7 @@ public class MilitaryOblikKhPIMain extends Application {
     //
 
     private void showLogInWindow() {
-        showStage(loginSettings, null, null, null);
+        showStage(AllStageSettings.loginSettings, null, null, null);
     }
 
 //    public static void showReservistsWindow() {

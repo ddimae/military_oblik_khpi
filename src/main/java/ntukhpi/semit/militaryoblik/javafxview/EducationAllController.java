@@ -23,7 +23,6 @@ import java.util.Optional;
 
 @Component
 public class EducationAllController {
-    private final static String EDUCATION_EDIT_JAVAFX = "/javafxview/EducationEdit.fxml";
 
     @FXML
     public Label pibLabel;

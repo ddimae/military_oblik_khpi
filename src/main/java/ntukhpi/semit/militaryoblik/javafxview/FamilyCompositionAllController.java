@@ -28,10 +28,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class FamilyCompositionAllController {
-    private final static String FAMILY_ADD_JAVAFX = "/javafxview/FamilyCompositionEdit.fxml";
-    private final static String FAMILY_EDIT_JAVAFX = FAMILY_ADD_JAVAFX;
-    private final static String FAMILY_ADD_JAVAFX_TITLE = "Додати нового члена родини";
-    private final static String FAMILY_EDIT_JAVAFX_TITLE = "Редагувати склад родини";
+
     @FXML
     private Label pibLabel;
     @FXML

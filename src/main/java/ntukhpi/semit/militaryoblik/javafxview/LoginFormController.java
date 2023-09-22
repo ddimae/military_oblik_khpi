@@ -15,6 +15,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
+import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.SettingsStage;
 import org.springframework.stereotype.Component;
@@ -23,14 +24,6 @@ import java.util.prefs.Preferences;
 
 @Component
 public class LoginFormController implements ControlledScene {
-    private final static String MILITARY_OBLIK_LIST_JAVAFX = "/javafxview/ReservistsAll.fxml";
-    private final static String MILITARY_OBLIK_LIST_JAVAFX_TITLE = "Військовий облік НТУ \"ХПІ\"";
-
-    private static SettingsStage militaryOblikSettings =
-            new SettingsStage(MILITARY_OBLIK_LIST_JAVAFX, MILITARY_OBLIK_LIST_JAVAFX_TITLE,
-                    1500, 720, true, true);
-    //============================
-
     @FXML
     private TextField loginField;
     @FXML
@@ -44,7 +37,7 @@ public class LoginFormController implements ControlledScene {
     private Stage currentStage;
 
     @Override
-    public void setMainController(Object mainController) {}
+    public void setMainController(Object controller) {}
 
     @Override
     public void setData(Object data) {}
@@ -99,7 +92,7 @@ public class LoginFormController implements ControlledScene {
     }
 
     private void showReservistsForm() {
-        MilitaryOblikKhPIMain.showStage(militaryOblikSettings, currentStage, this, null);
+        MilitaryOblikKhPIMain.showStage(AllStageSettings.militaryOblikSettings, currentStage, this, null);
     }
 
     //TODO Нужна форма JavaFX!!!! Для универсальности!!!
