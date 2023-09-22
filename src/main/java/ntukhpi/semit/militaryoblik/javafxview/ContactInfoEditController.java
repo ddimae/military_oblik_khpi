@@ -1,3 +1,4 @@
+/*
 package ntukhpi.semit.militaryoblik.javafxview;
 
 import javafx.event.ActionEvent;
@@ -441,3 +442,4 @@ public class ContactInfoEditController implements ControlledScene {
         }
     }
 }
+*/

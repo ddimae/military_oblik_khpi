@@ -1,3 +1,4 @@
+/*
 package ntukhpi.semit.militaryoblik.javafxview;
 
 import com.sun.tools.jconsole.JConsoleContext;
@@ -264,4 +265,4 @@ public class EmployeeAddController implements ControlledScene {
 
         isChangeCombobox = false;
     }
-}
+}*/

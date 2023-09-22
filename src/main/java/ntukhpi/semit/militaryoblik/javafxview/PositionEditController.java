@@ -1,3 +1,4 @@
+/*
 package ntukhpi.semit.militaryoblik.javafxview;
 
 import javafx.event.ActionEvent;
@@ -235,3 +236,4 @@ public class PositionEditController implements ControlledScene {
 //        }
 //    }
 
+*/

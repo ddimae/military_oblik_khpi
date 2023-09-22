@@ -1,3 +1,4 @@
+/*
 package ntukhpi.semit.militaryoblik.javafxview;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -160,3 +161,4 @@ public class EducationPostgraduateAllController {
         vnzTableView.refresh();
     }
 }
+*/

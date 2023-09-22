@@ -1,3 +1,4 @@
+/*
 package ntukhpi.semit.militaryoblik.javafxview;
 
 import javafx.collections.ObservableList;
@@ -64,3 +65,4 @@ public class AddVNZController {
         stage.close();
     }
 }
+*/

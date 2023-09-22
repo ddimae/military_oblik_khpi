@@ -1,3 +1,4 @@
+/*
 package ntukhpi.semit.militaryoblik.javafxview;
 
 import javafx.collections.FXCollections;
@@ -124,3 +125,4 @@ public class FamilyCompositionEditController implements ControlledScene {
         relationshipComboBox.setItems(typesOptions);
     }
 }
+*/

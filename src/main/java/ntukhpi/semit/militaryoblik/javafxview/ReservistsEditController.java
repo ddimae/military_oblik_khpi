@@ -1,3 +1,4 @@
+/*
 package ntukhpi.semit.militaryoblik.javafxview;
 
 import javafx.event.ActionEvent;
@@ -20,10 +21,11 @@ public class ReservistsEditController {
     private TableView<String> militaryRecordDepartment;
 
 
-    /**
+*
      * Initializes the controller class. This method is automatically called
      * after the fxml file has been loaded.
-     */
+
+
     @FXML
     private void initialize() {
         humanResourcesDepartment.setPlaceholder(new Label("Оберіть факультет, курс та групу"));
@@ -32,3 +34,4 @@ public class ReservistsEditController {
 
     public void addEmployee(ActionEvent actionEvent) {}
 }
+*/

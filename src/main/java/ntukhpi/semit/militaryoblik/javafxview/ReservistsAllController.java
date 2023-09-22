@@ -18,6 +18,7 @@ import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Fakultet;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Kafedra;
 
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
+import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.service.*;
 
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
@@ -31,7 +32,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class ReservistsAllController {
+public class ReservistsAllController implements ControlledScene {
     //Константи для виклику форм редагування
     private final static String CONTACT_INFO_JAVAFX = "/javafxview/ContactsEdit.fxml";
     private final static String CONTACT_INFO_JAVAFX_TITLE = "Контактна інформація";
@@ -105,6 +106,10 @@ public class ReservistsAllController {
 
     private static ReservistAdapter selectedReservist;
 
+    private LoginFormController mainController;
+    private Stage mainStage;
+    private Stage currentStage;
+
     @Autowired
     FakultetServiceImpl fakultetServiceImpl;
 
@@ -119,6 +124,24 @@ public class ReservistsAllController {
 
     @Autowired
     MilitaryPersonServiceImpl militaryPersonServiceImpl;
+
+    @Override
+    public void setMainController(Object mainController) {
+        this.mainController = (LoginFormController) mainController;
+    }
+
+    @Override
+    public void setData(Object data) {}
+
+    @Override
+    public void setMainStage(Stage stage) {
+        mainStage = stage;
+    }
+
+    @Override
+    public void setCurrentStage(Stage stage) {
+        currentStage = stage;
+    }
 
     /**
      * Initializes the conkafedraRepositorytroller class. This method is automatically called
@@ -260,8 +283,7 @@ public class ReservistsAllController {
 
     @FXML
     public void stopApp(ActionEvent actionEvent) {
-        MilitaryOblikKhPIMain.applicationContext.close();
-        Platform.exit();
+        MilitaryOblikKhPIMain.exitApplication();
     }
 
     //============================================
@@ -269,68 +291,68 @@ public class ReservistsAllController {
     //============================================
     @FXML
     private void handlePositionButton() {
-        if (setSelectedPrepodId() != null)
-            MilitaryOblikKhPIMain.showPositionWindow();
-        else
-            Popup.noSelectedRowAlert();
+//        if (setSelectedPrepodId() != null)
+//            MilitaryOblikKhPIMain.showPositionWindow();
+//        else
+//            Popup.noSelectedRowAlert();
     }
 
     @FXML
     private void handleFamilyButton() {
-        if (setSelectedPrepodId() != null)
-            MilitaryOblikKhPIMain.showFamilyWindow();
-        else
-            Popup.noSelectedRowAlert();
+//        if (setSelectedPrepodId() != null)
+//            MilitaryOblikKhPIMain.showFamilyWindow();
+//        else
+//            Popup.noSelectedRowAlert();
     }
 
     @FXML
     private void handleEducationButton() {
-        if (setSelectedPrepodId() != null)
-            MilitaryOblikKhPIMain.showEducationWindow();
-        else
-            Popup.noSelectedRowAlert();
+//        if (setSelectedPrepodId() != null)
+//            MilitaryOblikKhPIMain.showEducationWindow();
+//        else
+//            Popup.noSelectedRowAlert();
     }
 
     @FXML
     private void handlePostgraduateEducationButton() {
-        if (setSelectedPrepodId() != null)
-            MilitaryOblikKhPIMain.showPostgraduateEducationWindow();
-        else
-            Popup.noSelectedRowAlert();
+//        if (setSelectedPrepodId() != null)
+//            MilitaryOblikKhPIMain.showPostgraduateEducationWindow();
+//        else
+//            Popup.noSelectedRowAlert();
     }
 
     @FXML
     private void handleDocumentsButton() {
-        if (setSelectedPrepodId() != null)
-            MilitaryOblikKhPIMain.showDocumentsWindow();
-        else
-            Popup.noSelectedRowAlert();
+//        if (setSelectedPrepodId() != null)
+//            MilitaryOblikKhPIMain.showDocumentsWindow();
+//        else
+//            Popup.noSelectedRowAlert();
     }
 
     @FXML
     void handleContactInfoButton(ActionEvent event) {
-        ReservistAdapter reservist = setSelectedPrepodId();
-        if (reservist != null) {
-            MilitaryOblikKhPIMain.openEditWindow(CONTACT_INFO_JAVAFX, CONTACT_INFO_JAVAFX_TITLE, this, reservist);
-        }
-        else
-            Popup.noSelectedRowAlert();
+//        ReservistAdapter reservist = setSelectedPrepodId();
+//        if (reservist != null) {
+//            MilitaryOblikKhPIMain.openEditWindow(CONTACT_INFO_JAVAFX, CONTACT_INFO_JAVAFX_TITLE, this, reservist);
+//        }
+//        else
+//            Popup.noSelectedRowAlert();
     }
 
     @FXML
     public void handleMilitaryRegistrationEditButton(ActionEvent actionEvent) {
-        ReservistAdapter reservist = setSelectedPrepodId();
-        if (reservist != null) {
-            MilitaryOblikKhPIMain.openEditWindow(MILITARY_REGISTRATION_JAVAFX, MILITARY_REGISTRATION_JAVAFX_TITLE, this, reservist);
-        } else {
-            Popup.noSelectedRowAlert();
-        }
+//        ReservistAdapter reservist = setSelectedPrepodId();
+//        if (reservist != null) {
+//            MilitaryOblikKhPIMain.openEditWindow(MILITARY_REGISTRATION_JAVAFX, MILITARY_REGISTRATION_JAVAFX_TITLE, this, reservist);
+//        } else {
+//            Popup.noSelectedRowAlert();
+//        }
     }
 
     @FXML
     void handleOblikButton(ActionEvent event) {
-        ReservistAdapter reservist = setSelectedPrepodId();
-        MilitaryOblikKhPIMain.openEditWindow(EMPLOYEE_ADD_JAVAFX, EMPLOYEE_ADD_JAVAFX_TITLE, this, reservist);
+//        ReservistAdapter reservist = setSelectedPrepodId();
+//        MilitaryOblikKhPIMain.openEditWindow(EMPLOYEE_ADD_JAVAFX, EMPLOYEE_ADD_JAVAFX_TITLE, this, reservist);
     }
 
     @Autowired

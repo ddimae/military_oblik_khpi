@@ -1,3 +1,4 @@
+/*
 package ntukhpi.semit.militaryoblik.javafxview;
 
 import javafx.collections.FXCollections;
@@ -142,3 +143,4 @@ public class EducationPostgraduateEditController implements ControlledScene {
         vnzComboBox.setItems(vnzObservableList);
     }
 }
+*/

@@ -15,14 +15,21 @@ import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
+import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
+import ntukhpi.semit.militaryoblik.javafxutils.SettingsStage;
 import org.springframework.stereotype.Component;
 
 import java.util.prefs.Preferences;
 
-import static ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain.currentStage;
-
 @Component
-public class LoginFormController {
+public class LoginFormController implements ControlledScene {
+    private final static String MILITARY_OBLIK_LIST_JAVAFX = "/javafxview/ReservistsAll.fxml";
+    private final static String MILITARY_OBLIK_LIST_JAVAFX_TITLE = "Військовий облік НТУ \"ХПІ\"";
+
+    private static SettingsStage militaryOblikSettings =
+            new SettingsStage(MILITARY_OBLIK_LIST_JAVAFX, MILITARY_OBLIK_LIST_JAVAFX_TITLE,
+                    1500, 720, true, true);
+    //============================
 
     @FXML
     private TextField loginField;
@@ -31,8 +38,26 @@ public class LoginFormController {
 
     private static final String MILITARY_OBLIK_CORRECT_LOGIN = "2otdel";
     private static final String MILITARY_OBLIK_CORRECT_PASSWORD = "oblik";
-
     private final Preferences preferences = Preferences.userNodeForPackage(LoginFormController.class);
+
+    private Stage mainStage;
+    private Stage currentStage;
+
+    @Override
+    public void setMainController(Object mainController) {}
+
+    @Override
+    public void setData(Object data) {}
+
+    @Override
+    public void setMainStage(Stage stage) {
+        mainStage = stage;
+    }
+
+    @Override
+    public void setCurrentStage(Stage stage) {
+        currentStage = stage;
+    }
 
     @FXML
     private void initialize() {
@@ -69,65 +94,64 @@ public class LoginFormController {
         }
         else if (loginField.getText().trim().equals(savedLogin) && passwordField.getText().trim().equals(savedPassword))
             showReservistsForm();
-        else
-            showInvalidDataWindow();
+//        else
+//            showInvalidDataWindow();
     }
 
-    private static void showReservistsForm() {
-        MilitaryOblikKhPIMain.showReservistsWindow();
+    private void showReservistsForm() {
+        MilitaryOblikKhPIMain.showStage(militaryOblikSettings, currentStage, this, null);
     }
 
     //TODO Нужна форма JavaFX!!!! Для универсальности!!!
-    private void showInvalidDataWindow() {
-        Stage invalidDataStage = new Stage();
-        invalidDataStage.setTitle("Помилка входу!");
-
-
-        invalidDataStage.alwaysOnTopProperty();
-        invalidDataStage.initModality(Modality.APPLICATION_MODAL);
-        currentStage.hide();
-        //invalidDataStage.initStyle(StageStyle.UNDECORATED);
-        invalidDataStage.setResizable(false);
-
-        GridPane grid = new GridPane();
-        grid.setAlignment(javafx.geometry.Pos.CENTER);
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(25, 25, 25, 25));
-
-        Label errorLabel = new Label("   Невірний логін або пароль.");
-        errorLabel.setFont(new Font("System", 20));
-        grid.add(errorLabel, 0, 0, 2, 1);
-
-        Button tryAgainButton = new Button("Ввести дані заново");
-        tryAgainButton.setFont(new Font("System", 18));
-        grid.add(tryAgainButton, 0, 1);
-
-        Button exitButton = new Button("Вийти");
-        exitButton.setFont(new Font("System", 17));
-        grid.add(exitButton, 1, 1);
-
-        tryAgainButton.setOnAction(e -> {
-            loginField.setText("");
-            passwordField.setText("");
-            invalidDataStage.close();
-            currentStage.show();
-        });
-
-        exitButton.setOnAction(e -> {
-            invalidDataStage.close();
-            Platform.exit();
-        });
-
-        Scene scene = new Scene(grid, 400, 200);
-        invalidDataStage.setScene(scene);
-
-        invalidDataStage.showAndWait();
-    }
+//    private void showInvalidDataWindow() {
+//        Stage invalidDataStage = new Stage();
+//        invalidDataStage.setTitle("Помилка входу!");
+//
+//
+//        invalidDataStage.alwaysOnTopProperty();
+//        invalidDataStage.initModality(Modality.APPLICATION_MODAL);
+//        currentStage.hide();
+//        //invalidDataStage.initStyle(StageStyle.UNDECORATED);
+//        invalidDataStage.setResizable(false);
+//
+//        GridPane grid = new GridPane();
+//        grid.setAlignment(javafx.geometry.Pos.CENTER);
+//        grid.setHgap(10);
+//        grid.setVgap(10);
+//        grid.setPadding(new Insets(25, 25, 25, 25));
+//
+//        Label errorLabel = new Label("   Невірний логін або пароль.");
+//        errorLabel.setFont(new Font("System", 20));
+//        grid.add(errorLabel, 0, 0, 2, 1);
+//
+//        Button tryAgainButton = new Button("Ввести дані заново");
+//        tryAgainButton.setFont(new Font("System", 18));
+//        grid.add(tryAgainButton, 0, 1);
+//
+//        Button exitButton = new Button("Вийти");
+//        exitButton.setFont(new Font("System", 17));
+//        grid.add(exitButton, 1, 1);
+//
+//        tryAgainButton.setOnAction(e -> {
+//            loginField.setText("");
+//            passwordField.setText("");
+//            invalidDataStage.close();
+//            currentStage.show();
+//        });
+//
+//        exitButton.setOnAction(e -> {
+//            invalidDataStage.close();
+//            Platform.exit();
+//        });
+//
+//        Scene scene = new Scene(grid, 400, 200);
+//        invalidDataStage.setScene(scene);
+//
+//        invalidDataStage.showAndWait();
+//    }
 
     @FXML
     public void closeForm(ActionEvent actionEvent) {
-        MilitaryOblikKhPIMain.applicationContext.close();
-        Platform.exit();
+        MilitaryOblikKhPIMain.exitApplication();
     }
 }

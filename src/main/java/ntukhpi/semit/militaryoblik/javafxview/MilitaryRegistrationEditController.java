@@ -1,3 +1,4 @@
+/*
 package ntukhpi.semit.militaryoblik.javafxview;
 
 import javafx.collections.FXCollections;
@@ -112,3 +113,4 @@ public class MilitaryRegistrationEditController implements ControlledScene {
 
     }
 }
+*/

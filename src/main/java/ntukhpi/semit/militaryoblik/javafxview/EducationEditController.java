@@ -1,3 +1,4 @@
+/*
 package ntukhpi.semit.militaryoblik.javafxview;
 
 import javafx.collections.FXCollections;
@@ -179,3 +180,4 @@ public class EducationEditController implements ControlledScene {
         pibLabel.setText(DataFormat.getPIB(selectedPrepod));
     }
 }
+*/

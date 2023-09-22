@@ -15,7 +15,7 @@ import ntukhpi.semit.militaryoblik.entity.VNZaklad;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.SettingsStage;
-import ntukhpi.semit.militaryoblik.javafxview.AddVNZController;
+//import ntukhpi.semit.militaryoblik.javafxview.AddVNZController;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -28,27 +28,16 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class MilitaryOblikKhPIMain extends Application {
-
-    public static Stage currentStage;
-
     public final static String STYLES_JAVAFX = "/javafxview/MOStyles.css";
     //============================
     public final static String LOGIN_JAVAFX = "/javafxview/LoginForm.fxml";
     public final static String LOGIN_JAVAFX_TITLE = "Вхід в застосунок";
-
-    private SettingsStage loginForm =
+    private SettingsStage loginSettings =
             new SettingsStage(LOGIN_JAVAFX, LOGIN_JAVAFX_TITLE,
                     400, 300, false, false);
 
     //============================
 
-    private final static String MILITARY_OBLIK_LIST_JAVAFX = "/javafxview/ReservistsAll.fxml";
-    private final static String MILITARY_OBLIK_LIST_JAVAFX_TITLE = "Військовий облік НТУ \"ХПІ\"";
-
-    private static SettingsStage militaryOblik =
-            new SettingsStage(MILITARY_OBLIK_LIST_JAVAFX, MILITARY_OBLIK_LIST_JAVAFX_TITLE,
-                    1500, 720, true, true);
-    //============================
     private final static String EDUCATION_JAVAFX = "/javafxview/EducationAll.fxml";
     private final static String EDUCATION_JAVAFX_TITLE = "Освіта";
 
@@ -95,9 +84,6 @@ public class MilitaryOblikKhPIMain extends Application {
     //============================
     private final static String VNZ_ADD_JAVAFX = "/javafxview/AddVNZ.fxml";
     private final static String VNZ_ADD_JAVAFX_TITLE = "Додати ВНЗ";
-
-    private static SettingsStage vnzAdd =
-            new SettingsStage(VNZ_ADD_JAVAFX, VNZ_ADD_JAVAFX_TITLE, 0, 0, false, true);
     //============================
 
     public static ConfigurableApplicationContext applicationContext; //was private
@@ -127,98 +113,97 @@ public class MilitaryOblikKhPIMain extends Application {
      * автор Кулак Анастасия
      *
      */
-    public static void openEditWindow(String fxmlFileName, String title, Object controller, Object selectedObject) {
+//    public static void openEditWindow(String fxmlFileName, String title, Object controller, Object selectedObject) {
+//        try {
+//            //FIXME При вызове окна редактирования основная форма сворачивается. Это неудобно.
+//            // Нашел баг. Можно создать бесконечное количество окон
+//            FXMLLoader loader = new FXMLLoader(MilitaryOblikKhPIMain.class.getResource(fxmlFileName));
+//            loader.setControllerFactory(aClass -> applicationContext.getBean(aClass));
+//            Parent root = loader.load();
+//
+//            ControlledScene editController = loader.getController();
+//            editController.setMainController(controller);
+//            editController.setData(selectedObject);
+//
+//            Stage stage = new Stage();
+//            stage.setTitle(title);
+//            stage.setResizable(false);
+//            stage.initStyle(StageStyle.UNDECORATED);
+//            Scene scene = new Scene(root);
+//            // Применить стиль
+//            scene.getStylesheets().add(Objects.requireNonNull(MilitaryOblikKhPIMain.class.getResource(STYLES_JAVAFX)).toExternalForm());
+//            stage.setScene(scene);
+//
+//            if (currentStage != null) {
+//                currentStage.close();
+//
+//            }
+//            currentStage = stage;
+//            stage.show();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+
+//    public static void openAddVNZWindow(ComboBox<VNZaklad> comboBox, ObservableList<VNZaklad> observableList) {
+//        try {
+//            FXMLLoader loader = new FXMLLoader(MilitaryOblikKhPIMain.class.getResource(VNZ_ADD_JAVAFX));
+//            Parent root = loader.load();
+//
+//            AddVNZController addVNZController = loader.getController();
+//            addVNZController.setVNZData(comboBox, observableList);
+//
+//            Stage stage = new Stage();
+//            stage.setTitle(VNZ_ADD_JAVAFX_TITLE);
+//            stage.setScene(new Scene(root));
+//            stage.show();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+    /**
+     * Метод для створення Stage на основе fxml
+     * автор Двухглавовб Степанов
+     */
+    public static Stage getStageBySettings(SettingsStage settings, Stage currentStage, Object controller, Object data) {
+        Stage stage = null;
+
         try {
-            //FIXME При вызове окна редактирования основная форма сворачивается. Это неудобно.
-            // Нашел баг. Можно создать бесконечное количество окон
-            FXMLLoader loader = new FXMLLoader(MilitaryOblikKhPIMain.class.getResource(fxmlFileName));
+            FXMLLoader loader = new FXMLLoader(MilitaryOblikKhPIMain.class.getResource(settings.getFxmlName()));
+            Scene scene;
+
             loader.setControllerFactory(aClass -> applicationContext.getBean(aClass));
-            Parent root = loader.load();
+            Parent rootNode = loader.load();
+
+            stage = new Stage();
+            stage.setTitle(settings.getTitle());
+            stage.initStyle(StageStyle.UNDECORATED);
+
+            //Щоб задати довільний розмір, можна задати параметри 0 0
+            if (settings.getWidth() > 300 && settings.getHeight() > 200)
+                scene = new Scene(rootNode, settings.getWidth(), settings.getHeight());
+            else
+                scene = new Scene(rootNode);
+
+            // Применить стиль
+            scene.getStylesheets().add(Objects.requireNonNull(MilitaryOblikKhPIMain.class.getResource(STYLES_JAVAFX)).toExternalForm());
+            stage.setScene(scene);
+            stage.setFullScreen(settings.isFullScreen());
+            stage.setResizable(settings.isResizable());
 
             ControlledScene editController = loader.getController();
             editController.setMainController(controller);
-            editController.setData(selectedObject);
+            editController.setData(data);
+            editController.setMainStage(currentStage);
+            editController.setCurrentStage(stage);
 
-            Stage stage = new Stage();
-            stage.setTitle(title);
-            stage.setResizable(false);
-            stage.initStyle(StageStyle.UNDECORATED);
-            Scene scene = new Scene(root);
-            // Применить стиль
-            scene.getStylesheets().add(Objects.requireNonNull(MilitaryOblikKhPIMain.class.getResource(STYLES_JAVAFX)).toExternalForm());
-            stage.setScene(scene);
-
-            if (currentStage != null) {
-                currentStage.close();
-
-            }
-            currentStage = stage;
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public static void showAddVNZWindow(ComboBox<VNZaklad> comboBox, ObservableList<VNZaklad> observableList) {
-        try {
-            FXMLLoader loader = new FXMLLoader(MilitaryOblikKhPIMain.class.getResource(vnzAdd.getFxmlName()));
-            Stage stageForShow = getStageByFXMLName(loader, vnzAdd.getTitle(),
-                    vnzAdd.getWidth(), vnzAdd.getHeight(), vnzAdd.isFullScreen(), vnzAdd.isResizable());
-
-            AddVNZController addVNZController = loader.getController();
-            addVNZController.setVNZData(comboBox, observableList);
-
-            if (stageForShow != null) {
-                currentStage = stageForShow;
-                stageForShow.show();
-            }
-        } catch (Exception exception) {
-            System.err.println("Помилка створення форми " + vnzAdd.getFxmlName());
-        }
-    }
-
- //   public static String getPIB(Prepod prepod) {    //TODO Точно створити окремий клас!!!
- //       return prepod.getFam() + " " + prepod.getImya() + " " + prepod.getOtch();
- //   }
-
-    /**
-     * Метод для создания Stage на основе fxml
-     * автор Двухглавов
-     *
-     * @param loader
-     * @param title
-     * @param width
-     * @param height
-     * @param fullScreen
-     * @param resizable
-     * @return
-     */
-    public static Stage getStageByFXMLName(FXMLLoader loader, String title,
-                                           int width, int height, boolean fullScreen, boolean resizable) {
-        Stage stage = null;
-        try {
-            loader.setControllerFactory(aClass -> applicationContext.getBean(aClass));
-            rootNode = loader.load();
-            stage = new Stage();
-            stage.setTitle(title);
-            stage.initStyle(StageStyle.UNDECORATED);
-            Scene scene;
-            //Щоб задати довільний розмір, можна задати параметри 0 0
-            if (width > 300 && height > 200) {
-                scene = new Scene(rootNode, width, height);
-            } else {
-                scene = new Scene(rootNode);
-            }
-            // Применить стиль
-            scene.getStylesheets().add(Objects.requireNonNull(MilitaryOblikKhPIMain.class.getResource(STYLES_JAVAFX)).toExternalForm());
-            stage.setScene(scene);
-            stage.setFullScreen(fullScreen);
-            stage.setResizable(resizable);
             return stage;
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return stage;
     }
 
@@ -228,23 +213,32 @@ public class MilitaryOblikKhPIMain extends Application {
      *
      * @param settings
      */
-    public static void showStage(SettingsStage settings) {
-        try {
-            FXMLLoader loader = new FXMLLoader(MilitaryOblikKhPIMain.class.getResource(settings.getFxmlName()));
-            Stage stageForShow = getStageByFXMLName(loader, settings.getTitle(),
-                    settings.getWidth(), settings.getHeight(), settings.isFullScreen(), settings.isResizable());
+    public static Stage showStage(SettingsStage settings, Stage currentStage, Object controller, Object data) {
+        Stage newStage = null;
 
-            if (stageForShow != null) {
-                if (currentStage != null)
-                    currentStage.close();
-                currentStage = stageForShow;
-                stageForShow.show();
-            }
+        try {
+            newStage = getStageBySettings(settings, currentStage, controller, data);
+
+            if (currentStage != null)
+                currentStage.hide();
+
+            newStage.show();
         } catch (Exception exception) {
             System.err.println("Помилка створення форми " + settings.getFxmlName());
         }
+
+        return newStage;
     }
 
+    public static void showPreviousStage(Stage previousStage, Stage currentStage) {
+        currentStage.close();
+        previousStage.show();
+    }
+
+    public static void exitApplication() {
+        applicationContext.close();
+        Platform.exit();
+    }
 
 //    private static void showLogInWindow(Stage primaryStage) {
 //        try {
@@ -272,30 +266,30 @@ public class MilitaryOblikKhPIMain extends Application {
     //
 
     private void showLogInWindow() {
-        showStage(loginForm);
+        showStage(loginSettings, null, null, null);
     }
 
-    public static void showReservistsWindow() {
-        showStage(militaryOblik);
-    }
-
-    public static void showEducationWindow() {
-        showStage(educationAll);
-    }
-
-    public static void showPositionWindow() {
-        showStage(positionEdit);
-    }
-    public static void showFamilyWindow() {
-        showStage(familyAll);
-    }
-    public static void showPostgraduateEducationWindow() {
-        showStage(educationPostgraduateAll);
-    }
-
-    public static void showDocumentsWindow() {
-        showStage(documentsAll);
-    }
+//    public static void showReservistsWindow() {
+//        showStage(militaryOblik);
+//    }
+//
+//    public static void showEducationWindow() {
+//        showStage(educationAll);
+//    }
+//
+//    public static void showPositionWindow() {
+//        showStage(positionEdit);
+//    }
+//    public static void showFamilyWindow() {
+//        showStage(familyAll);
+//    }
+//    public static void showPostgraduateEducationWindow() {
+//        showStage(educationPostgraduateAll);
+//    }
+//
+//    public static void showDocumentsWindow() {
+//        showStage(documentsAll);
+//    }
 
 //    Так было в исходном варианте
 //    public static void showEducationWindow() {
