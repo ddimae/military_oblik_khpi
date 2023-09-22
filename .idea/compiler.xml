@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="MilitaryAccounting" />
+        <module name="military_oblik_khpi" />
         <module name="MilitaryOblikKhPI" />
       </profile>
     </annotationProcessing>
@@ -16,6 +17,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="MilitaryAccounting" options="-parameters" />
       <module name="MilitaryOblikKhPI" options="-parameters" />
+      <module name="military_oblik_khpi" options="-parameters" />
     </option>
   </component>
 </project>

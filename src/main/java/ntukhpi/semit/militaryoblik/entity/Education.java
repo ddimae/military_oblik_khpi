@@ -75,4 +75,20 @@ public class Education {
         result = 31 * result + yearVypusk.hashCode();
         return result;
     }
+
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("");
+        sb.append(yearVypusk).append(" - ").append(vnz.getVnzShortName());
+        if (diplomaSpeciality!=null) sb.append(", ").append(diplomaSpeciality);
+        if (diplomaNumber!=null) {
+            sb.append(" (");
+            if (diplomaSeries!=null) sb.append(diplomaSeries);
+            sb.append(" #").append(diplomaNumber);
+            sb.append(")");
+        }
+
+        return sb.toString();
+    }
 }

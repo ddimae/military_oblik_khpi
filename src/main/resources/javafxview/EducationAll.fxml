@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -7,73 +9,351 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntukhpi.semit.militaryoblik.javafxview.EducationAllController">
+<AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntukhpi.semit.militaryoblik.javafxview.EducationAllController">
     <children>
-        <GridPane layoutX="3.0" layoutY="5.0" prefHeight="400.0" prefWidth="1000.0">
-            <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="210.850830078125" minWidth="10.0" prefWidth="20.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="210.850830078125" minWidth="10.0" prefWidth="96.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="413.8341064453125" minWidth="10.0" prefWidth="96.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="96.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="96.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="96.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="96.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="96.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="109.2156982421875" minWidth="10.0" prefWidth="110.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="12.7843017578125" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="165.74456787109375" minWidth="10.0" prefWidth="136.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="113.65997314453125" minWidth="10.0" prefWidth="20.0" />
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints maxHeight="37.69127941131592" minHeight="0.0" prefHeight="20.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="43.849544525146484" minHeight="8.308720588684082" prefHeight="40.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="72.76150512695312" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="62.238494873046875" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="52.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="40.0" minHeight="0.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="40.0" minHeight="9.568557739257812" prefHeight="40.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-                <Label alignment="CENTER" prefHeight="44.0" prefWidth="377.0" text="Документи про освіту" GridPane.columnIndex="4" GridPane.columnSpan="3" GridPane.rowIndex="2">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                </Label>
-                <TableView fx:id="educationTableView" prefHeight="198.0" prefWidth="474.0" GridPane.columnIndex="1" GridPane.columnSpan="8" GridPane.rowIndex="3" GridPane.rowSpan="7">
-                    <columns>
-                        <TableColumn fx:id="vnzColumn" minWidth="0.0" prefWidth="285.0" text="ВНЗ" />
-                        <TableColumn fx:id="yearColumn" minWidth="0.0" prefWidth="61.42726135253906" text="Рік" />
-                        <TableColumn fx:id="formColumn" minWidth="0.0" prefWidth="133.649169921875" text="Форма" />
-                        <TableColumn fx:id="specialtyColumn" maxWidth="529.9999389648438" minWidth="0.0" prefWidth="140.56094360351562" text="Спеціальність" />
-                        <TableColumn fx:id="qualificationColumn" maxWidth="535.0" prefWidth="195.0" text="Кваліфікація" />
-                    </columns>
-                </TableView>
-                <Button mnemonicParsing="false" onAction="#returnToMainForm" prefHeight="50.0" prefWidth="130.0" text="Повернутися" GridPane.columnIndex="10" GridPane.columnSpan="2" GridPane.rowIndex="9">
-                    <font>
-                        <Font size="18.0" />
-                    </font></Button>
-                <Button mnemonicParsing="false" onAction="#openAddWindow" prefHeight="50.0" prefWidth="130.0" text="Додати" GridPane.columnIndex="10" GridPane.columnSpan="2" GridPane.rowIndex="3">
-                    <font>
-                        <Font size="18.0" />
-                    </font></Button>
-                <Button mnemonicParsing="false" onAction="#openEditWindow" prefHeight="50.0" prefWidth="130.0" text="Змінити" GridPane.columnIndex="10" GridPane.columnSpan="2" GridPane.rowIndex="5">
-                    <font>
-                        <Font size="18.0" />
-                    </font></Button>
-                <Button mnemonicParsing="false" onAction="#deleteSelectedRow" prefHeight="50.0" prefWidth="130.0" text="Вилучити" GridPane.columnIndex="10" GridPane.columnSpan="2" GridPane.rowIndex="7">
-                    <font>
-                        <Font size="18.0" />
-                    </font></Button>
-                <Text fx:id="pibText" strokeType="OUTSIDE" strokeWidth="0.0" text="ПІБ" textAlignment="CENTER" wrappingWidth="512.1092834472656" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.rowIndex="1">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                </Text>
-            </children>
-        </GridPane>
+        <BorderPane prefHeight="750.0" prefWidth="1000.0">
+            <left>
+                <SplitPane maxWidth="330.0" orientation="VERTICAL" prefHeight="747.0" prefWidth="350.0" BorderPane.alignment="CENTER">
+                    <items>
+                        <AnchorPane maxWidth="330.0" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                            <children>
+                                <TableView fx:id="vnzTableView" prefHeight="676.0" prefWidth="330.0">
+                                    <columns>
+                                        <TableColumn fx:id="shortNameColumn" prefWidth="165.5076367855072" text="ВНЗ" />
+                                        <TableColumn fx:id="yearColumn" prefWidth="162.99996948242188" text="Рік" />
+                                    </columns>
+                                </TableView>
+                            </children>
+                        </AnchorPane>
+                    </items>
+                </SplitPane>
+            </left>
+            <bottom>
+                <SplitPane prefHeight="70.0" prefWidth="1200.0" BorderPane.alignment="CENTER">
+                    <items>
+                        <AnchorPane maxWidth="1000.0" minHeight="0.0" minWidth="0.0" prefHeight="68.0" prefWidth="1000.0">
+                            <children>
+                                <Button contentDisplay="RIGHT" layoutX="20.0" layoutY="15.0" mnemonicParsing="false" onAction="#openAddWindow" prefHeight="40.0" prefWidth="200.0" text="Додати">
+                                    <graphic>
+                                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@/icons/circle-add.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Button>
+                                <Button contentDisplay="RIGHT" layoutX="530.0" layoutY="15.0" mnemonicParsing="false" onAction="#deleteSelectedRow" prefHeight="40.0" prefWidth="200.0" text="Вилучити">
+                                    <graphic>
+                                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@/icons/trash.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Button>
+                                <Button contentDisplay="RIGHT" layoutX="275.0" layoutY="15.0" mnemonicParsing="false" onAction="#openEditWindow" prefHeight="40.0" prefWidth="200.0" text="Змінити">
+                                    <graphic>
+                                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@/icons/change.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Button>
+                                <Button contentDisplay="RIGHT" layoutX="785.0" layoutY="15.0" mnemonicParsing="false" onAction="#returnToMainForm" prefHeight="40.0" prefWidth="200.0" text="Повернутися">
+                                    <graphic>
+                                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@/icons/go-back-1.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Button>
+                            </children>
+                        </AnchorPane>
+                    </items>
+                </SplitPane>
+            </bottom>
+            <center>
+                <GridPane BorderPane.alignment="CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="170.0" minWidth="10.0" prefWidth="150.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="341.5847473144531" minWidth="10.0" prefWidth="329.6356201171875" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="170.0" minWidth="10.0" prefWidth="150.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label alignment="CENTER" prefHeight="23.0" prefWidth="670.0" text="Вищий Навчальний Заклад" GridPane.columnSpan="3">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <GridPane.margin>
+                                <Insets left="20.0" right="20.0" top="25.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <Label text="Рік випуску" GridPane.rowIndex="3">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <GridPane.margin>
+                                <Insets left="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <Label text="Форма навчання" GridPane.rowIndex="4">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <GridPane.margin>
+                                <Insets left="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <Label text="Рівень освіти" GridPane.rowIndex="5">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <GridPane.margin>
+                                <Insets left="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <Label alignment="CENTER" prefHeight="23.0" prefWidth="670.0" text="Диплом" GridPane.columnSpan="3" GridPane.rowIndex="6">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <GridPane.margin>
+                                <Insets left="20.0" right="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <Label text="Серія" GridPane.rowIndex="7">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <GridPane.margin>
+                                <Insets left="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <Label text="Номер" GridPane.rowIndex="8">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <GridPane.margin>
+                                <Insets left="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <Label text="Спеціальність" GridPane.rowIndex="9">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <GridPane.margin>
+                                <Insets left="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <Label text="Кваліфікація" GridPane.rowIndex="10">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <GridPane.margin>
+                                <Insets left="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <Label text="Повна назва" GridPane.rowIndex="1">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <GridPane.margin>
+                                <Insets left="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <Label text="Скорочена форма " GridPane.rowIndex="2">
+                            <GridPane.margin>
+                                <Insets left="20.0" />
+                            </GridPane.margin>
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Label>
+                        <Separator prefWidth="200.0" GridPane.rowIndex="6">
+                            <GridPane.margin>
+                                <Insets />
+                            </GridPane.margin>
+                        </Separator>
+                        <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                            <GridPane.margin>
+                                <Insets left="200.0" />
+                            </GridPane.margin>
+                        </Separator>
+                        <Separator prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                        <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                            <GridPane.margin>
+                                <Insets right="220.0" />
+                            </GridPane.margin>
+                        </Separator>
+                        <Separator prefWidth="200.0">
+                            <GridPane.margin>
+                                <Insets top="30.0" />
+                            </GridPane.margin>
+                        </Separator>
+                        <Separator prefWidth="200.0" GridPane.columnIndex="2">
+                            <GridPane.margin>
+                                <Insets top="30.0" />
+                            </GridPane.margin>
+                        </Separator>
+                        <Separator prefWidth="200.0" GridPane.columnIndex="1">
+                            <GridPane.margin>
+                                <Insets right="300.0" top="30.0" />
+                            </GridPane.margin>
+                        </Separator>
+                        <Separator prefWidth="200.0" GridPane.columnIndex="1">
+                            <GridPane.margin>
+                                <Insets left="280.0" top="30.0" />
+                            </GridPane.margin>
+                        </Separator>
+                        <Separator prefWidth="200.0">
+                            <GridPane.margin>
+                                <Insets bottom="45.0" />
+                            </GridPane.margin>
+                        </Separator>
+                        <Separator prefWidth="200.0" GridPane.columnIndex="1">
+                            <GridPane.margin>
+                                <Insets bottom="45.0" />
+                            </GridPane.margin>
+                        </Separator>
+                        <Separator prefWidth="200.0" GridPane.columnIndex="2">
+                            <GridPane.margin>
+                                <Insets bottom="45.0" />
+                            </GridPane.margin>
+                        </Separator>
+                        <Label fx:id="fullNameLabel" prefHeight="94.0" prefWidth="480.0" text="_" underline="true" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <GridPane.margin>
+                                <Insets left="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <Label fx:id="shortNameLabel" prefWidth="480.0" text="_" underline="true" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <GridPane.margin>
+                                <Insets left="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <Label fx:id="yearLabel" prefWidth="480.0" text="_" underline="true" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <GridPane.margin>
+                                <Insets left="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <Label fx:id="typeLabel" prefWidth="480.0" text="_" underline="true" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <GridPane.margin>
+                                <Insets left="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <Label fx:id="levelLabel" prefWidth="480.0" text="_" underline="true" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <GridPane.margin>
+                                <Insets left="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <Label fx:id="diplomaSeriesLabel" prefWidth="480.0" text="_" underline="true" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="7">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <GridPane.margin>
+                                <Insets left="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <Label fx:id="diplomaNumberLabel" prefWidth="480.0" text="_" underline="true" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="8">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <GridPane.margin>
+                                <Insets left="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <Label fx:id="specialityLabel" prefWidth="480.0" text="_" underline="true" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="9">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <GridPane.margin>
+                                <Insets left="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <Label fx:id="qalificationLabel" prefHeight="23.0" prefWidth="480.0" text="_" underline="true" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="10">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <GridPane.margin>
+                                <Insets left="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                    </children>
+                </GridPane>
+            </center>
+            <top>
+                <GridPane BorderPane.alignment="CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="343.5119934082031" minWidth="10.0" prefWidth="330.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="503.18138122558594" minWidth="10.0" prefWidth="285.6554870605469" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label alignment="CENTER" prefWidth="1000.0" text="Документи про освіту" GridPane.columnIndex="1" GridPane.columnSpan="2">
+                            <font>
+                                <Font size="24.0" />
+                            </font>
+                            <GridPane.margin>
+                                <Insets bottom="20.0" top="20.0" />
+                            </GridPane.margin>
+                        </Label>
+                        <Label fx:id="pibLabel" alignment="CENTER" prefWidth="330.0" text="ПІБ">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Label>
+                        <Separator orientation="VERTICAL" prefHeight="200.0">
+                            <GridPane.margin>
+                                <Insets left="329.0" />
+                            </GridPane.margin>
+                        </Separator>
+                    </children>
+                </GridPane>
+            </top>
+        </BorderPane>
     </children>
 </AnchorPane>

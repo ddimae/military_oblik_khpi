@@ -95,6 +95,9 @@ public class MilitaryOblikKhPIMain extends Application {
     //============================
     private final static String VNZ_ADD_JAVAFX = "/javafxview/AddVNZ.fxml";
     private final static String VNZ_ADD_JAVAFX_TITLE = "Додати ВНЗ";
+
+    private static SettingsStage vnzAdd =
+            new SettingsStage(VNZ_ADD_JAVAFX, VNZ_ADD_JAVAFX_TITLE, 0, 0, false, true);
     //============================
 
     public static ConfigurableApplicationContext applicationContext; //was private
@@ -157,20 +160,21 @@ public class MilitaryOblikKhPIMain extends Application {
     }
 
 
-    public static void openAddVNZWindow(ComboBox<VNZaklad> comboBox, ObservableList<VNZaklad> observableList) {
+    public static void showAddVNZWindow(ComboBox<VNZaklad> comboBox, ObservableList<VNZaklad> observableList) {
         try {
-            FXMLLoader loader = new FXMLLoader(MilitaryOblikKhPIMain.class.getResource(VNZ_ADD_JAVAFX));
-            Parent root = loader.load();
+            FXMLLoader loader = new FXMLLoader(MilitaryOblikKhPIMain.class.getResource(vnzAdd.getFxmlName()));
+            Stage stageForShow = getStageByFXMLName(loader, vnzAdd.getTitle(),
+                    vnzAdd.getWidth(), vnzAdd.getHeight(), vnzAdd.isFullScreen(), vnzAdd.isResizable());
 
             AddVNZController addVNZController = loader.getController();
             addVNZController.setVNZData(comboBox, observableList);
 
-            Stage stage = new Stage();
-            stage.setTitle(VNZ_ADD_JAVAFX_TITLE);
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
+            if (stageForShow != null) {
+                currentStage = stageForShow;
+                stageForShow.show();
+            }
+        } catch (Exception exception) {
+            System.err.println("Помилка створення форми " + vnzAdd.getFxmlName());
         }
     }
 

@@ -6,9 +6,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
 import ntukhpi.semit.militaryoblik.entity.VNZaklad;
+import ntukhpi.semit.militaryoblik.service.VNZakladServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AddVNZController {
     @FXML
     private TextField nameTextField;
@@ -16,15 +19,12 @@ public class AddVNZController {
     private TextField abbreviationTextField;
     @FXML
     private Button saveButton;
-    @FXML
-    private Button cancelButton;
 
     private ObservableList<VNZaklad> vnzObservableList;
     private ComboBox<VNZaklad> vnzComboBox;
 
-    public void initialize() {
-        //
-    }
+    @Autowired
+    VNZakladServiceImpl vnZakladService;
 
     public void setVNZData(ComboBox<VNZaklad> comboBox, ObservableList<VNZaklad> vnzList) {
         this.vnzComboBox = comboBox;
@@ -38,8 +38,14 @@ public class AddVNZController {
 
         if (!name.isEmpty() && !abbreviation.isEmpty()) {
             VNZaklad newVNZ = new VNZaklad();
-            newVNZ.setName(name);
-            newVNZ.setAbbreviation(abbreviation);
+            newVNZ.setVnzName(name);
+            newVNZ.setVnzShortName(abbreviation);
+
+            try {
+                vnZakladService.createVNZaklad(newVNZ);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             vnzObservableList.add(newVNZ);
             vnzComboBox.setValue(newVNZ);
