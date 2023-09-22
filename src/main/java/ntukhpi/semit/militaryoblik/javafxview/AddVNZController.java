@@ -9,9 +9,11 @@ import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
 import ntukhpi.semit.militaryoblik.entity.VNZaklad;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
+import ntukhpi.semit.militaryoblik.service.VNZakladServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Array;
-
+@Component
 public class AddVNZController implements ControlledScene {
     @FXML
     private TextField nameTextField;
@@ -26,6 +28,9 @@ public class AddVNZController implements ControlledScene {
     private ComboBox<VNZaklad> vnzComboBox;
     private Stage mainStage;
     private Stage currentStage;
+
+    @Autowired
+    VNZakladServiceImpl vnZakladService;
 
     @Override
     public void setMainController(Object controller) {}
@@ -63,8 +68,14 @@ public class AddVNZController implements ControlledScene {
 
         if (!name.isEmpty() && !abbreviation.isEmpty()) {
             VNZaklad newVNZ = new VNZaklad();
-            newVNZ.setName(name);
-            newVNZ.setAbbreviation(abbreviation);
+            newVNZ.setVnzName(name);
+            newVNZ.setVnzShortName(abbreviation);
+
+            try {
+                vnZakladService.createVNZaklad(newVNZ);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             vnzObservableList.add(newVNZ);
             vnzComboBox.setValue(newVNZ);
