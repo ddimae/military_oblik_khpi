@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
 import ntukhpi.semit.militaryoblik.entity.VNZaklad;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
@@ -80,17 +81,12 @@ public class AddVNZController implements ControlledScene {
             vnzObservableList.add(newVNZ);
             vnzComboBox.setValue(newVNZ);
 
-            closeStage();
+            cancel();
         }
     }
 
     @FXML
     private void cancel() {
-        closeStage();
-    }
-
-    private void closeStage() {
-        Stage stage = (Stage) saveButton.getScene().getWindow();
-        stage.close();
+        MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
     }
 }
