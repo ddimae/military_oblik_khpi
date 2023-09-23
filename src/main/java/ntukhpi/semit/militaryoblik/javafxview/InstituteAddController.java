@@ -56,7 +56,7 @@ public class InstituteAddController implements ControlledScene {
 
     private boolean validateInstitute(String fullName, String abbr, String code) {
         Pattern ukrWords = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії,.\\-`'_\\s]*$");
-        Pattern oneWord = Pattern.compile("^[А-ЩЬЮЯҐЄІЇ]*$");
+        Pattern oneWord = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії]*$");
         Pattern onlyNumber = Pattern.compile("^\\d+$");
 
         TextFieldValidator fullNameValidator = new TextFieldValidator(100, true, ukrWords, "Повна назва", fullName, "може містити тільки українські літери та розділові знаки");
@@ -84,10 +84,10 @@ public class InstituteAddController implements ControlledScene {
     @FXML
     void saveNewInstitute(ActionEvent event) {
         String fullName = fullNameTextArea.getText().trim();
-        String abbr = abbreviationTextField.getText().toUpperCase().trim();
+        String abbr = abbreviationTextField.getText().trim();
         String code = codeTextField.getText().trim();
 
-        if (!validateInstitute(fullName, abbr, code))
+        if (!validateInstitute(fullName, abbr, code) || !Popup.saveConfirmation())
             return;
 
         try {

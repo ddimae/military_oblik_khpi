@@ -89,7 +89,7 @@ public class PositionAddController implements ControlledScene {
         String shortName = shortNameTaxtField.getText();    // TODO Додати в БД поля для короткої назви та не забути зберігати її
         int category = nppRadioButton.isSelected() ? 1 : 2;
 
-        if (!validatePosition(fullName, shortName))
+        if (!validatePosition(fullName, shortName) || !Popup.saveConfirmation())
             return;
 
         try {

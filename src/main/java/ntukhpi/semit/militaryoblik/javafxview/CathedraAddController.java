@@ -87,7 +87,7 @@ public class CathedraAddController implements ControlledScene {
 
     private boolean validateCathedra(String institute, String fullName, String abbr, String code) {
         Pattern ukrWords = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії,.\\-`'_\\s]*$");
-        Pattern oneWord = Pattern.compile("^[А-ЩЬЮЯҐЄІЇ]*$");
+        Pattern oneWord = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії]*$");
         Pattern onlyNumber = Pattern.compile("^\\d+$");
 
         TextFieldValidator instituteValidator = new TextFieldValidator(-1, true, null, "Інститут", institute, null);
@@ -121,7 +121,7 @@ public class CathedraAddController implements ControlledScene {
         String abbr = abbreviationTextField.getText().trim();
         String code = codeTextField.getText().trim();
 
-        if (!validateCathedra(institute, fullName, abbr, code))
+        if (!validateCathedra(institute, fullName, abbr, code) || !Popup.saveConfirmation())
             return;
 
         try {
