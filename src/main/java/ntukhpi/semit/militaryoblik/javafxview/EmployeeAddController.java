@@ -1,5 +1,6 @@
 package ntukhpi.semit.militaryoblik.javafxview;
 
+import ch.qos.logback.core.net.AbstractSSLSocketAppender;
 import com.sun.tools.jconsole.JConsoleContext;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -8,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.*;
+import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.DateFieldValidator;
@@ -269,5 +271,20 @@ public class EmployeeAddController implements ControlledScene {
         cathedraComboBox.getSelectionModel().select(currentCathedra);
 
         isChangeCombobox = false;
+    }
+
+    @FXML
+    void handleInstituteButton(ActionEvent event) {
+        MilitaryOblikKhPIMain.showStage(AllStageSettings.instituteAdd, currentStage, this, instituteComboBox);
+    }
+
+    @FXML
+    void handleCathedraButton(ActionEvent event) {
+        MilitaryOblikKhPIMain.showStage(AllStageSettings.cathedraAdd, currentStage, this, cathedraComboBox);
+    }
+
+    @FXML
+    void handlePositionButton(ActionEvent event) {
+
     }
 }

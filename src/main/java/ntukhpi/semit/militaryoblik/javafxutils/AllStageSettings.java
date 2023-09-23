@@ -159,4 +159,19 @@ public final class AllStageSettings {
                 new SettingsStage(FAMILY_EDIT_JAVAFX, FAMILY_EDIT_JAVAFX_TITLE,
                         0, 0, false, false);
 
+    //============================
+
+    private final static String INSTITUTE_ADD_JAVAFX = "/javafxview/InstituteAdd_2.fxml";
+    private final static String INSTITUTE_ADD_JAVAFX_TITLE = "Додавання нового інституту";
+    public static SettingsStage instituteAdd =
+            new SettingsStage(INSTITUTE_ADD_JAVAFX, INSTITUTE_ADD_JAVAFX_TITLE,
+                    0, 0, false, false);
+
+    //============================
+
+    private final static String CATHEDRA_ADD_JAVAFX = "/javafxview/CathedraAdd.fxml";
+    private final static String CATHEDRA_ADD_JAVAFX_TITLE = "Додавання нової кафедри";
+    public static SettingsStage cathedraAdd =
+            new SettingsStage(CATHEDRA_ADD_JAVAFX, CATHEDRA_ADD_JAVAFX_TITLE,
+                    0, 0, false, false);
 }
