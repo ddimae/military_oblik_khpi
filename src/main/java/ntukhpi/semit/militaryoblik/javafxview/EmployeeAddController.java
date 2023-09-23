@@ -35,7 +35,7 @@ public class EmployeeAddController implements ControlledScene {
     private ComboBox<Kafedra> cathedraComboBox;
 
     @FXML
-    private ComboBox<String> degreeComboBox;
+    private ComboBox<Stepen> degreeComboBox;
 
     @FXML
     private ComboBox<Fakultet> instituteComboBox;
@@ -53,10 +53,10 @@ public class EmployeeAddController implements ControlledScene {
     private RadioButton nppRadioButton;
 
     @FXML
-    private ComboBox<String> positionComboBox;
+    private ComboBox<Dolghnost> positionComboBox;
 
     @FXML
-    private ComboBox<String> statusComboBox;
+    private ComboBox<Zvanie> statusComboBox;
 
     @FXML
     private TextField surnameTextField;
@@ -126,21 +126,16 @@ public class EmployeeAddController implements ControlledScene {
         instituteComboBox.getItems().add(emptyInstitute);
         instituteComboBox.getItems().addAll(FXCollections.observableArrayList(fakultetService.getAllFak().stream().sorted((a, b) -> ukrCollator.compare(a.toString(), b.toString())).toList()));
 
-        degreeComboBox.setItems(FXCollections.observableArrayList(stepenService.getAllStepen().stream().map(Stepen::toString).sorted(ukrCollator).toList()));   //TODO мейбі переробити під <Stepen>
-        statusComboBox.setItems(FXCollections.observableArrayList(zvanieService.getAllZvanie().stream().map(Zvanie::toString).sorted(ukrCollator).toList()));   //TODO мейбі переробити під <Zvanie>
+        degreeComboBox.setItems(FXCollections.observableArrayList(stepenService.getAllStepen().stream().sorted((a, b) -> ukrCollator.compare(a.toString(), b.toString())).toList()));
+        statusComboBox.setItems(FXCollections.observableArrayList(zvanieService.getAllZvanie().stream().sorted((a, b) -> ukrCollator.compare(a.toString(), b.toString())).toList()));
 
-        degreeComboBox.getItems().remove("не має");
-        degreeComboBox.getItems().add(0,"не має");
-        statusComboBox.getItems().remove("не визначено");
-        statusComboBox.getItems().add(0,"не визначено");
+        degreeComboBox.getItems().remove(stepenService.getStepenById(0L));
+        degreeComboBox.getItems().add(0,stepenService.getStepenById(0L));
+        statusComboBox.getItems().remove(zvanieService.getZvanieById(0L));
+        statusComboBox.getItems().add(0,zvanieService.getZvanieById(0L));
 
         handleInstituteChange(null);
         handleTypeChange(null);
-    }
-
-    @FXML
-    void closeEdit(ActionEvent event) {
-        MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
     }
 
     private boolean validateInfo(String institute, String cathedra, String surname,
@@ -177,9 +172,9 @@ public class EmployeeAddController implements ControlledScene {
         String name = nameTextField.getText().trim();
         String midname = midnameTextField.getText().trim();
         String birthDate = birthDatePicker.getEditor().getText();
-        String position = positionComboBox.getValue();
-        String degree = degreeComboBox.getValue();
-        String status = statusComboBox.getValue();
+        String position = positionComboBox.getValue() != null ? positionComboBox.getValue().toString() : null;
+        String degree = degreeComboBox.getValue() != null ? degreeComboBox.getValue().toString() : null;
+        String status = statusComboBox.getValue() != null ? statusComboBox.getValue().toString() : null;
 
         if (!validateInfo(institute, cathedra, surname, name, midname, birthDate) || !Popup.saveConfirmation())
             return;
@@ -190,19 +185,20 @@ public class EmployeeAddController implements ControlledScene {
             prepod.setFam(surname);
             prepod.setImya(name);
             prepod.setOtch(midname);
-            prepod.setDr(LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+            if (!birthDate.isBlank())
+                prepod.setDr(LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("dd.MM.yyyy")));
             prepod.setKafedra(cathedraComboBox.getValue());
 
             if (position == null)
-                position = positionComboBox.getItems().get(0);
+                positionComboBox.getSelectionModel().select(dolghnostService.getDolghnostByCategory(0));
             if (degree == null)
-                degree = degreeComboBox.getItems().get(0);
+                degreeComboBox.getSelectionModel().select(stepenService.getStepenById(0L));
             if (status == null)
-                status = statusComboBox.getItems().get(0);
+                statusComboBox.getSelectionModel().select(zvanieService.getZvanieById(0L));
 
-            prepod.setDolghnost(dolghnostService.getDolghnostByName(position));
-            prepod.setStepen(stepenService.getStepenByName(degree));
-            prepod.setZvanie(zvanieService.getZvanieByName(status));
+            prepod.setDolghnost(positionComboBox.getValue());
+            prepod.setStepen(degreeComboBox.getValue());
+            prepod.setZvanie(statusComboBox.getValue());
 
             prepodService.savePrepod(prepod);
 
@@ -219,9 +215,7 @@ public class EmployeeAddController implements ControlledScene {
         int filterId = nppRadioButton.isSelected() ? 1 : 2;
         boolean isFirst = positionComboBox.getValue() != null;
 
-        List<String> positionsList = dolghnostService.getAllDolghnost().stream().filter(p -> filterId == p.getCategoryEmployees() || p.getCategoryEmployees() == 0).map(Dolghnost::toString).toList();
-
-        positionComboBox.setItems(FXCollections.observableArrayList(positionsList));
+        positionComboBox.setItems(FXCollections.observableArrayList(dolghnostService.getAllDolghnost().stream().filter(p -> filterId == p.getCategoryEmployees() || p.getCategoryEmployees() == 0).toList()));
         if (isFirst)
             positionComboBox.getSelectionModel().selectFirst();
 
@@ -285,6 +279,11 @@ public class EmployeeAddController implements ControlledScene {
 
     @FXML
     void handlePositionButton(ActionEvent event) {
+        MilitaryOblikKhPIMain.showStage(AllStageSettings.positionAdd, currentStage, this, positionComboBox);
+    }
 
+    @FXML
+    void closeEdit(ActionEvent event) {
+        MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
     }
 }

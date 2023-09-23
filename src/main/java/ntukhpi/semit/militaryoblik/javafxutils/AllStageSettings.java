@@ -174,4 +174,12 @@ public final class AllStageSettings {
     public static SettingsStage cathedraAdd =
             new SettingsStage(CATHEDRA_ADD_JAVAFX, CATHEDRA_ADD_JAVAFX_TITLE,
                     0, 0, false, false);
+
+    //============================
+
+    private final static String POSITION_ADD_JAVAFX = "/javafxview/PositionAdd.fxml";
+    private final static String POSITION_ADD_JAVAFX_TITLE = "Додавання нової кафедри";
+    public static SettingsStage positionAdd =
+            new SettingsStage(POSITION_ADD_JAVAFX, POSITION_ADD_JAVAFX_TITLE,
+                    0, 0, false, false);
 }

@@ -86,12 +86,12 @@ public class CathedraAddController implements ControlledScene {
     }
 
     private boolean validateCathedra(String institute, String fullName, String abbr, String code) {
-        Pattern ukrWords = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії\\-\\s]+$");
-        Pattern oneWord = Pattern.compile("^[А-ЩЬЮЯҐЄІЇ]+$");
+        Pattern ukrWords = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії,.\\-`'_\\s]*$");
+        Pattern oneWord = Pattern.compile("^[А-ЩЬЮЯҐЄІЇ]*$");
         Pattern onlyNumber = Pattern.compile("^\\d+$");
 
         TextFieldValidator instituteValidator = new TextFieldValidator(-1, true, null, "Інститут", institute, null);
-        TextFieldValidator fullNameValidator = new TextFieldValidator(100, true, ukrWords, "Повне ім'я", fullName, "повинно містити тільки українські літери");
+        TextFieldValidator fullNameValidator = new TextFieldValidator(100, true, ukrWords, "Повне ім'я", fullName, "може містити тільки українські літери та розділові знаки");
         TextFieldValidator abbrValidator = new TextFieldValidator(10, true, oneWord, "Абревіатура", abbr, "повнно містити тільки українські літери без пробілів");
         TextFieldValidator codeValidator = new TextFieldValidator(10, true, onlyNumber, "Код", code, "повинен містити тільки 1 число");
 

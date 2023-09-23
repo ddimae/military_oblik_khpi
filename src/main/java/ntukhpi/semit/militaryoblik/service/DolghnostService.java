@@ -9,6 +9,7 @@ public interface DolghnostService {
     Dolghnost createDolghnost(Dolghnost dolghnost);
 
     Dolghnost getDolghnostById(Long id);
+    Dolghnost getDolghnostByCategory(Integer id);
 
     List<Dolghnost> getAllDolghnost();
 
