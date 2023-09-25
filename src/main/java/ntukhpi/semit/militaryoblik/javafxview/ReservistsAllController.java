@@ -17,12 +17,17 @@ import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Kafedra;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
+
+import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
+
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.service.*;
 import ntukhpi.semit.militaryoblik.utils.DataWriteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
+import java.util.List;
 import java.io.File;
 
 @Component
@@ -147,19 +152,19 @@ public class ReservistsAllController implements ControlledScene {
                 kafedraServiceImpl.getAllKafedra().stream().map(Kafedra::getKname).sorted().toList()
         );
         ObservableList<String> typeOptions = FXCollections.observableArrayList(
-                "-не обрано",
+                "-Оберіть категорію звань",
                 "Офіцерський склад",
                 "Рядовий та сержантський склад"
         );
 
         // Присваивание комбо-боксам определенных выше значений
-        tckComboBox.getItems().add("-не обрано");
+        tckComboBox.getItems().add("-Оберіть ТЦК");
         tckComboBox.getItems().addAll(tckOptions);
 
-        instituteComboBox.getItems().add("-не обрано");
+        instituteComboBox.getItems().add("-Оберіть факультет");
         instituteComboBox.getItems().addAll(instituteOptions);
 
-        cathedraComboBox.getItems().add("-не обрано");
+        cathedraComboBox.getItems().add("-Оберіть кафедру");
         cathedraComboBox.getItems().addAll(cathedraOptions);
 
         typeComboBox.getItems().addAll(typeOptions);
@@ -208,48 +213,69 @@ public class ReservistsAllController implements ControlledScene {
         return selectedReservist.getId();
     }
 
+    @FXML
+    private void cathedraChanged() {
+        String selectedCathedra = cathedraComboBox.getSelectionModel().getSelectedItem();
+        cathedraLabel.setText(selectedCathedra != null && !selectedCathedra.equals("-Оберіть кафедру") ? "Кафедра: " + selectedCathedra : "Кафедра: ");
+
+        sortTable();
+    }
+
+    @FXML
+    private void instituteChanged() {
+        String selectedInstitute = instituteComboBox.getSelectionModel().getSelectedItem();
+        instituteLabel.setText(selectedInstitute != null && !selectedInstitute.equals("-Оберіть факультет") ? "Інститут: " + selectedInstitute : "Інститут: ");
+
+        ObservableList<String> cathedraOptions = FXCollections.observableArrayList();
+        cathedraOptions.add("-Оберіть кафедру");
+
+        if (selectedInstitute.equals("-Оберіть факультет"))
+            cathedraOptions.addAll(FXCollections.observableArrayList(kafedraServiceImpl.getAllKafedra()
+                                .stream().map(Kafedra::getKname).sorted().toList()));
+        else
+            cathedraOptions.addAll(FXCollections.observableArrayList(
+                    kafedraServiceImpl.findKafedrasOfFakultet(selectedInstitute)
+                            .stream().map(Kafedra::getKname).sorted().toList()));
+
+        cathedraComboBox.setItems(cathedraOptions);
+        cathedraComboBox.getSelectionModel().selectFirst();
+
+        sortTable();
+    }
+
+    @FXML
+    private void tckChanged() {
+        String selectedTck = tckComboBox.getSelectionModel().getSelectedItem();
+        tckLabel.setText(selectedTck != null && !selectedTck.equals("-Оберіть ТЦК") ? "ТЦК: " + selectedTck : "ТЦК: ");
+
+        sortTable();
+    }
+
+    @FXML
+    private void typeChanged() {
+        String selectedType = typeComboBox.getSelectionModel().getSelectedItem();
+        typeLabel.setText(selectedType != null && !selectedType.equals("-Оберіть категорію звань") ? "Тип: " + selectedType : "Тип: ");
+
+        sortTable();
+    }
+
     /**
      * Обработчик событий для фильтрации по выбранным критериям. Срабатывает при выборе значений комбо-бокса.
      */
-    @FXML
     private void sortTable() {
         String selectedTck = tckComboBox.getSelectionModel().getSelectedItem();
         String selectedInstitute = instituteComboBox.getSelectionModel().getSelectedItem();
         String selectedCathedra = cathedraComboBox.getSelectionModel().getSelectedItem();
         String selectedType = typeComboBox.getSelectionModel().getSelectedItem();
 
-//        StringBuilder filterText = new StringBuilder();
-//
-//        if (selectedInstitute != null && !selectedInstitute.equals("-не обрано"))
-//            filterText.append(" Інститут: ").append(selectedInstitute);
-//
-//        if (selectedCathedra != null && !selectedCathedra.equals("-не обрано"))
-//            filterText.append(" Кафедра: ").append(selectedCathedra);
-//
-//        if (selectedTck != null && !selectedTck.equals("-не обрано"))
-//            filterText.append(" ТЦК: ").append(selectedTck);
-//
-//        if (selectedType != null && !selectedType.equals("-не обрано"))
-//            filterText.append(" Тип: ").append(selectedType);
-//
-//        filterTextField.setText(filterText.toString());
-
-        //StringBuilder filterText = new StringBuilder();
-
-        instituteLabel.setText(selectedInstitute != null && !selectedInstitute.equals("-не обрано") ? "Інститут: " + selectedInstitute : "Інститут: ");
-        cathedraLabel.setText(selectedCathedra != null && !selectedCathedra.equals("-не обрано") ? "Кафедра: " + selectedCathedra : "Кафедра: ");
-        tckLabel.setText(selectedTck != null && !selectedTck.equals("-не обрано") ? "ТЦК: " + selectedTck : "ТЦК: ");
-        typeLabel.setText(selectedType != null && !selectedType.equals("-не обрано") ? "Тип: " + selectedType : "Тип: ");
-
-
         ObservableList<ReservistAdapter> filteredList = reservistsList.filtered(reservistAdapter ->
-                (selectedInstitute == null || selectedInstitute.equals("-не обрано") ||
+                (selectedInstitute == null || selectedInstitute.equals("-Оберіть факультет") ||
                         reservistAdapter.getInstitute().equals(selectedInstitute)) &&
-                        (selectedCathedra == null || selectedCathedra.equals("-не обрано") ||
+                        (selectedCathedra == null || selectedCathedra.equals("-Оберіть кафедру") ||
                                 reservistAdapter.getCathedra().equals(selectedCathedra)) &&
-                        (selectedTck == null || selectedTck.equals("-не обрано") ||
+                        (selectedTck == null || selectedTck.equals("-Оберіть ТЦК") ||
                                 reservistAdapter.getTck().equals(selectedTck)) &&
-                        (selectedType == null || selectedType.equals("-не обрано") ||
+                        (selectedType == null || selectedType.equals("-Оберіть категорію звань") ||
                                 reservistAdapter.getType().equals(selectedType))
         );
 
@@ -263,7 +289,12 @@ public class ReservistsAllController implements ControlledScene {
      * @param observableList список студентов
      */
     private void updateTable(ObservableList<ReservistAdapter> observableList) {
-        reservistsTableView.setItems(observableList);
+        ObservableList<ReservistAdapter> sortedList =
+                FXCollections.observableArrayList(
+                        observableList.stream()
+                                .sorted((a, b) -> DataFormat.getUkrCollator().compare(a.getPib(), b.getPib())).toList());
+
+        reservistsTableView.setItems(sortedList);
 
         numberOfReservistsTextField.setText(String.valueOf(observableList.size()));
     }
