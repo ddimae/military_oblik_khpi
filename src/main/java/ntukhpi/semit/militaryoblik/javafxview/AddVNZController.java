@@ -10,6 +10,7 @@ import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
 import ntukhpi.semit.militaryoblik.entity.VNZaklad;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
+import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.service.VNZakladServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -68,6 +69,10 @@ public class AddVNZController implements ControlledScene {
         String abbreviation = abbreviationTextField.getText();
 
         if (!name.isEmpty() && !abbreviation.isEmpty()) {
+
+            if (!Popup.saveConfirmation())
+                return;
+
             VNZaklad newVNZ = new VNZaklad();
             newVNZ.setVnzName(name);
             newVNZ.setVnzShortName(abbreviation);

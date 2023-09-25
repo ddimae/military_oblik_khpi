@@ -227,7 +227,7 @@ public class ContactInfoEditController implements ControlledScene {
         mainPhoneTextField.setText(personalData.getPhoneMain());
         secondPhoneTextField.setText(personalData.getPhoneDop());
 
-        if (countryComboBox.getValue() == countryFactComboBox.getValue() &&
+        if (countryComboBox.getValue().equals(countryFactComboBox.getValue()) &&
             indexTextField.getText().equals(indexFactTextField.getText()) &&
             cityTextField.getText().equals(cityFactTextField.getText()) &&
             regionComboBox.getValue() == regionFactComboBox.getValue() &&
@@ -327,25 +327,22 @@ public class ContactInfoEditController implements ControlledScene {
     @FXML
     void saveContactInfo(ActionEvent event) throws Exception {
         String country = DataFormat.getPureValue(countryComboBox.getValue());
-        String index = indexTextField.getText();
-        String city = cityTextField.getText();
+        String index = indexTextField.getText().trim();
+        String city = cityTextField.getText().trim();
         String region = DataFormat.getPureValue(regionComboBox.getValue());
-        String address = addressTextField.getText();
-        PhoneNumberForm mainPhone = new PhoneNumberForm(mainPhoneTextField.getText());
-        PhoneNumberForm secondPhone = new PhoneNumberForm(secondPhoneTextField.getText());
+        String address = addressTextField.getText().trim();
+        PhoneNumberForm mainPhone = new PhoneNumberForm(mainPhoneTextField.getText().trim());
+        PhoneNumberForm secondPhone = new PhoneNumberForm(secondPhoneTextField.getText().trim());
 
         String countryFact = DataFormat.getPureValue(countryFactComboBox.getValue());
-        String indexFact = indexFactTextField.getText();
-        String cityFact = cityFactTextField.getText();
+        String indexFact = indexFactTextField.getText().trim();
+        String cityFact = cityFactTextField.getText().trim();
         String regionFact = DataFormat.getPureValue(regionFactComboBox.getValue());
-        String addressFact = addressFactTextField.getText();
+        String addressFact = addressFactTextField.getText().trim();
 
         boolean isUkraine = String.valueOf(country).equals("Україна");
         boolean isUkraineFact = String.valueOf(countryFact).equals("Україна");
         boolean isForeinNumber = foreinNumberRadioButton.isSelected();
-
-        city = city.trim();
-        address = address.trim();
 
         if (!validateInfo(country, index, city, region,
                 address, mainPhone, secondPhone,

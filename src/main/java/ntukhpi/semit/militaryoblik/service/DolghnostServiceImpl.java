@@ -27,6 +27,11 @@ public class DolghnostServiceImpl implements DolghnostService {
     }
 
     @Override
+    public Dolghnost getDolghnostByCategory(Integer id) {
+        return dolghnostRepository.getDolghnostByCategoryEmployees(id);
+    }
+
+    @Override
     public List<Dolghnost> getAllDolghnost() {
         return dolghnostRepository.findAll();
     }
