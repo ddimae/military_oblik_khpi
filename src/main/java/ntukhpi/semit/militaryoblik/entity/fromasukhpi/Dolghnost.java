@@ -22,6 +22,9 @@ public class Dolghnost {
     @Column(length = 40, name="dolghn_name",nullable = false)
     private String dolghnName;
 
+    @Column(length = 15, name="dolghn_shot_name")
+    private String dolghnShortName;
+
     @Column(name="kat_sotr")
     @ColumnDefault(value="1")
     private int categoryEmployees;
