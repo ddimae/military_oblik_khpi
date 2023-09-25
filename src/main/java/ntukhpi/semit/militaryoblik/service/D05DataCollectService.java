@@ -9,8 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.Map;
 
 @Service
 public class D05DataCollectService {
@@ -28,9 +30,28 @@ public class D05DataCollectService {
         this.currentDoljnostInfoService = currentDoljnostInfoService;
     }
 
+    @Transactional
+    public Map<String, List<D05Adapter>> collectD05Adapter(List<Long> miliratiPersonIds) {
+        Map<String, List<D05Adapter>> data = new HashMap<>();
+        List<D05Adapter> collectData = collectData(miliratiPersonIds);
+        for (D05Adapter adapter: collectData) {
+            List<D05Adapter> list = data.get(adapter.getTerCentr());
+            if(list != null) {
+                List<D05Adapter> adapters = data.get(adapter.getTerCentr());
+                adapters.add(adapter);
+            } else {
+                List<D05Adapter> tckList = new ArrayList<>();
+                tckList.add(adapter);
+                data.put(adapter.getTerCentr(), tckList);
+            }
+        }
+
+        return data;
+    }
+
     // Метод збору данних з бд для запису в додаток 5. Аргументом метод приймає список id MilitaryPerson.
     @Transactional
-    public List<D05Adapter> collectD05Adapter(List<Long> miliratiPersonIds) {
+    public List<D05Adapter> collectData(List<Long> miliratiPersonIds) {
         List<D05Adapter> adapters = new ArrayList<>();
         if (miliratiPersonIds != null) {
             for (Long id : miliratiPersonIds) {

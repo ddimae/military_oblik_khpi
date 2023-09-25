@@ -7,8 +7,10 @@ import ntukhpi.semit.militaryoblik.service.D05DataCollectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class DataWriteService {
@@ -16,45 +18,55 @@ public class DataWriteService {
     private final DataPreparer dataPreparer;
     private final D05DataCollectService d05DataCollectService;
 
+    private final ExcelWriter excelWriter;
+
     @Autowired
-    public DataWriteService(DataPreparer dataPreparer, D05DataCollectService d05DataCollectService) {
+    public DataWriteService(DataPreparer dataPreparer, D05DataCollectService d05DataCollectService, ExcelWriter excelWriter) {
         this.dataPreparer = dataPreparer;
         this.d05DataCollectService = d05DataCollectService;
+        this.excelWriter = excelWriter;
     }
 
     // Запис данних з бд до файлу додатку 5.
     // Аргументи: тип сортування по імені "name" по ТЦК "tck",
     // та список id miliratiPersonIds які потрібно вивести.
     public void writeDataToExcel(String sortType, List<Long> miliratiPersonIds) {
-        List<D05Adapter> sortedAdapters = dataPreparer.sortD5AdapterByUAAlphabet(d05DataCollectService.collectD05Adapter(miliratiPersonIds), sortType);
-        String[][] workingData = dataPreparer.listToArray(sortedAdapters);
+        Map<String, List<D05Adapter>> sortedAdapters = dataPreparer.sortD5AdapterByUAAlphabet(d05DataCollectService.collectD05Adapter(miliratiPersonIds), sortType);
+        List<String[][]> workingDatas = new ArrayList<>();
+        for (List<D05Adapter> adapters : sortedAdapters.values()) {
+            String[][] workingData = dataPreparer.listToArray(adapters);
+            workingDatas.add(workingData);
+        }
 
-        ExcelWriter excelWriter = new ExcelWriter();
-        excelWriter.writeExcel(workingData);
+        excelWriter.writeExcel(workingDatas, null);
     }
 
-    public void writeDataToExcelBase(ObservableList<ReservistAdapter> reservistsList) {
-        List<Long> miliratiPersonIds = reservistsList.stream().map(reservist -> reservist.getMilitaryPersonId()).toList();
-        List<D05Adapter> sortedAdapters = dataPreparer.sortD5AdapterByUAAlphabet(d05DataCollectService.collectD05Adapter(miliratiPersonIds), "name");
-        String[][] workingData = dataPreparer.listToArray(sortedAdapters);
+    public void writeDataToExcelBase(ObservableList<ReservistAdapter> reservistsList, File file) {
+        List<Long> miliratiPersonIds = reservistsList.stream().map(ReservistAdapter::getMilitaryPersonId).toList();
+        Map<String, List<D05Adapter>> sortedAdapters = dataPreparer.sortD5AdapterByUAAlphabet(d05DataCollectService.collectD05Adapter(miliratiPersonIds), "name");
+        List<String[][]> workingDatas = new ArrayList<>();
+        for (List<D05Adapter> adapters : sortedAdapters.values()) {
+            String[][] workingData = dataPreparer.listToArray(adapters);
+            workingDatas.add(workingData);
+        }
 
-        ExcelWriter excelWriter = new ExcelWriter();
-        excelWriter.writeExcel(workingData);
+        excelWriter.writeExcel(workingDatas, file);
     }
 
-    public void writeDataToExcelOnTCKName(String tckName, List<Long> miliratiPersonIds) {
-
-        List<D05Adapter> sortedAdapters = d05DataCollectService.collectD05Adapter(miliratiPersonIds);
-        List<D05Adapter> currentTCKAdapter = sortedAdapters.stream()
-                .filter(d05Adapter -> d05Adapter.getTerCentr()
-                        .equals(tckName))
-                .toList();
-
-        String[][] workingData = dataPreparer.listToArray(currentTCKAdapter);
-
-        ExcelWriter excelWriter = new ExcelWriter();
-        excelWriter.writeExcel(workingData);
-    }
+    //ToDo check to delete
+//    public void writeDataToExcelOnTCKName(String tckName, List<Long> miliratiPersonIds) {
+//
+//        List<D05Adapter> sortedAdapters = d05DataCollectService.collectD05Adapter(miliratiPersonIds);
+//        List<D05Adapter> currentTCKAdapter = sortedAdapters.stream()
+//                .filter(d05Adapter -> d05Adapter.getTerCentr()
+//                        .equals(tckName))
+//                .toList();
+//
+//        String[][] workingData = dataPreparer.listToArray(currentTCKAdapter);
+//
+//        ExcelWriter excelWriter = new ExcelWriter();
+//        excelWriter.writeExcel(workingData);
+//    }
 
     public void writeDataToWord() {
         WordWriter wordReader = new WordWriter();
