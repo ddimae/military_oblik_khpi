@@ -76,16 +76,15 @@ public class Education {
         return result;
     }
 
-
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("");
         sb.append(yearVypusk).append(" - ").append(vnz.getVnzShortName());
-        if (diplomaSpeciality!=null) sb.append(", ").append(diplomaSpeciality);
-        if (diplomaNumber!=null) {
+        if (diplomaSpeciality!=null&&diplomaSpeciality.length()>0) sb.append(", ").append(diplomaSpeciality);
+        if (diplomaNumber!=null&&diplomaNumber.length()>0) {
             sb.append(" (");
-            if (diplomaSeries!=null) sb.append(diplomaSeries);
-            sb.append(" #").append(diplomaNumber);
+            if (diplomaSeries!=null&&diplomaSeries.length()>0) sb.append(diplomaSeries);
+            sb.append(" №").append(diplomaNumber);
             sb.append(")");
         }
 

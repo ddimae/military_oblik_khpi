@@ -97,8 +97,12 @@ public class PersonalData {
     @Column(name = "phone_dop",length = 13)
     private String phoneDop;
 
-
-
-
-
+    public PersonalData(Prepod prepod, String city, String rowAddress, String factCity, String factRowAddress) {
+        this.prepod = prepod;
+        this.city = city;
+        this.rowAddress = rowAddress;
+        this.factCity = factCity;
+        this.factRowAddress = factRowAddress;
+        this.phoneMain = "+380577004033";
+    }
 }

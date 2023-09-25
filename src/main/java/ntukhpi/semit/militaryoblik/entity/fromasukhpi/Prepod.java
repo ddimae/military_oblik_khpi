@@ -7,6 +7,7 @@ import ntukhpi.semit.militaryoblik.entity.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -15,12 +16,11 @@ import java.util.Set;
 @Entity
 //Унікальним робимо ПІБ+кафедра.
 //Тобто приймаємо за аксіому, що однофамільці на одній кафедрі не працюють
-@Table(name = "prepod",uniqueConstraints = @UniqueConstraint(columnNames = {"fam", "imya","otch","kid"}))
+@Table(name = "prepod", uniqueConstraints = @UniqueConstraint(columnNames = {"fam", "imya", "otch", "kid"}))
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Prepod {
 
     @Id
@@ -28,11 +28,11 @@ public class Prepod {
     @Column(name = "prepod_id")
     Long id;
 
-    @Column(length = 40,nullable = false)
+    @Column(length = 40, nullable = false)
     private String fam;
-    @Column(length = 30,nullable = false)
+    @Column(length = 30, nullable = false)
     private String imya;
-    @Column(length = 30,nullable = false)
+    @Column(length = 30, nullable = false)
     private String otch;
 
     //дата рождения
@@ -49,11 +49,11 @@ public class Prepod {
     //Через те, що це клас "незмінний", створений клас CurrentDoljnostInfo, який буде зберігати дані про накази
     //про призначення та звільнення
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "kid",nullable = false)
+    @JoinColumn(name = "kid", nullable = false)
     private Kafedra kafedra;
 
     @ManyToOne
-    @JoinColumn(name = "dolghn_id",nullable = false)
+    @JoinColumn(name = "dolghn_id", nullable = false)
     private Dolghnost dolghnost;
 
     //Вчене звання - це доцент, професор, старший науковий співробітник, академік, тощо
@@ -72,23 +72,24 @@ public class Prepod {
     private String email;
 
     //Склад родини -
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "prepod")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "prepod")
     private Set<FamilyMember> family = new LinkedHashSet<>();
     // Перелік вузів, які були закінчені
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "prepod")
-    private Set<Education> educationList = new LinkedHashSet<>();;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "prepod")
+    private Set<Education> educationList = new LinkedHashSet<>();
+    ;
 
     // Дані про навчання в аспірантурі (адюнктурі) та докторантурі
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "prepod")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "prepod")
     private Set<EducationPostgraduate> educationPostList = new LinkedHashSet<>();
 
     // Документи
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "prepod")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "prepod")
     private Set<Document> documents = new LinkedHashSet<>();
 
     //Дані про накази
 
-    @OneToOne(fetch = FetchType.EAGER,mappedBy = "prepod")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "prepod")
     private CurrentDoljnostInfo posadaNakazy;
 
 
@@ -118,9 +119,10 @@ public class Prepod {
         this.kafedra = kafedra;
         this.dolghnost = dolghnost;
     }
+
     public Prepod(String fam, String imya, String otch, LocalDate dr,
                   Kafedra kafedra, Dolghnost dolghnost,
-                  Stepen stepen, Zvanie zvanie,String email) {
+                  Stepen stepen, Zvanie zvanie, String email) {
         this.fam = fam;
         this.imya = imya;
         this.otch = otch;
@@ -128,7 +130,7 @@ public class Prepod {
         this.kafedra = kafedra;
         this.dolghnost = dolghnost;
         this.stepen = stepen;
-        this.zvanie =zvanie;
+        this.zvanie = zvanie;
         this.email = email;
     }
 
@@ -145,10 +147,13 @@ public class Prepod {
         family.remove(member);
     }
 
+    public void delFamily() { family.clear(); }
+
     //Для переліку вузів, що закінчені
     public Set<Education> getEducationList() {
         return Collections.unmodifiableSet(educationList);
     }
+
     public void addEducation(Education education) {
         educationList.add(education);
     }
@@ -161,6 +166,7 @@ public class Prepod {
     public Set<EducationPostgraduate> getEducationPostList() {
         return Collections.unmodifiableSet(educationPostList);
     }
+
     public void addEducationPost(EducationPostgraduate education) {
         educationPostList.add(education);
     }
@@ -168,6 +174,21 @@ public class Prepod {
     public void delEducationPost(EducationPostgraduate education) {
         educationPostList.remove(education);
     }
+
+    //Для даних про документи
+    public Set<Document> getDocuments() {
+        return Collections.unmodifiableSet(documents);
+    }
+
+    public void addDocument(Document document) {
+        documents.add(document);
+    }
+
+    public void delDocument(Document document) {
+        documents.remove(document);
+    }
+
+    public void delDocuments() { documents.clear(); }
 
     @Override
     public boolean equals(Object o) {
@@ -192,4 +213,52 @@ public class Prepod {
     }
 
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Prepod ");
+        sb.append(id);
+        sb.append(": ").append(fam).append(" ").append(imya).append(" ").append(otch);
+        sb.append(" (").append(dr.format(DateTimeFormatter.ISO_LOCAL_DATE));
+        sb.append(", ").append(kafedra.getKabr());
+        sb.append(", ").append(dolghnost.getDolghnName());
+        if (zvanie != null) sb.append(", ").append(zvanie.getZvanieName());
+        if (stepen != null) sb.append(", ").append(stepen);
+        sb.append(") ").append(System.lineSeparator());
+        sb.append("Family:");
+        if (family == null) {
+            sb.append("немає даних").append(System.lineSeparator());
+        } else {
+            for (FamilyMember fm : family) {
+                sb.append(System.lineSeparator()).append(fm);
+            }
+        }
+        sb.append(System.lineSeparator());
+        sb.append("Education:");
+        if (educationList == null) {
+            sb.append("немає даних").append(System.lineSeparator());
+        } else {
+            for (Education edu : educationList) {
+                sb.append(System.lineSeparator()).append(edu);
+            }
+        }
+        sb.append(System.lineSeparator());
+        sb.append("PostGraduate Education:");
+        if (educationPostList == null) {
+            sb.append("немає даних").append(System.lineSeparator());
+        }
+        sb.append(System.lineSeparator());
+        sb.append("Documents:");
+        if (documents == null) {
+            sb.append("немає даних").append(System.lineSeparator());
+        } else {
+            for (Document doc : documents) {
+                sb.append(doc);
+            }
+        }
+        sb.append(System.lineSeparator());
+        if (posadaNakazy != null)
+            sb.append("Призначений: наказ #").append(posadaNakazy.getNumNakazStart())
+                    .append(" від ").append(posadaNakazy.getDateStart());
+        return sb.toString();
+    }
 }

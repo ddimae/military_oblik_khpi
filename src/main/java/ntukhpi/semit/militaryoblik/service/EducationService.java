@@ -1,6 +1,7 @@
 package ntukhpi.semit.militaryoblik.service;
 
 import ntukhpi.semit.militaryoblik.entity.Education;
+import ntukhpi.semit.militaryoblik.entity.VNZaklad;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 
 import java.util.List;
@@ -11,6 +12,8 @@ public interface EducationService {
 
     Education getEducationById(Long id);
 
+    Education getEducationByKey(Prepod p, VNZaklad vnz, String yearEnd);
+
     List<Education> getAllEducation();
 
     List<Education> getAllEducationByPrepod(Prepod prepod);
@@ -19,5 +22,7 @@ public interface EducationService {
 
     void deleteEducation(Long id);
 
-    Education getEducationByPrepodId(Long id);
+//   Найти ОДНО образование по PrepodID? А якщо 2 чи 3? метод витягу всіх вище!
+//   List<Education> getAllEducationByPrepod(Prepod prepod);
+//    Education getEducationByPrepodId(Long id);
 }

@@ -88,4 +88,23 @@ public class MilitaryPerson {
     // та ще такі, які ми не знаємо). Вводимо як текст, правильність не перевіряти
     @Column(name = "edication_level")
     private String edicationLevel;
+
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("MilitaryPerson ");
+        sb.append(id).append(":\n");
+        sb.append(prepod);
+        sb.append(System.lineSeparator()).append("Дані обліку:").append(System.lineSeparator());
+        sb.append(vos).append(System.lineSeparator());
+        sb.append(vCategory).append(System.lineSeparator());
+        sb.append(vGrupa).append(System.lineSeparator());
+        sb.append(vSklad.getSkladName()).append(System.lineSeparator());
+        sb.append(vZvanie.getZvanieName()).append(System.lineSeparator());
+        sb.append(voenkomat.getVoenkomatName()).append(System.lineSeparator());
+        sb.append(vPrydatnist).append(System.lineSeparator());
+        sb.append(familyState).append(System.lineSeparator());
+        sb.append(edicationLevel).append(System.lineSeparator());
+        return sb.toString();
+    }
 }

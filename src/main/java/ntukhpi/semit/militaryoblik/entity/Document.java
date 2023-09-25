@@ -60,4 +60,12 @@ public class Document {
     @Column(name = "kto_vyd", nullable = false)
     private String ktoVyd;
 
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("");
+        sb.append(docType).append(": ").append(docNumber);
+        sb.append(", виданий ").append(ktoVyd).append("  ").append(dataVyd);
+        return sb.toString();
+    }
 }
