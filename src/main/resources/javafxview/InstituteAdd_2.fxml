@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane prefHeight="320.0" prefWidth="620.0" stylesheets="@MOStyles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntukhpi.semit.militaryoblik.javafxview.InstituteAddController">
+    <children>
+        <GridPane prefHeight="320.0" prefWidth="620.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="80.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="64.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="70.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Label prefHeight="0.0" prefWidth="120.0" text="Повна назва " textAlignment="RIGHT" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="30.0" />
+               </GridPane.margin></Label>
+                <Label prefHeight="0.0" prefWidth="120.0" text="Абревіатура" GridPane.columnSpan="2" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets left="30.0" />
+               </GridPane.margin></Label>
+                <Label text="Код" GridPane.columnIndex="5" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets left="30.0" />
+               </GridPane.margin></Label>
+            <TextArea fx:id="fullNameTextArea" prefHeight="200.0" prefWidth="200.0" promptText="Навчально-науковий інститут міжнародної освіти" styleClass="obligatory-field" GridPane.columnIndex="2" GridPane.columnSpan="6" GridPane.rowIndex="1" />
+                <TextField fx:id="abbreviationTextField" prefHeight="40.0" prefWidth="260.0" promptText="МО" styleClass="obligatory-field" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="3" />
+                <TextField fx:id="codeTextField" prefHeight="40.0" promptText="270" styleClass="obligatory-field" GridPane.columnIndex="6" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#saveNewInstitute" prefHeight="40.0" prefWidth="200.0" text="Зберегти" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="5">
+               <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@/icons/circle-check.png" />
+                            </image>
+                        </ImageView>
+               </graphic>
+                </Button>
+                <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#closeEdit" prefHeight="40.0" prefWidth="200.0" text="Повернутись" GridPane.columnIndex="5" GridPane.columnSpan="3" GridPane.rowIndex="5">
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@/icons/circle-xmark.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" styleClass="obligatory-field" GridPane.columnIndex="2" GridPane.rowIndex="6">
+               <GridPane.margin>
+                  <Insets left="50.0" top="10.0" />
+               </GridPane.margin>
+            </Pane>
+            <Label prefHeight="27.0" prefWidth="288.0" text="- Обов'язкове для заповнення поле" GridPane.columnIndex="3" GridPane.columnSpan="4" GridPane.rowIndex="6">
+               <GridPane.margin>
+                  <Insets left="20.0" top="10.0" />
+               </GridPane.margin>
+            </Label>
+            </children>
+        </GridPane>
+    </children>
+</AnchorPane>

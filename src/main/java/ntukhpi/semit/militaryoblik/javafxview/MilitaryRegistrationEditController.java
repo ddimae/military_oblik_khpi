@@ -10,9 +10,12 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
+import ntukhpi.semit.militaryoblik.entity.VSklad;
 import ntukhpi.semit.militaryoblik.entity.VZvanie;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.repository.VZvanieRepository;
+import ntukhpi.semit.militaryoblik.service.VSkladServiceImpl;
+import ntukhpi.semit.militaryoblik.service.VZvanieServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -39,8 +42,7 @@ public class MilitaryRegistrationEditController implements ControlledScene {
     public TextField trcTextField;
     @FXML
     public TextField specialRegistrationTextField;
-    @FXML
-    public TextField registrationDateTextField;
+
 
     @Autowired
     VZvanieRepository vZvanieRepository;
@@ -73,41 +75,36 @@ public class MilitaryRegistrationEditController implements ControlledScene {
 
     private void setMilitaryRegistrationInfo(ReservistAdapter reservist) {
         pibLabel.setText(reservist.getPib());
-        groupComboBox.setValue("-не обрано");
-        categoryComboBox.setValue(reservist.getCategory());
-        vSkladComboBox.setValue(reservist.getType());
-        rankComboBox.setValue(reservist.getRank());
-        validityComboBox.setValue("Придатний до військової служби");
 
         vosTextField.setText(reservist.getVos());
-
+        categoryComboBox.setValue(reservist.getCategory());
+        groupComboBox.setValue("-не обрано");
+        vSkladComboBox.setValue(reservist.getVSklad());
+        rankComboBox.setValue(reservist.getRank());
+        validityComboBox.setValue(reservist.getVPrydatnist());
         trcTextField.setText(reservist.getTrc());
 
-        specialRegistrationTextField.setText("Что-то здесь точно должно быть написано");
-
-        registrationDateTextField.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
     }
 
+    @Autowired
+    VSkladServiceImpl vSkladService;
+
+    @Autowired
+    VZvanieServiceImpl vZvanieService;
+
+
     public void initialize() {
-        groupComboBox.getItems().addAll("1", "2");
-        categoryComboBox.getItems().addAll();
-        vSkladComboBox.getItems().addAll(
-                "-не обрано",
-                "Рядовий та сержантський склад",
-                "Командний",
-                "Інженерний",
-                "Інженерно-технічний",
-                "Технічно-оперативний",
-                "Медичний"
-        );
-        rankComboBox.getItems().addAll(vZvanieRepository.findAll().stream().map(VZvanie::getZvanieName).sorted().toList());
-        validityComboBox.getItems().addAll(
-                "-не обрано",
-                "Придатний до військової служби",
-                "Придатний до військової служби з незначними обмеженнями",
-                "Обмежено придатний до військової служби",
-                "Тимчасово непридатний",
-                "Повна непридатність");
+        ObservableList<String> vSkladOptions = FXCollections.observableArrayList("-не обрано");
+        vSkladOptions.addAll(vSkladService.getAllVSklad().stream().map(VSklad::getSkladName).toList());
+
+        ObservableList<String> vZvanieOptions = FXCollections.observableArrayList("-не обрано");
+        vZvanieOptions.addAll(vZvanieService.getAllVZvanie().stream().map(VZvanie::getZvanieName).toList());
+
+        groupComboBox.getItems().addAll("-не обрано", "військовозабов'язаний", "призовник");
+        categoryComboBox.getItems().addAll("-не обрано", "1", "2");
+        vSkladComboBox.getItems().addAll(vSkladOptions);
+        rankComboBox.getItems().addAll(vZvanieOptions);
+        validityComboBox.getItems().addAll("-не обрано", "придатний", "обмежено-придатний", "непридатний");
     }
 
     @FXML

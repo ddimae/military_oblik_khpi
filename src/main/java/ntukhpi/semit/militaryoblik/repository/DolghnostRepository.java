@@ -9,4 +9,6 @@ public interface DolghnostRepository extends JpaRepository<Dolghnost, Long> {
 
     Dolghnost getDolghnostByDolghnName(String posada);
 
+    Dolghnost getDolghnostByCategoryEmployees(Integer id);
+
 }
