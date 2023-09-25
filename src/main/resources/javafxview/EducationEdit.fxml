@@ -72,11 +72,13 @@
                 <TextField fx:id="yearTextField" prefHeight="27.0" prefWidth="275.0" promptText="ХХХХ" styleClass="obligatory-field" GridPane.columnIndex="2" GridPane.rowIndex="4">
                     <font>
                         <Font size="18.0" />
-                    </font></TextField>
+                    </font>
+                </TextField>
                 <TextField fx:id="diplomaSeriesTextField" promptText="введіть серію" GridPane.columnIndex="2" GridPane.rowIndex="5">
                     <font>
                         <Font size="18.0" />
-                    </font></TextField>
+                    </font>
+                </TextField>
                 <TextField fx:id="diplomaNumberTextField" prefHeight="27.0" prefWidth="210.0" promptText="введіть номер" styleClass="obligatory-field" GridPane.columnIndex="3" GridPane.rowIndex="5">
                     <GridPane.margin>
                         <Insets left="100.0" right="5.0" />
@@ -106,7 +108,7 @@
                     <font>
                         <Font size="18.0" />
                     </font></TextField>
-                <Label fx:id="pibLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="23.0" prefWidth="467.0" text="ПІБ" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.columnSpan="2">
+                <Label fx:id="pibLabel" styleClass="pib-field" alignment="CENTER" contentDisplay="CENTER" prefHeight="23.0" prefWidth="467.0" text="ПІБ" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.columnSpan="2">
                     <font>
                         <Font size="18.0" />
                     </font>

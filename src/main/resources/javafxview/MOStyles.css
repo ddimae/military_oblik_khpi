@@ -1,6 +1,6 @@
 */*.label, .button,.text-field, .password-field*/
 {
-    -fx-font-size: 14;
+    -fx-font-size: 18;
 }
 
 .table-column {
@@ -14,4 +14,5 @@
 
 .pib-field {
     -fx-font-size: 24;
+    -fx-font-style: bold;
 }

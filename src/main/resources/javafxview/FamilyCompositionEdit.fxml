@@ -39,9 +39,9 @@
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" GridPane.columnSpan="3" GridPane.rowIndex="13">
                <children>
                   <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#saveDocuments" prefWidth="200.0" text="Зберегти">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
+<!--                     <font>-->
+<!--                        <Font size="18.0" />-->
+<!--                     </font>-->
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -51,9 +51,9 @@
                      </graphic>
                   </Button>
                   <Button contentDisplay="RIGHT" maxHeight="40.0" mnemonicParsing="false" onAction="#closeEdit" prefHeight="40.0" prefWidth="200.0" text="Відміна">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
+<!--                     <font>-->
+<!--                        <Font size="18.0" />-->
+<!--                     </font>-->
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -90,56 +90,56 @@
                   </Label>
                </children>
             </HBox>
-            <Label fx:id="pibLabel" alignment="CENTER" prefHeight="23.0" prefWidth="400.0" text="ПІБ" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <font>
-                  <Font size="18.0" />
-               </font>
+            <Label fx:id="pibLabel" styleClass="pib-field" alignment="CENTER" prefHeight="23.0" prefWidth="400.0" text="ПІБ" GridPane.columnIndex="1" GridPane.rowIndex="1">
+<!--               <font>-->
+<!--                  <Font size="18.0" />-->
+<!--               </font>-->
             </Label>
             <Label text="Ступінь рідства" GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <font>
-                  <Font size="18.0" />
-               </font>
+<!--               <font>-->
+<!--                  <Font size="18.0" />-->
+<!--               </font>-->
             </Label>
             <Label text="Прізвище" GridPane.columnIndex="1" GridPane.rowIndex="4">
-               <font>
-                  <Font size="18.0" />
-               </font>
+<!--               <font>-->
+<!--                  <Font size="18.0" />-->
+<!--               </font>-->
             </Label>
             <Label text="Імʼя" GridPane.columnIndex="1" GridPane.rowIndex="6">
-               <font>
-                  <Font size="18.0" />
-               </font>
+<!--               <font>-->
+<!--                  <Font size="18.0" />-->
+<!--               </font>-->
             </Label>
             <Label text="По-батькові" GridPane.columnIndex="1" GridPane.rowIndex="8">
-               <font>
-                  <Font size="18.0" />
-               </font>
+<!--               <font>-->
+<!--                  <Font size="18.0" />-->
+<!--               </font>-->
             </Label>
             <Label text="Рік народження" GridPane.columnIndex="1" GridPane.rowIndex="10">
-               <font>
-                  <Font size="18.0" />
-               </font>
+<!--               <font>-->
+<!--                  <Font size="18.0" />-->
+<!--               </font>-->
             </Label>
             <ComboBox fx:id="relationshipComboBox" prefHeight="40.0" prefWidth="400.0" promptText="--Оберіть зі списку" styleClass="obligatory-field" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <TextField fx:id="surnameTextField" prefHeight="40.0" promptText="введіть прізвище" GridPane.columnIndex="1" GridPane.rowIndex="5">
-               <font>
-                  <Font size="18.0" />
-               </font>
+<!--               <font>-->
+<!--                  <Font size="18.0" />-->
+<!--               </font>-->
             </TextField>
             <TextField fx:id="nameTextField" prefHeight="40.0" promptText="введіть імʼя" GridPane.columnIndex="1" GridPane.rowIndex="7">
-               <font>
-                  <Font size="18.0" />
-               </font>
+<!--               <font>-->
+<!--                  <Font size="18.0" />-->
+<!--               </font>-->
             </TextField>
             <TextField fx:id="patronymicTextField" prefHeight="40.0" promptText="введіть по-батькові" GridPane.columnIndex="1" GridPane.rowIndex="9">
-               <font>
-                  <Font size="18.0" />
-               </font>
+<!--               <font>-->
+<!--                  <Font size="18.0" />-->
+<!--               </font>-->
             </TextField>
             <TextField fx:id="yearTextField" prefHeight="40.0" promptText="ХХХХ" styleClass="obligatory-field" GridPane.columnIndex="1" GridPane.rowIndex="11">
-               <font>
-                  <Font size="18.0" />
-               </font>
+<!--               <font>-->
+<!--                  <Font size="18.0" />-->
+<!--               </font>-->
             </TextField>
          </children>
       </GridPane>
