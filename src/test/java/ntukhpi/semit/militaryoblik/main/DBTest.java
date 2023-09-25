@@ -1,10 +1,7 @@
 package ntukhpi.semit.militaryoblik.main;
 
 import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
-import ntukhpi.semit.militaryoblik.entity.CurrentDoljnostInfo;
-import ntukhpi.semit.militaryoblik.entity.MilitaryPerson;
-import ntukhpi.semit.militaryoblik.entity.VZvanie;
-import ntukhpi.semit.militaryoblik.entity.Voenkomat;
+import ntukhpi.semit.militaryoblik.entity.*;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Dolghnost;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Fakultet;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Kafedra;
@@ -18,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -182,6 +180,13 @@ public class DBTest {
         for (Object prep : prepodList) {
             System.out.println(prep);
         }
+    }
+
+    @Test
+    void showOnePrepod() {
+        System.out.println("\nPrepod SQLite:");
+        Prepod prep = prepodServiceImpl.getPrepodById(20L);
+            System.out.println(prep);
     }
 
 
@@ -350,6 +355,53 @@ public class DBTest {
 //        System.out.println(posadaInfoFromDb);
 
 
+
+    }
+
+    @Autowired
+    EducationServiceImpl educationServiceImpl;
+    @Test
+    void testCRUDEducation(){
+        Long prepodId = 12L;
+        Prepod prep = prepodServiceImpl.getPrepodById(prepodId);
+        System.out.println(prep.getFam());
+        Long vnzId = 4L;
+        VNZaklad vnz = vNZakladServiceImpl.getVNZakladById(vnzId);
+        System.out.println(vnz.getVnzShortName());
+        Education eduInDB = educationServiceImpl.getEducationByKey(prep,vnz,"1996");
+        if (eduInDB!=null) {
+            System.out.println("Present!!! id Edu = "+eduInDB.getId());
+            System.out.println(eduInDB);
+        } else {
+            System.out.println("Info not found!");
+        }
+
+        MilitaryPerson mp12 = militaryPersonServiceImpl.getMilitaryPersonByPrepod(prep);
+        Set<Education> osvita = prep.getEducationList();
+        System.out.println(osvita);
+
+        Education newEdu = new Education();
+//        newEdu.setPrepod(prep);
+//        newEdu.setVnz(vnz);
+//        newEdu.setYearVypusk("1996");
+//        newEdu.setDiplomaSeries("МО");
+//        newEdu.setDiplomaNumber("1234321");
+//        newEdu.setDiplomaSpeciality("МПЗ АСУ");
+//        newEdu.setDiplomaQualification("інженер-математик");
+//        educationServiceImpl.createEducation(newEdu);
+
+        //Long idNewEduInDB = educationServiceImpl.getEducationByPrepodId(prep.getId());
+//        Education editEdu = new Education();
+//        editEdu.setPrepod(prep);
+//        vnzId = 3L;
+//        vnz = vNZakladServiceImpl.getVNZakladById(vnzId);
+//        editEdu.setVnz(vnz);
+//
+//        editEdu.setYearVypusk("1997");
+//        editEdu.setDiplomaSeries("МО");
+//        editEdu.setDiplomaNumber("77777777");
+//        editEdu.setDiplomaSpeciality("МПЗ АСУ");
+//       // newEdu.setDiplomaQualification("інженер-математик");
 
     }
 
