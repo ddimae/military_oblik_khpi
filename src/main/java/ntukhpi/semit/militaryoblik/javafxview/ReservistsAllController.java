@@ -380,7 +380,20 @@ public class ReservistsAllController implements ControlledScene {
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Текстові файли (*.xlsx)", "*.xlsx");
         fileChooser.getExtensionFilters().add(extFilter);
         File selectedFile = fileChooser.showSaveDialog(new Stage());
+        try {
+            dataWriteService.writeDataToExcelBase(listToSave, selectedFile);
+            Alert confirmationDialog = new Alert(Alert.AlertType.INFORMATION);
+            confirmationDialog.setTitle("Збереження файлу");
+            confirmationDialog.setHeaderText(null);
+            confirmationDialog.setContentText("Файл збережено успішно у: \"" + selectedFile.getPath() + "\"");
+            confirmationDialog.showAndWait();
+        } catch (Exception e) {
+            Alert confirmationDialog = new Alert(Alert.AlertType.INFORMATION);
+            confirmationDialog.setTitle("Збереження файлу");
+            confirmationDialog.setHeaderText(null);
+            confirmationDialog.setContentText("Файл не збережено через помилку: \"" + e.getMessage() + "\"");
+            confirmationDialog.showAndWait();
+        }
 
-        dataWriteService.writeDataToExcelBase(listToSave, selectedFile);
     }
 }
