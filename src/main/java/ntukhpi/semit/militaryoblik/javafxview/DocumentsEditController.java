@@ -205,7 +205,7 @@ public class DocumentsEditController implements ControlledScene {
 
         String number = numberTextField.getText().trim();
         String whoGives = whoGivesTextArea.getText().trim();
-        String date = dateDatePicker.getEditor().getText();
+        String date = dateDatePicker.getEditor().getText().trim();
 
         if (!validateDocument(docType, number, whoGives, date))
             return;

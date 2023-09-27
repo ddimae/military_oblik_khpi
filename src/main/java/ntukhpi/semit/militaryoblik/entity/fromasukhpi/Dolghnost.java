@@ -27,6 +27,21 @@ public class Dolghnost {
     private int categoryEmployees;
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Dolghnost dolghnost = (Dolghnost) o;
+
+        return dolghnName.equals(dolghnost.dolghnName);
+    }
+
+    @Override
+    public int hashCode() {
+        return dolghnName.hashCode();
+    }
+
+    @Override
     public String toString() {
         return dolghnName;
     }

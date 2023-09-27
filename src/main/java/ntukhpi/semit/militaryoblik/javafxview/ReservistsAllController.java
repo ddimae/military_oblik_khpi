@@ -1,38 +1,34 @@
 package ntukhpi.semit.militaryoblik.javafxview;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
 import ntukhpi.semit.militaryoblik.entity.MilitaryPerson;
 import ntukhpi.semit.militaryoblik.entity.Voenkomat;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Fakultet;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Kafedra;
-
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
+
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
-import ntukhpi.semit.militaryoblik.service.*;
 
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
-
-
-import ntukhpi.semit.militaryoblik.utils.DataPreparer;
+import ntukhpi.semit.militaryoblik.service.*;
 import ntukhpi.semit.militaryoblik.utils.DataWriteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
+import java.io.File;
 
 @Component
 public class ReservistsAllController implements ControlledScene {
@@ -118,13 +114,17 @@ public class ReservistsAllController implements ControlledScene {
     @Autowired
     MilitaryPersonServiceImpl militaryPersonServiceImpl;
 
+    @Autowired
+    DataWriteService dataWriteService;
+
     @Override
     public void setMainController(Object controller) {
         mainController = (LoginFormController) controller;
     }
 
     @Override
-    public void setData(Object data) {}
+    public void setData(Object data) {
+    }
 
     @Override
     public void setMainStage(Stage stage) {
@@ -185,7 +185,7 @@ public class ReservistsAllController implements ControlledScene {
         for (Prepod prepod : prepodServiceImpl.getAllPrepod()) {
             MilitaryPerson mp = militaryPersonServiceImpl.getMilitaryPersonByPrepod(prepod);
             //Виводяться лише ті, хто є військовозабовязаними, тобто мають створений об'єкт MilitaryPerson
-            if (mp!=null && mp.getVSklad() != null)
+            if (mp != null && mp.getVSklad() != null)
                 reservistsList.add(new ReservistAdapter(mp));
         }
 
@@ -353,8 +353,7 @@ public class ReservistsAllController implements ControlledScene {
         ReservistAdapter reservist = setSelectedPrepodId();
         if (reservist != null) {
             MilitaryOblikKhPIMain.showStage(AllStageSettings.contactInfoEdit, currentStage, this, reservist);
-        }
-        else
+        } else
             Popup.noSelectedRowAlert();
     }
 
@@ -373,15 +372,15 @@ public class ReservistsAllController implements ControlledScene {
         MilitaryOblikKhPIMain.showStage(AllStageSettings.employeeAdd, currentStage, this, null);
     }
 
-    @Autowired
-    DataPreparer dataPreparer;
-
-    @Autowired
-    D05DataCollectService d05DataCollectService;
     @FXML
     private void handlePrintDodatok05Button() {
         System.out.println("handlePrintDodatok05Button");
         ObservableList<ReservistAdapter> listToSave = reservistsTableView.getItems();
-        (new DataWriteService(dataPreparer,d05DataCollectService)).writeDataToExcelBase(listToSave);
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Текстові файли (*.xlsx)", "*.xlsx");
+        fileChooser.getExtensionFilters().add(extFilter);
+        File selectedFile = fileChooser.showSaveDialog(new Stage());
+
+        dataWriteService.writeDataToExcelBase(listToSave, selectedFile);
     }
 }

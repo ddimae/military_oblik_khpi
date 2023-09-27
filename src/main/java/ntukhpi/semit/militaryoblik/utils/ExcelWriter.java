@@ -4,42 +4,45 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Component
 public class ExcelWriter {
 
-    public void writeExcel(String[][] data) {
-        String resultsPath = "docs/results/d1_" + LocalDate.now().format(DateTimeFormatter.ISO_DATE) + ".xlsx";
+    public void writeExcel(List<String[][]> data, File file) {
+        String resultsPath = file.getPath();
         String templatePath = "docs/templates/post1487_2022d5template.xlsx";
 
         try (FileInputStream fis = new FileInputStream(templatePath);
              Workbook workbook = new XSSFWorkbook(fis)) {
+            createSheets(data, workbook);
 
-            Sheet sheet = workbook.getSheetAt(0); // Отримуємо перший аркуш (індекс 0)
-            CellStyle wrapStyle = getCellStyle(workbook);
+            for (int i = 0; i < data.size(); i++) {
+                Sheet sheet = workbook.getSheetAt(i); // Отримуємо вказаний аркуш
+                CellStyle wrapStyle = getCellStyle(workbook);
 
-            // Знаходимо останній номер рядка
-            int lastRowNum = sheet.getLastRowNum();
-            int num = 1;
-            for (String[] tableData : data) {
-                Row newRow = sheet.createRow(lastRowNum);
-                tableData[0] = Integer.toString(num);
-                num++;
-                for (int cellNum = 0; cellNum < tableData.length; cellNum++) {
-                    Cell cell = newRow.createCell(cellNum);
-                    if (tableData[cellNum] != null) {
-                        cell.setCellValue(tableData[cellNum]);
-                    } else {
-                        cell.setCellValue("");
+                // Знаходимо останній номер рядка
+                int lastRowNum = sheet.getLastRowNum();
+                int num = 1;
+                for (String[] tableData : data.get(i)) {
+                    Row newRow = sheet.createRow(lastRowNum);
+                    tableData[0] = Integer.toString(num);
+                    num++;
+                    for (int cellNum = 0; cellNum < tableData.length; cellNum++) {
+                        Cell cell = newRow.createCell(cellNum);
+                        if (tableData[cellNum] != null) {
+                            cell.setCellValue(tableData[cellNum]);
+                        } else {
+                            cell.setCellValue("");
+                        }
+                        cell.setCellStyle(wrapStyle);
                     }
-                    cell.setCellStyle(wrapStyle);
+                    lastRowNum = lastRowNum + 1;
                 }
-                lastRowNum = lastRowNum + 1;
             }
 
             // Зберігаємо змінений документ у файл
@@ -51,9 +54,21 @@ public class ExcelWriter {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
+    //створення додаткових листів
+    private void createSheets(List<String[][]> data, Workbook workbook) {
+        for (int i = 0; i < data.size(); i++) {
+            if (i == 0) {
+                workbook.setSheetName(i, data.get(i)[0][12]);
+            } else {
+                workbook.cloneSheet(0);
+                workbook.setSheetName(i, data.get(i)[0][12]);
+            }
+        }
+    }
+
+    //створення комірок
     private CellStyle getCellStyle(Workbook workbook) {
         CellStyle wrapStyle = workbook.createCellStyle();
         Font font = workbook.createFont();

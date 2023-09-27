@@ -11,7 +11,6 @@ import jakarta.persistence.*;
 @Table(name = "fakult")
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 public class Fakultet {
 
@@ -90,6 +89,21 @@ public class Fakultet {
     //Скорочене найменування new
     @Column(length = 10, name = "abr_new")
     private String abrNew;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Fakultet fakultet = (Fakultet) o;
+
+        return fname.equals(fakultet.fname);
+    }
+
+    @Override
+    public int hashCode() {
+        return fname.hashCode();
+    }
 
     @Override
     public String toString() {

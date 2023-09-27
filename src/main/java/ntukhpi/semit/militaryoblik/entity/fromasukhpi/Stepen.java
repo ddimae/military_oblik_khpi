@@ -24,6 +24,20 @@ public class Stepen {
     @Column(name="okp_id_nstep")
     private Integer okpIdNaukStepen;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Stepen stepen = (Stepen) o;
+
+        return stepenName.equals(stepen.stepenName);
+    }
+
+    @Override
+    public int hashCode() {
+        return stepenName.hashCode();
+    }
 
     @Override
     public String toString() {
