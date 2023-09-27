@@ -1,10 +1,14 @@
 */*.label, .button,.text-field, .password-field*/
 {
-    -fx-font-size: 14;
+    -fx-font-size: 18;
 }
 
 .table-column {
     -fx-alignment: center;
+}
+
+.column-0 {
+    -fx-alignment: center-left;
 }
 
 .obligatory-field

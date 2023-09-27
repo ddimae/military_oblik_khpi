@@ -3,7 +3,6 @@ package ntukhpi.semit.militaryoblik.adapters;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import ntukhpi.semit.militaryoblik.entity.MilitaryPerson;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 
@@ -42,6 +41,10 @@ public class ReservistAdapter {
     private String vPrydatnist;
     private String vSklad;
 
+    private String familyState;
+    private String educationLevel;
+
+
     public ReservistAdapter(String pib, String dr, String gender,
                             String trc, String rank, String vos,
                             String type, String category,
@@ -79,6 +82,9 @@ public class ReservistAdapter {
         this.vGrupa = militaryPerson.getVGrupa();
         this.vSklad = militaryPerson.getVSklad().getSkladName();
         this.vPrydatnist = militaryPerson.getVPrydatnist();
+
+        this.familyState = militaryPerson.getFamilyState();
+        this.educationLevel = militaryPerson.getEdicationLevel();
     }
 
     @Override

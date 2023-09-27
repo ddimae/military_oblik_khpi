@@ -61,7 +61,7 @@
                     <children>
                         <TableView fx:id="reservistsTableView" prefHeight="200.0" prefWidth="200.0" styleClass="table-column" stylesheets="@MOStyles.css" GridPane.columnIndex="1" GridPane.columnSpan="9" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.rowSpan="11" GridPane.valignment="CENTER">
                             <columns>
-                                <TableColumn fx:id="pibColumn" maxWidth="350.0" minWidth="-Infinity" prefWidth="300.0" resizable="false" sortable="false" style="-fx-alignment: left;" text="ПІБ" />
+                                <TableColumn fx:id="pibColumn" maxWidth="350.0" minWidth="-Infinity" prefWidth="300.0" resizable="false" sortable="false" text="ПІБ" styleClass="column-0"/>
                                 <TableColumn fx:id="drColumn" maxWidth="-Infinity" minWidth="120.0" prefWidth="150.0" resizable="false" sortable="false" text="ДР" />
                                 <TableColumn fx:id="genderColumn" maxWidth="100.0" minWidth="-Infinity" prefWidth="60.0" resizable="false" sortable="false" text="Стать" />
                                 <TableColumn fx:id="trcColumn" maxWidth="-Infinity" minWidth="250.0" prefWidth="250.0" resizable="false" sortable="false" text="Назва ТРЦ" />
