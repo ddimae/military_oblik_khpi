@@ -193,6 +193,8 @@ public class MilitaryRegistrationEditController implements ControlledScene {
     @FXML
     public void closeEdit(ActionEvent actionEvent) {
         MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
+        mainController.updateForm();
+
     }
 
     private boolean validateMilitaryRegistrationInfo(String vos, String category, String group, String sklad, String zvanie,
