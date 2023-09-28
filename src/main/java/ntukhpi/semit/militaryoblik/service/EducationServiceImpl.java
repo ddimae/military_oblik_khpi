@@ -31,6 +31,11 @@ public class EducationServiceImpl implements EducationService {
     }
 
     @Override
+    public Education getEducationByKey(Prepod p, VNZaklad vnz, String yearEnd) {
+        return educationRepository.findEducationByPrepodAndVnzAndYearVypusk(p,vnz,yearEnd);
+    }
+
+    @Override
     public List<Education> getAllEducation() {
         return educationRepository.findAll();
     }
@@ -57,8 +62,11 @@ public class EducationServiceImpl implements EducationService {
     }
 
     @Override
-    public Education getEducationByPrepodId(Long id) {
-        return educationRepository.findEducationByPrepodId(id);
+    public void deleteAllByPrepod(Prepod prep) {
+        List<Education> list = educationRepository.findAllByPrepod(prep);
+        for (Education eduItem: list) {
+            educationRepository.deleteById(eduItem.getId());
+        }
     }
 
     @Autowired

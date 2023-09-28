@@ -16,5 +16,7 @@ public interface PrepodService {
 
     Prepod getPrepodByExapmleWithDr(Prepod prepod);
 
+    Prepod getPrepodByExapmleFIO(Prepod prepod);
+
     void savePrepodToDB(List<Prepod> list);
 }

@@ -3,7 +3,6 @@ package ntukhpi.semit.militaryoblik.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import jakarta.persistence.*;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
@@ -15,7 +14,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 public class FamilyMember {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,26 +21,36 @@ public class FamilyMember {
     Long id;
 
     @ManyToOne
-    @JoinColumn(name = "prepod_id",nullable = false)
+    @JoinColumn(name = "prepod_id", nullable = false)
     private Prepod prepod;
 
-    @Column(length = 40)
-    private String mem_fam;
-    @Column(length = 30)
-    private String mem_imya;
-    @Column(length = 30)
-    private String mem_otch;
+    @Column(name = "mem_fam",length = 40)
+    private String memFam;
+    @Column(name = "mem_imya",length = 30)
+    private String memImya;
+    @Column(name = "mem_otch",length = 30)
+    private String memOtch;
 
     // Ступінь рідства
     // Обирається з переліку (фіксований)
     // чоловік; дружина; син; донька
     // Правільність вводу не контролюємо: чоловік Петрова, син Альона - проблема тих, хто вводить
-    @Column(name = "vid_ridstva", length = 10,nullable = false)
-    private String vid_ridstva;
+    @Column(name = "vid_ridstva", length = 10, nullable = false)
+    private String vidRidstva;
 
     //Рік народження - 4 цифри, перевіряємо програмно тільки факт вводу 4 цифри
-    @Column(name = "rik_narodz", length = 4,nullable = false)
+    @Column(name = "rik_narodz", length = 4)
     private String rikNarodz;
+
+    public FamilyMember(Prepod prepod, String memFam, String memImya, String memOtch,
+                        String vidRidstva, String rikNarodz) {
+        this.prepod = prepod;
+        this.memFam = memFam;
+        this.memImya = memImya;
+        this.memOtch = memOtch;
+        this.vidRidstva = vidRidstva;
+        this.rikNarodz = rikNarodz;
+    }
 
     //Одинакові члени родини - всі однакові поля, крім іd
 
@@ -55,21 +63,44 @@ public class FamilyMember {
         FamilyMember that = (FamilyMember) o;
 
         if (!prepod.equals(that.prepod)) return false;
-        if (!Objects.equals(mem_fam, that.mem_fam)) return false;
-        if (!Objects.equals(mem_imya, that.mem_imya)) return false;
-        if (!Objects.equals(mem_otch, that.mem_otch)) return false;
-        if (!vid_ridstva.equals(that.vid_ridstva)) return false;
-        return rikNarodz.equals(that.rikNarodz);
+        if (!Objects.equals(memFam, that.memFam)) return false;
+        if (!memImya.equals(that.memImya)) return false;
+        if (!Objects.equals(memOtch, that.memOtch)) return false;
+        if (!vidRidstva.equals(that.vidRidstva)) return false;
+        return Objects.equals(rikNarodz, that.rikNarodz);
     }
 
     @Override
     public int hashCode() {
         int result = prepod.hashCode();
-        result = 31 * result + (mem_fam != null ? mem_fam.hashCode() : 0);
-        result = 31 * result + (mem_imya != null ? mem_imya.hashCode() : 0);
-        result = 31 * result + (mem_otch != null ? mem_otch.hashCode() : 0);
-        result = 31 * result + vid_ridstva.hashCode();
-        result = 31 * result + rikNarodz.hashCode();
+        result = 31 * result + (memFam != null ? memFam.hashCode() : 0);
+        result = 31 * result + memImya.hashCode();
+        result = 31 * result + (memOtch != null ? memOtch.hashCode() : 0);
+        result = 31 * result + vidRidstva.hashCode();
+        result = 31 * result + (rikNarodz != null ? rikNarodz.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("");
+        //sb.append(prepod.getFam()).append(": ");
+        sb.append(vidRidstva).append(" - ");
+        if (memFam != null && memFam.length() > 0)
+            sb.append(memFam);
+        if (memImya != null && memImya.length() > 0)
+            sb.append(" ").append(memImya);
+        if (memOtch != null && memOtch.length() > 0)
+            sb.append(" ").append(memOtch);
+        if (rikNarodz!=null && rikNarodz.length()>0) {
+            if ((memFam != null && memFam.length() > 0) ||
+                    (memImya != null && memImya.length() > 0) ||
+                    (memOtch != null && memOtch.length() > 0)) {
+                sb.append(", ");
+            }
+                sb.append(rikNarodz).append(" р.н.");
+
+        }
+        return sb.toString();
     }
 }

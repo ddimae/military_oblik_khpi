@@ -18,6 +18,7 @@ public interface MilitaryPersonService {
 
     void deleteMilitaryPerson(Long id);
 
-    MilitaryPerson saveMilitaryInfo(Prepod prep, String voenkomatName, String vzvanieName, String skladName,
-                          String vos, int category, String grupaObliku, String pridatnist, String reserv);
+    MilitaryPerson saveMilitaryInfo(Prepod prep, String voenkomatName, String vzvanieName, String vskladName,
+                                    String vos, int vCategory, String grupaObliku, String pridatnist, String reserv,
+                                    String osvitaLevel, String familyState);
 }

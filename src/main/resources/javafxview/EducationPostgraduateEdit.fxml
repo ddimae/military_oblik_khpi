@@ -46,7 +46,7 @@
                 <ComboBox fx:id="typeComboBox" prefHeight="40.0" prefWidth="400.0" promptText="--Оберіть вид" styleClass="obligatory-field" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1" />
                 <ComboBox fx:id="vnzComboBox" prefHeight="40.0" prefWidth="400.0" promptText="--Оберіть ВНЗ" styleClass="obligatory-field" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" />
                 <TextField fx:id="yearTextField" prefHeight="40.0" prefWidth="212.0" promptText="ХХХХ" styleClass="obligatory-field" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                <Label fx:id="pibLabel" alignment="CENTER" prefHeight="23.0" prefWidth="382.0" text="ПІБ" GridPane.columnIndex="2" GridPane.columnSpan="2">
+                <Label fx:id="pibLabel" styleClass="pib-field" alignment="CENTER" prefHeight="23.0" prefWidth="382.0" text="ПІБ" GridPane.columnIndex="2" GridPane.columnSpan="2">
                     <font>
                         <Font size="18.0" />
                     </font>

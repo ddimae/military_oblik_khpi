@@ -25,8 +25,8 @@ public class FamilyAdapter {
     }
 
     public FamilyAdapter(FamilyMember f) {
-        this(f.getId(), f.getMem_fam(), f.getMem_imya(), f.getMem_otch(),
-                f.getVid_ridstva(), f.getRikNarodz());
+        this(f.getId(), f.getMemFam(), f.getMemImya(), f.getMemOtch(),
+                f.getVidRidstva(), f.getRikNarodz());
     }
 
     public String getFullPib() {

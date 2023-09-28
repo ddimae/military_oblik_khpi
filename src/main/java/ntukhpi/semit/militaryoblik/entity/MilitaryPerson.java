@@ -8,7 +8,6 @@ import lombok.ToString;
 import jakarta.persistence.*;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @Entity
 @Table(name = "military_person")
@@ -87,5 +86,32 @@ public class MilitaryPerson {
     //Освіта  - повна вища (за замовченням), вища спеціальна, вища неповна, середня
     // та ще такі, які ми не знаємо). Вводимо як текст, правильність не перевіряти
     @Column(name = "edication_level")
-    private String edicationLevel;
+    private String educationLevel;
+
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("MilitaryPerson ");
+        sb.append(id).append(":\n");
+        sb.append(prepod);
+        sb.append(System.lineSeparator()).append("Дані обліку:").append(System.lineSeparator());
+        sb.append(vos).append(System.lineSeparator());
+        if (vCategory != null) {
+            sb.append(vCategory).append(System.lineSeparator());
+        }
+        sb.append(vGrupa).append(System.lineSeparator());
+        if (vSklad != null) {
+            sb.append(vSklad.getSkladName()).append(System.lineSeparator());
+        }
+        if (vZvanie != null) {
+            sb.append(vZvanie.getZvanieName()).append(System.lineSeparator());
+        }
+        if (voenkomat != null) {
+            sb.append(voenkomat.getVoenkomatName()).append(System.lineSeparator());
+        }
+        sb.append(vPrydatnist).append(System.lineSeparator());
+        sb.append(familyState).append(System.lineSeparator());
+        sb.append(educationLevel).append(System.lineSeparator());
+        return sb.toString();
+    }
 }

@@ -3,15 +3,12 @@ package ntukhpi.semit.militaryoblik.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Country;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.RegionKharkiv;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.RegionUkraine;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
 
 // После определенных раздумий данная таблица превратилась в таблицу КОНТАКТЫ по сути
 // В план на изменение, но не сейчас
@@ -20,7 +17,6 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 public class PersonalData {
 
     @Id
@@ -69,7 +65,7 @@ public class PersonalData {
     //===============================
     @ManyToOne
     @JoinColumn(name = "country_id_fact")
-    private Country country_fact;
+    private Country factСountry;
 
     @ManyToOne
     @JoinColumn(name = "oblast_id_fact")
@@ -97,8 +93,55 @@ public class PersonalData {
     @Column(name = "phone_dop",length = 13)
     private String phoneDop;
 
+    public PersonalData(Prepod prepod, String city, String rowAddress, String factCity, String factRowAddress) {
+        this.prepod = prepod;
+        this.city = city;
+        this.rowAddress = rowAddress;
+        this.factCity = factCity;
+        this.factRowAddress = factRowAddress;
+        this.phoneMain = "+380577004033";
+    }
+
+    public PersonalData(Prepod prepod, Country country, RegionUkraine oblastUA, String city, String rowAddress,
+                                       Country country_fact, RegionUkraine factOblastUA, String factCity, String factRowAddress) {
+        this.prepod = prepod;
+        this.country = country;
+        this.oblastUA = oblastUA;
+        this.city = city;
+        this.rowAddress = rowAddress;
+        this.factСountry = country_fact;
+        this.factOblastUA = factOblastUA;
+        this.factCity = factCity;
+        this.factRowAddress = factRowAddress;
+        this.phoneMain = "+380577004033";
+    }
 
 
-
-
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Адреса:").append(System.lineSeparator());
+        sb.append("Адреса прописки: ");
+        if (country!=null) {
+            sb.append(country);
+        }
+        if (oblastUA!=null) {
+            sb.append(" ").append(oblastUA);
+        }
+        sb.append(" ").append(city);
+        sb.append(", ").append(rowAddress).append(System.lineSeparator());
+        sb.append("Адреса фактичного мешкання: ");
+        if (country!=null) {
+            sb.append(factСountry);
+        }
+        if (oblastUA!=null) {
+            sb.append(" ").append(factOblastUA);
+        }
+        sb.append(" ").append(factCity);
+        sb.append(", ").append(factRowAddress).append(System.lineSeparator());
+        sb.append("Контакти: ").append(phoneMain);
+        if (phoneDop!=null) {
+            sb.append(" ").append(phoneDop);
+        }
+        return sb.toString();
+    }
 }

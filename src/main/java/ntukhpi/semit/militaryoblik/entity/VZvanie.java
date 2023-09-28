@@ -32,4 +32,6 @@ public class VZvanie {
     public String getSkladName() {
         return kodSkladu == 1 ? "Офіцерський склад" : "Рядовий та сержантський склад";
     }
+
+
 }

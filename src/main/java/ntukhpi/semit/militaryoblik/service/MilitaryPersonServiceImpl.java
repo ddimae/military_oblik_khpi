@@ -65,7 +65,8 @@ public class MilitaryPersonServiceImpl implements MilitaryPersonService {
 
     @Override
     public MilitaryPerson saveMilitaryInfo(Prepod prep, String voenkomatName, String vzvanieName, String vskladName,
-                                 String vos, int vCategory, String grupaObliku, String pridatnist, String reserv) {
+                                           String vos, int vCategory, String grupaObliku, String pridatnist, String reserv,
+                                           String osvitaLevel, String familyState) {
         MilitaryPerson militaryPersonToSave = new MilitaryPerson();
         Voenkomat voenkomat = voenkomatServiceImpl.getVoenkomatByName(voenkomatName);
         VZvanie vZvanie = vzvanieServiceImpl.getVzvanieByName(vzvanieName);
@@ -79,6 +80,8 @@ public class MilitaryPersonServiceImpl implements MilitaryPersonService {
         militaryPersonToSave.setVGrupa(grupaObliku);
         militaryPersonToSave.setVPrydatnist(pridatnist);
         militaryPersonToSave.setReserv(reserv);
+        militaryPersonToSave.setEducationLevel(osvitaLevel);
+        militaryPersonToSave.setFamilyState(familyState);
         return createMilitaryPerson(militaryPersonToSave);
     }
 }

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Table(name = "education")
@@ -49,9 +50,12 @@ public class Education {
 
     //Форма навчання - денна або заочна
     //Обирається з переліку (фіксований)
+    @Column(name = "form_training")
+    @ColumnDefault(value = "Денна")
     private String formTraining;
     //Рівень навчання - бакалавр, магістр, спеціаліст
     //Обирається з переліку (фіксований)
+    @Column(name = "level_training")
     private String levelTraining;
 
     //Однаковим вважати записи, в яких співпадає Препод, ВНЗ та рік
@@ -76,19 +80,19 @@ public class Education {
         return result;
     }
 
-
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("");
         sb.append(yearVypusk).append(" - ").append(vnz.getVnzShortName());
-        if (diplomaSpeciality!=null) sb.append(", ").append(diplomaSpeciality);
-        if (diplomaNumber!=null) {
+        if (diplomaSpeciality!=null&&diplomaSpeciality.length()>0) sb.append(", ").append(diplomaSpeciality);
+        if (diplomaNumber!=null&&diplomaNumber.length()>0) {
             sb.append(" (");
-            if (diplomaSeries!=null) sb.append(diplomaSeries);
-            sb.append(" #").append(diplomaNumber);
+            if (diplomaSeries!=null&&diplomaSeries.length()>0) sb.append(diplomaSeries);
+            sb.append(" №").append(diplomaNumber);
             sb.append(")");
         }
 
         return sb.toString();
     }
+
 }

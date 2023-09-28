@@ -101,6 +101,13 @@ public class PrepodServiceImpl implements PrepodService {
     }
 
     @Override
+    public Prepod getPrepodByExapmleFIO(Prepod prepod) {
+        return prepodRepository.getPrepodByFamAndImyaAndOtch(prepod.getFam(),
+                prepod.getImya(), prepod.getOtch());
+    }
+
+
+    @Override
     //Метод для простого оновлення таблиці Prepod, наприклад із бд нту хпі
     //Якщо робити заповнення більш детальне, то треба "заглиблюватися" в структуру таблиць бази даних,
     //щоб врахувати, яку і куда інфу треба розпихати

@@ -3,9 +3,6 @@
 <?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -341,10 +338,7 @@
                                 <Insets bottom="20.0" top="20.0" />
                             </GridPane.margin>
                         </Label>
-                        <Label fx:id="pibLabel" alignment="CENTER" prefWidth="330.0" text="ПІБ">
-                            <font>
-                                <Font size="18.0" />
-                            </font>
+                        <Label fx:id="pibLabel" styleClass="pib-field" alignment="CENTER" prefWidth="330.0" text="ПІБ">
                         </Label>
                         <Separator orientation="VERTICAL" prefHeight="200.0">
                             <GridPane.margin>
