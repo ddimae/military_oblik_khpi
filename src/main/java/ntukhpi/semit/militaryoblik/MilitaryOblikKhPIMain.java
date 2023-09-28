@@ -97,6 +97,7 @@ public class MilitaryOblikKhPIMain extends Application {
             if (currentStage != null)
                 currentStage.hide();
         } catch (Exception exception) {
+            exception.printStackTrace();
             System.err.println("Помилка створення форми " + settings.getFxmlName());
         }
 

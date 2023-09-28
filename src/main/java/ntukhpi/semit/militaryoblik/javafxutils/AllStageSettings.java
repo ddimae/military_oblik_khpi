@@ -49,10 +49,10 @@ public final class AllStageSettings {
 
     //============================
 
-    private final static String CONTACT_INFO_JAVAFX = "/javafxview/ContactsEdit.fxml";
-    private final static String CONTACT_INFO_JAVAFX_TITLE = "Контактна інформація";
-    public final static SettingsStage contactInfoEdit =
-                        new SettingsStage(CONTACT_INFO_JAVAFX, CONTACT_INFO_JAVAFX_TITLE,
+    private final static String CONTACTS_EDIT_JAVAFX = "/javafxview/ContactsEdit.fxml";
+    private final static String CONTACTS_EDIT_JAVAFX_TITLE = "Контактна інформація";
+    public final static SettingsStage contactsEdit =
+                        new SettingsStage(CONTACTS_EDIT_JAVAFX, CONTACTS_EDIT_JAVAFX_TITLE,
                                 0, 0, false, false);
     //============================
 
@@ -77,7 +77,7 @@ public final class AllStageSettings {
 
     public static SettingsStage militaryOblikSettings =
             new SettingsStage(MILITARY_OBLIK_LIST_JAVAFX, MILITARY_OBLIK_LIST_JAVAFX_TITLE,
-                    1500, 720, true, false);
+                    1500, 720, false, false);
 
     //============================
 
