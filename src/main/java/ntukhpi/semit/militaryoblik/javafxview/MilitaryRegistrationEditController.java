@@ -267,7 +267,7 @@ public class MilitaryRegistrationEditController implements ControlledScene {
             militaryPerson.setVPrydatnist(prydatnist);
             militaryPerson.setVoenkomat(voenkomatService.getVoenkomatByName(voenkomat));
             militaryPerson.setFamilyState(familyState);
-            militaryPerson.setEdicationLevel(educationLevel);
+            militaryPerson.setEducationLevel(educationLevel);
 
             militaryPersonService.updateMilitaryPerson(militaryPerson.getId(), militaryPerson);
 

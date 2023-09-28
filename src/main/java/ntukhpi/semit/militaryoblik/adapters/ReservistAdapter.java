@@ -84,7 +84,7 @@ public class ReservistAdapter {
         this.vPrydatnist = militaryPerson.getVPrydatnist();
 
         this.familyState = militaryPerson.getFamilyState();
-        this.educationLevel = militaryPerson.getEdicationLevel();
+        this.educationLevel = militaryPerson.getEducationLevel();
     }
 
     @Override
