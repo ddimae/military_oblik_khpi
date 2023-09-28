@@ -17,12 +17,12 @@ public class VNZaklad {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vnz_id")
     private Long id;
-
-    @Column(name="vnz_name",nullable = false,unique = true)
+    @Column(length = 10, name="vnz_short_name",nullable = false,unique = true)
+    private String vnzShortName;
+    @Column(name="vnz_name")
     private String vnzName;
 
-    @Column(length = 10, name="vnz_short_name",unique = true)
-    private String vnzShortName;
+
 
     @Override
     public boolean equals(Object o) {

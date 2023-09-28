@@ -21,7 +21,7 @@ public class TextFieldValidator {
     public void validate() throws Exception {
         boolean isBlank = textField == null || textField.isBlank();
 
-        if ((isBlank || isBlank) && isNecessary)
+            if (isBlank && isNecessary)
             throw new Exception("\"" + fieldName + "\" є обов'язковим полем");
 
         if (!isBlank && regex != null && !regex.matcher(textField).matches())

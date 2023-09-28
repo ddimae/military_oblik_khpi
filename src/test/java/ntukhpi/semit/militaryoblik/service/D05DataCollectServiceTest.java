@@ -16,9 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -133,10 +131,10 @@ class D05DataCollectServiceTest {
 
     private FamilyMember generateFamilyMember(int count) {
         FamilyMember familyMember = new FamilyMember();
-        familyMember.setVid_ridstva("рідство" + count);
-        familyMember.setMem_fam("прізвище" + count);
-        familyMember.setMem_imya("ім’я" + count);
-        familyMember.setMem_otch("по батькові" + count);
+        familyMember.setVidRidstva("рідство" + count);
+        familyMember.setMemFam("прізвище" + count);
+        familyMember.setMemImya("ім’я" + count);
+        familyMember.setMemOtch("по батькові" + count);
         familyMember.setRikNarodz("199" + count);
         familyMember.setPrepod(generatePrepodForMock());
         return familyMember;

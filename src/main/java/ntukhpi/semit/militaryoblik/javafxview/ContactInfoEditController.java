@@ -201,7 +201,7 @@ public class ContactInfoEditController implements ControlledScene {
         }
 
         Country country = personalData.getCountry();
-        Country countryFact = personalData.getCountry_fact();
+        Country countryFact = personalData.getFactСountry();
         RegionUkraine region = personalData.getOblastUA();
         RegionUkraine regionFact = personalData.getFactOblastUA();
 
@@ -369,7 +369,7 @@ public class ContactInfoEditController implements ControlledScene {
                 personalData.setOblastUA(null);
 
             if (equalRadioButton.isSelected()) {
-                personalData.setCountry_fact(countryService.getCountryByName(country));
+                personalData.setFactСountry(countryService.getCountryByName(country));
                 personalData.setFactPostIndex(index);
                 personalData.setFactCity(city);
                 personalData.setFactRowAddress(address);
@@ -378,7 +378,7 @@ public class ContactInfoEditController implements ControlledScene {
                 else
                     personalData.setFactOblastUA(null);
             } else {
-                personalData.setCountry_fact(countryService.getCountryByName(countryFact));
+                personalData.setFactСountry(countryService.getCountryByName(countryFact));
                 personalData.setFactPostIndex(indexFact);
                 personalData.setFactCity(cityFact);
                 personalData.setFactRowAddress(addressFact);

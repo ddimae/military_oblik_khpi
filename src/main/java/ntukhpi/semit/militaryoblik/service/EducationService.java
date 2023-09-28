@@ -22,6 +22,8 @@ public interface EducationService {
 
     void deleteEducation(Long id);
 
+    void deleteAllByPrepod(Prepod prep);
+
 //   Найти ОДНО образование по PrepodID? А якщо 2 чи 3? метод витягу всіх вище!
 //   List<Education> getAllEducationByPrepod(Prepod prepod);
 //    Education getEducationByPrepodId(Long id);

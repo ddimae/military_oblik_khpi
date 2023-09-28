@@ -61,10 +61,13 @@ public class EducationServiceImpl implements EducationService {
         educationRepository.deleteById(id);
     }
 
-//    @Override
-//    public Education getEducationByPrepodId(Long id) {
-//        return educationRepository.findEducationByPrepodId(id);
-//    }
+    @Override
+    public void deleteAllByPrepod(Prepod prep) {
+        List<Education> list = educationRepository.findAllByPrepod(prep);
+        for (Education eduItem: list) {
+            educationRepository.deleteById(eduItem.getId());
+        }
+    }
 
     @Autowired
     private VNZakladRepository vnzakladRepository;

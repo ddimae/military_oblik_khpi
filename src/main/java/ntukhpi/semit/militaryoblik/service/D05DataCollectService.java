@@ -100,10 +100,10 @@ public class D05DataCollectService {
         family.append(person.getFamilyState() != null ? person.getFamilyState() + ";" : "").append("\n");
         for (FamilyMember member : members) {
             if (member != null) {
-                family.append(member.getVid_ridstva() != null ? member.getVid_ridstva() : "").append(" - ");
-                family.append(member.getMem_fam() != null ? member.getMem_fam() : "");
-                family.append(member.getMem_imya() != null ? " " + member.getMem_imya() : "");
-                family.append(member.getMem_otch() != null ? " " + member.getMem_otch() : "");
+                family.append(member.getVidRidstva() != null ? member.getVidRidstva() : "").append(" - ");
+                family.append(member.getMemFam() != null ? member.getMemFam() : "");
+                family.append(member.getMemImya() != null ? " " + member.getMemImya() : "");
+                family.append(member.getMemOtch() != null ? " " + member.getMemOtch() : "");
                 family.append(member.getRikNarodz() != null ? ", " + member.getRikNarodz() + "р.н." : "").append("; ");
             }
         }

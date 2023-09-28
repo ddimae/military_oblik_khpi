@@ -232,7 +232,7 @@ public class DBTest {
     void saveMilitaryPerson() {
         Prepod prep = prepodServiceImpl.getPrepodById(5l);
         militaryPersonServiceImpl.saveMilitaryInfo(prep, "Шевченківський РТЦК та СП", "полковник", "командний",
-                "530200", 1, "військовозобов\'язаний", "придатний", "немає");
+                "530200", 1, "військовозобов\'язаний", "придатний", "немає", "повна вища","одружений");
 
     }
 

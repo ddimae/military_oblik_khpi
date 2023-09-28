@@ -15,7 +15,6 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 public class Document {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,7 +41,7 @@ public class Document {
     // - закордонний паспорт FR444328
     // - посвідчення особи офіцера KK #732843
     //тобто користувач має ввести або 2 букви та 6 цифр, або 9 цифр ИД картки - це контролювати
-    @Column(name = "doc_number", length = 10, nullable = false)
+    @Column(name = "doc_number", length = 10, nullable = false,unique = true)
     private String docNumber;
 
     //дата видачі документа
@@ -62,10 +61,27 @@ public class Document {
 
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Document document = (Document) o;
+
+        return docNumber.equals(document.docNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return docNumber.hashCode();
+    }
+
+    @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("");
         sb.append(docType).append(": ").append(docNumber);
         sb.append(", виданий ").append(ktoVyd).append("  ").append(dataVyd);
         return sb.toString();
     }
+
+
 }

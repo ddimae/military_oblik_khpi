@@ -11,6 +11,8 @@ public interface FamilyMemberService {
 
     FamilyMember getFamilyMemberById(Long id);
 
+    FamilyMember getFamilyMemberByExample(FamilyMember fm);
+
     List<FamilyMember> getAllFamilyMember();
 
     List<FamilyMember> getAllFamilyMembersByPrepod(Prepod prepod);
@@ -18,4 +20,6 @@ public interface FamilyMemberService {
     FamilyMember updateFamilyMember(Long id, FamilyMember updatedFamilyMember);
 
     void deleteFamilyMember(Long id);
+
+    void deleteAllByPrepod(Prepod prep);
 }

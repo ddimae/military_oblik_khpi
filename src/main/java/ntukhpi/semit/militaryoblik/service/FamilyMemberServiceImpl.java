@@ -29,6 +29,16 @@ public class FamilyMemberServiceImpl implements FamilyMemberService {
     }
 
     @Override
+    public FamilyMember getFamilyMemberByExample(FamilyMember fm) {
+        return familyMemberRepository
+                .findFamilyMemberByPrepodAndMemFamAndMemImyaAndMemOtchAndVidRidstvaAndRikNarodz(
+                        fm.getPrepod(),
+                        fm.getMemFam(), fm.getMemImya(), fm.getMemOtch(),
+                        fm.getVidRidstva(), fm.getRikNarodz()
+                );
+    }
+
+    @Override
     public List<FamilyMember> getAllFamilyMember() {
         return familyMemberRepository.findAll();
     }
@@ -53,4 +63,14 @@ public class FamilyMemberServiceImpl implements FamilyMemberService {
     public void deleteFamilyMember(Long id) {
         familyMemberRepository.deleteById(id);
     }
+
+    @Override
+    public void deleteAllByPrepod(Prepod prep) {
+        List<FamilyMember> list = familyMemberRepository.findAllByPrepod(prep);
+        for (FamilyMember fm: list) {
+            familyMemberRepository.deleteById(fm.getId());
+        }
+    }
+
+
 }

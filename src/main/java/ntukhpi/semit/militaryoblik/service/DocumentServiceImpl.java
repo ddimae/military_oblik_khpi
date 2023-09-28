@@ -3,6 +3,7 @@ package ntukhpi.semit.militaryoblik.service;
 import ntukhpi.semit.militaryoblik.entity.Document;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.repository.DocumentRepository;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Service
 public class DocumentServiceImpl implements DocumentService {
+
 
     private final DocumentRepository documentRepository;
 
@@ -57,5 +59,18 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public List<Document> getDocumentsByPrepodId(Long id) {
         return documentRepository.findAllByPrepodId(id);
+    }
+
+    @Override
+    public Document getDocumentByExample(Document docToFind) {
+        return documentRepository.findDocumentByDocNumber(docToFind.getDocNumber());
+    }
+
+    @Override
+    public void deleteDocumentsByPrepod(Prepod prep) {
+        List<Document> list = documentRepository.findAllByPrepodId(prep.getId());
+        for (Document doc: list) {
+            documentRepository.deleteById(doc.getId());
+        }
     }
 }

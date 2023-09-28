@@ -10,4 +10,8 @@ import java.util.List;
 @Repository
 public interface FamilyMemberRepository extends JpaRepository<FamilyMember, Long> {
     List<FamilyMember> findAllByPrepod(Prepod prepod);
+
+    FamilyMember findFamilyMemberByPrepodAndMemFamAndMemImyaAndMemOtchAndVidRidstvaAndRikNarodz(
+            Prepod prep, String fam, String imya, String otch, String vidRistva, String rikNarodz
+    );
 }

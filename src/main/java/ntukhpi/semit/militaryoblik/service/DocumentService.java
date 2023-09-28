@@ -20,4 +20,8 @@ public interface DocumentService {
     void deleteDocument(Long id);
 
     List<Document> getDocumentsByPrepodId(Long id);
+
+    Document getDocumentByExample(Document docToFind);
+
+    void deleteDocumentsByPrepod(Prepod prepInDB);
 }

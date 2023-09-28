@@ -92,6 +92,9 @@ public class Prepod {
     @OneToOne(fetch = FetchType.EAGER, mappedBy = "prepod")
     private CurrentDoljnostInfo posadaNakazy;
 
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "prepod")
+    private PersonalData contacts;
+
 
     public Prepod(String fam, String imya, String otch,
                   Kafedra kafedra, Dolghnost dolghnost, Zvanie zvanie, Stepen stepen, String email) {
@@ -162,6 +165,10 @@ public class Prepod {
         educationList.remove(education);
     }
 
+    public void delEducationList() {
+        educationList.clear();
+    }
+
     //Для даних про навчання в аспірантурі (адюнктурі) та докторантурі
     public Set<EducationPostgraduate> getEducationPostList() {
         return Collections.unmodifiableSet(educationPostList);
@@ -173,6 +180,10 @@ public class Prepod {
 
     public void delEducationPost(EducationPostgraduate education) {
         educationPostList.remove(education);
+    }
+
+    public void delEducationPostList() {
+        educationPostList.clear();
     }
 
     //Для даних про документи
@@ -224,7 +235,7 @@ public class Prepod {
         if (zvanie != null) sb.append(", ").append(zvanie.getZvanieName());
         if (stepen != null) sb.append(", ").append(stepen);
         sb.append(") ").append(System.lineSeparator());
-        sb.append("Family:");
+        sb.append("Family: ");
         if (family == null) {
             sb.append("немає даних").append(System.lineSeparator());
         } else {
@@ -233,7 +244,7 @@ public class Prepod {
             }
         }
         sb.append(System.lineSeparator());
-        sb.append("Education:");
+        sb.append("Education: ");
         if (educationList == null) {
             sb.append("немає даних").append(System.lineSeparator());
         } else {
@@ -242,12 +253,12 @@ public class Prepod {
             }
         }
         sb.append(System.lineSeparator());
-        sb.append("PostGraduate Education:");
+        sb.append("PostGraduate Education: ");
         if (educationPostList == null) {
             sb.append("немає даних").append(System.lineSeparator());
         }
         sb.append(System.lineSeparator());
-        sb.append("Documents:");
+        sb.append("Documents: ");
         if (documents == null) {
             sb.append("немає даних").append(System.lineSeparator());
         } else {
@@ -259,6 +270,10 @@ public class Prepod {
         if (posadaNakazy != null)
             sb.append("Призначений: наказ #").append(posadaNakazy.getNumNakazStart())
                     .append(" від ").append(posadaNakazy.getDateStart());
+        sb.append(System.lineSeparator());
+        sb.append("Contacts: ");
+        if (contacts != null)
+            sb.append(contacts);
         return sb.toString();
     }
 }

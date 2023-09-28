@@ -13,4 +13,6 @@ public interface PersonalDataService {
     PersonalData updatePersonalData(PersonalData updatedPersonalData);
 
     PersonalData getPersonalDataByPrepodId(Long id);
+
+    void deletePersonalData(Long id);
 }

@@ -100,10 +100,10 @@ public class FamilyCompositionEditController implements ControlledScene {
             FamilyMember newMember = new FamilyMember();
 
             newMember.setPrepod(selectedPrepod);
-            newMember.setVid_ridstva(vidRidstva);
-            newMember.setMem_fam(surname);
-            newMember.setMem_imya(name);
-            newMember.setMem_otch(patronimic);
+            newMember.setVidRidstva(vidRidstva);
+            newMember.setMemFam(surname);
+            newMember.setMemImya(name);
+            newMember.setMemOtch(patronimic);
             newMember.setRikNarodz(year);
 
             if (selectedMember == null)

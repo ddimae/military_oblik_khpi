@@ -42,4 +42,9 @@ public class PersonalDataServiceImpl implements PersonalDataService {
     public PersonalData getPersonalDataByPrepodId(Long id) {
         return personalDataRepository.findPersonalDataByPrepodId(id);
     }
+
+    @Override
+    public void deletePersonalData(Long id) {
+        personalDataRepository.deleteById(id);
+    }
 }
