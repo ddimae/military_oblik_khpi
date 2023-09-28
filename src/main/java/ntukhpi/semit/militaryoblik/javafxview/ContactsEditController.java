@@ -238,15 +238,15 @@ public class ContactsEditController implements ControlledScene {
 //        System.out.println(cityTextField.getText() == cityFactTextField.getText());
 //        System.out.println(regionComboBox.getValue() == regionFactComboBox.getValue());
 //        System.out.println(addressTextField.getText() == addressFactTextField.getText());
-//
-//        if (countryComboBox.getValue() == countryFactComboBox.getValue() &&
-//            indexTextField.getText() == indexFactTextField.getText() &&
-//            cityTextField.getText() == cityFactTextField.getText() &&
-//            regionComboBox.getValue() == regionFactComboBox.getValue() &&
-//            addressTextField.getText() == addressFactTextField.getText()) {
-//                equalRadioButton.setSelected(true);
-//                handleEqualRadioButton(null);
-//        }
+
+        if (((countryComboBox.getValue() != null && countryComboBox.getValue().equals(countryFactComboBox.getValue())) || countryComboBox.getValue() == countryFactComboBox.getValue()) &&
+            ((indexTextField.getText() != null && indexTextField.getText().equals(indexFactTextField.getText())) || indexTextField.getText() == indexFactTextField.getText()) &&
+            ((cityTextField.getText() != null && cityTextField.getText().equals(cityFactTextField.getText())) || cityTextField.getText() == cityFactTextField.getText()) &&
+            ((regionComboBox.getValue() != null && regionComboBox.getValue().equals(regionFactComboBox.getValue())) || regionComboBox.getValue() == regionFactComboBox.getValue()) &&
+            ((addressTextField.getText() != null && addressTextField.getText().equals(addressFactTextField.getText()))) || addressTextField.getText() == addressFactTextField.getText()) {
+                equalRadioButton.setSelected(true);
+                handleEqualRadioButton(null);
+        }
 
         handleChangeCountry(null);
     }
