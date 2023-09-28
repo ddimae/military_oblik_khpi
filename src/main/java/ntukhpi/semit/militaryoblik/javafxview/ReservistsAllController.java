@@ -209,6 +209,29 @@ public class ReservistsAllController implements ControlledScene {
         return selectedReservist;
     }
 
+    public void updateForm() {
+        reservistsList.clear();
+
+        for (Prepod prepod : prepodServiceImpl.getAllPrepod()) {
+            MilitaryPerson mp = militaryPersonServiceImpl.getMilitaryPersonByPrepod(prepod);
+            if (mp != null)
+                reservistsList.add(new ReservistAdapter(mp));
+        }
+
+        updateTable(reservistsList);
+
+        if (tckComboBox.getValue() != null) {
+            String selectedTCK = tckComboBox.getValue();
+
+            ObservableList<String> tckOptions = FXCollections.observableArrayList("-Оберіть ТЦК");
+            tckOptions.addAll(voenkomatServiceImpl.getAllVoenkomat()
+                    .stream().map(Voenkomat::getVoenkomatName).sorted().toList());
+            tckComboBox.setItems(tckOptions);
+
+            tckComboBox.getSelectionModel().select(selectedTCK);
+        }
+    }
+
     public static Long getSelectedPrepodId() {
         return selectedReservist.getId();
     }
