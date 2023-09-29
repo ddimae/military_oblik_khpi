@@ -127,7 +127,7 @@ public class EducationPostgraduateEditController implements ControlledScene {
     }
 
     private ObservableList<VNZaklad> getAllVNZ() {
-        return FXCollections.observableArrayList(educationPostgraduateService.getAllVNZ());
+        return FXCollections.observableArrayList(vnZakladService.getAllVNZaklad());
     }
 
     @FXML

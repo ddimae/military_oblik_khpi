@@ -56,11 +56,4 @@ public class EducationPostgraduateServiceImpl implements EducationPostgraduateSe
     public void deleteEducationPostgraduate(Long id) {
         educationPostgraduateRepository.deleteById(id);
     }
-
-    @Autowired
-    private VNZakladRepository vnzakladRepository;
-
-    public List<VNZaklad> getAllVNZ() {
-        return vnzakladRepository.findAll();
-    }
 }

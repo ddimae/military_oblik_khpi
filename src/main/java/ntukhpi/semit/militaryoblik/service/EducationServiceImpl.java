@@ -68,11 +68,4 @@ public class EducationServiceImpl implements EducationService {
             educationRepository.deleteById(eduItem.getId());
         }
     }
-
-    @Autowired
-    private VNZakladRepository vnzakladRepository;
-
-    public List<VNZaklad> getAllVNZ() {
-        return vnzakladRepository.findAll();
-    }
 }
