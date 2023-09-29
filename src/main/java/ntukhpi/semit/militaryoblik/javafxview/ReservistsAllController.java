@@ -26,8 +26,6 @@ import ntukhpi.semit.militaryoblik.utils.DataWriteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
-import java.util.List;
 import java.io.File;
 
 @Component
@@ -375,7 +373,7 @@ public class ReservistsAllController implements ControlledScene {
     void handleContactInfoButton(ActionEvent event) {
         ReservistAdapter reservist = setSelectedPrepodId();
         if (reservist != null) {
-            MilitaryOblikKhPIMain.showStage(AllStageSettings.contactInfoEdit, currentStage, this, reservist);
+            MilitaryOblikKhPIMain.showStage(AllStageSettings.contactsEdit, currentStage, this, reservist);
         } else
             Popup.noSelectedRowAlert();
     }

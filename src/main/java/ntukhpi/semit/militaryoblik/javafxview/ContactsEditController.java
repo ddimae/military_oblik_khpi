@@ -24,7 +24,7 @@ import java.text.Collator;
 import java.util.regex.Pattern;
 
 @Component
-public class ContactInfoEditController implements ControlledScene {
+public class ContactsEditController implements ControlledScene {
 
     @Getter
     @Setter
@@ -227,11 +227,23 @@ public class ContactInfoEditController implements ControlledScene {
         mainPhoneTextField.setText(personalData.getPhoneMain());
         secondPhoneTextField.setText(personalData.getPhoneDop());
 
-        if (countryComboBox.getValue().equals(countryFactComboBox.getValue()) &&
-            indexTextField.getText().equals(indexFactTextField.getText()) &&
-            cityTextField.getText().equals(cityFactTextField.getText()) &&
-            regionComboBox.getValue() == regionFactComboBox.getValue() &&
-            addressTextField.getText().equals(addressFactTextField.getText())) {
+//        System.out.println(countryComboBox.getValue() + " " + countryFactComboBox.getValue() + "\n" +
+//                indexTextField.getText() + " " + indexFactTextField.getText() + "\n" +
+//                cityTextField.getText() + " " + cityFactTextField.getText() + "\n" +
+//                regionComboBox.getValue() + " " + regionFactComboBox.getValue() + "\n" +
+//                addressTextField.getText() + " " + addressFactTextField.getText());
+//
+//        System.out.println(countryComboBox.getValue() == countryFactComboBox.getValue());
+//        System.out.println(indexTextField.getText() == indexFactTextField.getText());
+//        System.out.println(cityTextField.getText() == cityFactTextField.getText());
+//        System.out.println(regionComboBox.getValue() == regionFactComboBox.getValue());
+//        System.out.println(addressTextField.getText() == addressFactTextField.getText());
+
+        if (((countryComboBox.getValue() != null && countryComboBox.getValue().equals(countryFactComboBox.getValue())) || countryComboBox.getValue() == countryFactComboBox.getValue()) &&
+            ((indexTextField.getText() != null && indexTextField.getText().equals(indexFactTextField.getText())) || indexTextField.getText() == indexFactTextField.getText()) &&
+            ((cityTextField.getText() != null && cityTextField.getText().equals(cityFactTextField.getText())) || cityTextField.getText() == cityFactTextField.getText()) &&
+            ((regionComboBox.getValue() != null && regionComboBox.getValue().equals(regionFactComboBox.getValue())) || regionComboBox.getValue() == regionFactComboBox.getValue()) &&
+            ((addressTextField.getText() != null && addressTextField.getText().equals(addressFactTextField.getText()))) || addressTextField.getText() == addressFactTextField.getText()) {
                 equalRadioButton.setSelected(true);
                 handleEqualRadioButton(null);
         }
@@ -327,18 +339,18 @@ public class ContactInfoEditController implements ControlledScene {
     @FXML
     void saveContactInfo(ActionEvent event) throws Exception {
         String country = DataFormat.getPureValue(countryComboBox.getValue());
-        String index = indexTextField.getText().trim();
-        String city = cityTextField.getText().trim();
+        String index = indexTextField.getText() != null ? indexTextField.getText().trim() : "";
+        String city = cityTextField.getText() != null ? cityTextField.getText().trim() : "";
         String region = DataFormat.getPureValue(regionComboBox.getValue());
-        String address = addressTextField.getText().trim();
-        PhoneNumberForm mainPhone = new PhoneNumberForm(mainPhoneTextField.getText().trim());
-        PhoneNumberForm secondPhone = new PhoneNumberForm(secondPhoneTextField.getText().trim());
+        String address = addressTextField.getText() != null ? addressTextField.getText().trim() : "";
+        PhoneNumberForm mainPhone = new PhoneNumberForm(mainPhoneTextField.getText() != null ? mainPhoneTextField.getText().trim() : "") ;
+        PhoneNumberForm secondPhone = new PhoneNumberForm(secondPhoneTextField.getText() != null ? secondPhoneTextField.getText().trim() : "");
 
         String countryFact = DataFormat.getPureValue(countryFactComboBox.getValue());
-        String indexFact = indexFactTextField.getText().trim();
-        String cityFact = cityFactTextField.getText().trim();
+        String indexFact = indexFactTextField.getText() != null ? indexFactTextField.getText().trim() : "";
+        String cityFact = cityFactTextField.getText() != null ? cityFactTextField.getText().trim() : "";
         String regionFact = DataFormat.getPureValue(regionFactComboBox.getValue());
-        String addressFact = addressFactTextField.getText().trim();
+        String addressFact = addressFactTextField.getText() != null ? addressFactTextField.getText().trim() : "";
 
         boolean isUkraine = String.valueOf(country).equals("Україна");
         boolean isUkraineFact = String.valueOf(countryFact).equals("Україна");
