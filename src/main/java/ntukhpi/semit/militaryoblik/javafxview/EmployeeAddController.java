@@ -1,7 +1,5 @@
 package ntukhpi.semit.militaryoblik.javafxview;
 
-import ch.qos.logback.core.net.AbstractSSLSocketAppender;
-import com.sun.tools.jconsole.JConsoleContext;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,9 +20,14 @@ import org.springframework.stereotype.Component;
 import java.text.Collator;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.regex.Pattern;
 
+
+/**
+ * Контролер форми додавання нового співробітника
+ *
+ * @author Степанов Михайло
+ */
 @Component
 public class EmployeeAddController implements ControlledScene {
 
@@ -107,6 +110,9 @@ public class EmployeeAddController implements ControlledScene {
         currentStage = stage;
     }
 
+    /**
+     * Початкова ініціалізація комбобоксів
+     */
     public void initialize() {
         emptyInstitute = new Fakultet() {
             @Override
@@ -138,6 +144,17 @@ public class EmployeeAddController implements ControlledScene {
         handleTypeChange(null);
     }
 
+    /**
+     * Валідація даних вписаних у форму
+     *
+     * @param institute Обриний інститут
+     * @param cathedra Обрана кафедра
+     * @param surname Прізвище нового співробітника
+     * @param name Ім'я нового співробітника
+     * @param midname По-батькові нового співробітника
+     * @param date Дата народження нового співробітника
+     * @return true - Валідація пройдена. false - Валідація не пройдена
+     */
     private boolean validateInfo(String institute, String cathedra, String surname,
                                  String name, String midname, String date) {
         Pattern ukrWords = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії\\-\\s]+$");
@@ -164,6 +181,9 @@ public class EmployeeAddController implements ControlledScene {
         return true;
     }
 
+    /**
+     * Спроба збереження/редагування даних форми в БД після валідації
+     */
     @FXML
     void saveEmployee(ActionEvent event) {
         String institute = instituteComboBox.getValue() != null ? DataFormat.getPureValue(instituteComboBox.getValue().toString()) : null;
@@ -210,14 +230,21 @@ public class EmployeeAddController implements ControlledScene {
         }
     }
 
+    /**
+     * Обробник зміни стану кнопок вибору типу працівника
+     * (Науково-педагогічний працівник / Інженерно-технічний працівник)
+     */
     @FXML
     void handleTypeChange(ActionEvent event) {
         int filterId = nppRadioButton.isSelected() ? 1 : 2;
         boolean isFirst = positionComboBox.getValue() != null;
 
         positionComboBox.setItems(FXCollections.observableArrayList(dolghnostService.getAllDolghnost().stream().filter(p -> filterId == p.getCategoryEmployees() || p.getCategoryEmployees() == 0).toList()));
-        if (isFirst)
+        if (isFirst) {
             positionComboBox.getSelectionModel().selectFirst();
+            degreeComboBox.getSelectionModel().selectFirst();
+            statusComboBox.getSelectionModel().selectFirst();
+        }
 
         if (filterId == 2) {
             degreeComboBox.setDisable(true);
@@ -228,6 +255,9 @@ public class EmployeeAddController implements ControlledScene {
         }
     }
 
+    /**
+     * Обробник зміни значення комбобоксу інституту
+     */
     @FXML
     void handleInstituteChange(ActionEvent event) {
         if (isChangeCombobox)
@@ -249,6 +279,9 @@ public class EmployeeAddController implements ControlledScene {
         isChangeCombobox = false;
     }
 
+    /**
+     * Обробник зміни значення комбобоксу кафедри
+     */
     @FXML
     void handleCathedraChange(ActionEvent event) {
         if (isChangeCombobox || cathedraComboBox.getValue().getFakultet() == null)
@@ -267,21 +300,33 @@ public class EmployeeAddController implements ControlledScene {
         isChangeCombobox = false;
     }
 
+    /**
+     * Перехід до форми додавання нового інституту
+     */
     @FXML
     void handleInstituteButton(ActionEvent event) {
         MilitaryOblikKhPIMain.showStage(AllStageSettings.instituteAdd, currentStage, this, instituteComboBox);
     }
 
+    /**
+     * Перехід до форми додавання нової кафедри
+     */
     @FXML
     void handleCathedraButton(ActionEvent event) {
         MilitaryOblikKhPIMain.showStage(AllStageSettings.cathedraAdd, currentStage, this, cathedraComboBox);
     }
 
+    /**
+     * Перехід до форми додавання нової посади
+     */
     @FXML
     void handlePositionButton(ActionEvent event) {
         MilitaryOblikKhPIMain.showStage(AllStageSettings.positionAdd, currentStage, this, positionComboBox);
     }
 
+    /**
+     * Перехід до материнської форми
+     */
     @FXML
     void closeEdit(ActionEvent event) {
         MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);

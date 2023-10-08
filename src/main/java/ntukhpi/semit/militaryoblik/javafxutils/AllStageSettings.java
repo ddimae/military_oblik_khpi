@@ -1,5 +1,11 @@
 package ntukhpi.semit.militaryoblik.javafxutils;
 
+
+/**
+ * Клас для зберігання налаштувань створення сцен
+ *
+ * @author Степанов Михайло
+ */
 public final class AllStageSettings {
     public final static String STYLES_JAVAFX = "/javafxview/MOStyles.css";
 

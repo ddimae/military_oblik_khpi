@@ -6,10 +6,18 @@ import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 
 import java.util.Optional;
 
+
+/**
+ * Клас для збереження методів створення та показу спливаючих вікон
+ *
+ * @author Степанов Михайло
+ * @author Кулак Анастасія
+ */
 public class Popup {
     /**
-     * Метод запуска окон для сообщений об ошибке
-     * автор Кулак Анастасия
+     * Запуск вікна для повідомлення про помилку
+     *
+     * @author Кулак Анастасія
      */
     private static void showAlert(Alert.AlertType type, String title, String headerText, String contentText) {
         Alert alert = new Alert(type);
@@ -19,6 +27,17 @@ public class Popup {
         alert.showAndWait();
     }
 
+
+    /**
+     * Запуск діалогового вікна
+     *
+     * @author Кулак Анастасія
+     * @param type Тип діалогового вікна
+     * @param title Назва вікна
+     * @param headerText Головний текст
+     * @param contentText Опис
+     * @return true - Користувач погодився на дію. false - Користувач не погодився на дію
+     */
     private static boolean showDialog(Alert.AlertType type, String title, String headerText, String contentText) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -33,37 +52,61 @@ public class Popup {
     }
 
     /**
-     * Метод виведення повідомлення о помилки про неибраний рядок
-     * автор Степанов Михайло
+     * Запуск вікна з повідомленням про помилку невибраного рядка
+     *
+     * @author Степанов Михайло
      */
     public static void noSelectedRowAlert() {
         showAlert(Alert.AlertType.ERROR ,"Помилка", "Не вибраний рядок", "Натисніть на рядок, щоб його вибрати");
     }
 
+
     /**
-     * Метод виведення повідомлення о помилки неправильнову вводі даних
-     * автор Степанов Михайло
+     * Запуск вікна з повідомленням про помилку неправильного вводу даних
+     *
+     * @author Степанов Михайло
+     * @param msg Опис помилки
      */
     public static void wrongInputAlert(String msg) {
         showAlert(Alert.AlertType.ERROR, "Помилка", "Неправильно введені дані", msg);
     }
 
+    /**
+     * Запуск вікна з повідомленням про системну помилку
+     *
+     * @author Степанов Михайло
+     * @param msg Опис помилки
+     */
     public static void internalAlert(String msg) {
         showAlert(Alert.AlertType.ERROR, "Помилка", "Внутрішня помилка програми", msg);
     }
 
+
     /**
-     * Метод виведення повідомлення о підтвержені збереження даних
-     * автор Степанов Михайло
+     * Запуск вікна з повідомленням про успішне збереження даних
+     *
+     * @author Степанов Михайло
      */
     public static void successSave() {
         showAlert(Alert.AlertType.CONFIRMATION, "Збережено", "Дані успішно збережені", "");
     }
 
+
+    /**
+     * Запуск діалогового вікна з підтвердженням видалення рядка
+     *
+     * @author Степанов Михайло
+     */
     public static boolean deleteConfirmation() {
         return showDialog(Alert.AlertType.CONFIRMATION, "Підтвердіть дію", "Обраний рядок буде безповоротно видалений", "Ви впевнені в своїх діях?");
     }
 
+
+    /**
+     * Запуск діалогового вікна з підтвердженням збереження даних
+     *
+     * @author Степанов Михайло
+     */
     public static boolean saveConfirmation() {
         return showDialog(Alert.AlertType.CONFIRMATION, "Підтвердіть дію", "Заповнена форма буде збережена і не підлягатиме редагуванню", "Ви впевнені в своїх діях?");
     }
