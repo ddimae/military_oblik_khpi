@@ -1,6 +1,5 @@
 package ntukhpi.semit.militaryoblik.javafxview;
 
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
@@ -17,9 +16,14 @@ import ntukhpi.semit.militaryoblik.service.DolghnostServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.regex.Pattern;
 
+
+/**
+ * Контролер форми додавання нової посади
+ *
+ * @author Степанов Михайло
+ */
 @Component
 public class PositionAddController implements ControlledScene {
 
@@ -63,11 +67,18 @@ public class PositionAddController implements ControlledScene {
         currentStage = stage;
     }
 
+    /**
+     * Валідація даних вписаних у форму
+     *
+     * @param fullName Повна назва посади
+     * @param shortName Скорочена назва посади
+     * @return true - Валідація пройдена. false - Валідація не пройдена
+     */
     private boolean validatePosition(String fullName, String shortName) {
         Pattern ukrWords = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії,.\\-`'_\\s0-9]*$");
 
-        TextFieldValidator fullNameValidator = new TextFieldValidator(100, true, ukrWords, "Назва посади", fullName, "може містити тільки українські літери та розділові знаки");
-        TextFieldValidator shortNameValidator = new TextFieldValidator(100, false, ukrWords, "Скорочене позначення", shortName, "може містити тільки українські літери та розділові знаки");
+        TextFieldValidator fullNameValidator = new TextFieldValidator(40, true, ukrWords, "Назва посади", fullName, "може містити тільки українські літери та розділові знаки");
+        TextFieldValidator shortNameValidator = new TextFieldValidator(15, false, ukrWords, "Скорочене позначення", shortName, "може містити тільки українські літери та розділові знаки");
 
         try {
             fullNameValidator.validate();
@@ -83,10 +94,14 @@ public class PositionAddController implements ControlledScene {
         return true;
     }
 
+
+    /**
+     * Спроба збереження даних форми в БД після валідації
+     */
     @FXML
     void savePosition(ActionEvent event) {
         String fullName = fullNameTextField.getText();
-        String shortName = shortNameTaxtField.getText();    // TODO Додати в БД поля для короткої назви та не забути зберігати її
+        String shortName = shortNameTaxtField.getText();
         int category = nppRadioButton.isSelected() ? 1 : 2;
 
         if (!validatePosition(fullName, shortName) || !Popup.saveConfirmation())
@@ -96,6 +111,7 @@ public class PositionAddController implements ControlledScene {
             Dolghnost dolghnost = new Dolghnost();
 
             dolghnost.setDolghnName(fullName);
+            dolghnost.setDolghnShortName(shortName);
             dolghnost.setCategoryEmployees(category);
 
             if (positionComboBox.getItems().get(positionComboBox.getItems().size() - 1).getCategoryEmployees() == category)
@@ -110,6 +126,9 @@ public class PositionAddController implements ControlledScene {
         }
     }
 
+    /**
+     * Перехід до материнської форми
+     */
     @FXML
     void closeEdit(ActionEvent event) {
         MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);

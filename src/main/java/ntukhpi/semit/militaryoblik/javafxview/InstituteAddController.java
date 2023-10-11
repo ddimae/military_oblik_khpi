@@ -17,6 +17,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.regex.Pattern;
 
+
+/**
+ * Контролер форми додавання нового інституту
+ *
+ * @author Степанов Михайло
+ */
 @Component
 public class InstituteAddController implements ControlledScene {
     @FXML
@@ -31,7 +37,6 @@ public class InstituteAddController implements ControlledScene {
     private ComboBox<Fakultet> instituteComboBox;
     private Stage mainStage;
     private Stage currentStage;
-
 
     @Override
     public void setMainController(Object mainController) {}
@@ -54,6 +59,15 @@ public class InstituteAddController implements ControlledScene {
     @Autowired
     FakultetServiceImpl fakultetService;
 
+
+    /**
+     * Валідація даних вписаних у форму
+     *
+     * @param fullName Повна назва інституту
+     * @param abbr Аббревіатура інституту
+     * @param code Код інституту
+     * @return true - Валідація пройдена. false - Валідація не пройдена
+     */
     private boolean validateInstitute(String fullName, String abbr, String code) {
         Pattern ukrWords = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії,.\\-`'_\\s]*$");
         Pattern oneWord = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії]*$");
@@ -81,6 +95,10 @@ public class InstituteAddController implements ControlledScene {
         return true;
     }
 
+
+    /**
+     * Спроба збереження даних форми в БД після валідації
+     */
     @FXML
     void saveNewInstitute(ActionEvent event) {
         String fullName = fullNameTextArea.getText().trim();
@@ -108,6 +126,10 @@ public class InstituteAddController implements ControlledScene {
         }
     }
 
+
+    /**
+     * Перехід до материнської форми
+     */
     @FXML
     void closeEdit(ActionEvent event) {
         MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);

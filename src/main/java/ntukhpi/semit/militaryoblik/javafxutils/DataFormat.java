@@ -11,6 +11,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+
+/**
+ * Клас для збереження методів форматування вхідних даних
+ *
+ * @author Степанов Михайло
+ */
 public class DataFormat {
     public static String getPIB(Prepod prepod) {
         return prepod.getFam() + " " + prepod.getImya() + " " + prepod.getOtch();

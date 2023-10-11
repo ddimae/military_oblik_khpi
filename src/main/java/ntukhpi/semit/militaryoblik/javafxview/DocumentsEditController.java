@@ -27,6 +27,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
 
+
+/**
+ * Контролер форми редагування документа резервіста
+ *
+ * @author Степанов Михайло
+ */
 @Component
 public class DocumentsEditController implements ControlledScene {
 
@@ -80,6 +86,14 @@ public class DocumentsEditController implements ControlledScene {
         currentStage = stage;
     }
 
+
+    /**
+     * Заповнює форму даними обраного документа.
+     * Вилучає з комбобоксу типи документів, які
+     * вже є в БД та/або взаємовилучають один одного
+     *
+     * @param document Інформація про обраний документ
+     */
     private void setDocument(DocumentAdapter document) {
         selectedPrepod = prepodService.getPrepodById(ReservistsAllController.getSelectedPrepodId());
 
@@ -117,33 +131,31 @@ public class DocumentsEditController implements ControlledScene {
         dateDatePicker.setValue(selectedDocument.getDate());
     }
 
-    @FXML
-    void closeEdit(ActionEvent event) {
-        MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
+    /**
+     * Початкова ініціалізація комбобоксу
+     */
+    public void initialize() {
+        ObservableList<String> docsOptions = FXCollections.observableArrayList(
+                "Паперовий паспорт",
+                "ID картка",
+                "Закордонний паспорт",
+                "Посвідчення особи офіцера",
+                "Військовий квиток"
+        );
+
+        typeComboBox.setItems(docsOptions);
     }
 
-    @FXML
-    void handleTypeChange(ActionEvent event) {
-        String type = typeComboBox.getValue();
-        switch (type) {
-            case "ID картка":
-                numberTextField.setPromptText("123456789");
-                whoGivesTextArea.setPromptText("1234");
-                break;
-            case "Закордонний паспорт":
-                numberTextField.setPromptText("VG123456");
-                whoGivesTextArea.setPromptText("1234");
-                break;
-            case "Паперовий паспорт":
-            case "Посвідчення особи офіцера":
-            case "Військовий квиток":
-            default:
-                numberTextField.setPromptText("МГ123456");
-                whoGivesTextArea.setPromptText("Назва органу");
-                break;
-        }
-    }
 
+    /**
+     * Валідація даних вписаних у форму
+     *
+     * @param docType Обраний тип документа
+     * @param number Серія та/або номер документа
+     * @param whoGives Орган, що видав документ
+     * @param date Дата видачі
+     * @return true - Валідація пройдена. false - Валідація не пройдена
+     */
     private boolean validateDocument(String docType, String number, String whoGives, String date) {
         Pattern ukrOldSeriesNumberRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇ]{2}\\d{6}$");
         Pattern ukrOldWhoGivesRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії0-9\\s.,'`_\\-]+$");
@@ -199,6 +211,11 @@ public class DocumentsEditController implements ControlledScene {
 
         return true;
     }
+
+
+    /**
+     * Спроба збереження/редагування даних форми в БД після валідації
+     */
     @FXML
     void saveDocuments(ActionEvent event) {
         String docType = DataFormat.getPureValue(typeComboBox.getValue());
@@ -232,15 +249,36 @@ public class DocumentsEditController implements ControlledScene {
         }
     }
 
-    public void initialize() {
-        ObservableList<String> docsOptions = FXCollections.observableArrayList(
-                "Паперовий паспорт",
-                "ID картка",
-                "Закордонний паспорт",
-                "Посвідчення особи офіцера",
-                "Військовий квиток"
-        );
+    /**
+     * Обробник зміни значення комбобоксу типу документа
+     */
+    @FXML
+    void handleTypeChange(ActionEvent event) {
+        String type = typeComboBox.getValue();
+        switch (type) {
+            case "ID картка":
+                numberTextField.setPromptText("123456789");
+                whoGivesTextArea.setPromptText("1234");
+                break;
+            case "Закордонний паспорт":
+                numberTextField.setPromptText("VG123456");
+                whoGivesTextArea.setPromptText("1234");
+                break;
+            case "Паперовий паспорт":
+            case "Посвідчення особи офіцера":
+            case "Військовий квиток":
+            default:
+                numberTextField.setPromptText("МГ123456");
+                whoGivesTextArea.setPromptText("Назва органу");
+                break;
+        }
+    }
 
-        typeComboBox.setItems(docsOptions);
+    /**
+     * Перехід до материнської форми
+     */
+    @FXML
+    void closeEdit(ActionEvent event) {
+        MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
     }
 }

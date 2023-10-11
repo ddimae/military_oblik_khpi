@@ -19,6 +19,12 @@ import org.springframework.stereotype.Component;
 import java.text.Collator;
 import java.util.regex.Pattern;
 
+
+/**
+ * Контролер форми додавання нової кафедри
+ *
+ * @author Степанов Михайло
+ */
 @Component
 public class CathedraAddController implements ControlledScene {
     @FXML
@@ -71,6 +77,9 @@ public class CathedraAddController implements ControlledScene {
         currentStage = stage;
     }
 
+    /**
+     * Початкова ініціалізація комбобоксів
+     */
     public void initialize() {
         emptyInstitute = new Fakultet() {
             @Override
@@ -85,6 +94,16 @@ public class CathedraAddController implements ControlledScene {
                 addAll(fakultetService.getAllFak().stream().sorted((a, b) -> ukrCollator.compare(a.toString(), b.toString())).toList());
     }
 
+
+    /**
+     * Валідація даних вписаних у форму
+     *
+     * @param institute Обраний інститут, до якого відноситься нова кафедра
+     * @param fullName Повна назва кафедри
+     * @param abbr Аббревіатура кафедри
+     * @param code Код кафедри
+     * @return true - Валідація пройдена. false - Валідація не пройдена
+     */
     private boolean validateCathedra(String institute, String fullName, String abbr, String code) {
         Pattern ukrWords = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії,.\\-`'_\\s]*$");
         Pattern oneWord = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії]*$");
@@ -114,6 +133,10 @@ public class CathedraAddController implements ControlledScene {
         return true;
     }
 
+
+    /**
+     * Спроба збереження даних форми в БД після валідації
+     */
     @FXML
     public void saveNewCafedra(ActionEvent actionEvent) {
         String institute = instituteComboBox.getValue() != null ? DataFormat.getPureValue(instituteComboBox.getValue().toString()) : null;
@@ -143,6 +166,10 @@ public class CathedraAddController implements ControlledScene {
         }
     }
 
+
+    /**
+     * Перехід до материнської форми
+     */
     @FXML
     public void closeEdit(ActionEvent actionEvent) {
         MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);

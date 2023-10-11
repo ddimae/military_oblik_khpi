@@ -5,18 +5,14 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.converter.DateStringConverter;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.DocumentAdapter;
 import ntukhpi.semit.militaryoblik.entity.Document;
-import ntukhpi.semit.militaryoblik.entity.MilitaryPerson;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
@@ -27,17 +23,17 @@ import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Locale;
 
+
+/**
+ * Контролер форми показу документів резервіста
+ *
+ * @author Степанов Михайло
+ */
 @Component
 public class DocumentsAllController implements ControlledScene {
 
-    // ========== Інтерактивні елементи форми ==========
     @FXML
     private TableColumn<DocumentAdapter, LocalDate> dateColumn;
 
@@ -59,7 +55,6 @@ public class DocumentsAllController implements ControlledScene {
     private ObservableList<DocumentAdapter> docsObservableList;
     private Prepod selectedPrepod;
 
-    // ========== Сервіси для роботи з БД ==========
     @Autowired
     DocumentServiceImpl documentService;
 
@@ -89,8 +84,10 @@ public class DocumentsAllController implements ControlledScene {
     }
 
     /**
-     * Отримує з БД список всіх документів конкретного викладача та перетворює його на ObservableList
-     * @return ObservableList з усіма документави викладача
+     * Отримання з БД списоку всіх документів конкретного резервіста
+     * та перетворення його на ObservableList
+     *
+     * @return ObservableList з усіма документави резервіста
      */
     private ObservableList<DocumentAdapter> getDocumentsData() {
         return FXCollections.observableArrayList(documentService.getAllDocumentByPrepod(selectedPrepod).stream().map(DocumentAdapter::new).toList());
@@ -98,7 +95,8 @@ public class DocumentsAllController implements ControlledScene {
 
 
     /**
-     * Ініціалізація форми
+     * Початкове ініціалізація иа зоаповнення таблиці документами
+     * обраного резервіста
      */
     public void initialize() {
         // Зберігання викладача на випадок зміни вибору в формі ReservistsAll
@@ -119,7 +117,7 @@ public class DocumentsAllController implements ControlledScene {
     }
 
     /**
-     * Обновляє таблицю після доданих чи прибраних даних
+     * Оновлення таблиці після її зміни
      */
     public void refreshDocsTable() {
         docsTableView.refresh();
@@ -128,6 +126,7 @@ public class DocumentsAllController implements ControlledScene {
 
     /**
      * Додавання нового документу до таблиці та БД
+     *
      * @param document Новий документ
      */
     public void addNewDocument(Document document) {
@@ -140,6 +139,7 @@ public class DocumentsAllController implements ControlledScene {
 
     /**
      * Обновлення документа в таблиці та БД
+     *
      * @param oldDocument Старий зразок документа
      * @param newDocument Новий зразок документа
      */
@@ -152,8 +152,7 @@ public class DocumentsAllController implements ControlledScene {
     }
 
     /**
-     * Видаляє обраний документ з таблиці та БД
-     * @param event
+     * Видалення обранного документу з таблиці та БД
      */
     @FXML
     void deleteSelectedRow(ActionEvent event) {
@@ -170,8 +169,7 @@ public class DocumentsAllController implements ControlledScene {
     }
 
     /**
-     * Відкриває вікно додавання нового документа
-     * @param event
+     * Перехід до форми додавання нового документа
      */
     @FXML
     void openAddWindow(ActionEvent event) {
@@ -179,8 +177,7 @@ public class DocumentsAllController implements ControlledScene {
     }
 
     /**
-     * Відкриває вікно зміни документа
-     * @param event
+     * Перехід до форми зміни обраного документа
      */
     @FXML
     void openEditWindow(ActionEvent event) {
@@ -192,8 +189,7 @@ public class DocumentsAllController implements ControlledScene {
     }
 
     /**
-     * Відкриває попереднє вікно
-     * @param event
+     * Перехід до материнської форми
      */
     @FXML
     void returnToMainForm(ActionEvent event) {

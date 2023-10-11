@@ -5,8 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import lombok.Getter;
-import lombok.Setter;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
 import ntukhpi.semit.militaryoblik.entity.PersonalData;
@@ -14,6 +12,7 @@ import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Country;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.RegionUkraine;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.PhoneNumberValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.TextFieldValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.service.*;
@@ -23,86 +22,14 @@ import org.springframework.stereotype.Component;
 import java.text.Collator;
 import java.util.regex.Pattern;
 
+
+/**
+ * Контролер форми редагування контактної інформації резервіста
+ *
+ * @author Степанов Михайло
+ */
 @Component
 public class ContactsEditController implements ControlledScene {
-
-    @Getter
-    @Setter
-    private class PhoneNumberForm extends TextFieldValidator {
-        private String number;
-        private boolean isFullNumber;
-        private boolean isNoCountryCodeNumber;
-        private boolean isNoPlusNumber;
-        private boolean isCityNumber;
-        private boolean isWrongNumber;
-
-        public PhoneNumberForm(String number) {
-            super(-1, false, null, null, null, null);
-            this.number = number;
-            isFullNumber = false;
-            isNoCountryCodeNumber = false;
-            isNoPlusNumber = false;
-            isCityNumber = false;
-            isWrongNumber = false;
-        }
-
-        public PhoneNumberForm(String number, int maxLength, boolean isNecessary, String fieldName, String errorMsg) {
-            super(maxLength, isNecessary, null, fieldName, number, errorMsg);
-            this.number = number;
-            isFullNumber = false;
-            isNoCountryCodeNumber = false;
-            isNoPlusNumber = false;
-            isCityNumber = false;
-            isWrongNumber = false;
-        }
-
-        public void validateNumber(Pattern full, Pattern noCountryCode, Pattern noPlus, Pattern city) throws Exception {
-            isFullNumber = false;
-            isNoCountryCodeNumber = false;
-            isNoPlusNumber = false;
-            isCityNumber = false;
-            isWrongNumber = false;
-
-            if (full != null && full.matcher(number).matches())
-                isFullNumber = true;
-            else if (noCountryCode != null && noCountryCode.matcher(number).matches())
-                isNoCountryCodeNumber = true;
-            else if (noPlus != null && noPlus.matcher(number).matches())
-                isNoPlusNumber = true;
-            else if (city != null && city.matcher(number).matches())
-                isCityNumber = true;
-            else {
-                isWrongNumber = true;
-                throw new Exception(getErrorMsg());
-            }
-
-            validate();
-        }
-
-        public void setToUkrStandart() {
-            if (isNoCountryCodeNumber)
-                number = "+38" + number;
-            else if (isNoPlusNumber)
-                number = "+" + number;
-            else if (isCityNumber)
-                number = "+38057" + number;
-        }
-
-        public void clone(PhoneNumberForm phone) {
-            setMaxLength(phone.getMaxLength());
-            setNecessary(phone.isNecessary());
-            setRegex(phone.getRegex());
-            setFieldName(phone.getFieldName());
-            setTextField(phone.getTextField());
-            setErrorMsg(phone.getErrorMsg());
-
-            isFullNumber = phone.isFullNumber;
-            isNoCountryCodeNumber = phone.isNoCountryCodeNumber;
-            isNoPlusNumber = phone.isNoPlusNumber;
-            isCityNumber = phone.isCityNumber;
-            isWrongNumber = phone.isWrongNumber;
-        }
-    }
 
     @FXML
     private TextField addressFactTextField;
@@ -189,6 +116,12 @@ public class ContactsEditController implements ControlledScene {
         currentStage = stage;
     }
 
+
+    /**
+     * Заповнює форму даними обраного резервіста
+     *
+     * @param reservist Інформація про обраного резервіста
+     */
     private void setContactInfo(ReservistAdapter reservist) {
         selectedReservist = reservist;
         personalData = personalDataService.getPersonalDataByPrepodId(selectedReservist.getId());
@@ -227,18 +160,6 @@ public class ContactsEditController implements ControlledScene {
         mainPhoneTextField.setText(personalData.getPhoneMain());
         secondPhoneTextField.setText(personalData.getPhoneDop());
 
-//        System.out.println(countryComboBox.getValue() + " " + countryFactComboBox.getValue() + "\n" +
-//                indexTextField.getText() + " " + indexFactTextField.getText() + "\n" +
-//                cityTextField.getText() + " " + cityFactTextField.getText() + "\n" +
-//                regionComboBox.getValue() + " " + regionFactComboBox.getValue() + "\n" +
-//                addressTextField.getText() + " " + addressFactTextField.getText());
-//
-//        System.out.println(countryComboBox.getValue() == countryFactComboBox.getValue());
-//        System.out.println(indexTextField.getText() == indexFactTextField.getText());
-//        System.out.println(cityTextField.getText() == cityFactTextField.getText());
-//        System.out.println(regionComboBox.getValue() == regionFactComboBox.getValue());
-//        System.out.println(addressTextField.getText() == addressFactTextField.getText());
-
         if (((countryComboBox.getValue() != null && countryComboBox.getValue().equals(countryFactComboBox.getValue())) || countryComboBox.getValue() == countryFactComboBox.getValue()) &&
             ((indexTextField.getText() != null && indexTextField.getText().equals(indexFactTextField.getText())) || indexTextField.getText() == indexFactTextField.getText()) &&
             ((cityTextField.getText() != null && cityTextField.getText().equals(cityFactTextField.getText())) || cityTextField.getText() == cityFactTextField.getText()) &&
@@ -251,6 +172,10 @@ public class ContactsEditController implements ControlledScene {
         handleChangeCountry(null);
     }
 
+
+    /**
+     * Початкова ініціалізація комбобоксів та стану кнопок
+     */
     public void initialize() {
         Collator ukrCollator = DataFormat.getUkrCollator();
 
@@ -268,14 +193,39 @@ public class ContactsEditController implements ControlledScene {
         handleChangeCountry(null);
     }
 
+
+    /**
+     * Блокування комбобоксу вибору країни реєстрації
+     *
+     * @param value Значення комбобоксу країни реєстрації
+     */
     private void blockRegistrationCountry(String value) {
         countryComboBox.setValue(value);
         countryComboBox.setDisable(true);
     }
 
+
+    /**
+     * Валідація даних вписаних у форму
+     *
+     * @param country Обрана країна реєстрації
+     * @param index Індекс реєстрації
+     * @param city Місто реєстрації
+     * @param region Обраний український регіон реєстрації
+     * @param address Адреса реєстрації
+     * @param mainPhone Об'єкт класу валідації основного номеру телефона
+     * @param secondPhone Об'єкт класу валідації додаткового номеру телефона
+     * @param countryFact Обрана країна мешкання
+     * @param indexFact Обрана країна мешкання
+     * @param cityFact Індекс мешкання
+     * @param regionFact Місто мешкання
+     * @param addressFact Обраний український регіон мешкання
+     * @param isForeinNumber Адреса мешкання
+     * @return true - Валідація пройдена. false - Валідація не пройдена
+     */
     private boolean validateInfo(String country, String index, String city,
-                                 String region, String address, PhoneNumberForm mainPhone,
-                                 PhoneNumberForm secondPhone, String countryFact, String indexFact,
+                                 String region, String address, PhoneNumberValidator mainPhone,
+                                 PhoneNumberValidator secondPhone, String countryFact, String indexFact,
                                  String cityFact, String regionFact, String addressFact,
                                  boolean isForeinNumber) {
         Pattern ukrIndexRegex = Pattern.compile("(\\d{5})?");
@@ -293,8 +243,8 @@ public class ContactsEditController implements ControlledScene {
         TextFieldValidator cityForm = new TextFieldValidator(30, true, cityRegex, "Місто", city, "повинно містити тільки українські літери та розділові знаки");
         TextFieldValidator regionForm = new TextFieldValidator(255, false, null, "Область", region, null);
         TextFieldValidator addressForm = new TextFieldValidator(255, true, addressRegex, "Адресса", address, "може містити українські літери, цифри та розділові знаки");
-        PhoneNumberForm mainPhoneForm = new PhoneNumberForm(mainPhone.getNumber(), 13, true, "Телефон 1", "повинно мати форму: +380951203066, 0951203066, 380951203066 або 7076845");
-        PhoneNumberForm secondPhoneForm = new PhoneNumberForm(secondPhone.getNumber(), 13, false, "Телефон 2", "повинно мати форму: +380951203066, 0951203066, 380951203066, або 7076845");
+        PhoneNumberValidator mainPhoneForm = new PhoneNumberValidator(mainPhone.getNumber(), 13, true, "Телефон 1", "повинно мати форму: +380951203066, 0951203066, 380951203066 або 7076845");
+        PhoneNumberValidator secondPhoneForm = new PhoneNumberValidator(secondPhone.getNumber(), 13, false, "Телефон 2", "повинно мати форму: +380951203066, 0951203066, 380951203066, або 7076845");
 
         TextFieldValidator countryFactForm = new TextFieldValidator(-1, false, null, "Країна", countryFact, null);
         TextFieldValidator indexFactForm = new TextFieldValidator(10, false, String.valueOf(countryFact).equals("Україна")?ukrIndexRegex:null, "Індекс", indexFact, "повинно складатися із 5 цифр");
@@ -336,15 +286,19 @@ public class ContactsEditController implements ControlledScene {
         return true;
     }
 
+
+    /**
+     * Спроба збереження/редагування даних форми в БД після валідації
+     */
     @FXML
-    void saveContactInfo(ActionEvent event) throws Exception {
+    void saveContactInfo(ActionEvent event) {
         String country = DataFormat.getPureValue(countryComboBox.getValue());
         String index = indexTextField.getText() != null ? indexTextField.getText().trim() : "";
         String city = cityTextField.getText() != null ? cityTextField.getText().trim() : "";
         String region = DataFormat.getPureValue(regionComboBox.getValue());
         String address = addressTextField.getText() != null ? addressTextField.getText().trim() : "";
-        PhoneNumberForm mainPhone = new PhoneNumberForm(mainPhoneTextField.getText() != null ? mainPhoneTextField.getText().trim() : "") ;
-        PhoneNumberForm secondPhone = new PhoneNumberForm(secondPhoneTextField.getText() != null ? secondPhoneTextField.getText().trim() : "");
+        PhoneNumberValidator mainPhone = new PhoneNumberValidator(mainPhoneTextField.getText() != null ? mainPhoneTextField.getText().trim() : "") ;
+        PhoneNumberValidator secondPhone = new PhoneNumberValidator(secondPhoneTextField.getText() != null ? secondPhoneTextField.getText().trim() : "");
 
         String countryFact = DataFormat.getPureValue(countryFactComboBox.getValue());
         String indexFact = indexFactTextField.getText() != null ? indexFactTextField.getText().trim() : "";
@@ -410,6 +364,10 @@ public class ContactsEditController implements ControlledScene {
         }
     }
 
+
+    /**
+     * Обробник зміни стану кнопки рівності даних
+     */
     @FXML
     void handleEqualRadioButton(ActionEvent event) {
         if (equalRadioButton.isSelected()) {
@@ -427,11 +385,18 @@ public class ContactsEditController implements ControlledScene {
         }
     }
 
+    /**
+     * Обробник зміни стану кнопки іноземного номера
+     */
     @FXML
     void handleForeinNumberRadioButton(ActionEvent event) {
 
     }
 
+
+    /**
+     * Обробник зміни значення комбобоксу країни
+     */
     @FXML
     void handleChangeCountry(ActionEvent event) {
         if (String.valueOf(countryComboBox.getValue()).equals("Україна")) {
@@ -452,6 +417,10 @@ public class ContactsEditController implements ControlledScene {
         }
     }
 
+
+    /**
+     * Перехід до материнської форми
+     */
     @FXML
     void closeEdit(ActionEvent event) {
         MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
