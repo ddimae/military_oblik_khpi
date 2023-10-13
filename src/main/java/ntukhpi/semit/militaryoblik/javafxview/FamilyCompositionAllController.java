@@ -33,8 +33,6 @@ public class FamilyCompositionAllController implements ControlledScene {
     @FXML
     private Label pibLabel;
     @FXML
-    public Button editFamilyStateButton;
-    @FXML
     public TableView<FamilyAdapter> familyTableView;
     @FXML
     public TableColumn<FamilyAdapter, String> vidRidstvaColumn;

@@ -15,11 +15,16 @@ import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.TextFieldValidator;
 import ntukhpi.semit.militaryoblik.service.FamilyMemberServiceImpl;
 import ntukhpi.semit.militaryoblik.service.MilitaryPersonServiceImpl;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
+import org.apache.poi.xssf.usermodel.TextDirection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.w3c.dom.Text;
+
+import java.util.regex.Pattern;
 
 @Component
 public class FamilyCompositionEditController implements ControlledScene {
@@ -73,13 +78,16 @@ public class FamilyCompositionEditController implements ControlledScene {
         selectedPrepod = prepodService.getPrepodById(ReservistsAllController.getSelectedPrepodId());
 
         pibLabel.setText(DataFormat.getPIB(selectedPrepod));
-//        this.selectedMember = family;
-//
-//        relationshipComboBox.setValue(family.getVidRidstva());
-//        surnameTextField.setText(family.getMemFam());
-//        nameTextField.setText(family.getMemName());
-//        patronymicTextField.setText(family.getMemOtch());
-//        yearTextField.setText(family.getRikNarodz());
+        selectedMember = family;
+
+        if (selectedMember == null)
+            return;
+
+        relationshipComboBox.setValue(family.getVidRidstva());
+        surnameTextField.setText(family.getMemFam());
+        nameTextField.setText(family.getMemName());
+        patronymicTextField.setText(family.getMemOtch());
+        yearTextField.setText(family.getRikNarodz());
     }
 
     @FXML
@@ -87,14 +95,41 @@ public class FamilyCompositionEditController implements ControlledScene {
         MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
     }
 
+    private boolean validateMember(String relationship, String surname,
+                                   String name, String midname, String year) {
+        Pattern ukrWords = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії\\-\\s]+$");
+        Pattern onlyYear = Pattern.compile("^\\d{4}$");
+
+        TextFieldValidator relationshipValidator = new TextFieldValidator(-1, true, null, "Ступінь рідства", relationship, null);
+        TextFieldValidator surnameValidator = new TextFieldValidator(40, false, ukrWords, "Прізвище", surname, "повинно містити українські літери");
+        TextFieldValidator nameValidator = new TextFieldValidator(30, false, ukrWords, "Ім'я", name, "повинно містити українські літери");
+        TextFieldValidator midnameValidator = new TextFieldValidator(30, false, ukrWords, "По батькові", midname, "повинно містити українські літери");
+        TextFieldValidator yearValidator = new TextFieldValidator(4, true, onlyYear, "Рік народження", year, "повинно містити 4 цифри");
+
+        try {
+            relationshipValidator.validate();
+            surnameValidator.validate();
+            nameValidator.validate();
+            midnameValidator.validate();
+            yearValidator.validate();
+        } catch (Exception e) {
+            Popup.wrongInputAlert(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
     @FXML
-    void saveDocuments(ActionEvent event) {
+    void saveMember(ActionEvent event) {
         String vidRidstva = DataFormat.getPureValue(relationshipComboBox.getValue());
 
         String surname = surnameTextField.getText();
         String name = nameTextField.getText();
         String patronimic = patronymicTextField.getText();
         String year = yearTextField.getText();
+
+        if (!validateMember(vidRidstva, surname, name, patronimic, year))
+            return;
 
         try {
             FamilyMember newMember = new FamilyMember();

@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
@@ -46,7 +47,7 @@ public class ReservistsAllController implements ControlledScene {
     public TextField filterTextField;
 
     @FXML
-    public TextField numberOfReservistsTextField;
+    public Text numberOfReservistsText;
 
     @FXML
     public Label instituteLabel;
@@ -317,7 +318,7 @@ public class ReservistsAllController implements ControlledScene {
 
         reservistsTableView.setItems(sortedList);
 
-        numberOfReservistsTextField.setText(String.valueOf(observableList.size()));
+        numberOfReservistsText.setText(String.valueOf(observableList.size()));
     }
 
 
