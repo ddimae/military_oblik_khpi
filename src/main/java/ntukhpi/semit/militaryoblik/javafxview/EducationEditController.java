@@ -121,8 +121,9 @@ public class EducationEditController implements ControlledScene {
         String level = levelComboBox.getValue();
 
         if (vnz == null || form == null || level == null || diplomaNumber.isEmpty()
-                || specialty.isEmpty() || qualification.isEmpty()) {
-            Popup.wrongInputAlert("Заповніть обов'язкові поля"); //TODO Позначити у формі обов'язкові поля!!!
+            //    || specialty.isEmpty() || qualification.isEmpty()
+        ) {
+            Popup.wrongInputAlert("Заповніть обов'язкові поля");
             return;
         }
 

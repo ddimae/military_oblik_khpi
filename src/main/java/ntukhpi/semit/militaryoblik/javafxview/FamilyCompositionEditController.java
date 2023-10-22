@@ -159,8 +159,8 @@ public class FamilyCompositionEditController implements ControlledScene {
                 "Чоловік",
                 "Донька",
                 "Син",
-                "Донька супруга",
-                "Син супруга"
+                "Донька подружжя",
+                "Син подружжя"
         );
 
         relationshipComboBox.setItems(typesOptions);
