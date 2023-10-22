@@ -69,6 +69,12 @@ public class KafedraServiceImpl implements KafedraService {
     }
 
     @Override
+    public String findAbrKafedraByKname(String kafName) {
+        Kafedra kafInID = kafedraRepository.getKafedraByKname(kafName);
+        return kafInID!=null?kafInID.getKabr():null;
+    }
+
+    @Override
     public Long findIDKafedraByKabr(String kafAbr) {
         Kafedra kafInID = kafedraRepository.getKafedraByKabr(kafAbr);
         return kafInID!=null?kafInID.getKid():null;

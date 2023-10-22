@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
+import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
 import ntukhpi.semit.militaryoblik.adapters.EducationPostgraduateAdapter;
 import ntukhpi.semit.militaryoblik.entity.EducationPostgraduate;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
@@ -21,6 +22,7 @@ import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Comparator;
 import java.util.Optional;
 
 @Component
@@ -73,7 +75,11 @@ public class EducationPostgraduateAllController implements ControlledScene {
     }
 
     private ObservableList<EducationPostgraduateAdapter> getEducationPostgraduateData() {
-        return FXCollections.observableArrayList(educationPostgraduateService.getAllEducationPostgraduateByPrepod(selectedPrepod).stream().map(EducationPostgraduateAdapter::new).toList());
+        return FXCollections.observableArrayList(educationPostgraduateService.
+                getAllEducationPostgraduateByPrepod(selectedPrepod).
+                stream().map(EducationPostgraduateAdapter::new).
+                sorted(Comparator.comparing(EducationPostgraduateAdapter::getYear)).
+                toList());
     }
 
 
@@ -103,7 +109,8 @@ public class EducationPostgraduateAllController implements ControlledScene {
 
         postgraduateEducationObservableList = getEducationPostgraduateData();
 
-        updateTable(postgraduateEducationObservableList);
+        vnzTableView.setItems(getEducationPostgraduateData());
+
     }
 
     private void populateCentralFields(EducationPostgraduateAdapter selectedEducation) {
@@ -121,8 +128,9 @@ public class EducationPostgraduateAllController implements ControlledScene {
         fullNameLabel.setWrapText(true);
     }
 
-    private void updateTable(ObservableList<EducationPostgraduateAdapter> postgraduateEducationObservableList) {
-        vnzTableView.setItems(postgraduateEducationObservableList);
+    private void refreshVNZTable() {
+        vnzTableView.setItems(getEducationPostgraduateData());
+        vnzTableView.refresh();
     }
 
     @FXML
@@ -158,8 +166,9 @@ public class EducationPostgraduateAllController implements ControlledScene {
             Optional<ButtonType> result = alert.showAndWait();
 
             if (result.isPresent() && result.get() == ButtonType.OK) {
-                postgraduateEducationObservableList.remove(selectedPostgaduateEducation);
+//                postgraduateEducationObservableList.remove(selectedPostgaduateEducation);
                 educationPostgraduateService.deleteEducationPostgraduate(selectedPostgaduateEducation.getId());
+                refreshVNZTable();
             }
         } else {
             Popup.noSelectedRowAlert();
@@ -169,15 +178,17 @@ public class EducationPostgraduateAllController implements ControlledScene {
     public void addPostgraduateEducation(EducationPostgraduate newEducation) {
         educationPostgraduateService.createEducationPostgraduate(newEducation);
 
-        postgraduateEducationObservableList.add(new EducationPostgraduateAdapter(newEducation));
-        vnzTableView.refresh();
+//        postgraduateEducationObservableList.add(new EducationPostgraduateAdapter(newEducation));
+//        vnzTableView.refresh();
+        refreshVNZTable();
     }
 
     public void updatePostgraduateEducation(EducationPostgraduateAdapter oldEducation, EducationPostgraduate newEducation) {
         educationPostgraduateService.updateEducationPostgraduate(oldEducation.getId(), newEducation);
 
-        postgraduateEducationObservableList.remove(oldEducation);
-        postgraduateEducationObservableList.add(new EducationPostgraduateAdapter(newEducation));
-        vnzTableView.refresh();
+//        postgraduateEducationObservableList.remove(oldEducation);
+//        postgraduateEducationObservableList.add(new EducationPostgraduateAdapter(newEducation));
+//        vnzTableView.refresh();
+        refreshVNZTable();
     }
 }

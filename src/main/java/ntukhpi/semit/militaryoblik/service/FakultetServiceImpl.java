@@ -60,6 +60,12 @@ public class FakultetServiceImpl implements FakultetService {
     }
 
     @Override
+    public String findAbrFakultetByFname(String fakName) {
+        Fakultet fakInID = fakultetRepository.getFakultetByFname(fakName);
+        return fakInID!=null?fakInID.getAbr():null;
+    }
+
+    @Override
     public Long findIDFakultetByAbr(String fakAbr) {
         Fakultet fakInID = fakultetRepository.getFakultetByAbr(fakAbr);
         return fakInID!=null?fakInID.getFid():null;

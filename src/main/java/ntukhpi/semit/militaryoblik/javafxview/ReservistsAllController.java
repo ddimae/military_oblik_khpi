@@ -254,7 +254,9 @@ public class ReservistsAllController implements ControlledScene {
     @FXML
     private void cathedraChanged() {
         String selectedCathedra = cathedraComboBox.getSelectionModel().getSelectedItem();
-        cathedraLabel.setText(selectedCathedra != null && !selectedCathedra.equals("-Оберіть кафедру") ? "Кафедра: " + selectedCathedra : "Кафедра: ");
+        String selectedKafAbr = kafedraServiceImpl.findAbrKafedraByKname(selectedCathedra);
+//        cathedraLabel.setText(selectedCathedra != null && !selectedCathedra.equals("-Оберіть кафедру") ? "Кафедра: " + selectedCathedra : "Кафедра: ");
+        cathedraLabel.setText(selectedCathedra != null && !selectedCathedra.equals("-Оберіть кафедру") ? "Кафедра: " + selectedKafAbr : "Кафедра: ");
 
         sortTable();
     }
@@ -262,7 +264,9 @@ public class ReservistsAllController implements ControlledScene {
     @FXML
     private void instituteChanged() {
         String selectedInstitute = instituteComboBox.getSelectionModel().getSelectedItem();
-        instituteLabel.setText(selectedInstitute != null && !selectedInstitute.equals("-Оберіть інститут") ? "Інститут: " + selectedInstitute : "Інститут: ");
+        String selectedFakAbr = fakultetServiceImpl.findAbrFakultetByFname(selectedInstitute);
+//        instituteLabel.setText(selectedInstitute != null && !selectedInstitute.equals("-Оберіть інститут") ? "Інститут: " + selectedInstitute : "Інститут: ");
+        instituteLabel.setText(selectedInstitute != null && !selectedInstitute.equals("-Оберіть інститут") ? "Інститут: " + selectedFakAbr : "Інститут: ");
 
         ObservableList<String> cathedraOptions = FXCollections.observableArrayList();
         cathedraOptions.add("-Оберіть кафедру");
@@ -302,9 +306,10 @@ public class ReservistsAllController implements ControlledScene {
      */
     private void sortTable() {
         String selectedTck = tckComboBox.getSelectionModel().getSelectedItem();
+        String selectedType = typeComboBox.getSelectionModel().getSelectedItem();
         String selectedInstitute = instituteComboBox.getSelectionModel().getSelectedItem();
         String selectedCathedra = cathedraComboBox.getSelectionModel().getSelectedItem();
-        String selectedType = typeComboBox.getSelectionModel().getSelectedItem();
+
 
         ObservableList<ReservistAdapter> filteredList = reservistsList.filtered(reservistAdapter ->
                 (selectedInstitute == null || selectedInstitute.equals("-Оберіть інститут") ||

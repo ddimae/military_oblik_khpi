@@ -109,8 +109,8 @@ public class EducationEditController implements ControlledScene {
         String diplomaNumber = diplomaNumberTextField.getText();
         String diplomaSeries = diplomaSeriesTextField.getText();
 
-        if (!diplomaNumber.matches("^[0-9]*$")) {
-            Popup.wrongInputAlert("Дипломний номер можe містити лише цифри");
+        if (!diplomaNumber.matches("^[0-9]+.+")) {
+            Popup.wrongInputAlert("Номер диплома на початку можe містити лише цифри");
             return;
         }
 

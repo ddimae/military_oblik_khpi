@@ -3,16 +3,13 @@ package ntukhpi.semit.militaryoblik.service;
 import ntukhpi.semit.militaryoblik.adapters.D05Adapter;
 import ntukhpi.semit.militaryoblik.entity.*;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class D05DataCollectService {
@@ -34,9 +31,9 @@ public class D05DataCollectService {
     public Map<String, List<D05Adapter>> collectD05Adapter(List<Long> miliratiPersonIds) {
         Map<String, List<D05Adapter>> data = new HashMap<>();
         List<D05Adapter> collectData = collectData(miliratiPersonIds);
-        for (D05Adapter adapter: collectData) {
+        for (D05Adapter adapter : collectData) {
             List<D05Adapter> list = data.get(adapter.getTerCentr());
-            if(list != null) {
+            if (list != null) {
                 List<D05Adapter> adapters = data.get(adapter.getTerCentr());
                 adapters.add(adapter);
             } else {
@@ -100,11 +97,7 @@ public class D05DataCollectService {
         family.append(person.getFamilyState() != null ? person.getFamilyState() + ";" : "").append("\n");
         for (FamilyMember member : members) {
             if (member != null) {
-                family.append(member.getVidRidstva() != null ? member.getVidRidstva() : "").append(" - ");
-                family.append(member.getMemFam() != null ? member.getMemFam() : "");
-                family.append(member.getMemImya() != null ? " " + member.getMemImya() : "");
-                family.append(member.getMemOtch() != null ? " " + member.getMemOtch() : "");
-                family.append(member.getRikNarodz() != null ? ", " + member.getRikNarodz() + "р.н." : "").append("; ");
+                family.append(member).append("; ");
             }
         }
         return family.toString();
@@ -112,13 +105,16 @@ public class D05DataCollectService {
 
     // Форматування данних про документ відповідно заданному шаблону.
     private String concatDocument(List<Document> documents) {
-        String doc = "";
+        StringBuilder pasport = new StringBuilder();
         for (Document document : documents) {
-            if ("Паперовий паспорт".equals(document.getDocType()) || "ID картка".equals(document.getDocType())) {
-                doc = String.format("%s, %s, %s", document.getDocNumber(), document.getKtoVyd(), document.getDataVyd());
+            if ("Паперовий паспорт".equals(document.getDocType()) || "ID CARD".equals(document.getDocType())) {
+                pasport.append(!StringUtils.isWhitespace(document.getDocNumber()) ? document.getDocNumber() : "");
+                pasport.append(!StringUtils.isWhitespace(document.getKtoVyd()) ? ", " + document.getKtoVyd() : "");
+                pasport.append(document.getDataVyd() != null ? " " + document.getDataVyd().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")) : "");
+                pasport.append("; ");
             }
         }
-        return doc;
+        return pasport.toString();
     }
 
     // Форматування данних про адресу реєстрації
@@ -156,15 +152,15 @@ public class D05DataCollectService {
         StringBuilder osvita = new StringBuilder();
         for (Education education : educations) {
             if (education != null) {
-                osvita.append(education.getLevelTraining() != null ? education.getLevelTraining() + ", " : "");
+                osvita.append(!StringUtils.isWhitespace(education.getLevelTraining()) ? education.getLevelTraining() + ", " : "");
                 if (education.getVnz() != null) {
-                    osvita.append(education.getVnz().getVnzShortName() != null ? education.getVnz().getVnzShortName() : "");
-                    osvita.append(education.getYearVypusk() != null ? " у " + education.getYearVypusk() : "");
+                    osvita.append(!StringUtils.isWhitespace(education.getVnz().getVnzShortName()) ? education.getVnz().getVnzShortName() : "");
+                    osvita.append(!StringUtils.isWhitespace(education.getYearVypusk()) && !StringUtils.isWhitespace(education.getVnz().getVnzShortName()) ? " у " + education.getYearVypusk() : "");
                 }
-                osvita.append(education.getDiplomaSeries() != null ? ", " + education.getDiplomaSeries() : "");
-                osvita.append(education.getDiplomaSpeciality() != null ? ", " + education.getDiplomaSpeciality() : "");
+                osvita.append(!StringUtils.isWhitespace(education.getDiplomaSeries()) ? ", " + education.getDiplomaSeries() : "");
+                osvita.append(!StringUtils.isWhitespace(education.getDiplomaSpeciality()) ? ", " + education.getDiplomaSpeciality() : "");
+                osvita.append("; ");
             }
-            osvita.append("; ");
         }
         return osvita.toString();
     }

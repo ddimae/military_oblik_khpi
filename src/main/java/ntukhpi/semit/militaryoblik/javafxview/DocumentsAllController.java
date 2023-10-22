@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 
 
 /**
@@ -90,7 +91,11 @@ public class DocumentsAllController implements ControlledScene {
      * @return ObservableList з усіма документави резервіста
      */
     private ObservableList<DocumentAdapter> getDocumentsData() {
-        return FXCollections.observableArrayList(documentService.getAllDocumentByPrepod(selectedPrepod).stream().map(DocumentAdapter::new).toList());
+        return FXCollections.observableArrayList(documentService.getAllDocumentByPrepod(selectedPrepod).
+                stream().
+                map(DocumentAdapter::new).
+                sorted(Comparator.comparing(DocumentAdapter::getDate)).
+                toList());
     }
 
 
@@ -120,6 +125,7 @@ public class DocumentsAllController implements ControlledScene {
      * Оновлення таблиці після її зміни
      */
     public void refreshDocsTable() {
+        docsTableView.setItems(getDocumentsData());
         docsTableView.refresh();
     }
 
@@ -131,8 +137,7 @@ public class DocumentsAllController implements ControlledScene {
      */
     public void addNewDocument(Document document) {
         documentService.createDocument(document);
-
-        docsObservableList.add(new DocumentAdapter(document));
+//        docsObservableList.add(new DocumentAdapter(document));
         refreshDocsTable();
     }
 
@@ -146,8 +151,8 @@ public class DocumentsAllController implements ControlledScene {
     public void updateDocument(DocumentAdapter oldDocument, Document newDocument) {
         documentService.updateDocument(oldDocument.getId(), newDocument);
 
-        docsObservableList.remove(oldDocument);
-        docsObservableList.add(new DocumentAdapter(newDocument));
+//        docsObservableList.remove(oldDocument);
+//        docsObservableList.add(new DocumentAdapter(newDocument));
         refreshDocsTable();
     }
 
@@ -160,8 +165,9 @@ public class DocumentsAllController implements ControlledScene {
 
         if (selectedDocument != null) {
             if (Popup.deleteConfirmation()) {   // Питаємо користувача
-                docsObservableList.remove(selectedDocument);
                 documentService.deleteDocument(selectedDocument.getId());
+//                docsObservableList.remove(selectedDocument);
+                refreshDocsTable();
             }
         } else {
             Popup.noSelectedRowAlert();

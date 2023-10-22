@@ -7,10 +7,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
-import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
 import ntukhpi.semit.militaryoblik.entity.Education;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
@@ -23,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 
+import java.util.Comparator;
 import java.util.Optional;
 
 @Component
@@ -86,7 +85,10 @@ public class EducationAllController implements ControlledScene {
     }
 
     private ObservableList<EducationAdapter> getEducationData() {
-        return FXCollections.observableArrayList(educationService.getAllEducationByPrepod(selectedPrepod).stream().map(EducationAdapter::new).toList());
+        return FXCollections.observableArrayList(educationService.getAllEducationByPrepod(selectedPrepod).
+                stream().map(EducationAdapter::new).
+                sorted(Comparator.comparing(EducationAdapter::getYear)).
+                toList());
     }
 
     public void initialize() {
@@ -115,7 +117,8 @@ public class EducationAllController implements ControlledScene {
 
         educationObservableList = getEducationData();
 
-        updateTable(educationObservableList);
+        vnzTableView.setItems(educationObservableList);
+
     }
 
     private void populateCentralFields(EducationAdapter selectedEducation) {
@@ -138,8 +141,9 @@ public class EducationAllController implements ControlledScene {
         fullNameLabel.setWrapText(true);
     }
 
-    private void updateTable(ObservableList<EducationAdapter> educationObservableList) {
-        vnzTableView.setItems(educationObservableList);
+    private void refreshVNZTable() {
+        vnzTableView.setItems(getEducationData());
+        vnzTableView.refresh();
     }
 
     @FXML
@@ -175,8 +179,9 @@ public class EducationAllController implements ControlledScene {
             Optional<ButtonType> result = alert.showAndWait();
 
             if (result.isPresent() && result.get() == ButtonType.OK) {
-                educationObservableList.remove(selectedEducation);
+//                educationObservableList.remove(selectedEducation);
                 educationService.deleteEducation(selectedEducation.getId());
+                refreshVNZTable();
             }
         } else {
             Popup.noSelectedRowAlert();
@@ -186,15 +191,19 @@ public class EducationAllController implements ControlledScene {
     public void addEducation(Education newEducation) {
         educationService.createEducation(newEducation);
 
-        educationObservableList.add(new EducationAdapter(newEducation));
-        vnzTableView.refresh();
+//        educationObservableList.add(new EducationAdapter(newEducation));
+//        vnzTableView.refresh();
+        refreshVNZTable();
+
     }
 
     public void updateEducation(EducationAdapter oldEducation, Education newEducation) {
         educationService.updateEducation(oldEducation.getId(), newEducation);
 
-        educationObservableList.remove(oldEducation);
-        educationObservableList.add(new EducationAdapter(newEducation));
-        vnzTableView.refresh();
+//        educationObservableList.remove(oldEducation);
+//        educationObservableList.add(new EducationAdapter(newEducation));
+//        vnzTableView.refresh();
+        refreshVNZTable();
+
     }
 }

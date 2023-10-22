@@ -155,12 +155,12 @@ public class FamilyCompositionEditController implements ControlledScene {
 
     public void initialize() {
         ObservableList<String> typesOptions = FXCollections.observableArrayList(
-                "Дружина",
-                "Чоловік",
-                "Донька",
-                "Син",
-                "Донька подружжя",
-                "Син подружжя"
+                "дружина",
+                "чоловік",
+                "донька",
+                "син",
+                "донька подружжя",
+                "син подружжя"
         );
 
         relationshipComboBox.setItems(typesOptions);

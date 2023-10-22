@@ -28,6 +28,8 @@ import org.hibernate.type.descriptor.jdbc.JdbcTypeFamilyInformation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Comparator;
+
 @Component
 public class FamilyCompositionAllController implements ControlledScene {
     @FXML
@@ -72,7 +74,10 @@ public class FamilyCompositionAllController implements ControlledScene {
     }
 
     private ObservableList<FamilyAdapter> getFamilyObservableList() {
-        return FXCollections.observableArrayList(familyMemberService.getAllFamilyMembersByPrepod(selectedPrepod).stream().map(FamilyAdapter::new).toList());
+        return FXCollections.observableArrayList(familyMemberService.getAllFamilyMembersByPrepod(selectedPrepod).
+                stream().map(FamilyAdapter::new).
+                sorted(Comparator.comparing(FamilyAdapter::getRikNarodz)).
+                toList());
     }
 
     public void initialize() {
@@ -95,21 +100,21 @@ public class FamilyCompositionAllController implements ControlledScene {
     }
 
     public void refreshFamilyTable() {
+        familyTableView.setItems(getFamilyObservableList());
         familyTableView.refresh();
     }
 
     public void addNewFamilyMember(FamilyMember family) {
         familyMemberService.createFamilyMember(family);
-
-        familyObservableList.add(new FamilyAdapter(family));
+//        familyObservableList.add(new FamilyAdapter(family));
         refreshFamilyTable();
     }
 
     public void updateFamily(FamilyAdapter oldSklad, FamilyMember newSklad) {
         familyMemberService.updateFamilyMember(oldSklad.getId(), newSklad);
 
-        familyObservableList.remove(oldSklad);
-        familyObservableList.add(new FamilyAdapter(newSklad));
+//        familyObservableList.remove(oldSklad);
+//        familyObservableList.add(new FamilyAdapter(newSklad));
         refreshFamilyTable();
     }
 
@@ -119,8 +124,9 @@ public class FamilyCompositionAllController implements ControlledScene {
 
         if (selectedItem != null) {
             if (Popup.deleteConfirmation()) {
-                familyObservableList.remove(selectedItem);
                 familyMemberService.deleteFamilyMember(selectedItem.getId());
+//                familyObservableList.remove(selectedItem);
+                refreshFamilyTable();
             }
         } else {
             Popup.noSelectedRowAlert();

@@ -24,6 +24,8 @@ public interface KafedraService {
     //For insert new cafedra
     Long findIDKafedraByKname(String kafName);
 
+    String findAbrKafedraByKname(String kafName);
+
     Long findIDKafedraByKabr(String kafAbr);
 
     Long findIDKafedraByOid(String kafOid);
