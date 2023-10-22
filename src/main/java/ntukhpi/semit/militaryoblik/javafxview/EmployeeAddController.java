@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
+import ntukhpi.semit.militaryoblik.adapters.PrepodAdapter;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.*;
 import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
@@ -251,8 +252,9 @@ public class EmployeeAddController implements ControlledScene {
 
             prepodService.savePrepod(prepod);
 
-            closeEdit(null);
-            Popup.successSave();
+            militaryRegistrationAfterSave(new PrepodAdapter(prepod));
+//            closeEdit(null);
+//            Popup.successSave();
         } catch (Exception e) {
             e.printStackTrace();
             Popup.internalAlert(e.getMessage());
@@ -351,6 +353,14 @@ public class EmployeeAddController implements ControlledScene {
     @FXML
     void handlePositionButton(ActionEvent event) {
         MilitaryOblikKhPIMain.showStage(AllStageSettings.positionAdd, currentStage, this, positionComboBox);
+    }
+
+    /**
+     * Перехід до форми реєстрації військового обліку
+     */
+    void militaryRegistrationAfterSave(PrepodAdapter prepodAdapter) {
+        currentStage.close();
+        MilitaryOblikKhPIMain.showStage(AllStageSettings.militaryRegistrationEdit, mainStage, mainController, prepodAdapter);
     }
 
     /**
