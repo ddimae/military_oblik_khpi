@@ -232,7 +232,6 @@ public class ReservistsAllController implements ControlledScene {
         for (Prepod prepod : prepodServiceImpl.getAllPrepod()) {
             MilitaryPerson mp = militaryPersonServiceImpl.getMilitaryPersonByPrepod(prepod);
             if (mp != null) {
-                System.out.println(prepod.getFam() + " " + mp.getVos());
                 reservistsList.add(new ReservistAdapter(mp));
             }
         }
