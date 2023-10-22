@@ -1,6 +1,7 @@
 package ntukhpi.semit.militaryoblik.javafxutils;
 
 import javafx.scene.control.TableCell;
+import ntukhpi.semit.militaryoblik.adapters.PrepodAdapter;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 
 import java.text.Collator;
@@ -20,6 +21,10 @@ import java.util.Locale;
 public class DataFormat {
     public static String getPIB(Prepod prepod) {
         return prepod.getFam() + " " + prepod.getImya() + " " + prepod.getOtch();
+    }
+
+    public static String getPIB(PrepodAdapter prepod) {
+        return prepod.getSurname() + " " + prepod.getName() + " " + prepod.getMidname();
     }
 
     public static String localDateToUkStandart(LocalDate date) {

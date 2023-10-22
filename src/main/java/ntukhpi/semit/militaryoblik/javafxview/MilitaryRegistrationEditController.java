@@ -2,15 +2,18 @@ package ntukhpi.semit.militaryoblik.javafxview;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
+import ntukhpi.semit.militaryoblik.adapters.PrepodAdapter;
 import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
 import ntukhpi.semit.militaryoblik.entity.*;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
+import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.TextFieldValidator;
 import ntukhpi.semit.militaryoblik.repository.VZvanieRepository;
@@ -22,6 +25,8 @@ import java.util.regex.Pattern;
 
 @Component
 public class MilitaryRegistrationEditController implements ControlledScene {
+    @FXML
+    private Button backButton;
     @FXML
     public Label pibLabel;
     @FXML
@@ -75,13 +80,27 @@ public class MilitaryRegistrationEditController implements ControlledScene {
 
     @Override
     public void setMainController(Object mainController) {
-        this.mainController = (ReservistsAllController) mainController;
+        if (mainController instanceof ReservistsAllController)
+            this.mainController = (ReservistsAllController) mainController;
     }
 
     @Override
     public void setData(Object data) {
         if (data instanceof ReservistAdapter)
             setMilitaryRegistrationInfo((ReservistAdapter) data);
+
+        if (data instanceof PrepodAdapter) {
+            PrepodAdapter prepodAdapter = (PrepodAdapter)data;
+            ReservistAdapter reservistAdapter = new ReservistAdapter(DataFormat.getPIB(prepodAdapter), null, null,
+                                                                    null, null, null,
+                                                                    null, null, null,
+                                                                    null, null);
+
+            selectedPrepod = prepodService.getPrepodById(prepodAdapter.getId());
+            setMilitaryRegistrationInfo(reservistAdapter);
+
+            blockBackButton();
+        }
     }
 
     @Override
@@ -95,22 +114,39 @@ public class MilitaryRegistrationEditController implements ControlledScene {
     }
 
     private void setMilitaryRegistrationInfo(ReservistAdapter reservist) {
-        selectedPrepod = prepodService.getPrepodById(ReservistsAllController.getSelectedPrepodId());
+        if (selectedPrepod == null)
+            selectedPrepod = prepodService.getPrepodById(ReservistsAllController.getSelectedPrepodId());
 
         pibLabel.setText(reservist.getPib());
 
-        vosTextField.setText(reservist.getVos());
-        categoryComboBox.setValue(reservist.getCategory());
-        groupComboBox.setValue(reservist.getVGrupa());
-        vSkladComboBox.setValue(reservist.getVSklad());
+        vosTextField.setText(reservist.getVos() != null ? reservist.getVos() : "000000");
+
+        if (reservist.getCategory() != null)
+            categoryComboBox.setValue(reservist.getCategory());
+        else
+            categoryComboBox.getSelectionModel().selectFirst();
+
+        if (reservist.getVGrupa() != null)
+            groupComboBox.setValue(reservist.getVGrupa());
+        else
+            groupComboBox.getSelectionModel().selectFirst();
+
+        if (reservist.getVSklad() != null)
+            vSkladComboBox.setValue(reservist.getVSklad());
+        else
+            vSkladComboBox.getSelectionModel().selectFirst();
 
         if (reservist.getRank() != null)
             rankComboBox.setValue(reservist.getRank());
         else
             rankComboBox.getSelectionModel().selectFirst();
 
-        validityComboBox.setValue(reservist.getVPrydatnist());
-        voenkomatTextField.setText(reservist.getTrc());
+        if (reservist.getVPrydatnist() != null)
+            validityComboBox.setValue(reservist.getVPrydatnist());
+        else
+            validityComboBox.getSelectionModel().selectFirst();
+
+        voenkomatTextField.setText(reservist.getTrc() != null ? reservist.getTrc() : "");
 
         if (reservist.getFamilyState() != null)
             familyStanTextField.setText(reservist.getFamilyState());
@@ -239,7 +275,7 @@ public class MilitaryRegistrationEditController implements ControlledScene {
 
     @FXML
     public void saveMilitaryRegistrationInfo(ActionEvent actionEvent) {
-        String vos = vosTextField.getText().trim();
+        String vos = vosTextField.getText();
         String category = categoryComboBox.getValue() != null ? categoryComboBox.getValue() : null;
         String group = groupComboBox.getValue() != null ? groupComboBox.getValue() : null;
         String vSklad = vSkladComboBox.getValue() != null ? vSkladComboBox.getValue() : null;
@@ -250,12 +286,15 @@ public class MilitaryRegistrationEditController implements ControlledScene {
         String educationLevel = educationTextField.getText().trim();
 
         if (!validateMilitaryRegistrationInfo(vos, category, group, vSklad,
-                vZvanie, prydatnist, voenkomat, familyState, educationLevel) || !Popup.saveConfirmation())
+                vZvanie, prydatnist, voenkomat, familyState, educationLevel))
             return;
 
 
         try {
             MilitaryPerson militaryPerson = militaryPersonService.getMilitaryPersonByPrepod(selectedPrepod);
+
+            if (militaryPerson == null)
+                militaryPerson = new MilitaryPerson();
 
             militaryPerson.setPrepod(selectedPrepod);
             militaryPerson.setVos(vos);
@@ -268,7 +307,10 @@ public class MilitaryRegistrationEditController implements ControlledScene {
             militaryPerson.setFamilyState(familyState);
             militaryPerson.setEducationLevel(educationLevel);
 
-            militaryPersonService.updateMilitaryPerson(militaryPerson.getId(), militaryPerson);
+            if (militaryPerson.getId() != null)
+                militaryPersonService.updateMilitaryPerson(militaryPerson.getId(), militaryPerson);
+            else
+                ReservistsAllController.setSelectedReservist(new ReservistAdapter(militaryPersonService.createMilitaryPerson(militaryPerson)));
 
             closeEdit(null);
             Popup.successSave();
@@ -276,5 +318,9 @@ public class MilitaryRegistrationEditController implements ControlledScene {
             e.printStackTrace();
             Popup.internalAlert(e.getMessage());
         }
+    }
+
+    void blockBackButton() {
+        backButton.setDisable(true);
     }
 }

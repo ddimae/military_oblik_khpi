@@ -67,7 +67,7 @@ public class ReservistAdapter {
         this.id = prep.getId();
         this.militaryPersonId = militaryPerson.getId();
         this.pib = prep.getFam() + " " + prep.getImya() + " " + prep.getOtch();
-        this.dr = prep.getDr().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));//"01.01.0000";
+        this.dr = prep.getDr() != null ? prep.getDr().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")) : "";//"01.01.0000";
         this.gender = "муж"; // DDE - Еще бы понять, откуда брать значение...
         this.trc = militaryPerson.getVoenkomat().getVoenkomatName();
         this.rank = militaryPerson.getVZvanie().getZvanieName();

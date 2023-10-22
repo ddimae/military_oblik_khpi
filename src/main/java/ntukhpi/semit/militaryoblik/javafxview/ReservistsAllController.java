@@ -194,11 +194,23 @@ public class ReservistsAllController implements ControlledScene {
         cathedraLabel.setWrapText(true);
 
         // Відновлення вибору рядка перед переходом до іншої форми
-        if (selectedReservist != null)
-            reservistsTableView.getSelectionModel().select(selectedReservist);
+//        selectReservist(selectedReservist);
     }
 
-    public ReservistAdapter setSelectedPrepodId() {
+    public static void setSelectedReservist(ReservistAdapter reservist) {
+        selectedReservist = reservist;
+    }
+
+    public ReservistAdapter selectReservist(ReservistAdapter reservist) {
+        if (reservist == null)
+            return null;
+
+        reservistsTableView.getSelectionModel().select(reservist);
+
+        return selectReservist();
+    }
+
+    public ReservistAdapter selectReservist() {
         ReservistAdapter reservist = reservistsTableView.getSelectionModel().getSelectedItem();
 
         if (reservist == null)
@@ -219,11 +231,13 @@ public class ReservistsAllController implements ControlledScene {
 
         for (Prepod prepod : prepodServiceImpl.getAllPrepod()) {
             MilitaryPerson mp = militaryPersonServiceImpl.getMilitaryPersonByPrepod(prepod);
-            if (mp != null)
-               reservistsList.add(new ReservistAdapter(mp));
+            if (mp != null) {
+                reservistsList.add(new ReservistAdapter(mp));
+            }
         }
 
         //updateTable(reservistsList);
+        selectReservist(selectedReservist);
 
         reservistsTableView.refresh();
 
@@ -231,6 +245,9 @@ public class ReservistsAllController implements ControlledScene {
     }
 
     public static Long getSelectedPrepodId() {
+        if (selectedReservist == null)
+            return null;
+
         return selectedReservist.getId();
     }
 
@@ -316,6 +333,7 @@ public class ReservistsAllController implements ControlledScene {
                                         DataFormat.getUkrCollator().compare(a.getPib(), b.getPib())).toList());
 
         reservistsTableView.setItems(sortedList);
+        reservistsTableView.refresh();
 
 
         numberOfReservistsText.setText(String.valueOf(observableList.size()));
@@ -332,7 +350,7 @@ public class ReservistsAllController implements ControlledScene {
     //============================================
     @FXML
     private void handlePositionButton() {
-        if (setSelectedPrepodId() != null)
+        if (selectReservist() != null)
             MilitaryOblikKhPIMain.showStage(AllStageSettings.positionEdit, currentStage, this, null);
         else
             Popup.noSelectedRowAlert();
@@ -340,7 +358,7 @@ public class ReservistsAllController implements ControlledScene {
 
     @FXML
     private void handleFamilyButton() {
-        if (setSelectedPrepodId() != null)
+        if (selectReservist() != null)
             MilitaryOblikKhPIMain.showStage(AllStageSettings.familyAll, currentStage, this, null);
         else
             Popup.noSelectedRowAlert();
@@ -348,7 +366,7 @@ public class ReservistsAllController implements ControlledScene {
 
     @FXML
     private void handleEducationButton() {
-        if (setSelectedPrepodId() != null)
+        if (selectReservist() != null)
             MilitaryOblikKhPIMain.showStage(AllStageSettings.educationAll, currentStage, this, null);
         else
             Popup.noSelectedRowAlert();
@@ -356,7 +374,7 @@ public class ReservistsAllController implements ControlledScene {
 
     @FXML
     private void handlePostgraduateEducationButton() {
-        if (setSelectedPrepodId() != null)
+        if (selectReservist() != null)
             MilitaryOblikKhPIMain.showStage(AllStageSettings.educationPostgraduateAll, currentStage, this, null);
         else
             Popup.noSelectedRowAlert();
@@ -364,7 +382,7 @@ public class ReservistsAllController implements ControlledScene {
 
     @FXML
     private void handleDocumentsButton() {
-        if (setSelectedPrepodId() != null)
+        if (selectReservist() != null)
             MilitaryOblikKhPIMain.showStage(AllStageSettings.documentsAll, currentStage, this, null);
         else
             Popup.noSelectedRowAlert();
@@ -372,7 +390,7 @@ public class ReservistsAllController implements ControlledScene {
 
     @FXML
     void handleContactInfoButton(ActionEvent event) {
-        ReservistAdapter reservist = setSelectedPrepodId();
+        ReservistAdapter reservist = selectReservist();
         if (reservist != null) {
             MilitaryOblikKhPIMain.showStage(AllStageSettings.contactsEdit, currentStage, this, reservist);
         } else
@@ -381,7 +399,7 @@ public class ReservistsAllController implements ControlledScene {
 
     @FXML
     public void handleMilitaryRegistrationEditButton(ActionEvent actionEvent) {
-        ReservistAdapter reservist = setSelectedPrepodId();
+        ReservistAdapter reservist = selectReservist();
         if (reservist != null) {
             MilitaryOblikKhPIMain.showStage(AllStageSettings.militaryRegistrationEdit, currentStage, this, reservist);
         } else {
