@@ -10,6 +10,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.DocumentAdapter;
 import ntukhpi.semit.militaryoblik.entity.Document;
@@ -144,6 +145,34 @@ public class DocumentsEditController implements ControlledScene {
         );
 
         typeComboBox.setItems(docsOptions);
+
+        //Робиться датаПикерДисс українським
+        dateDatePicker.setConverter(new StringConverter<LocalDate>() {
+            String pattern = "dd.MM.yyyy";
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+
+            {
+                dateDatePicker.setPromptText(pattern.toLowerCase());
+            }
+
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return dateFormatter.format(date);
+                } else {
+                    return "";
+                }
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, dateFormatter);
+                } else {
+                    return null;
+                }
+            }
+        });
     }
 
 

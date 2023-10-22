@@ -28,8 +28,8 @@ public final class AllStageSettings {
 
     //============================
 
-    private final static String POSITION_JAVAFX = "/javafxview/PositionEdit.fxml";
-    private final static String POSITION_JAVAFX_TITLE = "Посада";
+    private final static String POSITION_JAVAFX = "/javafxview/PositionOrdersEdit.fxml";
+    private final static String POSITION_JAVAFX_TITLE = "Накази про призначення";
 
     public final static SettingsStage positionEdit =
                         new SettingsStage(POSITION_JAVAFX, POSITION_JAVAFX_TITLE,
