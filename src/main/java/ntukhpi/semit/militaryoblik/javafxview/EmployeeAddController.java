@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.*;
 import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
@@ -142,6 +143,34 @@ public class EmployeeAddController implements ControlledScene {
 
         handleInstituteChange(null);
         handleTypeChange(null);
+
+        //Робиться датаПикерДисс українським
+        birthDatePicker.setConverter(new StringConverter<LocalDate>() {
+            String pattern = "dd.MM.yyyy";
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+
+            {
+                birthDatePicker.setPromptText(pattern.toLowerCase());
+            }
+
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return dateFormatter.format(date);
+                } else {
+                    return "";
+                }
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, dateFormatter);
+                } else {
+                    return null;
+                }
+            }
+        });
     }
 
     /**

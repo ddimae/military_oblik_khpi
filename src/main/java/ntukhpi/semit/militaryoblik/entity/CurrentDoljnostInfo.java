@@ -8,6 +8,7 @@ import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "doljnost_nakazy")
@@ -53,4 +54,16 @@ public class CurrentDoljnostInfo {
     private String commentStop;
 
 
+    public CurrentDoljnostInfo(
+            Prepod selectedPrepod, String nakaz, LocalDate date, String comment,
+            String nakazDiss, LocalDate dateDiss, String commentDiss) {
+        this.id=0L;
+        this.prepod = selectedPrepod;
+        this.numNakazStart = nakaz;
+        this.dateStart = date;
+        this.commentStart = comment;
+        this.numNakazStop = nakazDiss;
+        this.dateStop = dateDiss;
+        this.commentStop = commentDiss;
+    }
 }

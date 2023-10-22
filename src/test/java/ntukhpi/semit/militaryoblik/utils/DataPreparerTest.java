@@ -16,7 +16,7 @@ class DataPreparerTest {
 
     @Test
     void testSortD5AdapterByUAAlphabetByName() {
-        Map<String, List<D05Adapter>> result =  dataPreparer.sortD5AdapterByUAAlphabet(generateTestDataMap(), "name");
+        Map<String, List<D05Adapter>> result = dataPreparer.sortD5AdapterByUAAlphabet(generateTestDataMap(), "name");
         assertEquals("Андрій", result.get("Одеський ТЦК").get(0).getPib());
         assertEquals("Іван", result.get("Житомирський ТЦК").get(0).getPib());
         assertEquals("Мстислав", result.get("Одеський ТЦК").get(1).getPib());
@@ -26,7 +26,7 @@ class DataPreparerTest {
 
     @Test
     void testSortD5AdapterByUAAlphabetByTCK() {
-        Map<String, List<D05Adapter>> result =  dataPreparer.sortD5AdapterByUAAlphabet(generateTestDataMap(), "tck");
+        Map<String, List<D05Adapter>> result = dataPreparer.sortD5AdapterByUAAlphabet(generateTestDataMap(), "tck");
         assertEquals("Андрій", result.get("Одеський ТЦК").get(0).getPib());
         assertEquals("Іван", result.get("Житомирський ТЦК").get(0).getPib());
         assertEquals("Мстислав", result.get("Одеський ТЦК").get(1).getPib());
@@ -48,7 +48,7 @@ class DataPreparerTest {
         Map<String, List<D05Adapter>> map = new HashMap<>();
         List<D05Adapter> adapters1 = new ArrayList<>();
         List<D05Adapter> adapters2 = new ArrayList<>();
-        List<D05Adapter> adapters3= new ArrayList<>();
+        List<D05Adapter> adapters3 = new ArrayList<>();
         D05Adapter d05Adapter1 = new D05Adapter();
         d05Adapter1.setPib("Іван");
         d05Adapter1.setTerCentr("Житомирський ТЦК");
