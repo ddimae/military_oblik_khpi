@@ -211,17 +211,11 @@ public class ReservistsAllController implements ControlledScene {
     public void updateForm() {
         reservistsList.clear();
 
-        if (tckComboBox.getValue() != null) {
-            String selectedTCK = tckComboBox.getValue();
+        ObservableList<String> tckOptions = FXCollections.observableArrayList("-Оберіть ТЦК");
+        tckOptions.addAll(voenkomatServiceImpl.getAllVoenkomat().stream()
+                .map(Voenkomat::getVoenkomatName).sorted().toList());
 
-            ObservableList<String> tckOptions = FXCollections.observableArrayList("-Оберіть ТЦК");
-            tckOptions.addAll(voenkomatServiceImpl.getAllVoenkomat()
-                    .stream().map(Voenkomat::getVoenkomatName).sorted().toList());
-            tckComboBox.setItems(tckOptions);
-
-            tckComboBox.getSelectionModel().select(selectedTCK);
-        }
-
+        tckComboBox.setItems(tckOptions);
 
         for (Prepod prepod : prepodServiceImpl.getAllPrepod()) {
             MilitaryPerson mp = militaryPersonServiceImpl.getMilitaryPersonByPrepod(prepod);
@@ -229,7 +223,11 @@ public class ReservistsAllController implements ControlledScene {
                reservistsList.add(new ReservistAdapter(mp));
         }
 
-        updateTable(reservistsList);
+        //updateTable(reservistsList);
+
+        reservistsTableView.refresh();
+
+        sortTable();
     }
 
     public static Long getSelectedPrepodId() {
@@ -247,12 +245,12 @@ public class ReservistsAllController implements ControlledScene {
     @FXML
     private void instituteChanged() {
         String selectedInstitute = instituteComboBox.getSelectionModel().getSelectedItem();
-        instituteLabel.setText(selectedInstitute != null && !selectedInstitute.equals("-Оберіть факультет") ? "Інститут: " + selectedInstitute : "Інститут: ");
+        instituteLabel.setText(selectedInstitute != null && !selectedInstitute.equals("-Оберіть інститут") ? "Інститут: " + selectedInstitute : "Інститут: ");
 
         ObservableList<String> cathedraOptions = FXCollections.observableArrayList();
         cathedraOptions.add("-Оберіть кафедру");
 
-        if (selectedInstitute.equals("-Оберіть факультет"))
+        if (selectedInstitute.equals("-Оберіть інститут"))
             cathedraOptions.addAll(FXCollections.observableArrayList(kafedraServiceImpl.getAllKafedra()
                                 .stream().map(Kafedra::getKname).sorted().toList()));
         else
@@ -292,7 +290,7 @@ public class ReservistsAllController implements ControlledScene {
         String selectedType = typeComboBox.getSelectionModel().getSelectedItem();
 
         ObservableList<ReservistAdapter> filteredList = reservistsList.filtered(reservistAdapter ->
-                (selectedInstitute == null || selectedInstitute.equals("-Оберіть факультет") ||
+                (selectedInstitute == null || selectedInstitute.equals("-Оберіть інститут") ||
                         reservistAdapter.getInstitute().equals(selectedInstitute)) &&
                         (selectedCathedra == null || selectedCathedra.equals("-Оберіть кафедру") ||
                                 reservistAdapter.getCathedra().equals(selectedCathedra)) &&
@@ -318,6 +316,7 @@ public class ReservistsAllController implements ControlledScene {
                                         DataFormat.getUkrCollator().compare(a.getPib(), b.getPib())).toList());
 
         reservistsTableView.setItems(sortedList);
+
 
         numberOfReservistsText.setText(String.valueOf(observableList.size()));
     }

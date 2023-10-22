@@ -192,8 +192,8 @@ public class MilitaryRegistrationEditController implements ControlledScene {
 
     @FXML
     public void closeEdit(ActionEvent actionEvent) {
-        MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
         mainController.updateForm();
+        MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
     }
 
     private boolean validateMilitaryRegistrationInfo(String vos, String category, String group, String sklad, String zvanie,
@@ -207,7 +207,7 @@ public class MilitaryRegistrationEditController implements ControlledScene {
 //        TextFieldValidator skladValidator = new TextFieldValidator(-1, true, ukrWords, "Склад", sklad, null);
 //        TextFieldValidator zvanieValidator = new TextFieldValidator(-1, true, ukrWords, "Військове звання", zvanie, null);
 //        TextFieldValidator prydatnistValidator = new TextFieldValidator(-1, true, ukrWords, "Придатність до військової служби", prydatnist, null);
-        TextFieldValidator voenkomatValidator = new TextFieldValidator(-1, true, ukrWords, "ТРЦ", voenkomat, "може містити тільки українські літери та розділові знаки");
+        TextFieldValidator voenkomatValidator = new TextFieldValidator(-1, true, ukrWords, "ТЦК", voenkomat, "може містити тільки українські літери та розділові знаки");
         TextFieldValidator familyStanValidator = new TextFieldValidator(-1, true, ukrWords, "Сімейний стан", familyStan, "може містити тільки українські літери та розділові знаки");
         TextFieldValidator osvitaValidator = new TextFieldValidator(-1, true, ukrWords, "Освіта", osvita, "може містити тільки українські літери та розділові знаки");
 

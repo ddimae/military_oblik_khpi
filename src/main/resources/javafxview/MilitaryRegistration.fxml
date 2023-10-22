@@ -121,7 +121,7 @@
                <GridPane.margin>
                   <Insets right="75.0" top="25.0" />
                </GridPane.margin></Label>
-            <Label text="ТРЦ" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="2">
+            <Label text="ТЦК" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets top="25.0" />
                </GridPane.margin></Label>
@@ -146,7 +146,7 @@
                   <Insets bottom="50.0" left="25.0" right="25.0" top="-5.0" />
                </GridPane.margin>
             </Pane>
-            <Label text="- Обов'язкове для заповнення поле" GridPane.columnIndex="5" GridPane.columnSpan="3" GridPane.rowIndex="9">
+            <Label text="- Обов'язкове для заповнення поле" GridPane.columnIndex="5" GridPane.columnSpan="4" GridPane.rowIndex="9">
                <GridPane.margin>
                   <Insets bottom="50.0" right="35.0" top="-5.0" />
                </GridPane.margin>
