@@ -160,7 +160,7 @@ public class ReservistsAllController implements ControlledScene {
         tckComboBox.getItems().add("-Оберіть ТЦК");
         tckComboBox.getItems().addAll(tckOptions);
 
-        instituteComboBox.getItems().add("-Оберіть факультет");
+        instituteComboBox.getItems().add("-Оберіть інститут");
         instituteComboBox.getItems().addAll(instituteOptions);
 
         cathedraComboBox.getItems().add("-Оберіть кафедру");
@@ -211,14 +211,6 @@ public class ReservistsAllController implements ControlledScene {
     public void updateForm() {
         reservistsList.clear();
 
-        for (Prepod prepod : prepodServiceImpl.getAllPrepod()) {
-            MilitaryPerson mp = militaryPersonServiceImpl.getMilitaryPersonByPrepod(prepod);
-            if (mp != null)
-                reservistsList.add(new ReservistAdapter(mp));
-        }
-
-        updateTable(reservistsList);
-
         if (tckComboBox.getValue() != null) {
             String selectedTCK = tckComboBox.getValue();
 
@@ -229,6 +221,15 @@ public class ReservistsAllController implements ControlledScene {
 
             tckComboBox.getSelectionModel().select(selectedTCK);
         }
+
+
+        for (Prepod prepod : prepodServiceImpl.getAllPrepod()) {
+            MilitaryPerson mp = militaryPersonServiceImpl.getMilitaryPersonByPrepod(prepod);
+            if (mp != null)
+               reservistsList.add(new ReservistAdapter(mp));
+        }
+
+        updateTable(reservistsList);
     }
 
     public static Long getSelectedPrepodId() {
@@ -310,11 +311,11 @@ public class ReservistsAllController implements ControlledScene {
      *
      * @param observableList список студентов
      */
-    private void updateTable(ObservableList<ReservistAdapter> observableList) {
-        ObservableList<ReservistAdapter> sortedList =
-                FXCollections.observableArrayList(
+    public void updateTable(ObservableList<ReservistAdapter> observableList) {
+        ObservableList<ReservistAdapter> sortedList = FXCollections.observableArrayList(
                         observableList.stream()
-                                .sorted((a, b) -> DataFormat.getUkrCollator().compare(a.getPib(), b.getPib())).toList());
+                                .sorted((a, b) ->
+                                        DataFormat.getUkrCollator().compare(a.getPib(), b.getPib())).toList());
 
         reservistsTableView.setItems(sortedList);
 

@@ -194,7 +194,6 @@ public class MilitaryRegistrationEditController implements ControlledScene {
     public void closeEdit(ActionEvent actionEvent) {
         MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
         mainController.updateForm();
-
     }
 
     private boolean validateMilitaryRegistrationInfo(String vos, String category, String group, String sklad, String zvanie,
