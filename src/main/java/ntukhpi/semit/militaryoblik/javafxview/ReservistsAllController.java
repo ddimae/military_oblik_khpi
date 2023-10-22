@@ -231,8 +231,10 @@ public class ReservistsAllController implements ControlledScene {
 
         for (Prepod prepod : prepodServiceImpl.getAllPrepod()) {
             MilitaryPerson mp = militaryPersonServiceImpl.getMilitaryPersonByPrepod(prepod);
-            if (mp != null)
-               reservistsList.add(new ReservistAdapter(mp));
+            if (mp != null) {
+                System.out.println(prepod.getFam() + " " + mp.getVos());
+                reservistsList.add(new ReservistAdapter(mp));
+            }
         }
 
         //updateTable(reservistsList);
@@ -332,6 +334,7 @@ public class ReservistsAllController implements ControlledScene {
                                         DataFormat.getUkrCollator().compare(a.getPib(), b.getPib())).toList());
 
         reservistsTableView.setItems(sortedList);
+        reservistsTableView.refresh();
 
 
         numberOfReservistsText.setText(String.valueOf(observableList.size()));
