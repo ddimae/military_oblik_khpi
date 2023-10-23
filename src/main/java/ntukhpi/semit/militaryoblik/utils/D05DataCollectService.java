@@ -1,8 +1,12 @@
-package ntukhpi.semit.militaryoblik.service;
+package ntukhpi.semit.militaryoblik.utils;
 
 import ntukhpi.semit.militaryoblik.adapters.D05Adapter;
 import ntukhpi.semit.militaryoblik.entity.*;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
+import ntukhpi.semit.militaryoblik.service.CurrentDoljnostInfoService;
+import ntukhpi.semit.militaryoblik.service.DocumentService;
+import ntukhpi.semit.militaryoblik.service.MilitaryPersonService;
+import ntukhpi.semit.militaryoblik.service.PersonalDataService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

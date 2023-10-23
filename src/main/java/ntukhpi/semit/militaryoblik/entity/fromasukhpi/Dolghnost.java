@@ -22,7 +22,7 @@ public class Dolghnost {
     @Column(length = 40, name="dolghn_name",nullable = false)
     private String dolghnName;
 
-    @Column(length = 15, name="dolghn_shot_name")
+    @Column(length = 20, name="dolghn_shot_name")
     private String dolghnShortName;
 
     @Column(name="kat_sotr")

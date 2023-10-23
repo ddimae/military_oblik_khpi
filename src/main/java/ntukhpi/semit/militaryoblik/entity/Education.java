@@ -32,7 +32,7 @@ public class Education {
     @Column(name = "year_vypusk",length = 4,nullable = false)
     private String yearVypusk;
     //Серия и номер диплома про закінчення
-    @Column(name = "diploma_series",length = 3)
+    @Column(name = "diploma_series",length = 5)
     private String diplomaSeries;
     @Column(name = "diploma_numbers",length = 12)
     private String diplomaNumber;
@@ -51,7 +51,7 @@ public class Education {
     //Форма навчання - денна або заочна
     //Обирається з переліку (фіксований)
     @Column(name = "form_training")
-    @ColumnDefault(value = "Денна")
+    //@ColumnDefault(value = "Денна")
     private String formTraining;
     //Рівень навчання - бакалавр, магістр, спеціаліст
     //Обирається з переліку (фіксований)

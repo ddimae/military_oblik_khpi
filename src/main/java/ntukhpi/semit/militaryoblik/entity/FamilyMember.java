@@ -35,7 +35,7 @@ public class FamilyMember {
     // Обирається з переліку (фіксований)
     // чоловік; дружина; син; донька
     // Правільність вводу не контролюємо: чоловік Петрова, син Альона - проблема тих, хто вводить
-    @Column(name = "vid_ridstva", length = 10, nullable = false)
+    @Column(name = "vid_ridstva", length = 15, nullable = false)
     private String vidRidstva;
 
     //Рік народження - 4 цифри, перевіряємо програмно тільки факт вводу 4 цифри

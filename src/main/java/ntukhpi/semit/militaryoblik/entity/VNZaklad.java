@@ -17,7 +17,7 @@ public class VNZaklad {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vnz_id")
     private Long id;
-    @Column(length = 10, name="vnz_short_name",nullable = false,unique = true)
+    @Column(length = 30, name="vnz_short_name",nullable = false,unique = true)
     private String vnzShortName;
     @Column(name="vnz_name")
     private String vnzName;

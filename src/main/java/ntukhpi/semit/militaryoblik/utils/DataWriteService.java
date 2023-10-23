@@ -3,7 +3,6 @@ package ntukhpi.semit.militaryoblik.utils;
 import javafx.collections.ObservableList;
 import ntukhpi.semit.militaryoblik.adapters.D05Adapter;
 import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
-import ntukhpi.semit.militaryoblik.service.D05DataCollectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
