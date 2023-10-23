@@ -41,7 +41,7 @@ public class DataWriteService {
         excelWriter.writeExcel(workingDatas, null);
     }
 
-    public void writeDataToExcelBase(ObservableList<ReservistAdapter> reservistsList, File file) {
+    public String writeDataToExcelBase(ObservableList<ReservistAdapter> reservistsList, File file) {
         List<Long> miliratiPersonIds = reservistsList.stream().map(ReservistAdapter::getMilitaryPersonId).toList();
         Map<String, List<D05Adapter>> sortedAdapters = dataPreparer.sortD5AdapterByUAAlphabet(d05DataCollectService.collectD05Adapter(miliratiPersonIds), "name");
         List<String[][]> workingDatas = new ArrayList<>();
@@ -50,7 +50,7 @@ public class DataWriteService {
             workingDatas.add(workingData);
         }
 
-        excelWriter.writeExcel(workingDatas, file);
+        return excelWriter.writeExcel(workingDatas, file);
     }
 
     //ToDo check to delete

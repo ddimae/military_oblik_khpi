@@ -74,14 +74,14 @@ public class D05DataCollectService {
         adapter.setVos(person.getVos());
         adapter.setSklad(person.getVSklad().getSkladName());
         adapter.setKatObl(person.getVCategory().toString());
-        adapter.setOsvita(concatEducation(person.getPrepod().getEducationList()));
+        adapter.setOsvita(concatEducation(person));
         adapter.setPasport(concatDocument(documents));
         if (personalData != null) {
             adapter.setRegAddress(concatRezAddress(personalData));
             adapter.setActAddress(concatFactAddress(personalData));
         }
         adapter.setTerCentr(person.getVoenkomat().getVoenkomatName());
-        adapter.setSpecObl(person.getReserv());
+        adapter.setSpecObl("немає");
         adapter.setPrudat(person.getVPrydatnist());
         adapter.setSimStan(concatFamilyList(person));
         adapter.setPosada(concatPosada(person.getPrepod(), currentDoljnostInfo));
@@ -92,12 +92,13 @@ public class D05DataCollectService {
     // Форматування данних про сім’ю відповідно заданному шаблону.
     // Не піде - подивись приклад: може не бути прізвища, году нарождення
     private String concatFamilyList(MilitaryPerson person) {
-        Set<FamilyMember> members = person.getPrepod().getFamily();
+        List<FamilyMember> members = person.getPrepod().getFamily().stream().
+                sorted(Comparator.comparing(FamilyMember::getRikNarodz)).toList();
         StringBuilder family = new StringBuilder();
-        family.append(person.getFamilyState() != null ? person.getFamilyState() + ";" : "").append("\n");
+        family.append(person.getFamilyState() != null ? person.getFamilyState() : "");
         for (FamilyMember member : members) {
             if (member != null) {
-                family.append(member).append("; ");
+                family.append("; ").append(member);
             }
         }
         return family.toString();
@@ -107,11 +108,20 @@ public class D05DataCollectService {
     private String concatDocument(List<Document> documents) {
         StringBuilder pasport = new StringBuilder();
         for (Document document : documents) {
-            if ("Паперовий паспорт".equals(document.getDocType()) || "ID CARD".equals(document.getDocType())) {
+            if ("Паперовий паспорт".equals(document.getDocType()) || "ID картка".equals(document.getDocType())) {
                 pasport.append(!StringUtils.isWhitespace(document.getDocNumber()) ? document.getDocNumber() : "");
                 pasport.append(!StringUtils.isWhitespace(document.getKtoVyd()) ? ", " + document.getKtoVyd() : "");
                 pasport.append(document.getDataVyd() != null ? " " + document.getDataVyd().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")) : "");
-                pasport.append("; ");
+            }
+        }
+        for (Document document : documents) {
+            if ("Закордонний паспорт".equals(document.getDocType())) {
+                if (!pasport.isEmpty()) {
+                    pasport.append("; загранпаспорт: ");
+                }
+                pasport.append(!StringUtils.isWhitespace(document.getDocNumber()) ? document.getDocNumber() : "");
+                pasport.append(!StringUtils.isWhitespace(document.getKtoVyd()) ? ", " + document.getKtoVyd() : "");
+                pasport.append(document.getDataVyd() != null ? " " + document.getDataVyd().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")) : "");
             }
         }
         return pasport.toString();
@@ -148,19 +158,25 @@ public class D05DataCollectService {
     // Наприклад, офіцер може закінчити один вуз на тактичний рівень, а потім - на стратегічний. Для офіцерів важливо
     // Не піде 2 - треба враховувати, що чогось немає....- номера, спеціальності, квалифікації, году. ДД
     // Треба, як у попередньому випадку - з освітою
-    private String concatEducation(Set<Education> educations) {
+    private String concatEducation(MilitaryPerson person) {
+        List<Education> educationsList = person.getPrepod().getEducationList().stream().
+                sorted(Comparator.comparing(Education::getYearVypusk)).toList();
         StringBuilder osvita = new StringBuilder();
-        for (Education education : educations) {
-            if (education != null) {
-                osvita.append(!StringUtils.isWhitespace(education.getLevelTraining()) ? education.getLevelTraining() + ", " : "");
-                if (education.getVnz() != null) {
-                    osvita.append(!StringUtils.isWhitespace(education.getVnz().getVnzShortName()) ? education.getVnz().getVnzShortName() : "");
-                    osvita.append(!StringUtils.isWhitespace(education.getYearVypusk()) && !StringUtils.isWhitespace(education.getVnz().getVnzShortName()) ? " у " + education.getYearVypusk() : "");
-                }
-                osvita.append(!StringUtils.isWhitespace(education.getDiplomaSeries()) ? ", " + education.getDiplomaSeries() : "");
-                osvita.append(!StringUtils.isWhitespace(education.getDiplomaSpeciality()) ? ", " + education.getDiplomaSpeciality() : "");
-                osvita.append("; ");
+        osvita.append(person.getEducationLevel() != null ? person.getEducationLevel() : "");
+        for (Education education : educationsList) {
+            osvita.append("; ");
+            osvita.append(!StringUtils.isWhitespace(education.getLevelTraining()) ? education.getLevelTraining() + ", " : "");
+            if (education.getVnz() != null) {
+                osvita.append(!StringUtils.isWhitespace(education.getVnz().getVnzShortName()) ? education.getVnz().getVnzShortName() : "");
+                osvita.append(!StringUtils.isWhitespace(education.getYearVypusk()) && !StringUtils.isWhitespace(education.getVnz().getVnzShortName()) ? " у " + education.getYearVypusk() : "");
             }
+            if (!StringUtils.isWhitespace(education.getDiplomaSeries())) {
+                osvita.append(", " + education.getDiplomaSeries()).append(" №").append(education.getDiplomaNumber());
+            } else {
+                osvita.append(", №").append(education.getDiplomaNumber());
+            }
+            osvita.append(!StringUtils.isWhitespace(education.getDiplomaSpeciality()) ? ", " + education.getDiplomaSpeciality() : "");
+
         }
         return osvita.toString();
     }
@@ -181,17 +197,17 @@ public class D05DataCollectService {
         posada.append(prepod.getDolghnost().getDolghnName()).append(", ");
         posada.append(prepod.getKafedra().getKabr());
         if (currentDoljnostInfo != null) {
-            if (currentDoljnostInfo.getNumNakazStop() != null && currentDoljnostInfo.getDateStop() != null) {
-                nakaz = String.format(", звільнення: наказ %s від %s", currentDoljnostInfo.getNumNakazStop(),
-                        currentDoljnostInfo.getDateStop().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
-            } else if (currentDoljnostInfo.getNumNakazStart() != null && currentDoljnostInfo.getDateStart() != null) {
-                nakaz = String.format(", наказ %s від %s", currentDoljnostInfo.getNumNakazStart(),
+            if (currentDoljnostInfo.getNumNakazStart() != null && currentDoljnostInfo.getDateStart() != null) {
+                nakaz = String.format(", наказ №%s від %s", currentDoljnostInfo.getNumNakazStart(),
                         currentDoljnostInfo.getDateStart().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+                posada.append(nakaz);
+                if (currentDoljnostInfo.getNumNakazStop() != null && currentDoljnostInfo.getDateStop() != null) {
+                    nakaz = String.format(", звільнення: наказ №%s від %s", currentDoljnostInfo.getNumNakazStop(),
+                            currentDoljnostInfo.getDateStop().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+                    posada.append(nakaz);
+                }
             }
         }
-
-        posada.append(nakaz);
-
         return posada.toString();
     }
 }

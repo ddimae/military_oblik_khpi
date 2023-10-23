@@ -4,16 +4,14 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
 @Component
 public class ExcelWriter {
 
-    public void writeExcel(List<String[][]> data, File file) {
+    public String writeExcel(List<String[][]> data, File file) {
+        String resultSave = null;
         String resultsPath = file.getPath();
         String templatePath = "docs/templates/post1487_2022d5template.xlsx";
 
@@ -48,12 +46,17 @@ public class ExcelWriter {
             // Зберігаємо змінений документ у файл
             try (FileOutputStream fos = new FileOutputStream(resultsPath)) {
                 workbook.write(fos);
+                resultSave = "Дані успішно збережені: "+resultsPath;
+                System.out.println(resultSave);
+            } catch (FileNotFoundException e) {
+                resultSave = "Помилка під час запису у файл: "+resultsPath;
+                System.err.println(resultSave);
             }
-
-            System.out.println("Дані успішно додані до існуючої таблиці.");
         } catch (IOException e) {
-            e.printStackTrace();
+            resultSave = "Помилка відкриття файлу-шаблону: "+templatePath;
+            System.err.println(resultSave);
         }
+        return resultSave;
     }
 
     //створення додаткових листів

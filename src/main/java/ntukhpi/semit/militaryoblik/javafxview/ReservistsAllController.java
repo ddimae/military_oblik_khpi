@@ -28,6 +28,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Component
 public class ReservistsAllController implements ControlledScene {
@@ -273,7 +276,7 @@ public class ReservistsAllController implements ControlledScene {
 
         if (selectedInstitute.equals("-Оберіть інститут"))
             cathedraOptions.addAll(FXCollections.observableArrayList(kafedraServiceImpl.getAllKafedra()
-                                .stream().map(Kafedra::getKname).sorted().toList()));
+                    .stream().map(Kafedra::getKname).sorted().toList()));
         else
             cathedraOptions.addAll(FXCollections.observableArrayList(
                     kafedraServiceImpl.findKafedrasOfFakultet(selectedInstitute)
@@ -333,9 +336,9 @@ public class ReservistsAllController implements ControlledScene {
      */
     public void updateTable(ObservableList<ReservistAdapter> observableList) {
         ObservableList<ReservistAdapter> sortedList = FXCollections.observableArrayList(
-                        observableList.stream()
-                                .sorted((a, b) ->
-                                        DataFormat.getUkrCollator().compare(a.getPib(), b.getPib())).toList());
+                observableList.stream()
+                        .sorted((a, b) ->
+                                DataFormat.getUkrCollator().compare(a.getPib(), b.getPib())).toList());
 
         reservistsTableView.setItems(sortedList);
         reservistsTableView.refresh();
@@ -422,23 +425,43 @@ public class ReservistsAllController implements ControlledScene {
         System.out.println("handlePrintDodatok05Button");
         ObservableList<ReservistAdapter> listToSave = reservistsTableView.getItems();
         FileChooser fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Текстові файли (*.xlsx)", "*.xlsx");
-        fileChooser.getExtensionFilters().add(extFilter);
-        File selectedFile = fileChooser.showSaveDialog(new Stage());
-        try {
-            dataWriteService.writeDataToExcelBase(listToSave, selectedFile);
-            Alert confirmationDialog = new Alert(Alert.AlertType.INFORMATION);
-            confirmationDialog.setTitle("Збереження файлу");
-            confirmationDialog.setHeaderText(null);
-            confirmationDialog.setContentText("Файл збережено успішно у: \"" + selectedFile.getPath() + "\"");
-            confirmationDialog.showAndWait();
-        } catch (Exception e) {
-            Alert confirmationDialog = new Alert(Alert.AlertType.INFORMATION);
-            confirmationDialog.setTitle("Збереження файлу");
-            confirmationDialog.setHeaderText(null);
-            confirmationDialog.setContentText("Файл не збережено через помилку: \"" + e.getMessage() + "\"");
-            confirmationDialog.showAndWait();
+        String resultDirName = "docs/results";
+        File resultDir = new File(resultDirName);
+        String resultSave = "";
+        if (!resultDir.isDirectory()) {
+            boolean success = resultDir.mkdirs();
+            if (success) {
+                System.out.println("Created path: " + resultDir.getPath());
+            } else {
+                resultSave = "Помилка створення каталогу для зберігання результатів";
+                Alert confirmationDialog = null;
+                confirmationDialog = new Alert(Alert.AlertType.ERROR);
+                confirmationDialog.setTitle("Помилка формування Додатку 05");
+                confirmationDialog.setHeaderText(null);
+                confirmationDialog.setContentText(resultSave);
+                confirmationDialog.showAndWait();
+            }
         }
+
+        fileChooser.setInitialDirectory(resultDir);
+        String resultFileName = "dodatok05_" + LocalDate.now().format(DateTimeFormatter.ISO_DATE);
+        fileChooser.setInitialFileName(resultFileName);
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Файли Excel з формою 05 (*.xlsx)", "*.xlsx");
+        fileChooser.getExtensionFilters().add(extFilter);
+        resultSave = dataWriteService.writeDataToExcelBase(listToSave, fileChooser.showSaveDialog(new Stage()));
+
+        Alert confirmationDialog = null;
+        if (resultSave.startsWith("Дані успішно збережені")) {
+            confirmationDialog = new Alert(Alert.AlertType.INFORMATION);
+            confirmationDialog.setTitle("Формування Додатку 05");
+        } else {
+            confirmationDialog = new Alert(Alert.AlertType.ERROR);
+            confirmationDialog.setTitle("Помилка формування Додатку 05");
+        }
+        confirmationDialog.setHeaderText(null);
+        confirmationDialog.setContentText(resultSave);
+        confirmationDialog.showAndWait();
+
 
     }
 }

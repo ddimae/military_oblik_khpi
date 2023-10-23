@@ -167,7 +167,7 @@ public final class AllStageSettings {
 
     //============================
 
-    private final static String INSTITUTE_ADD_JAVAFX = "/javafxview/InstituteAdd_2.fxml";
+    private final static String INSTITUTE_ADD_JAVAFX = "/javafxview/InstituteAdd.fxml";
     private final static String INSTITUTE_ADD_JAVAFX_TITLE = "Додавання нового інституту";
     public static SettingsStage instituteAdd =
             new SettingsStage(INSTITUTE_ADD_JAVAFX, INSTITUTE_ADD_JAVAFX_TITLE,
