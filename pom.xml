@@ -14,6 +14,7 @@
     <artifactId>MilitaryOblikKhPI</artifactId>
     <version>V.0.0.1</version>
     <name>MilitaryOblikKhPI</name>
+    <packaging>jar</packaging>
     <description>Software for collect data about employee and prepare setted result tables</description>
 
 
@@ -28,7 +29,7 @@
 
     <dependencies>
         <!-- SPRING BOOT -->
-		<dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
             <version>3.1.2</version>
@@ -147,7 +148,6 @@
         </dependency>
 
 
-
     </dependencies>
 
     <build>
@@ -163,6 +163,7 @@
                         </goals>
                     </execution>
                 </executions>
+
             </plugin>
         </plugins>
     </build>

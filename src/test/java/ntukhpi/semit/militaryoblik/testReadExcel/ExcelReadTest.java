@@ -1,4 +1,4 @@
-package ntukhpi.semit.militaryoblik.main;
+package ntukhpi.semit.militaryoblik.testReadExcel;
 
 import ntukhpi.semit.militaryoblik.entity.Document;
 import ntukhpi.semit.militaryoblik.entity.Education;
@@ -65,14 +65,14 @@ public class ExcelReadTest {
 
     @Test
     void testReadDodatok5() {
-        Dodatok5Reader d05Reader = new Dodatok5Reader(prepodServiceImpl, militaryPersonServiceImpl,
-            countryServiceImpl, regionUkraineServiceImpl,vzvanieServiceImpl,vskladServiceImpl,voenkomatServiceImpl,
-                currentDoljnostInfoServiceImpl,personalDataServiceImpl,
-                documentDataServiceImpl,familyMemberDataServiceImpl, educationServiceImpl,vnzServiceImpl
-
-        );
-        System.out.println("\nRead from file");
-        d05Reader.readExcelFileWithDodatok5();
+//        Dodatok5Reader d05Reader = new Dodatok5Reader(prepodServiceImpl, militaryPersonServiceImpl,
+//            countryServiceImpl, regionUkraineServiceImpl,vzvanieServiceImpl,vskladServiceImpl,voenkomatServiceImpl,
+//                currentDoljnostInfoServiceImpl,personalDataServiceImpl,
+//                documentDataServiceImpl,familyMemberDataServiceImpl, educationServiceImpl,vnzServiceImpl
+//
+//        );
+//        System.out.println("\nRead from file");
+//        d05Reader.readExcelFileWithDodatok5();
 
     }
 

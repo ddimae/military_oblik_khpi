@@ -1,6 +1,7 @@
-package ntukhpi.semit.militaryoblik.utils;
+package ntukhpi.semit.militaryoblik.testWrite;
 
 import ntukhpi.semit.militaryoblik.adapters.D05Adapter;
+import ntukhpi.semit.militaryoblik.utils.DataPreparer;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
