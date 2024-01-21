@@ -35,7 +35,7 @@ public class Dodatok5Reader {
     //private
 
     public static List<D05Adapter> reservistList = new ArrayList<>();
-    private static final String fileDodatok5Name = "docs/input/dodatok5_3TCK_WORK.xlsx";
+    private static final String fileDodatok5Name = "docs/input/Додаток 5 FOR LOAD.xlsx";
 
 
     @Autowired
@@ -107,7 +107,7 @@ public class Dodatok5Reader {
             Workbook workbook = new XSSFWorkbook(inputStream);
 //=========================================================
 //00=======================================================
-            Sheet sheet = workbook.getSheetAt(0); // отримуємо перший аркуш
+            Sheet sheet = workbook.getSheetAt(1); // отримуємо перший аркуш
             System.out.println(sheet.getFirstRowNum() + " " + sheet.getLastRowNum());
             for (Row row : sheet) {
                 Prepod prepInDB = null;

@@ -2,18 +2,18 @@ package ntukhpi.semit.militaryoblik.javafxview;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
-import ntukhpi.semit.militaryoblik.adapters.PrepodAdapter;
 import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
 import ntukhpi.semit.militaryoblik.entity.*;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
-import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.TextFieldValidator;
 import ntukhpi.semit.militaryoblik.repository.VZvanieRepository;
@@ -25,8 +25,6 @@ import java.util.regex.Pattern;
 
 @Component
 public class MilitaryRegistrationEditController implements ControlledScene {
-    @FXML
-    private Button backButton;
     @FXML
     public Label pibLabel;
     @FXML
@@ -48,11 +46,15 @@ public class MilitaryRegistrationEditController implements ControlledScene {
     @FXML
     public TextField educationTextField;
     @FXML
+    public TextField validityTextField;
+    @FXML
     public ComboBox<String> educationComboBox;
     @FXML
     public ComboBox<String> familyStateComboBox;
     @FXML
     public ComboBox<String> voenkomatComboBox;
+    @FXML
+    public TextArea validityTextArea;
 
     @Autowired
     VZvanieRepository vZvanieRepository;
@@ -80,27 +82,13 @@ public class MilitaryRegistrationEditController implements ControlledScene {
 
     @Override
     public void setMainController(Object mainController) {
-        if (mainController instanceof ReservistsAllController)
-            this.mainController = (ReservistsAllController) mainController;
+        this.mainController = (ReservistsAllController) mainController;
     }
 
     @Override
     public void setData(Object data) {
         if (data instanceof ReservistAdapter)
             setMilitaryRegistrationInfo((ReservistAdapter) data);
-
-        if (data instanceof PrepodAdapter) {
-            PrepodAdapter prepodAdapter = (PrepodAdapter)data;
-            ReservistAdapter reservistAdapter = new ReservistAdapter(DataFormat.getPIB(prepodAdapter), null, null,
-                                                                    null, null, null,
-                                                                    null, null, null,
-                                                                    null, null);
-
-            selectedPrepod = prepodService.getPrepodById(prepodAdapter.getId());
-            setMilitaryRegistrationInfo(reservistAdapter);
-
-            blockBackButton();
-        }
     }
 
     @Override
@@ -114,27 +102,14 @@ public class MilitaryRegistrationEditController implements ControlledScene {
     }
 
     private void setMilitaryRegistrationInfo(ReservistAdapter reservist) {
-        if (selectedPrepod == null)
-            selectedPrepod = prepodService.getPrepodById(ReservistsAllController.getSelectedPrepodId());
+        selectedPrepod = prepodService.getPrepodById(ReservistsAllController.getSelectedPrepodId());
 
         pibLabel.setText(reservist.getPib());
 
-        vosTextField.setText(reservist.getVos() != null ? reservist.getVos() : "000000");
-
-        if (reservist.getCategory() != null)
-            categoryComboBox.setValue(reservist.getCategory());
-        else
-            categoryComboBox.getSelectionModel().selectFirst();
-
-        if (reservist.getVGrupa() != null)
-            groupComboBox.setValue(reservist.getVGrupa());
-        else
-            groupComboBox.getSelectionModel().selectFirst();
-
-        if (reservist.getVSklad() != null)
-            vSkladComboBox.setValue(reservist.getVSklad());
-        else
-            vSkladComboBox.getSelectionModel().selectFirst();
+        vosTextField.setText(reservist.getVos());
+        categoryComboBox.setValue(reservist.getCategory());
+        groupComboBox.setValue(reservist.getVGrupa());
+        vSkladComboBox.setValue(reservist.getVSklad());
 
         if (reservist.getRank() != null)
             rankComboBox.setValue(reservist.getRank());
@@ -142,11 +117,11 @@ public class MilitaryRegistrationEditController implements ControlledScene {
             rankComboBox.getSelectionModel().selectFirst();
 
         if (reservist.getVPrydatnist() != null)
-            validityComboBox.setValue(reservist.getVPrydatnist());
+            validityTextArea.setText(reservist.getVPrydatnist()); // validityTextField.setText(reservist.getVPrydatnist());
         else
-            validityComboBox.getSelectionModel().selectFirst();
+            validityTextArea.setText("придатний"); // validityTextField.setText("придатний");
 
-        voenkomatTextField.setText(reservist.getTrc() != null ? reservist.getTrc() : "");
+        voenkomatTextField.setText(reservist.getTrc());
 
         if (reservist.getFamilyState() != null)
             familyStanTextField.setText(reservist.getFamilyState());
@@ -172,11 +147,13 @@ public class MilitaryRegistrationEditController implements ControlledScene {
                 .stream().map(VZvanie::getZvanieName).toList());
         validityComboBox.getItems().addAll("придатний", "обмежено-придатний", "непридатний");
 
+        // validityTextArea.setWrapText(true);
+
         voenkomatComboBox.getItems().addAll(voenkomatService.getAllVoenkomat()
                 .stream().map(Voenkomat::getVoenkomatName).toList());
 
 
-        // TODO: Заполнение комбобокса в зависимости от пола
+        // Заполнение комбобокса в зависимости от пола
         /*
         if (selectedReservist.getGender().equals("муж"))
             familyStateComboBox.getItems().addAll(
@@ -227,6 +204,12 @@ public class MilitaryRegistrationEditController implements ControlledScene {
     }
 
     @FXML
+    public void validitySelected(ActionEvent actionEvent) {
+        //validityTextField.setText(validityComboBox.getSelectionModel().getSelectedItem());
+        validityTextArea.setText(validityComboBox.getSelectionModel().getSelectedItem());
+    }
+
+    @FXML
     public void closeEdit(ActionEvent actionEvent) {
         mainController.updateForm();
         MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
@@ -239,10 +222,12 @@ public class MilitaryRegistrationEditController implements ControlledScene {
 
         TextFieldValidator vosValidator = new TextFieldValidator(6, true, onlyNumber, "ВОС", vos, "повинен містити тільки 1 число з 6 цифр");
         TextFieldValidator categoryValidator = new TextFieldValidator(1, true, onlyNumber, "Категорія обліку", category, null);
+
 //        TextFieldValidator groupValidator = new TextFieldValidator(-1, true, ukrWords, "Група обліку", group, null);
 //        TextFieldValidator skladValidator = new TextFieldValidator(-1, true, ukrWords, "Склад", sklad, null);
 //        TextFieldValidator zvanieValidator = new TextFieldValidator(-1, true, ukrWords, "Військове звання", zvanie, null);
-//        TextFieldValidator prydatnistValidator = new TextFieldValidator(-1, true, ukrWords, "Придатність до військової служби", prydatnist, null);
+
+        TextFieldValidator prydatnistValidator = new TextFieldValidator(-1, true, ukrWords, "Придатність", prydatnist, "може містити тільки українські літери та розділові знаки");
         TextFieldValidator voenkomatValidator = new TextFieldValidator(-1, true, ukrWords, "ТЦК", voenkomat, "може містити тільки українські літери та розділові знаки");
         TextFieldValidator familyStanValidator = new TextFieldValidator(-1, true, ukrWords, "Сімейний стан", familyStan, "може містити тільки українські літери та розділові знаки");
         TextFieldValidator osvitaValidator = new TextFieldValidator(-1, true, ukrWords, "Освіта", osvita, "може містити тільки українські літери та розділові знаки");
@@ -254,8 +239,8 @@ public class MilitaryRegistrationEditController implements ControlledScene {
 //            groupValidator.validate();
 //            skladValidator.validate();
 //            zvanieValidator.validate();
-//            prydatnistValidator.validate();
 
+            prydatnistValidator.validate();
             voenkomatValidator.validate();
             familyStanValidator.validate();
             osvitaValidator.validate();
@@ -266,6 +251,7 @@ public class MilitaryRegistrationEditController implements ControlledScene {
                 voenkomatService.createVoenkomat(newVoenkomat);
             }
 
+
         } catch (Exception e) {
             Popup.wrongInputAlert(e.getMessage());
             return false;
@@ -275,26 +261,22 @@ public class MilitaryRegistrationEditController implements ControlledScene {
 
     @FXML
     public void saveMilitaryRegistrationInfo(ActionEvent actionEvent) {
-        String vos = vosTextField.getText();
+        String vos = vosTextField.getText().trim();
         String category = categoryComboBox.getValue() != null ? categoryComboBox.getValue() : null;
         String group = groupComboBox.getValue() != null ? groupComboBox.getValue() : null;
         String vSklad = vSkladComboBox.getValue() != null ? vSkladComboBox.getValue() : null;
         String vZvanie = rankComboBox.getValue() != null ? rankComboBox.getValue() : null;
-        String prydatnist = validityComboBox.getValue() != null ? validityComboBox.getValue() : null;
+        String prydatnist = validityTextArea.getText().trim(); // validityTextField.getText().trim();
         String voenkomat = voenkomatTextField.getText().trim();
         String familyState = familyStanTextField.getText().trim();
         String educationLevel = educationTextField.getText().trim();
 
-        if (!validateMilitaryRegistrationInfo(vos, category, group, vSklad,
-                vZvanie, prydatnist, voenkomat, familyState, educationLevel))
+        if (!validateMilitaryRegistrationInfo(vos, category, group, vSklad, vZvanie, prydatnist,
+                voenkomat, familyState, educationLevel) || !Popup.saveConfirmation())
             return;
-
 
         try {
             MilitaryPerson militaryPerson = militaryPersonService.getMilitaryPersonByPrepod(selectedPrepod);
-
-            if (militaryPerson == null)
-                militaryPerson = new MilitaryPerson();
 
             militaryPerson.setPrepod(selectedPrepod);
             militaryPerson.setVos(vos);
@@ -307,10 +289,7 @@ public class MilitaryRegistrationEditController implements ControlledScene {
             militaryPerson.setFamilyState(familyState);
             militaryPerson.setEducationLevel(educationLevel);
 
-            if (militaryPerson.getId() != null)
-                militaryPersonService.updateMilitaryPerson(militaryPerson.getId(), militaryPerson);
-            else
-                ReservistsAllController.setSelectedReservist(new ReservistAdapter(militaryPersonService.createMilitaryPerson(militaryPerson)));
+            militaryPersonService.updateMilitaryPerson(militaryPerson.getId(), militaryPerson);
 
             closeEdit(null);
             Popup.successSave();
@@ -320,7 +299,10 @@ public class MilitaryRegistrationEditController implements ControlledScene {
         }
     }
 
-    void blockBackButton() {
-        backButton.setDisable(true);
+    public void hotKeyPressed(KeyEvent keyEvent) {
+        if (keyEvent.getCode() == KeyCode.S && keyEvent.isControlDown())
+            saveMilitaryRegistrationInfo(null);
+        if (keyEvent.getCode() == KeyCode.ESCAPE)
+            closeEdit(null);
     }
 }

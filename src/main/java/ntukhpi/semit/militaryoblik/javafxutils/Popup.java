@@ -98,7 +98,7 @@ public class Popup {
      * @author Степанов Михайло
      */
     public static boolean deleteConfirmation() {
-        return showDialog(Alert.AlertType.CONFIRMATION, "Підтвердіть дію", "Обраний рядок буде безповоротно видалений", "Ви впевнені в своїх діях?");
+        return showDialog(Alert.AlertType.CONFIRMATION, "Підтвердіть дію", "Обраний рядок буде видалений без можливості відновлення", "Ви впевнені в своїх діях?");
     }
 
 
@@ -108,6 +108,8 @@ public class Popup {
      * @author Степанов Михайло
      */
     public static boolean saveConfirmation() {
-        return showDialog(Alert.AlertType.CONFIRMATION, "Підтвердіть дію", "Заповнена форма буде збережена і не підлягатиме редагуванню", "Ви впевнені в своїх діях?");
+        return showDialog(Alert.AlertType.CONFIRMATION, "Підтвердіть дію", "Дані форми будуть збережені.\n" +
+                "Частина даних буде збережена у окремі таблиці без можливоcті редагування.\n" +
+                "Якщо впевнені в правильності заповнення, продовжуйте збереження", "Дані введені правильно?");
     }
 }
