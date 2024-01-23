@@ -17,7 +17,6 @@ import java.time.format.DateTimeFormatter;
 @AllArgsConstructor
 public class ReservistAdapter {
     private Long id;
-
     private Long militaryPersonId;
     private String pib;
     private String dr;
@@ -85,6 +84,10 @@ public class ReservistAdapter {
 
         this.familyState = militaryPerson.getFamilyState();
         this.educationLevel = militaryPerson.getEducationLevel();
+    }
+
+    public String getFam() {
+        return pib.split(" ")[0];
     }
 
     @Override

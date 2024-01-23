@@ -37,7 +37,7 @@ public class WordWriter {
             try (FileOutputStream fos = new FileOutputStream(resultsPath)) {
                 document.write(fos);
             }
-            System.out.println("Дані успішно додані до word документу.");
+//            System.out.println("Дані успішно додані до word документу.");
         } catch (IOException e) {
             e.printStackTrace();
         }

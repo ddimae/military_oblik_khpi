@@ -464,4 +464,30 @@ public class ReservistsAllController implements ControlledScene {
 
 
     }
+
+    private FileChooser getFilePathFp2(String fam) {
+        FileChooser fileChooser = new FileChooser();
+        String resultDirName = "docs/results";
+        File resultDir = new File(resultDirName);
+        String resultSave = "";
+        if (!resultDir.isDirectory()) {
+            boolean success = resultDir.mkdirs();
+            if (success) {
+                System.out.println("Created path: " + resultDir.getPath());
+            } else {
+                resultSave = "Помилка створення каталогу для зберігання результатів";
+                Alert confirmationDialog = null;
+                confirmationDialog = new Alert(Alert.AlertType.ERROR);
+                confirmationDialog.setTitle("Помилка формування форми П-2");
+                confirmationDialog.setHeaderText(null);
+                confirmationDialog.setContentText(resultSave);
+                confirmationDialog.showAndWait();
+            }
+        }
+
+        fileChooser.setInitialDirectory(resultDir);
+        String resultFileName = fam+"_formaP2_" + LocalDate.now().format(DateTimeFormatter.ISO_DATE);
+        fileChooser.setInitialFileName(resultFileName);
+        return fileChooser;
+    }
 }
