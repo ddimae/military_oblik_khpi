@@ -1,9 +1,7 @@
 package ntukhpi.semit.militaryoblik.utils;
 
 import ntukhpi.semit.militaryoblik.entity.Document;
-import ntukhpi.semit.militaryoblik.entity.Education;
-import ntukhpi.semit.militaryoblik.entity.FamilyMember;
-import ntukhpi.semit.militaryoblik.entity.MilitaryPerson;
+import ntukhpi.semit.militaryoblik.entity.*;
 import ntukhpi.semit.militaryoblik.service.MilitaryPersonService;
 import org.apache.poi.xwpf.usermodel.*;
 import org.springframework.stereotype.Component;
@@ -62,6 +60,7 @@ public class WordWriter {
         replaceField(document, "gromad", "Україна");
         replaceField(document, "osvita", militaryPerson.getEducationLevel());
         fillOsvita(document, militaryPerson);
+        fillOsvitaPostgraduate(document, militaryPerson);
         replaceField(document, "misce_roboty", militaryPerson.getPrepod().getKafedra().getKabr());
         replaceField(document, "posada", militaryPerson.getPrepod().getDolghnost().getDolghnName());
         replaceField(document, "cur_data", LocalDate.now().toString());
@@ -78,6 +77,36 @@ public class WordWriter {
                 sorted(Comparator.comparing(Education::getYearVypusk)).toList();
         fillTable(document, 2, 1, prepareOsvita(educationsList));
         fillTable(document, 2, 6, prepareSpecialnist(educationsList));
+    }
+
+    private void fillOsvitaPostgraduate(XWPFDocument document, MilitaryPerson militaryPerson) {
+        List<EducationPostgraduate> educationsList = militaryPerson.getPrepod().getEducationPostList().stream().
+                sorted(Comparator.comparing(EducationPostgraduate::getYearFinish)).toList();
+        setOsvitaLevelCheckBox(document, educationsList);
+        if (!educationsList.isEmpty()) {
+            fillTable(document, 3, 1, prepareOsvitaPostgaduate(educationsList));
+        }
+    }
+
+    private void setOsvitaLevelCheckBox(XWPFDocument document, List<EducationPostgraduate> educationsList) {
+        String level = "";
+        if (!educationsList.isEmpty())
+            level = educationsList.get(educationsList.size() - 1).getLevelTraining();
+        if ("Аспірантура".equals(level)) {
+            replaceField(document, "asp", " X ");
+        } else {
+            replaceField(document, "asp", "   ");
+        }
+        if ("Адʼюнктура".equals(level)) {
+            replaceField(document, "adj", " X ");
+        } else {
+            replaceField(document, "adj", "   ");
+        }
+        if ("Докторантура".equals(level)) {
+            replaceField(document, "doct", " X ");
+        } else {
+            replaceField(document, "doct", "   ");
+        }
     }
 
     private String[][] prepareOsvita(List<Education> educationsList) {
@@ -108,6 +137,21 @@ public class WordWriter {
         return spec;
     }
 
+    private String[][] prepareOsvitaPostgaduate(List<EducationPostgraduate> educationsList) {
+        String[][] postOsvita = new String[educationsList.size()][4];
+        int i = 0;
+        for (EducationPostgraduate education : educationsList) {
+            String[] currentEducation = new String[4];
+            currentEducation[0] = education.getVnz().getVnzShortName();
+            currentEducation[1] = "";
+            currentEducation[2] = education.getYearFinish();
+            currentEducation[3] = education.getLevelTraining();
+            postOsvita[i] = currentEducation;
+            i++;
+        }
+        return postOsvita;
+    }
+
     private void fillRoduna(XWPFDocument document, MilitaryPerson militaryPerson) {
         Set<FamilyMember> familyMembers = militaryPerson.getPrepod().getFamily();
         String[][] members = new String[familyMembers.size()][3];
@@ -130,13 +174,14 @@ public class WordWriter {
         for (Document pasport : documents) {
             if ("Паперовий паспорт".equals(pasport.getDocType()) || "ID картка".equals(pasport.getDocType())) {
                 if ("Паперовий паспорт".equals(pasport.getDocType())) {
-                    replaceField(document, "pasp_ser", pasport.getDocNumber().trim().substring(0, 2));
-                    replaceField(document, "pasp_nom", pasport.getDocNumber().trim().substring(2));
+                    replaceField(document, "ser", pasport.getDocNumber().trim().substring(0, 2));
+                    replaceField(document, "nom", pasport.getDocNumber().trim().substring(2));
                 } else {
-                    replaceField(document, "pasp_nom", pasport.getDocNumber());
+                    replaceField(document, "ser", "   ");
+                    replaceField(document, "nom", pasport.getDocNumber());
                 }
-                replaceField(document, "pasp_vudan", pasport.getKtoVyd());
-                replaceField(document, "pasp_dat_vudach", pasport.getDataVyd().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+                replaceField(document, "vudan", pasport.getKtoVyd());
+                replaceField(document, "datvudach", pasport.getDataVyd().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
             }
         }
     }
@@ -202,6 +247,9 @@ public class WordWriter {
 
     private void fiilAddress(XWPFDocument document, MilitaryPerson militaryPerson) {
         StringBuilder rez_addr = new StringBuilder().append(System.lineSeparator());
+        if (militaryPerson.getPrepod().getContacts().getPostIndex() != null) {
+            rez_addr.append(militaryPerson.getPrepod().getContacts().getPostIndex()).append(", ");
+        }
         if (militaryPerson.getPrepod().getContacts().getCountry() != null) {
             rez_addr.append(militaryPerson.getPrepod().getContacts().getCountry());
         }
@@ -212,6 +260,9 @@ public class WordWriter {
         rez_addr.append(", ").append(militaryPerson.getPrepod().getContacts().getRowAddress()).append(System.lineSeparator());
 
         StringBuilder facr_addrsb = new StringBuilder().append(System.lineSeparator());
+        if (militaryPerson.getPrepod().getContacts().getFactPostIndex() != null) {
+            facr_addrsb.append(militaryPerson.getPrepod().getContacts().getFactPostIndex()).append(", ");
+        }
         if (militaryPerson.getPrepod().getContacts().getFactСountry() != null) {
             facr_addrsb.append(militaryPerson.getPrepod().getContacts().getFactСountry());
         }
