@@ -19,8 +19,3 @@
 .pib-field {
     -fx-font-size: 24;
 }
-
-.validity-text-field {
-    -fx-text-overrun: word-ellipsis;
-    -fx-wrap-text: true;
-}

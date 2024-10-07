@@ -245,7 +245,7 @@ public class MilitaryRegistrationEditController implements ControlledScene {
             familyStanValidator.validate();
             osvitaValidator.validate();
 
-            if (voenkomatService.getIDVoenkomatByName(voenkomat) == null) {
+            if (voenkomatService.getIDVoenkomatByName(voenkomat) == null) { // FIXME: Здається це зайве. перевірити
                 Voenkomat newVoenkomat = new Voenkomat();
                 newVoenkomat.setVoenkomatName(voenkomat);
                 voenkomatService.createVoenkomat(newVoenkomat);
