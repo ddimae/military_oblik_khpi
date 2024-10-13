@@ -18,9 +18,7 @@ import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Kafedra;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
-
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
-
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.service.*;
 import ntukhpi.semit.militaryoblik.utils.DataWriteService;
@@ -28,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -424,6 +421,56 @@ public class ReservistsAllController implements ControlledScene {
     private void handlePrintDodatok05Button() {
         System.out.println("handlePrintDodatok05Button");
         ObservableList<ReservistAdapter> listToSave = reservistsTableView.getItems();
+        FileChooser fileChooser = getFilePathD5();
+        String resultSave;
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Файли Excel з формою 05 (*.xlsx)", "*.xlsx");
+        fileChooser.getExtensionFilters().add(extFilter);
+        resultSave = dataWriteService.writeDataToExcelBase(listToSave, fileChooser.showSaveDialog(new Stage()));
+
+        Alert confirmationDialog = null;
+        if (resultSave.startsWith("Дані успішно збережені")) {
+            confirmationDialog = new Alert(Alert.AlertType.INFORMATION);
+            confirmationDialog.setTitle("Формування Додатку 05");
+        } else {
+            confirmationDialog = new Alert(Alert.AlertType.ERROR);
+            confirmationDialog.setTitle("Помилка формування Додатку 05");
+        }
+        confirmationDialog.setHeaderText(null);
+        confirmationDialog.setContentText(resultSave);
+        confirmationDialog.showAndWait();
+    }
+
+    @FXML
+    private void handlePrintFormaP2Button() {
+        System.out.println("handlePrintFormaP2Button");
+        ReservistAdapter reservist = reservistsTableView.getSelectionModel().getSelectedItem();
+        Alert confirmationDialog = null;
+        if (reservist != null) {
+            FileChooser fileChooser = getFilePathFp2(reservist.getFam());
+            String resultSave;
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Файли word з формою П-2 (*.docx)", "*.docx");
+            fileChooser.getExtensionFilters().add(extFilter);
+            resultSave = dataWriteService.writeDataToWord(reservist.getMilitaryPersonId(), fileChooser.showSaveDialog(new Stage()));
+
+            if (resultSave.startsWith("Дані успішно збережені")) {
+                confirmationDialog = new Alert(Alert.AlertType.INFORMATION);
+                confirmationDialog.setTitle("Формування форми П-2");
+            } else {
+                confirmationDialog = new Alert(Alert.AlertType.ERROR);
+                confirmationDialog.setTitle("Помилка формування форми П-2");
+            }
+            confirmationDialog.setContentText(resultSave);
+        } else {
+            confirmationDialog = new Alert(Alert.AlertType.WARNING);
+            confirmationDialog.setTitle("Помилка");
+            confirmationDialog.setContentText("Будь ласка, виберіть резервіста для формування форми П-2");
+        }
+        confirmationDialog.setHeaderText(null);
+        confirmationDialog.showAndWait();
+
+    }
+
+    private FileChooser getFilePathD5() {
         FileChooser fileChooser = new FileChooser();
         String resultDirName = "docs/results";
         File resultDir = new File(resultDirName);
@@ -446,23 +493,7 @@ public class ReservistsAllController implements ControlledScene {
         fileChooser.setInitialDirectory(resultDir);
         String resultFileName = "dodatok05_" + LocalDate.now().format(DateTimeFormatter.ISO_DATE);
         fileChooser.setInitialFileName(resultFileName);
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Файли Excel з формою 05 (*.xlsx)", "*.xlsx");
-        fileChooser.getExtensionFilters().add(extFilter);
-        resultSave = dataWriteService.writeDataToExcelBase(listToSave, fileChooser.showSaveDialog(new Stage()));
-
-        Alert confirmationDialog = null;
-        if (resultSave.startsWith("Дані успішно збережені")) {
-            confirmationDialog = new Alert(Alert.AlertType.INFORMATION);
-            confirmationDialog.setTitle("Формування Додатку 05");
-        } else {
-            confirmationDialog = new Alert(Alert.AlertType.ERROR);
-            confirmationDialog.setTitle("Помилка формування Додатку 05");
-        }
-        confirmationDialog.setHeaderText(null);
-        confirmationDialog.setContentText(resultSave);
-        confirmationDialog.showAndWait();
-
-
+        return fileChooser;
     }
 
     private FileChooser getFilePathFp2(String fam) {
