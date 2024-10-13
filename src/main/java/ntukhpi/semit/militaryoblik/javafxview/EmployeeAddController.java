@@ -12,8 +12,8 @@ import ntukhpi.semit.militaryoblik.entity.fromasukhpi.*;
 import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
-import ntukhpi.semit.militaryoblik.javafxutils.validators.DateFieldValidator;
-import ntukhpi.semit.militaryoblik.javafxutils.validators.TextFieldValidator;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.common.DateFieldValidator;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -185,7 +185,7 @@ public class EmployeeAddController implements ControlledScene {
      * @param date Дата народження нового співробітника
      * @return true - Валідація пройдена. false - Валідація не пройдена
      */
-    private boolean validateInfo(String institute, String cathedra, String surname,
+    public /*static*/ boolean validateInfo(String institute, String cathedra, String surname,
                                  String name, String midname, String date) {
         Pattern ukrWords = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії\\-\\s]+$");
         Pattern ukrDateRegex = Pattern.compile("^\\d{2}\\.\\d{2}\\.\\d{4}$");

@@ -12,8 +12,8 @@ import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
-import ntukhpi.semit.militaryoblik.javafxutils.validators.DateFieldValidator;
-import ntukhpi.semit.militaryoblik.javafxutils.validators.TextFieldValidator;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.common.DateFieldValidator;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValidator;
 import ntukhpi.semit.militaryoblik.service.CurrentDoljnostInfoServiceImpl;
 import ntukhpi.semit.militaryoblik.service.MilitaryPersonServiceImpl;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
@@ -213,7 +213,7 @@ public class PositionOrdersEditController implements ControlledScene {
      * @param commentDiss коментар про звільнення
      * @return true - Валідація пройдена. false - Валідація не пройдена
      */
-    private boolean validateOrders(String nakaz, String nakazDiss, String date, String dateDiss, String comment, String commentDiss) {
+    public /*static*/ boolean validateOrders(String nakaz, String nakazDiss, String date, String dateDiss, String comment, String commentDiss) {
         Pattern ukrNakazNumberRegex = Pattern.compile("^[1-9][0-9]{0,4}.+$");
         Pattern ukrCommmentRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії0-9\\s.,'`_\\-]+$");
         Pattern ukrDateRegex = Pattern.compile("^\\d{2}\\.\\d{2}\\.\\d{4}$");

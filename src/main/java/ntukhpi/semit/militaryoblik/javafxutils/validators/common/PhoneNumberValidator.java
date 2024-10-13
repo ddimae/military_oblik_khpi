@@ -1,7 +1,8 @@
-package ntukhpi.semit.militaryoblik.javafxutils.validators;
+package ntukhpi.semit.militaryoblik.javafxutils.validators.common;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
 
 import java.util.regex.Pattern;
 
@@ -97,13 +98,15 @@ public class PhoneNumberValidator extends TextFieldValidator {
      * Форматування номера телефона за Українським стандартом
      * (Перед викликом функції треба викликати validateNumber)
      */
-    public void setToUkrStandart() {
+    public PhoneNumberValidator setToUkrStandart() {
         if (isNoCountryCodeNumber)
             number = "+38" + number;
         else if (isNoPlusNumber)
             number = "+" + number;
         else if (isCityNumber)
             number = "+38057" + number;
+
+        return this;
     }
 
 
@@ -113,6 +116,7 @@ public class PhoneNumberValidator extends TextFieldValidator {
      * @param phone Об'єкт класу валідації номеру телефона, значення якого треба присвоїти даному класу
      */
     public void clone(PhoneNumberValidator phone) {
+        setNumber(phone.number);
         setMaxLength(phone.getMaxLength());
         setNecessary(phone.isNecessary());
         setRegex(phone.getRegex());

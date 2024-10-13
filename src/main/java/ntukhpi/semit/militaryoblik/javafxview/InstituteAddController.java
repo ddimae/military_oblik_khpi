@@ -10,7 +10,7 @@ import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Fakultet;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
-import ntukhpi.semit.militaryoblik.javafxutils.validators.TextFieldValidator;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValidator;
 import ntukhpi.semit.militaryoblik.service.FakultetServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -68,7 +68,7 @@ public class InstituteAddController implements ControlledScene {
      * @param code Код інституту
      * @return true - Валідація пройдена. false - Валідація не пройдена
      */
-    private boolean validateInstitute(String fullName, String abbr, String code) {
+    public /*static*/ boolean validateInstitute(String fullName, String abbr, String code) {
         Pattern ukrWords = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії,.\\-`'_\\s]*$");
         Pattern oneWord = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії]*$");
         Pattern onlyNumber = Pattern.compile("^\\d+$");

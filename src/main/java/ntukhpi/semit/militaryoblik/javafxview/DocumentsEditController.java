@@ -16,8 +16,8 @@ import ntukhpi.semit.militaryoblik.adapters.DocumentAdapter;
 import ntukhpi.semit.militaryoblik.entity.Document;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.*;
-import ntukhpi.semit.militaryoblik.javafxutils.validators.DateFieldValidator;
-import ntukhpi.semit.militaryoblik.javafxutils.validators.TextFieldValidator;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.common.DateFieldValidator;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValidator;
 import ntukhpi.semit.militaryoblik.service.DocumentServiceImpl;
 import ntukhpi.semit.militaryoblik.service.MilitaryPersonServiceImpl;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
@@ -185,7 +185,7 @@ public class DocumentsEditController implements ControlledScene {
      * @param date Дата видачі
      * @return true - Валідація пройдена. false - Валідація не пройдена
      */
-    private boolean validateDocument(String docType, String number, String whoGives, String date) {
+    public /*static*/ boolean validateDocument(String docType, String number, String whoGives, String date) {
         Pattern ukrOldSeriesNumberRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇ]{2}\\d{6}$");
         Pattern ukrOldWhoGivesRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії0-9\\s.,'`_\\-]+$");
         Pattern newSeriesRegex = Pattern.compile("^\\d{9}$");

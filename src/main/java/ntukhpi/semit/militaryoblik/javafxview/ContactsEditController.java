@@ -6,19 +6,22 @@ import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
+import ntukhpi.semit.militaryoblik.adapters.ContactInfoAdapter;
 import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
 import ntukhpi.semit.militaryoblik.entity.PersonalData;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Country;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.RegionUkraine;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
-import ntukhpi.semit.militaryoblik.javafxutils.validators.PhoneNumberValidator;
-import ntukhpi.semit.militaryoblik.javafxutils.validators.TextFieldValidator;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.ContactInfoValidator;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.common.PhoneNumberValidator;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.Console;
 import java.text.Collator;
 import java.util.regex.Pattern;
 
@@ -81,6 +84,7 @@ public class ContactsEditController implements ControlledScene {
     private PersonalData personalData;
     private Stage mainStage;
     private Stage currentStage;
+    private ContactInfoValidator contactInfoValidator = new ContactInfoValidator();
 
     @Autowired
     CountryServiceImpl countryService;
@@ -206,88 +210,6 @@ public class ContactsEditController implements ControlledScene {
 
 
     /**
-     * Валідація даних вписаних у форму
-     *
-     * @param country Обрана країна реєстрації
-     * @param index Індекс реєстрації
-     * @param city Місто реєстрації
-     * @param region Обраний український регіон реєстрації
-     * @param address Адреса реєстрації
-     * @param mainPhone Об'єкт класу валідації основного номеру телефона
-     * @param secondPhone Об'єкт класу валідації додаткового номеру телефона
-     * @param countryFact Обрана країна мешкання
-     * @param indexFact Обрана країна мешкання
-     * @param cityFact Індекс мешкання
-     * @param regionFact Місто мешкання
-     * @param addressFact Обраний український регіон мешкання
-     * @param isForeinNumber Адреса мешкання
-     * @return true - Валідація пройдена. false - Валідація не пройдена
-     */
-    private boolean validateInfo(String country, String index, String city,
-                                 String region, String address, PhoneNumberValidator mainPhone,
-                                 PhoneNumberValidator secondPhone, String countryFact, String indexFact,
-                                 String cityFact, String regionFact, String addressFact,
-                                 boolean isForeinNumber) {
-        Pattern ukrIndexRegex = Pattern.compile("(\\d{5})?");
-        Pattern ukrPhoneFullRegex = Pattern.compile("^(\\+\\d{12})?$");
-        Pattern ukrPhoneNoCountryCodeRegex = Pattern.compile("^(\\d{10})?$");
-        Pattern ukrPhoneNoPlusRegex = Pattern.compile("^(\\d{12})?$");
-        Pattern ukrPhoneCityRegex = Pattern.compile("^(\\d{7})?$");
-        Pattern foreinPhoneRegex = Pattern.compile("(^\\+\\d+)?");
-        Pattern cityRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії,.\\-`'_\\s]*$");
-        Pattern regionRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії,.\\s]*$");
-        Pattern addressRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії\\d,.\\-`'\\&_\\s]*$");
-
-        TextFieldValidator countryForm = new TextFieldValidator(-1, true, null, "Країна", country, null);
-        TextFieldValidator indexForm = new TextFieldValidator(10, false, String.valueOf(country).equals("Україна")?ukrIndexRegex:null, "Індекс", index, "повинно складатися із 5 цифр");
-        TextFieldValidator cityForm = new TextFieldValidator(30, true, cityRegex, "Місто", city, "повинно містити тільки українські літери та розділові знаки");
-        TextFieldValidator regionForm = new TextFieldValidator(255, false, null, "Область", region, null);
-        TextFieldValidator addressForm = new TextFieldValidator(255, true, addressRegex, "Адресса", address, "може містити українські літери, цифри та розділові знаки");
-        PhoneNumberValidator mainPhoneForm = new PhoneNumberValidator(mainPhone.getNumber(), 13, true, "Телефон 1", "повинно мати форму: +380951203066, 0951203066, 380951203066 або 7076845");
-        PhoneNumberValidator secondPhoneForm = new PhoneNumberValidator(secondPhone.getNumber(), 13, false, "Телефон 2", "повинно мати форму: +380951203066, 0951203066, 380951203066, або 7076845");
-
-        TextFieldValidator countryFactForm = new TextFieldValidator(-1, false, null, "Країна", countryFact, null);
-        TextFieldValidator indexFactForm = new TextFieldValidator(10, false, String.valueOf(countryFact).equals("Україна")?ukrIndexRegex:null, "Індекс", indexFact, "повинно складатися із 5 цифр");
-        TextFieldValidator cityFactForm = new TextFieldValidator(30, false, cityRegex, "Місто", cityFact, "повинно містити тільки українські літери та розділові знаки");
-        TextFieldValidator regionFactForm = new TextFieldValidator(255, false, null, "Область", regionFact, null);
-        TextFieldValidator addressFactForm = new TextFieldValidator(255, false, addressRegex, "Адресса", addressFact, "може містити українські літери, цифри та розділові знаки");
-
-        try {
-            countryForm.validate();
-            countryFactForm.validate();
-            indexForm.validate();
-            indexFactForm.validate();
-            cityForm.validate();
-            cityFactForm.validate();
-            regionForm.validate();
-            regionFactForm.validate();
-            addressForm.validate();
-            addressFactForm.validate();
-            if (isForeinNumber) {
-                mainPhoneForm.setErrorMsg("має іноземний формат та повинен починатися зі знаку '+'");
-                secondPhoneForm.setErrorMsg("має іноземний формат та повинен починатися зі знаку '+'");
-
-                mainPhoneForm.validateNumber(foreinPhoneRegex, null, null, null);
-                secondPhoneForm.validateNumber(foreinPhoneRegex, null, null, null);
-            } else {
-                mainPhoneForm.validateNumber(ukrPhoneFullRegex, ukrPhoneNoCountryCodeRegex, ukrPhoneNoPlusRegex, ukrPhoneCityRegex);
-                secondPhoneForm.validateNumber(ukrPhoneFullRegex, ukrPhoneNoCountryCodeRegex, ukrPhoneNoPlusRegex, ukrPhoneCityRegex);
-            }
-            mainPhone.clone(mainPhoneForm);
-            secondPhone.clone(secondPhoneForm);
-
-
-        } catch (Exception e) {
-            Popup.wrongInputAlert(e.getMessage());
-
-            return false;
-        }
-
-        return true;
-    }
-
-
-    /**
      * Спроба збереження/редагування даних форми в БД після валідації
      */
     @FXML
@@ -310,16 +232,21 @@ public class ContactsEditController implements ControlledScene {
         boolean isUkraineFact = String.valueOf(countryFact).equals("Україна");
         boolean isForeinNumber = foreinNumberRadioButton.isSelected();
 
-        if (!validateInfo(country, index, city, region,
-                address, mainPhone, secondPhone,
-                countryFact, indexFact, cityFact,
-                regionFact, addressFact, isForeinNumber))
+        try {
+            contactInfoValidator.validate(new ContactInfoAdapter(country, index, city,
+                    region, address, mainPhone.getNumber(), secondPhone.getNumber(),
+                    countryFact, indexFact, cityFact, regionFact, addressFact, isForeinNumber
+            ));
+        } catch (Exception e) {
+            Popup.wrongInputAlert(e.getMessage());
             return;
+        }
 
         if (!isForeinNumber) {
-            mainPhone.setToUkrStandart();
-            secondPhone.setToUkrStandart();
+            mainPhone.clone(contactInfoValidator.getMainPhoneForm().setToUkrStandart());
+            secondPhone.clone(contactInfoValidator.getSecondPhoneForm().setToUkrStandart());
         }
+
 
         try {
             personalData.setCountry(countryService.getCountryByName(country));

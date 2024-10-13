@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ContactInfoAdapter {
+public class ContactInfoAdapter implements IBaseAdapter {
     private String country;
     private String index;
     private String city;
@@ -14,17 +14,20 @@ public class ContactInfoAdapter {
     private String mainPhone;
     private String secondPhone;
 
+    private String countryFact;
     private String indexFact;
     private String cityFact;
     private String regionFact;
     private String addressFact;
 
+    private boolean isForeinNumber;
+
     public ContactInfoAdapter() {}
 
     public ContactInfoAdapter(String country, String index, String city, String region,
                               String address, String mainPhone, String secondPhone,
-                              String indexFact, String cityFact, String regionFact,
-                              String addressFact) {
+                              String countryFact, String indexFact, String cityFact, String regionFact,
+                              String addressFact, boolean isForeinNumber) {
         this.country = country;
         this.index = index;
         this.city = city;
@@ -32,9 +35,11 @@ public class ContactInfoAdapter {
         this.address = address;
         this.mainPhone = mainPhone;
         this.secondPhone = secondPhone;
+        this.countryFact = countryFact;
         this.indexFact = indexFact;
         this.cityFact = cityFact;
         this.regionFact = regionFact;
         this.addressFact = addressFact;
+        this.isForeinNumber = isForeinNumber;
     }
 }

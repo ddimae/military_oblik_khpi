@@ -15,7 +15,7 @@ import ntukhpi.semit.militaryoblik.entity.*;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
-import ntukhpi.semit.militaryoblik.javafxutils.validators.TextFieldValidator;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValidator;
 import ntukhpi.semit.militaryoblik.repository.VZvanieRepository;
 import ntukhpi.semit.militaryoblik.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -215,7 +215,7 @@ public class MilitaryRegistrationEditController implements ControlledScene {
         MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
     }
 
-    private boolean validateMilitaryRegistrationInfo(String vos, String category, String group, String sklad, String zvanie,
+    public /*static*/ boolean validateMilitaryRegistrationInfo(String vos, String category, String group, String sklad, String zvanie,
                                                      String prydatnist, String voenkomat, String familyStan, String osvita) {
         Pattern onlyNumber = Pattern.compile("^\\d+$");
         Pattern ukrWords = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії,.\\-`'_\\s]*$");

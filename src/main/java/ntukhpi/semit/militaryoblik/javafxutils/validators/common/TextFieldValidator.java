@@ -1,4 +1,4 @@
-package ntukhpi.semit.militaryoblik.javafxutils.validators;
+package ntukhpi.semit.militaryoblik.javafxutils.validators.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
