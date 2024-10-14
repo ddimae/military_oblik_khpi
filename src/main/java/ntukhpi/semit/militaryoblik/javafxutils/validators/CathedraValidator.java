@@ -1,8 +1,6 @@
 package ntukhpi.semit.militaryoblik.javafxutils.validators;
 
 import ntukhpi.semit.militaryoblik.adapters.CathedraAdapter;
-import ntukhpi.semit.militaryoblik.adapters.IBaseAdapter;
-import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.IBaseValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValidator;
 import ntukhpi.semit.militaryoblik.service.KafedraServiceImpl;
@@ -18,7 +16,7 @@ public class CathedraValidator implements IBaseValidator<CathedraAdapter> {
     private Pattern onlyNumber = Pattern.compile("^\\d+$");
 
     @Autowired
-    private KafedraServiceImpl kafedraService;
+    KafedraServiceImpl kafedraService;
 
     public CathedraValidator() {}
 

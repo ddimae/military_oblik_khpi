@@ -15,6 +15,7 @@ import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.FamilyValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValidator;
 import ntukhpi.semit.militaryoblik.service.FamilyMemberServiceImpl;
 import ntukhpi.semit.militaryoblik.service.MilitaryPersonServiceImpl;
@@ -46,11 +47,9 @@ public class FamilyCompositionEditController implements ControlledScene {
     private FamilyAdapter selectedMember;
 
     @Autowired
+    FamilyValidator familyValidator;
+    @Autowired
     PrepodServiceImpl prepodService;
-    @Autowired
-    FamilyMemberServiceImpl familyMemberService;
-    @Autowired
-    MilitaryPersonServiceImpl militaryPersonService;
 
     @Override
     public void setMainController(Object mainController) {
@@ -93,29 +92,6 @@ public class FamilyCompositionEditController implements ControlledScene {
         MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
     }
 
-    public /*static*/ boolean validateMember(String relationship, String surname,
-                                   String name, String midname, String year) {
-        Pattern ukrWords = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії\\-\\s]+$");
-        Pattern onlyYear = Pattern.compile("^\\d{4}$");
-
-        TextFieldValidator relationshipValidator = new TextFieldValidator(-1, true, null, "Ступінь рідства", relationship, null);
-        TextFieldValidator surnameValidator = new TextFieldValidator(40, false, ukrWords, "Прізвище", surname, "повинно містити українські літери");
-        TextFieldValidator nameValidator = new TextFieldValidator(30, false, ukrWords, "Ім'я", name, "повинно містити українські літери");
-        TextFieldValidator midnameValidator = new TextFieldValidator(30, false, ukrWords, "По батькові", midname, "повинно містити українські літери");
-        TextFieldValidator yearValidator = new TextFieldValidator(4, true, onlyYear, "Рік народження", year, "повинно містити 4 цифри");
-
-        try {
-            relationshipValidator.validate();
-            surnameValidator.validate();
-            nameValidator.validate();
-            midnameValidator.validate();
-            yearValidator.validate();
-        } catch (Exception e) {
-            Popup.wrongInputAlert(e.getMessage());
-            return false;
-        }
-        return true;
-    }
 
     @FXML
     void saveMember(ActionEvent event) {
@@ -126,8 +102,12 @@ public class FamilyCompositionEditController implements ControlledScene {
         String patronimic = patronymicTextField.getText();
         String year = yearTextField.getText();
 
-        if (!validateMember(vidRidstva, surname, name, patronimic, year))
+        try {
+            familyValidator.validate(new FamilyAdapter(null, surname, name, patronimic, vidRidstva, year));
+        } catch (Exception e) {
+            Popup.wrongInputAlert(e.getMessage());
             return;
+        }
 
         try {
             FamilyMember newMember = new FamilyMember();

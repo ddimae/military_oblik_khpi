@@ -1,43 +1,32 @@
 package ntukhpi.semit.militaryoblik.adapters;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.*;
+import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
-public class PrepodAdapter {
-    private Long id;
+@NoArgsConstructor
+@AllArgsConstructor
+public class PrepodAdapter implements IBaseAdapter {
+    private String institute;
     private String surname;
     private String name;
     private String midname;
-    private LocalDate birth;
-    private Kafedra cathedra;
-    private Dolghnost position;
-    private Zvanie status;
-    private Stepen degree;
-
-    public PrepodAdapter() {}
-
-    public PrepodAdapter(Long id, String surname, String name,
-                         String midname, LocalDate birth, Kafedra cathedra,
-                         Dolghnost position, Zvanie status, Stepen degree) {
-        this.id = id;
-        this.surname = surname;
-        this.name = name;
-        this.midname = midname;
-        this.birth = birth;
-        this.cathedra = cathedra;
-        this.position = position;
-        this.status = status;
-        this.degree = degree;
-    }
+    private String birth;
+    private String cathedra;
+    private String position;
+    private String status;
+    private String degree;
 
     public PrepodAdapter(Prepod prepod) {
-        this(prepod.getId(), prepod.getFam(), prepod.getImya(),
-                prepod.getOtch(), prepod.getDr(), prepod.getKafedra(),
-                prepod.getDolghnost(), prepod.getZvanie(), prepod.getStepen());
+        this(null , prepod.getFam(), prepod.getImya(),
+                prepod.getOtch(), DataFormat.localDateToUkStandart(prepod.getDr()), prepod.getKafedra().toString(),
+                prepod.getDolghnost().toString(), prepod.getZvanie().toString(), prepod.getStepen().toString());
     }
 }

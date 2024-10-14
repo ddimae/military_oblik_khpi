@@ -16,6 +16,7 @@ import ntukhpi.semit.militaryoblik.adapters.DocumentAdapter;
 import ntukhpi.semit.militaryoblik.entity.Document;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.*;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.DocumentValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.DateFieldValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValidator;
 import ntukhpi.semit.militaryoblik.service.DocumentServiceImpl;
@@ -57,6 +58,9 @@ public class DocumentsEditController implements ControlledScene {
     private DocumentAdapter selectedDocument;
     private Stage mainStage;
     private Stage currentStage;
+
+    @Autowired
+    DocumentValidator documentValidator;
 
     @Autowired
     PrepodServiceImpl prepodService;
@@ -129,8 +133,9 @@ public class DocumentsEditController implements ControlledScene {
         typeComboBox.setValue(selectedDocument.getType());
         numberTextField.setText(selectedDocument.getNumber());
         whoGivesTextArea.setText(selectedDocument.getWhoGives());
-        dateDatePicker.setValue(selectedDocument.getDate());
+        dateDatePicker.setValue(DataFormat.UkrStandartToLocalDate(selectedDocument.getDate()));
     }
+
 
     /**
      * Початкова ініціалізація комбобоксу
@@ -177,84 +182,21 @@ public class DocumentsEditController implements ControlledScene {
 
 
     /**
-     * Валідація даних вписаних у форму
-     *
-     * @param docType Обраний тип документа
-     * @param number Серія та/або номер документа
-     * @param whoGives Орган, що видав документ
-     * @param date Дата видачі
-     * @return true - Валідація пройдена. false - Валідація не пройдена
-     */
-    public /*static*/ boolean validateDocument(String docType, String number, String whoGives, String date) {
-        Pattern ukrOldSeriesNumberRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇ]{2}\\d{6}$");
-        Pattern ukrOldWhoGivesRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії0-9\\s.,'`_\\-]+$");
-        Pattern newSeriesRegex = Pattern.compile("^\\d{9}$");
-        Pattern newWhoGivesRegex = Pattern.compile("^\\d{4}$");
-        Pattern enOldSeriesNumberRegex = Pattern.compile("^[A-Z]{2}\\d{6}$");
-        Pattern ukrDateRegex = Pattern.compile("^\\d{2}\\.\\d{2}\\.\\d{4}$");
-
-        TextFieldValidator docTypeValidator = new TextFieldValidator(-1, true, null, "Тип документу", docType, null);
-        TextFieldValidator numberValidator = new TextFieldValidator(10, true, null, "Серія та номер", number, null);
-        TextFieldValidator whoGivesValidator = new TextFieldValidator(255, true, null, "Ким видан", whoGives, null);
-        DateFieldValidator dateValidator = new DateFieldValidator(true, ukrDateRegex, "Дата видачі", date, "повинно мати формат дати: dd.mm.yyyy");
-
-        try {
-            docTypeValidator.validate();
-
-            switch (docType) {
-                case "Паперовий паспорт":
-                    numberValidator.setRegex(ukrOldSeriesNumberRegex);
-                    numberValidator.setErrorMsg("паперовога паспорта повинно містити 2 великі українські літери та 6 цифр");
-                    whoGivesValidator.setRegex(ukrOldWhoGivesRegex);
-                    whoGivesValidator.setErrorMsg("може містити українські літери, цифри, розділові знаки");
-                    break;
-                case "ID картка":
-                    numberValidator.setRegex(newSeriesRegex);
-                    numberValidator.setErrorMsg("ID картки повинно містити 9 цифр");
-                    whoGivesValidator.setRegex(newWhoGivesRegex);
-                    whoGivesValidator.setErrorMsg("повинно містити тільки 4 цифри");
-                    break;
-                case "Закордонний паспорт":
-                    numberValidator.setRegex(enOldSeriesNumberRegex);
-                    numberValidator.setErrorMsg("закордонного паспорта повинно містити 2 великі латинські літери та 6 цифр");
-                    whoGivesValidator.setRegex(newWhoGivesRegex);
-                    whoGivesValidator.setErrorMsg("повинно містити тільки 4 цифри");
-                    break;
-                case "Посвідчення особи офіцера":
-                case "Військовий квиток":
-                    numberValidator.setRegex(ukrOldSeriesNumberRegex);
-                    numberValidator.setErrorMsg("Серія та номер посвідчення повинні містити 2 великі українські літери та 6 цифр");
-                    whoGivesValidator.setRegex(ukrOldWhoGivesRegex);
-                    whoGivesValidator.setErrorMsg("може містити українські літери, цифри, розділові знаки");
-                    break;
-            }
-
-            numberValidator.validate();
-            whoGivesValidator.validate();
-            dateValidator.validate();
-        }
-        catch (Exception e) {
-            Popup.wrongInputAlert(e.getMessage());
-            return false;
-        }
-
-        return true;
-    }
-
-
-    /**
      * Спроба збереження/редагування даних форми в БД після валідації
      */
     @FXML
     void saveDocuments(ActionEvent event) {
         String docType = DataFormat.getPureValue(typeComboBox.getValue());
-
         String number = numberTextField.getText().trim();
         String whoGives = whoGivesTextArea.getText().trim();
         String date = dateDatePicker.getEditor().getText().trim();
 
-        if (!validateDocument(docType, number, whoGives, date))
+        try {
+            documentValidator.validate(new DocumentAdapter(null, docType, number, whoGives, date));
+        } catch (Exception e) {
+            Popup.wrongInputAlert(e.getMessage());
             return;
+        }
 
         try {
             Document newDocument = new Document();
@@ -277,6 +219,7 @@ public class DocumentsEditController implements ControlledScene {
             Popup.internalAlert(e.getMessage());
         }
     }
+
 
     /**
      * Обробник зміни значення комбобоксу типу документа
@@ -302,6 +245,7 @@ public class DocumentsEditController implements ControlledScene {
                 break;
         }
     }
+
 
     /**
      * Перехід до материнської форми

@@ -3,6 +3,7 @@ package ntukhpi.semit.militaryoblik.javafxutils;
 import javafx.scene.control.TableCell;
 import ntukhpi.semit.militaryoblik.adapters.PrepodAdapter;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
+import org.springframework.cglib.core.Local;
 
 import java.text.Collator;
 import java.time.LocalDate;
@@ -41,6 +42,14 @@ public class DataFormat {
         }
 
         return pieces.get(2) + "." + pieces.get(1) + "." + pieces.get(0);
+    }
+
+    public static LocalDate UkrStandartToLocalDate(String date) {
+        try {
+            return LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public static String getPureValue(String str) {

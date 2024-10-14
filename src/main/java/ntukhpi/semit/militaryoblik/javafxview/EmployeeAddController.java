@@ -12,6 +12,7 @@ import ntukhpi.semit.militaryoblik.entity.fromasukhpi.*;
 import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.EmployeeValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.DateFieldValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
@@ -65,6 +66,9 @@ public class EmployeeAddController implements ControlledScene {
 
     @FXML
     private TextField surnameTextField;
+
+    @Autowired
+    EmployeeValidator employeeValidator;
 
     @Autowired
     FakultetServiceImpl fakultetService;
@@ -174,42 +178,6 @@ public class EmployeeAddController implements ControlledScene {
         });
     }
 
-    /**
-     * Валідація даних вписаних у форму
-     *
-     * @param institute Обриний інститут
-     * @param cathedra Обрана кафедра
-     * @param surname Прізвище нового співробітника
-     * @param name Ім'я нового співробітника
-     * @param midname По-батькові нового співробітника
-     * @param date Дата народження нового співробітника
-     * @return true - Валідація пройдена. false - Валідація не пройдена
-     */
-    public /*static*/ boolean validateInfo(String institute, String cathedra, String surname,
-                                 String name, String midname, String date) {
-        Pattern ukrWords = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії\\-\\s]+$");
-        Pattern ukrDateRegex = Pattern.compile("^\\d{2}\\.\\d{2}\\.\\d{4}$");
-
-        TextFieldValidator instituteValidator = new TextFieldValidator(-1, true, null, "Інститут", institute, null);
-        TextFieldValidator cathedraValidator = new TextFieldValidator(-1, true, null, "Кафедра", cathedra, null);
-        TextFieldValidator surnameValidator = new TextFieldValidator(40, true, ukrWords, "Прізвище", surname, "повинно містити українські літери");
-        TextFieldValidator nameValidator = new TextFieldValidator(30, true, ukrWords, "Ім'я", name, "повинно містити українські літери");
-        TextFieldValidator midnameValidator = new TextFieldValidator(30, true, ukrWords, "По батькові", midname, "повинно містити українські літери");
-        DateFieldValidator dateValidator = new DateFieldValidator(false, ukrDateRegex, "Дата народження", date, "повинно мати формат дати: dd.mm.yyyy");
-
-        try {
-            instituteValidator.validate();
-            cathedraValidator.validate();
-            surnameValidator.validate();
-            nameValidator.validate();
-            midnameValidator.validate();
-            dateValidator.validate();
-        } catch (Exception e) {
-            Popup.wrongInputAlert(e.getMessage());
-            return false;
-        }
-        return true;
-    }
 
     /**
      * Спроба збереження/редагування даних форми в БД після валідації
@@ -226,7 +194,16 @@ public class EmployeeAddController implements ControlledScene {
         String degree = degreeComboBox.getValue() != null ? degreeComboBox.getValue().toString() : null;
         String status = statusComboBox.getValue() != null ? statusComboBox.getValue().toString() : null;
 
-        if (!validateInfo(institute, cathedra, surname, name, midname, birthDate) || !Popup.saveConfirmation())
+        try {
+            employeeValidator.validate(new PrepodAdapter(institute, surname, name,
+                                                        midname, birthDate, cathedra,
+                                                        position, status, degree));
+        } catch (Exception e) {
+            Popup.wrongInputAlert(e.getMessage());
+            return;
+        }
+
+        if (!Popup.saveConfirmation())
             return;
 
         try {

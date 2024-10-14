@@ -12,6 +12,7 @@ import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.OrderValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.DateFieldValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValidator;
 import ntukhpi.semit.militaryoblik.service.CurrentDoljnostInfoServiceImpl;
@@ -55,6 +56,8 @@ public class PositionOrdersEditController implements ControlledScene {
     private Stage mainStage;
     private Stage currentStage;
 
+    @Autowired
+    OrderValidator orderValidator;
     @Autowired
     PrepodServiceImpl prepodService;
     @Autowired
@@ -178,8 +181,14 @@ public class PositionOrdersEditController implements ControlledScene {
         String dateDissStr = dateDissDatePicker.getEditor().getText();
         String commentDiss = commentDissTextArea.getText() != null ? commentDissTextArea.getText().trim() : "";
 
-        if (!validateOrders(nakaz, nakazDiss, dateStr, dateDissStr, comment, commentDiss))
+        try {
+            orderValidator.validate(new CurrentDoljnostInfoAdapter(dateStr, nakaz, comment,
+                                                                    dateDissStr, nakazDiss, commentDiss,
+                                                                    null, null, null));
+        } catch (Exception e) {
+            Popup.wrongInputAlert(e.getMessage());
             return;
+        }
 
         try {
             LocalDate date = LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
@@ -202,49 +211,6 @@ public class PositionOrdersEditController implements ControlledScene {
         }
     }
 
-    /**
-     * Валідація даних вписаних у форму
-     *
-     * @param nakaz       номер наказу про призначення
-     * @param nakazDiss   номер наказу про звільнення
-     * @param dateDiss    Дата наказу про призначення
-     * @param dateDiss    Дата наказу про звільнення
-     * @param comment     коментар про призначення
-     * @param commentDiss коментар про звільнення
-     * @return true - Валідація пройдена. false - Валідація не пройдена
-     */
-    public /*static*/ boolean validateOrders(String nakaz, String nakazDiss, String date, String dateDiss, String comment, String commentDiss) {
-        Pattern ukrNakazNumberRegex = Pattern.compile("^[1-9][0-9]{0,4}.+$");
-        Pattern ukrCommmentRegex = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії0-9\\s.,'`_\\-]+$");
-        Pattern ukrDateRegex = Pattern.compile("^\\d{2}\\.\\d{2}\\.\\d{4}$");
-
-        TextFieldValidator nakazValidator = new TextFieldValidator(12, true, ukrNakazNumberRegex, "Номер наказу", nakaz, "на початку має від 1 до 5 цифр");
-        TextFieldValidator nakazDissValidator = new TextFieldValidator(12, false, ukrNakazNumberRegex, "Номер наказу", nakazDiss, "на початку має від 1 до 5 цифр");
-        TextFieldValidator commentValidator = new TextFieldValidator(255, false, ukrCommmentRegex, "Коментар", comment, "вводиться українською");
-        TextFieldValidator commentDissValidator = new TextFieldValidator(255, false, ukrCommmentRegex, "Коментар", commentDiss, "вводиться українською");
-        DateFieldValidator dateValidator = new DateFieldValidator(true, ukrDateRegex, "Дата наказу", date, "повинна мати формат дати: dd.mm.yyyy");
-        DateFieldValidator dateValidatorDiss = new DateFieldValidator(false, ukrDateRegex, "Дата наказу", dateDiss, "повинна мати формат дати: dd.mm.yyyy");
-
-        try {
-            nakazValidator.validate();
-            nakazDissValidator.validate();
-            commentValidator.validate();
-            commentDissValidator.validate();
-            dateValidator.validate();
-            dateValidatorDiss.validate();
-            if ((nakazDiss.length() == 0 && dateDiss.length() != 0) || (nakazDiss.length() != 0 && dateDiss.length() == 0)) {
-                throw new Exception("Мають бути заповнені і наказ, і дата");
-            }
-            if (nakazDiss.length() == 0 && dateDiss.length() == 0 && commentDiss.length() != 0) {
-                throw new Exception("Коментар не вводиться, якщо немає наказу");
-            }
-        } catch (Exception e) {
-            Popup.wrongInputAlert(e.getMessage());
-            return false;
-        }
-
-        return true;
-    }
 
     @FXML
     void closeEdit(ActionEvent event) {

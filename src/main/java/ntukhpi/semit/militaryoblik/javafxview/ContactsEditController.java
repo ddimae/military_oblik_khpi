@@ -84,7 +84,9 @@ public class ContactsEditController implements ControlledScene {
     private PersonalData personalData;
     private Stage mainStage;
     private Stage currentStage;
-    private ContactInfoValidator contactInfoValidator = new ContactInfoValidator();
+
+    @Autowired
+    ContactInfoValidator contactInfoValidator;
 
     @Autowired
     CountryServiceImpl countryService;

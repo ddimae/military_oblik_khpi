@@ -54,7 +54,9 @@ public class CathedraAddController implements ControlledScene {
     private ComboBox<Kafedra> cathedraComboBox;
     private Stage mainStage;
     private Stage currentStage;
-    private CathedraValidator cathedraValidator = new CathedraValidator();
+
+    @Autowired
+    CathedraValidator cathedraValidator;
 
     @Autowired
     FakultetServiceImpl fakultetService;
@@ -99,45 +101,6 @@ public class CathedraAddController implements ControlledScene {
 
 
     /**
-     * Валідація даних вписаних у форму
-     *
-     * @param institute Обраний інститут, до якого відноситься нова кафедра
-     * @param fullName Повна назва кафедри
-     * @param abbr Аббревіатура кафедри
-     * @param code Код кафедри
-     * @return true - Валідація пройдена. false - Валідація не пройдена
-     */
-//    public boolean validateCathedra(String institute, String fullName, String abbr, String code) {
-//        Pattern ukrWords = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії,.\\-`'_\\s]*$");
-//        Pattern oneWord = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії]*$");
-//        Pattern onlyNumber = Pattern.compile("^\\d+$");
-//
-//        TextFieldValidator instituteValidator = new TextFieldValidator(-1, true, null, "Інститут", institute, null);
-//        TextFieldValidator fullNameValidator = new TextFieldValidator(100, true, ukrWords, "Повне ім'я", fullName, "може містити тільки українські літери та розділові знаки");
-//        TextFieldValidator abbrValidator = new TextFieldValidator(10, true, oneWord, "Абревіатура", abbr, "повнно містити тільки українські літери без пробілів");
-//        TextFieldValidator codeValidator = new TextFieldValidator(10, true, onlyNumber, "Код", code, "повинен містити тільки 1 число");
-//
-//        try {
-//            instituteValidator.validate();
-//            fullNameValidator.validate();
-//            abbrValidator.validate();
-//            codeValidator.validate();
-//
-//            if (kafedraService.findIDKafedraByKname(fullName) != null)
-//                throw new Exception("Кафедра з такою назвою вже інсує");
-//            if (kafedraService.findIDKafedraByKabr(abbr) != null)
-//                throw new Exception("Кафедра з такою абревіатуро вже інсує");
-//            if (kafedraService.findIDKafedraByOid(code) != null)
-//                throw new Exception("Кафедра з таким кодом вже інсує");
-//        } catch (Exception e) {
-//            Popup.wrongInputAlert(e.getMessage());
-//            return false;
-//        }
-//        return true;
-//    }
-
-
-    /**
      * Спроба збереження даних форми в БД після валідації
      */
     @FXML
@@ -153,8 +116,9 @@ public class CathedraAddController implements ControlledScene {
             Popup.wrongInputAlert(e.getMessage());
             return;
         }
-//        if (!validateCathedra(institute, fullName, abbr, code) || !Popup.saveConfirmation())
-//            return;
+
+        if (!Popup.saveConfirmation())
+            return;
 
         try {
             Kafedra kafedra = new Kafedra();

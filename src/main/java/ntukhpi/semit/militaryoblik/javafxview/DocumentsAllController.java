@@ -114,7 +114,7 @@ public class DocumentsAllController implements ControlledScene {
         numberColumn.setCellValueFactory(new PropertyValueFactory<>("number"));
         givenColumn.setCellValueFactory(new PropertyValueFactory<>("whoGives"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
-        dateColumn.setCellFactory(column -> DataFormat.getTableDateCellFactory());
+//        dateColumn.setCellFactory(column -> DataFormat.getTableDateCellFactory());
 
         docsObservableList = getDocumentsData();
 

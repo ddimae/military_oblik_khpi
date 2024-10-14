@@ -10,11 +10,14 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
+import ntukhpi.semit.militaryoblik.adapters.FakultetAdapter;
+import ntukhpi.semit.militaryoblik.adapters.MilitaryPersonAdapter;
 import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
 import ntukhpi.semit.militaryoblik.entity.*;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.MilitaryRegistrationValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValidator;
 import ntukhpi.semit.militaryoblik.repository.VZvanieRepository;
 import ntukhpi.semit.militaryoblik.service.*;
@@ -57,7 +60,7 @@ public class MilitaryRegistrationEditController implements ControlledScene {
     public TextArea validityTextArea;
 
     @Autowired
-    VZvanieRepository vZvanieRepository;
+    MilitaryRegistrationValidator militaryRegistrationValidator;
 
     @Autowired
     VSkladServiceImpl vSkladService;
@@ -215,49 +218,6 @@ public class MilitaryRegistrationEditController implements ControlledScene {
         MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
     }
 
-    public /*static*/ boolean validateMilitaryRegistrationInfo(String vos, String category, String group, String sklad, String zvanie,
-                                                     String prydatnist, String voenkomat, String familyStan, String osvita) {
-        Pattern onlyNumber = Pattern.compile("^\\d+$");
-        Pattern ukrWords = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії,.\\-`'_\\s]*$");
-
-        TextFieldValidator vosValidator = new TextFieldValidator(6, true, onlyNumber, "ВОС", vos, "повинен містити тільки 1 число з 6 цифр");
-        TextFieldValidator categoryValidator = new TextFieldValidator(1, true, onlyNumber, "Категорія обліку", category, null);
-
-//        TextFieldValidator groupValidator = new TextFieldValidator(-1, true, ukrWords, "Група обліку", group, null);
-//        TextFieldValidator skladValidator = new TextFieldValidator(-1, true, ukrWords, "Склад", sklad, null);
-//        TextFieldValidator zvanieValidator = new TextFieldValidator(-1, true, ukrWords, "Військове звання", zvanie, null);
-
-        TextFieldValidator prydatnistValidator = new TextFieldValidator(-1, true, ukrWords, "Придатність", prydatnist, "може містити тільки українські літери та розділові знаки");
-        TextFieldValidator voenkomatValidator = new TextFieldValidator(-1, true, ukrWords, "ТЦК", voenkomat, "може містити тільки українські літери та розділові знаки");
-        TextFieldValidator familyStanValidator = new TextFieldValidator(-1, true, ukrWords, "Сімейний стан", familyStan, "може містити тільки українські літери та розділові знаки");
-        TextFieldValidator osvitaValidator = new TextFieldValidator(-1, true, ukrWords, "Освіта", osvita, "може містити тільки українські літери та розділові знаки");
-
-        try {
-            vosValidator.validate();
-
-            categoryValidator.validate();
-//            groupValidator.validate();
-//            skladValidator.validate();
-//            zvanieValidator.validate();
-
-            prydatnistValidator.validate();
-            voenkomatValidator.validate();
-            familyStanValidator.validate();
-            osvitaValidator.validate();
-
-            if (voenkomatService.getIDVoenkomatByName(voenkomat) == null) { // FIXME: Здається це зайве. перевірити
-                Voenkomat newVoenkomat = new Voenkomat();
-                newVoenkomat.setVoenkomatName(voenkomat);
-                voenkomatService.createVoenkomat(newVoenkomat);
-            }
-
-
-        } catch (Exception e) {
-            Popup.wrongInputAlert(e.getMessage());
-            return false;
-        }
-        return true;
-    }
 
     @FXML
     public void saveMilitaryRegistrationInfo(ActionEvent actionEvent) {
@@ -271,9 +231,23 @@ public class MilitaryRegistrationEditController implements ControlledScene {
         String familyState = familyStanTextField.getText().trim();
         String educationLevel = educationTextField.getText().trim();
 
-        if (!validateMilitaryRegistrationInfo(vos, category, group, vSklad, vZvanie, prydatnist,
-                voenkomat, familyState, educationLevel) || !Popup.saveConfirmation())
+        try {
+            militaryRegistrationValidator.validate(new MilitaryPersonAdapter(null, vos, category,
+                                                    group, vSklad, vZvanie, voenkomat,
+                                                null, prydatnist, familyState, educationLevel));
+        } catch (Exception e) {
+            Popup.wrongInputAlert(e.getMessage());
             return;
+        }
+
+        if (voenkomatService.getIDVoenkomatByName(voenkomat) == null) {
+            if (!Popup.saveConfirmation())
+                return;
+
+            Voenkomat newVoenkomat = new Voenkomat();
+            newVoenkomat.setVoenkomatName(voenkomat);
+            voenkomatService.createVoenkomat(newVoenkomat);
+        }
 
         try {
             MilitaryPerson militaryPerson = militaryPersonService.getMilitaryPersonByPrepod(selectedPrepod);

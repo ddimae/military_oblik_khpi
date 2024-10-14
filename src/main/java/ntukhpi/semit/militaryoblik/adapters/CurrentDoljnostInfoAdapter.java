@@ -1,6 +1,8 @@
 package ntukhpi.semit.militaryoblik.adapters;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ntukhpi.semit.militaryoblik.entity.CurrentDoljnostInfo;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Dolghnost;
@@ -11,7 +13,9 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class CurrentDoljnostInfoAdapter {
+@NoArgsConstructor
+@AllArgsConstructor
+public class CurrentDoljnostInfoAdapter implements IBaseAdapter {
     private String dateStart;
     private String nakazStart;
     private String commentStart;

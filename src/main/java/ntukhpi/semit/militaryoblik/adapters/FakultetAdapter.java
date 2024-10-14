@@ -1,18 +1,19 @@
 package ntukhpi.semit.militaryoblik.adapters;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class FakultetAdapter {
+@NoArgsConstructor
+@AllArgsConstructor
+public class FakultetAdapter implements IBaseAdapter {
     private String id;
     private String name;
-
-    public FakultetAdapter(String id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+    private String abbr;
+    private String code;
 
     @Override
     public String toString() {

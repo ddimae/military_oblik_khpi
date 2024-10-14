@@ -8,9 +8,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
+import ntukhpi.semit.militaryoblik.adapters.PositionAdapter;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Dolghnost;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.PositionValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValidator;
 import ntukhpi.semit.militaryoblik.service.DolghnostServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +49,9 @@ public class PositionAddController implements ControlledScene {
     private ComboBox<Dolghnost> positionComboBox;
 
     @Autowired
+    PositionValidator positionValidator;
+
+    @Autowired
     DolghnostServiceImpl dolghnostService;
 
     @Override
@@ -67,33 +72,6 @@ public class PositionAddController implements ControlledScene {
         currentStage = stage;
     }
 
-    /**
-     * Валідація даних вписаних у форму
-     *
-     * @param fullName Повна назва посади
-     * @param shortName Скорочена назва посади
-     * @return true - Валідація пройдена. false - Валідація не пройдена
-     */
-    public /*static*/ boolean validatePosition(String fullName, String shortName) {
-        Pattern ukrWords = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії,.\\-`'_\\s0-9]*$");
-
-        TextFieldValidator fullNameValidator = new TextFieldValidator(40, true, ukrWords, "Назва посади", fullName, "може містити тільки українські літери та розділові знаки");
-        TextFieldValidator shortNameValidator = new TextFieldValidator(15, false, ukrWords, "Скорочене позначення", shortName, "може містити тільки українські літери та розділові знаки");
-
-        try {
-            fullNameValidator.validate();
-            shortNameValidator.validate();
-
-            if (dolghnostService.findIDPosadaByName(fullName) != null)
-                throw new Exception("Посада з такою назвою вже існує");
-        } catch (Exception e) {
-            Popup.wrongInputAlert(e.getMessage());
-            return false;
-        }
-
-        return true;
-    }
-
 
     /**
      * Спроба збереження даних форми в БД після валідації
@@ -104,8 +82,12 @@ public class PositionAddController implements ControlledScene {
         String shortName = shortNameTaxtField.getText();
         int category = nppRadioButton.isSelected() ? 1 : 2;
 
-        if (!validatePosition(fullName, shortName) || !Popup.saveConfirmation())
+        try {
+            positionValidator.validate(new PositionAdapter(fullName, shortName, category));
+        } catch (Exception e) {
+            Popup.wrongInputAlert(e.getMessage());
             return;
+        }
 
         try {
             Dolghnost dolghnost = new Dolghnost();
