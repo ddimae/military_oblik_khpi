@@ -1,7 +1,7 @@
 package ntukhpi.semit.militaryoblik.testWrite;
 
 import ntukhpi.semit.militaryoblik.adapters.D05Adapter;
-import ntukhpi.semit.militaryoblik.utils.DataPreparer;
+import ntukhpi.semit.militaryoblik.utils.D5.D5DataPreparer;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -13,11 +13,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DataPreparerTest {
 
-    private final DataPreparer dataPreparer = new DataPreparer();
+    private final D5DataPreparer d5DataPreparer = new D5DataPreparer();
 
     @Test
     void testSortD5AdapterByUAAlphabetByName() {
-        Map<String, List<D05Adapter>> result = dataPreparer.sortD5AdapterByUAAlphabet(generateTestDataMap(), "name");
+        Map<String, List<D05Adapter>> result = d5DataPreparer.sortD5AdapterByUAAlphabet(generateTestDataMap(), "name");
         assertEquals("Андрій", result.get("Одеський ТЦК").get(0).getPib());
         assertEquals("Іван", result.get("Житомирський ТЦК").get(0).getPib());
         assertEquals("Мстислав", result.get("Одеський ТЦК").get(1).getPib());
@@ -27,7 +27,7 @@ class DataPreparerTest {
 
     @Test
     void testSortD5AdapterByUAAlphabetByTCK() {
-        Map<String, List<D05Adapter>> result = dataPreparer.sortD5AdapterByUAAlphabet(generateTestDataMap(), "tck");
+        Map<String, List<D05Adapter>> result = d5DataPreparer.sortD5AdapterByUAAlphabet(generateTestDataMap(), "tck");
         assertEquals("Андрій", result.get("Одеський ТЦК").get(0).getPib());
         assertEquals("Іван", result.get("Житомирський ТЦК").get(0).getPib());
         assertEquals("Мстислав", result.get("Одеський ТЦК").get(1).getPib());
@@ -37,7 +37,7 @@ class DataPreparerTest {
 
     @Test
     void testLisToArray() {
-        String[][] result = dataPreparer.listToArray(generateTestDataList());
+        String[][] result = d5DataPreparer.listToArray(generateTestDataList());
         assertEquals("Іван", result[0][2]);
         assertEquals("Андрій", result[1][2]);
         assertEquals("Мстислав", result[2][2]);

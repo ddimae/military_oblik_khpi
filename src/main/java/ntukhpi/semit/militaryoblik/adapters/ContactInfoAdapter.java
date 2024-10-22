@@ -1,10 +1,15 @@
 package ntukhpi.semit.militaryoblik.adapters;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ntukhpi.semit.militaryoblik.entity.PersonalData;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ContactInfoAdapter implements IBaseAdapter {
     private String country;
     private String index;
@@ -22,24 +27,19 @@ public class ContactInfoAdapter implements IBaseAdapter {
 
     private boolean isForeinNumber;
 
-    public ContactInfoAdapter() {}
-
-    public ContactInfoAdapter(String country, String index, String city, String region,
-                              String address, String mainPhone, String secondPhone,
-                              String countryFact, String indexFact, String cityFact, String regionFact,
-                              String addressFact, boolean isForeinNumber) {
-        this.country = country;
-        this.index = index;
-        this.city = city;
-        this.region = region;
-        this.address = address;
-        this.mainPhone = mainPhone;
-        this.secondPhone = secondPhone;
-        this.countryFact = countryFact;
-        this.indexFact = indexFact;
-        this.cityFact = cityFact;
-        this.regionFact = regionFact;
-        this.addressFact = addressFact;
-        this.isForeinNumber = isForeinNumber;
+    public ContactInfoAdapter(PersonalData pd) {
+        this.country = pd.getCountry().toString();
+        this.index = pd.getPostIndex();
+        this.city = pd.getCity();
+        this.region = pd.getRegionKh() != null ? pd.getRegionKh().toString() : "";
+        this.address = pd.getRowAddress();
+        this.mainPhone = pd.getPhoneMain();
+        this.secondPhone = pd.getPhoneDop();
+        this.countryFact = pd.getFactСountry().toString();
+        this.indexFact = pd.getFactPostIndex();
+        this.cityFact = pd.getFactCity();
+        this.regionFact = pd.getFactRegionKh() != null ? pd.getRegionKh().toString() : "";
+        this.addressFact = pd.getFactRowAddress();
+        this.isForeinNumber = true;
     }
 }

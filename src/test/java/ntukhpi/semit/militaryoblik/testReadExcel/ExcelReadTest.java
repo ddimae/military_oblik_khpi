@@ -5,11 +5,9 @@ import ntukhpi.semit.militaryoblik.entity.Education;
 import ntukhpi.semit.militaryoblik.entity.FamilyMember;
 import ntukhpi.semit.militaryoblik.entity.PersonalData;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
-import ntukhpi.semit.militaryoblik.entity.fromasukhpi.RegionUkraine;
 import ntukhpi.semit.militaryoblik.repository.*;
 import ntukhpi.semit.militaryoblik.service.*;
-import ntukhpi.semit.militaryoblik.utils.Dodatok5Reader;
-import org.junit.jupiter.api.BeforeAll;
+import ntukhpi.semit.militaryoblik.utils.D5.D5Reader;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -79,7 +77,7 @@ public class ExcelReadTest {
     @Test
     void testParseFamily() {
         System.out.println("\nParse family sell");
-        Dodatok5Reader d05Reader = new Dodatok5Reader(prepodServiceImpl, militaryPersonServiceImpl,
+        D5Reader d05Reader = new D5Reader(prepodServiceImpl, militaryPersonServiceImpl,
                 countryServiceImpl, regionUkraineServiceImpl,vzvanieServiceImpl,vskladServiceImpl,voenkomatServiceImpl,
                 currentDoljnostInfoServiceImpl,personalDataServiceImpl,
                 documentDataServiceImpl,familyMemberDataServiceImpl, educationServiceImpl,vnzServiceImpl
@@ -106,7 +104,7 @@ public class ExcelReadTest {
     @Test
     void testParseEducation() {
         System.out.println("\nOsvita");
-        Dodatok5Reader d05Reader = new Dodatok5Reader(prepodServiceImpl, militaryPersonServiceImpl,
+        D5Reader d05Reader = new D5Reader(prepodServiceImpl, militaryPersonServiceImpl,
                 countryServiceImpl, regionUkraineServiceImpl,vzvanieServiceImpl,vskladServiceImpl,voenkomatServiceImpl,
                 currentDoljnostInfoServiceImpl,personalDataServiceImpl,
                 documentDataServiceImpl,familyMemberDataServiceImpl, educationServiceImpl,vnzServiceImpl
@@ -138,7 +136,7 @@ public class ExcelReadTest {
     @Test
     void testParseAdress() {
         System.out.println("\nAdress");
-        Dodatok5Reader d05Reader = new Dodatok5Reader(prepodServiceImpl, militaryPersonServiceImpl,
+        D5Reader d05Reader = new D5Reader(prepodServiceImpl, militaryPersonServiceImpl,
                 countryServiceImpl, regionUkraineServiceImpl,
                 vzvanieServiceImpl,vskladServiceImpl,voenkomatServiceImpl
                 ,currentDoljnostInfoServiceImpl,personalDataServiceImpl,
@@ -161,7 +159,7 @@ public class ExcelReadTest {
     @Test
     void testParseDoc() {
         System.out.println("\nPassport");
-        Dodatok5Reader d05Reader = new Dodatok5Reader(prepodServiceImpl, militaryPersonServiceImpl,
+        D5Reader d05Reader = new D5Reader(prepodServiceImpl, militaryPersonServiceImpl,
                 countryServiceImpl, regionUkraineServiceImpl,
                 vzvanieServiceImpl,vskladServiceImpl,voenkomatServiceImpl
                 ,currentDoljnostInfoServiceImpl,personalDataServiceImpl

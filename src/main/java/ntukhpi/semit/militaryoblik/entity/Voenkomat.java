@@ -23,4 +23,8 @@ public class Voenkomat {
     @Column(length = 50,name="voenkomat_name",nullable = false,unique = true)
     private String voenkomatName;
 
+    @Override
+    public String toString() {
+        return voenkomatName;
+    }
 }

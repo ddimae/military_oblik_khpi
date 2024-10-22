@@ -23,4 +23,8 @@ public class VSklad {
     @Column(name="show_order",nullable = false,unique = true)
     private Integer numOrderShow;
 
+    @Override
+    public String toString() {
+        return skladName;
+    }
 }

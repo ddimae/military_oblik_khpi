@@ -448,11 +448,12 @@ public class ReservistsAllController implements ControlledScene {
         if (reservist != null) {
             FileChooser fileChooser = getFilePathFp2(reservist.getFam());
             String resultSave;
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Файли word з формою П-2 (*.docx)", "*.docx");
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Файли Excel з формою П-2 (*.xlsx)", "*.xlsx");
             fileChooser.getExtensionFilters().add(extFilter);
-            resultSave = dataWriteService.writeDataToWord(reservist.getMilitaryPersonId(), fileChooser.showSaveDialog(new Stage()));
 
-            if (resultSave.startsWith("Дані успішно збережені")) {
+            resultSave = dataWriteService.writeExportDataToExcelBase(reservist, fileChooser.showSaveDialog(new Stage()));
+
+            if (resultSave.startsWith("Дані успішно збережені")) {  // FIXME: Piece of shit
                 confirmationDialog = new Alert(Alert.AlertType.INFORMATION);
                 confirmationDialog.setTitle("Формування форми П-2");
             } else {

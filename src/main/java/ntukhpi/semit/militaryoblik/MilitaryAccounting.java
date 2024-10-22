@@ -1,16 +1,9 @@
 package ntukhpi.semit.militaryoblik;
 
 import javafx.application.Application;
-import ntukhpi.semit.militaryoblik.utils.DataPreparer;
-import ntukhpi.semit.militaryoblik.utils.DataWriteService;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 
 @SpringBootApplication
 public class MilitaryAccounting {

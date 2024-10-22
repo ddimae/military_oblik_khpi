@@ -33,5 +33,8 @@ public class VZvanie {
         return kodSkladu == 1 ? "Офіцерський склад" : "Рядовий та сержантський склад";
     }
 
-
+    @Override
+    public String toString() {
+        return zvanieName;
+    }
 }
