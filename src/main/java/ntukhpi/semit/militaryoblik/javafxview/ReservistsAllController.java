@@ -451,6 +451,7 @@ public class ReservistsAllController implements ControlledScene {
             FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Файли Excel з формою П-2 (*.xlsx)", "*.xlsx");
             fileChooser.getExtensionFilters().add(extFilter);
 
+//            resultSave = dataWriteService.writeDataToWord(reservist.getMilitaryPersonId(), fileChooser.showSaveDialog(new Stage()));
             resultSave = dataWriteService.writeExportDataToExcelBase(reservist, fileChooser.showSaveDialog(new Stage()));
 
             if (resultSave.startsWith("Дані успішно збережені")) {  // FIXME: Piece of shit
