@@ -9,7 +9,9 @@ import ntukhpi.semit.militaryoblik.utils.D5.D5DataPreparer;
 import ntukhpi.semit.militaryoblik.utils.D5.D5ExcelWriter;
 import ntukhpi.semit.militaryoblik.utils.P2.P2WordWriter;
 import ntukhpi.semit.militaryoblik.utils.exportimport.EIDataCollectService;
+import ntukhpi.semit.militaryoblik.utils.exportimport.EIDataPreparer;
 import ntukhpi.semit.militaryoblik.utils.exportimport.EIExcelWriter;
+import ntukhpi.semit.militaryoblik.utils.exportimport.EISettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -77,8 +79,18 @@ public class DataWriteService {
         try {
             ExportAdapter exportAdapter = eiDataCollectService.collectData(prepodId);
             String[] generalInfo = exportAdapter.getGeneralInfoAsStringArray();
+            String[] contactInfo = exportAdapter.getContactInfoAsStringArray();
+            String[] educationsInfo = EIDataPreparer.stringsListToStringArray(exportAdapter.getEducationsInfoAsStringArray(),
+                                                                            EISettings.MAX_EDUCATION_NUMBER,
+                                                                            EISettings.EDUCATION_ROW_COUNT);
+            String[] posteducationsInfo = EIDataPreparer.stringsListToStringArray(exportAdapter.getPosteducationsInfoAsStringArray(),
+                                                                                EISettings.MAX_POSTEDUCATION_NUMBER,
+                                                                                EISettings.POSTEDUCATION_ROW_COUNT);
 
             workingDatas.add(generalInfo);
+            workingDatas.add(contactInfo);
+            workingDatas.add(educationsInfo);
+            workingDatas.add(posteducationsInfo);
 
             return eiExcelWriter.writeExcel(workingDatas, file);
         } catch (Exception e) {

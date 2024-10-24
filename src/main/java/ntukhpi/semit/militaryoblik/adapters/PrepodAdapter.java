@@ -25,8 +25,9 @@ public class PrepodAdapter implements IBaseAdapter {
     private String degree;
 
     public PrepodAdapter(Prepod prepod) {
-        this(null , prepod.getFam(), prepod.getImya(),
-                prepod.getOtch(), DataFormat.localDateToUkStandart(prepod.getDr()), prepod.getKafedra().toString(),
-                prepod.getDolghnost().toString(), prepod.getZvanie().toString(), prepod.getStepen().toString());
+        this(DataFormat.safeStr(prepod.getKafedra().getFakultet()) , prepod.getFam(), prepod.getImya(),
+                prepod.getOtch(), DataFormat.localDateToUkStandart(prepod.getDr()), DataFormat.safeStr(prepod.getKafedra()),
+                DataFormat.safeStr(prepod.getDolghnost()),  DataFormat.safeStr(prepod.getZvanie()), DataFormat.safeStr(prepod.getStepen()));
+
     }
 }
