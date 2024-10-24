@@ -11,7 +11,9 @@ import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
 import ntukhpi.semit.militaryoblik.entity.VNZaklad;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
+import ntukhpi.semit.militaryoblik.service.VNZakladService;
 import ntukhpi.semit.militaryoblik.service.VNZakladServiceImpl;
+import ntukhpi.semit.militaryoblik.service.entitiescrud.VNZCRUD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,8 +33,12 @@ public class AddVNZController implements ControlledScene {
     private Stage mainStage;
     private Stage currentStage;
 
+//    DDE - вот воно ж тепер тут не треба ?!...
+    // А без нього не працює!
     @Autowired
-    VNZakladServiceImpl vnZakladService;
+//    VNZakladServiceImpl vnZakladService;
+    VNZakladService vnZakladService;
+
 
     @Override
     public void setMainController(Object controller) {}
@@ -73,18 +79,21 @@ public class AddVNZController implements ControlledScene {
             if (!Popup.saveConfirmation())
                 return;
 
+            //DDE
             VNZaklad newVNZ = new VNZaklad();
             newVNZ.setVnzName(name);
             newVNZ.setVnzShortName(abbreviation);
-
             try {
-                vnZakladService.createVNZaklad(newVNZ);
+//                vnZakladService.createVNZaklad(newVNZ);
+                (new VNZCRUD(vnZakladService)).addVNZ(name,abbreviation);
+                //DDE Переніс сюди - бо не бачу сенсу додавати заклад у перелік,
+                //якщо збереження закончиться із проблемою
+                //!!! Правда користувачу про це дізнатися не вдастся....
+                vnzObservableList.add(newVNZ);
+                vnzComboBox.setValue(newVNZ);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            vnzObservableList.add(newVNZ);
-            vnzComboBox.setValue(newVNZ);
 
             cancel();
         }
