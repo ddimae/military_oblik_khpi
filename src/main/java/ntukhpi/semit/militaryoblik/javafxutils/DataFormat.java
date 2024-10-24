@@ -20,6 +20,10 @@ import java.util.Locale;
  * @author Степанов Михайло
  */
 public class DataFormat {
+    public static String safeStr(Object obj) {
+        return obj == null ? "" : obj.toString();
+    }
+
     public static String getPIB(Prepod prepod) {
         return prepod.getFam() + " " + prepod.getImya() + " " + prepod.getOtch();
     }

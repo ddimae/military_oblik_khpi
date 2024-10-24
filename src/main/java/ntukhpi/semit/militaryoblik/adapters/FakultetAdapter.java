@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Fakultet;
+import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 
 @Getter
 @Setter
@@ -17,7 +18,7 @@ public class FakultetAdapter implements IBaseAdapter {
     private String code;
 
     public FakultetAdapter(Fakultet f) {
-        this.id = f.getFid().toString();
+        this.id = DataFormat.safeStr(f.getFid());
         this.name = f.getFname();
         this.abbr = f.getAbr();
         this.code = f.getOid();
