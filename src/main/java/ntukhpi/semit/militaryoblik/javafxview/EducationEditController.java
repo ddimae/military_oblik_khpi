@@ -10,16 +10,15 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
-import ntukhpi.semit.militaryoblik.entity.Education;
 import ntukhpi.semit.militaryoblik.entity.VNZaklad;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
-import ntukhpi.semit.militaryoblik.service.EducationServiceImpl;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
 import ntukhpi.semit.militaryoblik.service.VNZakladServiceImpl;
+import ntukhpi.semit.militaryoblik.service.entitycrud.EducationCRUD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -52,8 +51,10 @@ public class EducationEditController implements ControlledScene {
     private ObservableList<VNZaklad> vnzObservableList;
     private Prepod selectedPrepod;
 
+//    @Autowired
+//    EducationServiceImpl educationService;
     @Autowired
-    EducationServiceImpl educationService;
+    EducationCRUD educationCRUD;
     @Autowired
     PrepodServiceImpl prepodService;
     @Autowired
@@ -120,7 +121,7 @@ public class EducationEditController implements ControlledScene {
         VNZaklad vnz = vnzComboBox.getValue();
         //DDE
         if (vnz.getId()==null) {
-            vnz.setId(vnZakladService.findVNZakladByVnzName(vnz.getVnzName()));
+            vnz.setId(vnZakladService.findIdVNZakladByVnzName(vnz.getVnzName()));
         }
         String form = formComboBox.getValue();
         String level = levelComboBox.getValue();
@@ -133,23 +134,29 @@ public class EducationEditController implements ControlledScene {
         }
 
         try {
-            Education newEducation = new Education();
+//            Education newEducation = new Education();
+//
+//            newEducation.setPrepod(selectedPrepod);
+//            newEducation.setFormTraining(form);
+//            newEducation.setLevelTraining(level);
+//            newEducation.setVnz(vnz);
+//            newEducation.setYearVypusk(year);
+//            newEducation.setDiplomaNumber(diplomaNumber);
+//            newEducation.setDiplomaSeries(diplomaSeries);
+//            newEducation.setDiplomaSpeciality(specialty);
+//            newEducation.setDiplomaQualification(qualification);
 
-            newEducation.setPrepod(selectedPrepod);
-            newEducation.setFormTraining(form);
-            newEducation.setLevelTraining(level);
-            newEducation.setVnz(vnz);
-            newEducation.setYearVypusk(year);
-            newEducation.setDiplomaNumber(diplomaNumber);
-            newEducation.setDiplomaSeries(diplomaSeries);
-            newEducation.setDiplomaSpeciality(specialty);
-            newEducation.setDiplomaQualification(qualification);
+            if (selectedEducation == null) {
+                educationCRUD.addEducation(selectedPrepod.getId(), form, level,
+                        vnz.getVnzName(),year,diplomaNumber,diplomaSeries,specialty,qualification);
+            } else {
+                educationCRUD.updateEducation(selectedEducation.getId(),
+                        form, level,
+                        vnz.getVnzName(),year,diplomaNumber,diplomaSeries,specialty,qualification);
+            }
 
-            if (selectedEducation == null)
-                mainController.addEducation(newEducation);
-            else
-                mainController.updateEducation(selectedEducation, newEducation);
-
+            //DDE - refresh education list after add or edit or delete
+            mainController.afterEducationCRUD();
             closeEdit(null);
             Popup.successSave();
         } catch (Exception e) {
