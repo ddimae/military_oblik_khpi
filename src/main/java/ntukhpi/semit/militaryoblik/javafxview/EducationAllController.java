@@ -84,7 +84,8 @@ public class EducationAllController implements ControlledScene {
         currentStage = stage;
     }
 
-    private ObservableList<EducationAdapter> getEducationData() {
+    private ObservableList<EducationAdapter>
+    getEducationData() {
         return FXCollections.observableArrayList(educationService.getAllEducationByPrepod(selectedPrepod).
                 stream().map(EducationAdapter::new).
                 sorted(Comparator.comparing(EducationAdapter::getYear)).

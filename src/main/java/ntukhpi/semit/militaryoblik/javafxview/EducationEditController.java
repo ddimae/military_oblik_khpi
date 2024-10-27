@@ -116,7 +116,12 @@ public class EducationEditController implements ControlledScene {
 
         String specialty = specialtyTextField.getText();
         String qualification = qualificationTextField.getText();
+
         VNZaklad vnz = vnzComboBox.getValue();
+        //DDE
+        if (vnz.getId()==null) {
+            vnz.setId(vnZakladService.findVNZakladByVnzName(vnz.getVnzName()));
+        }
         String form = formComboBox.getValue();
         String level = levelComboBox.getValue();
 
