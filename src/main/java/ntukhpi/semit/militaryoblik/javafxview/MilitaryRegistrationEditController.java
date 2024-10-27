@@ -21,6 +21,7 @@ import ntukhpi.semit.militaryoblik.javafxutils.validators.MilitaryRegistrationVa
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValidator;
 import ntukhpi.semit.militaryoblik.repository.VZvanieRepository;
 import ntukhpi.semit.militaryoblik.service.*;
+import ntukhpi.semit.militaryoblik.service.entitycrud.MilitaryRegistrationCRUD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -61,6 +62,9 @@ public class MilitaryRegistrationEditController implements ControlledScene {
 
     @Autowired
     MilitaryRegistrationValidator militaryRegistrationValidator;
+
+    @Autowired
+    MilitaryRegistrationCRUD militaryRegistrationCRUD;
 
     @Autowired
     VSkladServiceImpl vSkladService;
@@ -243,28 +247,30 @@ public class MilitaryRegistrationEditController implements ControlledScene {
         if (voenkomatService.getIDVoenkomatByName(voenkomat) == null) {
             if (!Popup.saveConfirmation())
                 return;
-
-            Voenkomat newVoenkomat = new Voenkomat();
-            newVoenkomat.setVoenkomatName(voenkomat);
-            voenkomatService.createVoenkomat(newVoenkomat);
+// Винесено в VoenkomatCRUD
+//            Voenkomat newVoenkomat = new Voenkomat();
+//            newVoenkomat.setVoenkomatName(voenkomat);
+//            voenkomatService.createVoenkomat(newVoenkomat);
         }
 
         try {
-            MilitaryPerson militaryPerson = militaryPersonService.getMilitaryPersonByPrepod(selectedPrepod);
-
-            militaryPerson.setPrepod(selectedPrepod);
-            militaryPerson.setVos(vos);
-            militaryPerson.setVCategory(Integer.parseInt(category));
-            militaryPerson.setVGrupa(group);
-            militaryPerson.setVSklad(vSkladService.getVSkladByName(vSklad));
-            militaryPerson.setVZvanie(vZvanieService.getVzvanieByName(vZvanie));
-            militaryPerson.setVPrydatnist(prydatnist);
-            militaryPerson.setVoenkomat(voenkomatService.getVoenkomatByName(voenkomat));
-            militaryPerson.setFamilyState(familyState);
-            militaryPerson.setEducationLevel(educationLevel);
-
-            militaryPersonService.updateMilitaryPerson(militaryPerson.getId(), militaryPerson);
-
+//            MilitaryPerson militaryPerson = militaryPersonService.getMilitaryPersonByPrepod(selectedPrepod);
+//
+//            militaryPerson.setPrepod(selectedPrepod);
+//            militaryPerson.setVos(vos);
+//            militaryPerson.setVCategory(Integer.parseInt(category));
+//            militaryPerson.setVGrupa(group);
+//            militaryPerson.setVSklad(vSkladService.getVSkladByName(vSklad));
+//            militaryPerson.setVZvanie(vZvanieService.getVzvanieByName(vZvanie));
+//            militaryPerson.setVPrydatnist(prydatnist);
+//            militaryPerson.setVoenkomat(voenkomatService.getVoenkomatByName(voenkomat));
+//            militaryPerson.setFamilyState(familyState);
+//            militaryPerson.setEducationLevel(educationLevel);
+//
+//            militaryPersonService.updateMilitaryPerson(militaryPerson.getId(), militaryPerson);
+            militaryRegistrationCRUD.updateEducation(selectedPrepod.getId(),
+                    vos, category, group, vSklad, vZvanie,
+                    prydatnist, voenkomat, familyState, educationLevel);
             closeEdit(null);
             Popup.successSave();
         } catch (Exception e) {
