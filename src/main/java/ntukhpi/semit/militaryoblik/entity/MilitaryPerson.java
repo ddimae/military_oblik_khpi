@@ -28,7 +28,7 @@ public class MilitaryPerson {
 
     //ВОС - військово-облікова спеціальність, строго 6 цифр, може починатися з нуля,
     //тому треба зберігати в строковому вигляді.
-    @Column(length = 6,name="vos",nullable = false)
+    @Column(length = 6,name="vos")
     private String vos;
 
     //Категорія обліку - 1 або 2 (2 у більшості)
@@ -58,6 +58,7 @@ public class MilitaryPerson {
     //пропонується їх зберігати по мірі необхідності. Тобто сформувати базовий перелік,
     //а потім при необхідності вводити нове звання, його зберігати у базі даних
     // у окремій таблиці.
+    // !!! Вимушена міра - вилучив НОТ НУЛ для військомату та для ВОС
     @ManyToOne
     @JoinColumn(name = "v_zvanie_id")
     private VZvanie vZvanie;
@@ -65,7 +66,7 @@ public class MilitaryPerson {
     //Теріторіальний центр комплектування та соціальної підтримки, на обліку у якому стоїть військовозобовязаний
     //Вводиться зі списку, якщо немає - додається новий до окремої таблиці
     @ManyToOne
-    @JoinColumn(name = "voenkomat_id",nullable = false)
+    @JoinColumn(name = "voenkomat_id")
     private Voenkomat voenkomat;
 
     //Перебування на спеціальному обліку - по замовчуванню немає

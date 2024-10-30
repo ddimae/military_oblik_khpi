@@ -15,6 +15,7 @@ import ntukhpi.semit.militaryoblik.javafxutils.validators.CathedraValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValidator;
 import ntukhpi.semit.militaryoblik.service.FakultetServiceImpl;
 import ntukhpi.semit.militaryoblik.service.KafedraServiceImpl;
+import ntukhpi.semit.militaryoblik.service.entitycrud.СathedraCRUD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -57,6 +58,9 @@ public class CathedraAddController implements ControlledScene {
 
     @Autowired
     CathedraValidator cathedraValidator;
+
+    @Autowired
+    СathedraCRUD cathedraCRUD;
 
     @Autowired
     FakultetServiceImpl fakultetService;
@@ -128,7 +132,8 @@ public class CathedraAddController implements ControlledScene {
             kafedra.setOid(code);
             kafedra.setFakultet(instituteComboBox.getValue());
 
-            kafedraService.createKafedra(kafedra);
+//            kafedraService.createKafedra(kafedra);
+            cathedraCRUD.addCathedra(fullName,abbr,code,instituteComboBox.getValue().getFname());
             cathedraComboBox.getItems().add(kafedra);
 
             closeEdit(null);

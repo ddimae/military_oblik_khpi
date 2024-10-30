@@ -98,6 +98,14 @@ public class ReservistsAllController implements ControlledScene {
     private Stage mainStage;
     private Stage currentStage;
 
+//    private Prepod newPrepod;
+//    public void setNewPrepod(Prepod newPrepod){
+//        this.newPrepod = newPrepod;
+//    }
+//    public Prepod getNewPrepod(){
+//        return newPrepod;
+//    }
+
     @Autowired
     FakultetServiceImpl fakultetServiceImpl;
 
@@ -523,4 +531,12 @@ public class ReservistsAllController implements ControlledScene {
         fileChooser.setInitialFileName(resultFileName);
         return fileChooser;
     }
+
+    //TODO Треба кнопку, щоб оновити наповнення таблиці резервистів
+    @FXML
+    private void handleRefreshButton() {
+
+    }
+
+
 }

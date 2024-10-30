@@ -8,6 +8,8 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.PrepodAdapter;
+import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
+import ntukhpi.semit.militaryoblik.entity.MilitaryPerson;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.*;
 import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
@@ -17,6 +19,8 @@ import ntukhpi.semit.militaryoblik.javafxutils.validators.common.DateFieldValida
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.service.*;
+import ntukhpi.semit.militaryoblik.service.entitycrud.EmployeeCRUD;
+import ntukhpi.semit.militaryoblik.service.entitycrud.MilitaryRegistrationCRUD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -88,6 +92,14 @@ public class EmployeeAddController implements ControlledScene {
     @Autowired
     PrepodServiceImpl prepodService;
 
+    @Autowired
+    MilitaryPersonService militaryPersonService;
+
+    @Autowired
+    MilitaryRegistrationCRUD militaryRegistrationCRUD;
+
+    @Autowired
+    EmployeeCRUD employeeCRUD;
     private Fakultet emptyInstitute;
     private Kafedra emptyCathedra;
     private Collator ukrCollator;
@@ -142,9 +154,9 @@ public class EmployeeAddController implements ControlledScene {
         statusComboBox.setItems(FXCollections.observableArrayList(zvanieService.getAllZvanie().stream().sorted((a, b) -> ukrCollator.compare(a.toString(), b.toString())).toList()));
 
         degreeComboBox.getItems().remove(stepenService.getStepenById(0L));
-        degreeComboBox.getItems().add(0,stepenService.getStepenById(0L));
+        degreeComboBox.getItems().add(0, stepenService.getStepenById(0L));
         statusComboBox.getItems().remove(zvanieService.getZvanieById(0L));
-        statusComboBox.getItems().add(0,zvanieService.getZvanieById(0L));
+        statusComboBox.getItems().add(0, zvanieService.getZvanieById(0L));
 
         handleInstituteChange(null);
         handleTypeChange(null);
@@ -184,54 +196,80 @@ public class EmployeeAddController implements ControlledScene {
      */
     @FXML
     void saveEmployee(ActionEvent event) {
-        String institute = instituteComboBox.getValue() != null ? DataFormat.getPureValue(instituteComboBox.getValue().toString()) : null;
-        String cathedra = cathedraComboBox.getValue() != null ? DataFormat.getPureValue(cathedraComboBox.getValue().toString()) : null;
+        //Скинути "нового" співробітника
+        //mainController.setNewPrepod(null);
+        if (positionComboBox.getValue() == null)
+            positionComboBox.getSelectionModel().select(dolghnostService.getDolghnostByCategory(0));
+        if (degreeComboBox.getValue() == null)
+            degreeComboBox.getSelectionModel().select(stepenService.getStepenById(0L));
+        if (statusComboBox.getValue() == null)
+            statusComboBox.getSelectionModel().select(zvanieService.getZvanieById(0L));
+//        String institute = instituteComboBox.getValue() != null ? DataFormat.getPureValue(instituteComboBox.getValue().toString()) : null;
+        String institute = instituteComboBox.getValue() != null ? DataFormat.getPureValue(instituteComboBox.getValue().getFname()) : null;
+//        String cathedra = cathedraComboBox.getValue() != null ? DataFormat.getPureValue(cathedraComboBox.getValue().toString()) : null;
+        String cathedra = cathedraComboBox.getValue() != null ? DataFormat.getPureValue(cathedraComboBox.getValue().getKname()) : null;
         String surname = surnameTextField.getText().trim();
         String name = nameTextField.getText().trim();
         String midname = midnameTextField.getText().trim();
         String birthDate = birthDatePicker.getEditor().getText();
-        String position = positionComboBox.getValue() != null ? positionComboBox.getValue().toString() : null;
-        String degree = degreeComboBox.getValue() != null ? degreeComboBox.getValue().toString() : null;
-        String status = statusComboBox.getValue() != null ? statusComboBox.getValue().toString() : null;
+//        String position = positionComboBox.getValue() != null ? positionComboBox.getValue().toString() : null;
+        String position = positionComboBox.getValue() != null ? positionComboBox.getValue().getDolghnName() : null;
+//        String degree = degreeComboBox.getValue() != null ? degreeComboBox.getValue().toString() : null;
+        String degree = degreeComboBox.getValue() != null ? degreeComboBox.getValue().getStepenName() : null;
+//        String status = statusComboBox.getValue() != null ? statusComboBox.getValue().toString() : null;
+        String status = statusComboBox.getValue() != null ? statusComboBox.getValue().getZvanieName() : null;
 
         try {
             employeeValidator.validate(new PrepodAdapter(institute, surname, name,
-                                                        midname, birthDate, cathedra,
-                                                        position, status, degree));
+                    midname, birthDate, cathedra,
+                    position, status, degree));
         } catch (Exception e) {
             Popup.wrongInputAlert(e.getMessage());
             return;
         }
 
+        //TODO - перевірка на введення: ПІБ, кафедра, посада - інформація потрібна у Додатку05
+
         if (!Popup.saveConfirmation())
             return;
 
         try {
-            Prepod prepod = new Prepod();
 
-            prepod.setFam(surname);
-            prepod.setImya(name);
-            prepod.setOtch(midname);
-            if (!birthDate.isBlank())
-                prepod.setDr(LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("dd.MM.yyyy")));
-            prepod.setKafedra(cathedraComboBox.getValue());
 
-            if (position == null)
-                positionComboBox.getSelectionModel().select(dolghnostService.getDolghnostByCategory(0));
-            if (degree == null)
-                degreeComboBox.getSelectionModel().select(stepenService.getStepenById(0L));
-            if (status == null)
-                statusComboBox.getSelectionModel().select(zvanieService.getZvanieById(0L));
+            //DDE --> depricated
+//            Prepod prepod = new Prepod();
+//
+//            prepod.setFam(surname);
+//            prepod.setImya(name);
+//            prepod.setOtch(midname);
+//
+//            if (!birthDate.isBlank())
+//                prepod.setDr(LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+//
+//            prepod.setKafedra(cathedraComboBox.getValue());
+//
+//            if (position == null)
+//                positionComboBox.getSelectionModel().select(dolghnostService.getDolghnostByCategory(0));
+//            if (degree == null)
+//                degreeComboBox.getSelectionModel().select(stepenService.getStepenById(0L));
+//            if (status == null)
+//                statusComboBox.getSelectionModel().select(zvanieService.getZvanieById(0L));
+//            prepod.setDolghnost(positionComboBox.getValue());
+//            prepod.setStepen(degreeComboBox.getValue());
+//            prepod.setZvanie(statusComboBox.getValue());
+//
+//            prepodService.savePrepod(prepod);
 
-            prepod.setDolghnost(positionComboBox.getValue());
-            prepod.setStepen(degreeComboBox.getValue());
-            prepod.setZvanie(statusComboBox.getValue());
+            Prepod newEmployeeInDB = employeeCRUD.addEmployee(surname, name, midname, cathedra,
+                    birthDate, position, degree, status);
 
-            prepodService.savePrepod(prepod);
+//            mainController.setNewPrepod(newEmployeeInDB);
+            militaryRegistrationCRUD.createBaseMilitaryPerson(newEmployeeInDB);
 
-            militaryRegistrationAfterSave(new PrepodAdapter(prepod));
-//            closeEdit(null);
-//            Popup.successSave();
+            militaryRegistrationAfterSave(new PrepodAdapter(newEmployeeInDB));  //+++
+
+//            closeEdit(null);     //+++
+//            Popup.successSave(); //+++
         } catch (Exception e) {
             e.printStackTrace();
             Popup.internalAlert(e.getMessage());
@@ -277,10 +315,10 @@ public class EmployeeAddController implements ControlledScene {
         cathedraComboBox.getItems().clear();
         cathedraComboBox.getItems().add(emptyCathedra);
         cathedraComboBox.getItems().addAll(FXCollections.observableArrayList(kafedraService.getAllKafedra().
-                                                                                            stream().
-                                                                                            filter(k -> instituteComboBox.getValue() == null || DataFormat.getPureValue(instituteComboBox.getValue().toString()) == null || k.getFakultet().toString().equals(instituteComboBox.getValue().toString())).
-                                                                                            sorted((a, b) -> ukrCollator.compare(a.toString(), b.toString())).
-                                                                                            toList()));
+                stream().
+                filter(k -> instituteComboBox.getValue() == null || DataFormat.getPureValue(instituteComboBox.getValue().toString()) == null || k.getFakultet().toString().equals(instituteComboBox.getValue().toString())).
+                sorted((a, b) -> ukrCollator.compare(a.toString(), b.toString())).
+                toList()));
         if (isFirst)
             cathedraComboBox.getSelectionModel().selectFirst();
 

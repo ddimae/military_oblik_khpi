@@ -77,6 +77,9 @@ public class Kafedra {
 
     @Override
     public String toString() {
+       return kname;
+    }
+    public String showKafInfo() {
         final StringBuilder sb = new StringBuilder("");
         sb.append(kname).append(" (").append(kabr).append(',').append(oid);
         if (fakultet != null) {
@@ -85,7 +88,6 @@ public class Kafedra {
         sb.append(")");
         return sb.toString();
     }
-
     public String showKafForPrepod() {
         final StringBuilder sb = new StringBuilder("");
         sb.append(" (").append(kabr);

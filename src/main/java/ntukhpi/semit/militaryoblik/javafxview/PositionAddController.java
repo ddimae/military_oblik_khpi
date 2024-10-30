@@ -14,7 +14,9 @@ import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.PositionValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValidator;
+import ntukhpi.semit.militaryoblik.service.DolghnostService;
 import ntukhpi.semit.militaryoblik.service.DolghnostServiceImpl;
+import ntukhpi.semit.militaryoblik.service.entitycrud.PositionCRUD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,37 +31,33 @@ import java.util.regex.Pattern;
 @Component
 public class PositionAddController implements ControlledScene {
 
+    @Autowired
+    PositionValidator positionValidator;
+    //    @Autowired
+//    DolghnostService dolghnostService;
+    @Autowired
+    PositionCRUD positionCRUD;
     @FXML
     private ToggleGroup employeeType;
-
     @FXML
     private TextField fullNameTextField;
-
     @FXML
     private RadioButton itcRadioButton;
-
     @FXML
     private RadioButton nppRadioButton;
-
     @FXML
     private TextField shortNameTaxtField;
-
     private Stage mainStage;
     private Stage currentStage;
     private ComboBox<Dolghnost> positionComboBox;
 
-    @Autowired
-    PositionValidator positionValidator;
-
-    @Autowired
-    DolghnostServiceImpl dolghnostService;
-
     @Override
-    public void setMainController(Object controller) {}
+    public void setMainController(Object controller) {
+    }
 
     @Override
     public void setData(Object data) {
-        positionComboBox = (ComboBox<Dolghnost>)data;
+        positionComboBox = (ComboBox<Dolghnost>) data;
     }
 
     @Override
@@ -89,17 +87,21 @@ public class PositionAddController implements ControlledScene {
             return;
         }
 
+
         try {
             Dolghnost dolghnost = new Dolghnost();
 
             dolghnost.setDolghnName(fullName);
             dolghnost.setDolghnShortName(shortName);
             dolghnost.setCategoryEmployees(category);
-
-            if (positionComboBox.getItems().get(positionComboBox.getItems().size() - 1).getCategoryEmployees() == category)
+//            DDE  - depricated
+//            dolghnostService.createDolghnost(dolghnost);
+            positionCRUD.addCathedra(fullName,shortName,String.valueOf(category));
+            //Якщо додавання успішне і зараз на формі із даними нового співробітника встановлена саме ця посада,
+            //то додати її до комбобоксу
+            if (positionComboBox.getItems().get(positionComboBox.getItems().size() - 1).getCategoryEmployees() != category) {
                 positionComboBox.getItems().add(dolghnost);
-            dolghnostService.createDolghnost(dolghnost);
-
+            }
             closeEdit(null);
             Popup.successSave();
         } catch (Exception e) {
