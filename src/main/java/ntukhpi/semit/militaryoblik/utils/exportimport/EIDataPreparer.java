@@ -1,7 +1,7 @@
 package ntukhpi.semit.militaryoblik.utils.exportimport;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class EIDataPreparer {
     public static String[] stringsListToStringArray(List<String[]> list, int maxStringGroupsCapacity, int strArrLen) {
@@ -15,12 +15,44 @@ public class EIDataPreparer {
             }
             count++;
         }
+//        arr = addEmptyStringsToList(arr, (maxStringGroupsCapacity - count) * strArrLen);
         for (; count < maxStringGroupsCapacity; count++) {
            for (int i = 0; i < strArrLen; i++) {
-               arr.add("empty");
+               arr.add("empty");    // TODO: Set ""
            }
         }
 
         return arr.toArray(new String[0]);
+    }
+
+    public static void addEmptyStringsToList(List<String> list, int count) {
+        list.addAll(Collections.nCopies(count, ""));
+    }
+
+    public static String[] stringsDocumentsListToStringArray(List<String[]> documents) {
+        List<String> strList = new ArrayList<>();
+        int count = 0;
+
+        documents = documents.stream().sorted((o1, o2) -> EISettings.documentsOrder.get(o1[0]) - EISettings.documentsOrder.get(o2[0])).toList();
+
+        for (int i = 0; i < 3; i++) {
+            if (documents.size() <= count || EISettings.documentsOrder.get(documents.get(count)[0]) != i) {
+                int linesCount = switch (i) {
+                    case 0, 1 -> 4;
+                    case 2 -> 3;
+                    default -> 0;
+                };
+
+                addEmptyStringsToList(strList, linesCount);
+            } else {
+                String[] temp2 = documents.get(count);
+                List<String> temp = Arrays.asList(temp2);
+                strList.addAll(temp);
+                count++;
+            }
+        }
+        strList.remove("Закордонний паспорт");
+
+        return strList.toArray(new String[0]);
     }
 }

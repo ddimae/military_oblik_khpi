@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ntukhpi.semit.militaryoblik.entity.Education;
-import ntukhpi.semit.militaryoblik.entity.EducationPostgraduate;
-import ntukhpi.semit.militaryoblik.entity.MilitaryPerson;
+import ntukhpi.semit.militaryoblik.entity.*;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 
@@ -28,6 +26,8 @@ public class ExportAdapter implements IBaseAdapter {
     private CurrentDoljnostInfoAdapter currentDoljnost;
     private Set<EducationAdapter> educations = new HashSet<>();
     private Set<EducationPostgraduateAdapter> posteducations = new HashSet<>();
+    private Set<FamilyAdapter> familyMembers = new HashSet<>();
+    private Set<DocumentAdapter> documents = new HashSet<>();
 
     public ExportAdapter(Prepod prepod, MilitaryPerson militaryPerson) {
         this.prepod = new PrepodAdapter(prepod);
@@ -42,6 +42,12 @@ public class ExportAdapter implements IBaseAdapter {
         }
         for (EducationPostgraduate posteducation : prepod.getEducationPostList()) {
             this.posteducations.add(new EducationPostgraduateAdapter(posteducation));
+        }
+        for (FamilyMember familyMember : prepod.getFamily()) {
+            this.familyMembers.add(new FamilyAdapter(familyMember));
+        }
+        for (Document document : prepod.getDocuments()) {
+            this.documents.add(new DocumentAdapter(document));
         }
     }
 
@@ -131,5 +137,35 @@ public class ExportAdapter implements IBaseAdapter {
         }
 
         return posteducationsList;
+    }
+
+    public List<String[]> getFamilyInfoAsStringArray() {
+        List<String[]> familyList = new ArrayList<>();
+
+        for (FamilyAdapter familyMember : familyMembers) {
+            String level = familyMember.getVidRidstva();
+            String pib = familyMember.getFullPib();
+            String birth = familyMember.getRikNarodz();
+
+            familyList.add(new String[]{level, pib, birth});
+        }
+
+        return familyList;
+    }
+
+    public List<String[]> getDocumentsAsStringArray() {
+        List<String[]> documentsList = new ArrayList<>();
+
+        for (DocumentAdapter document : documents) {
+            String passportType = document.getType();
+            String series = document.getNumber();
+            String whoGives = document.getWhoGives();
+            String date = document.getDate();
+
+            documentsList.add(new String[]{passportType, series, whoGives, date});
+        }
+
+        return documentsList;
+
     }
 }

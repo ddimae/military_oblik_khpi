@@ -82,15 +82,21 @@ public class DataWriteService {
             String[] contactInfo = exportAdapter.getContactInfoAsStringArray();
             String[] educationsInfo = EIDataPreparer.stringsListToStringArray(exportAdapter.getEducationsInfoAsStringArray(),
                                                                             EISettings.MAX_EDUCATION_NUMBER,
-                                                                            EISettings.EDUCATION_ROW_COUNT);
+                                                                            EISettings.EDUCATION_COL_COUNT);
             String[] posteducationsInfo = EIDataPreparer.stringsListToStringArray(exportAdapter.getPosteducationsInfoAsStringArray(),
                                                                                 EISettings.MAX_POSTEDUCATION_NUMBER,
-                                                                                EISettings.POSTEDUCATION_ROW_COUNT);
+                                                                                EISettings.POSTEDUCATION_COL_COUNT);
+            String[] familyMembersInfo = EIDataPreparer.stringsListToStringArray(exportAdapter.getFamilyInfoAsStringArray(),
+                                                                                EISettings.MAX_FAMILY_NUMBER,
+                                                                                EISettings.FAMILY_COL_COUNT);
+            String[] documentsInfo = EIDataPreparer.stringsDocumentsListToStringArray(exportAdapter.getDocumentsAsStringArray());
 
             workingDatas.add(generalInfo);
             workingDatas.add(contactInfo);
             workingDatas.add(educationsInfo);
             workingDatas.add(posteducationsInfo);
+            workingDatas.add(familyMembersInfo);
+            workingDatas.add(documentsInfo);
 
             return eiExcelWriter.writeExcel(workingDatas, file);
         } catch (Exception e) {

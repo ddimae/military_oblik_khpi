@@ -1,5 +1,9 @@
 package ntukhpi.semit.militaryoblik.utils.exportimport;
 
+import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.Map;
+
 public final class EISettings {
     public final static String TEMPLATE_PATH = "docs/templates/update_form_p2.xlsx";
     public final static String TEMPLATE_PASSWORD = "oblik";
@@ -10,8 +14,19 @@ public final class EISettings {
     public final static int GLOBAL_SHEET_INDEX = 6;
 
     public final static int MAX_EDUCATION_NUMBER = 4;
-    public final static int EDUCATION_ROW_COUNT = 7;
+    public final static int EDUCATION_COL_COUNT = 7;
 
     public final static int MAX_POSTEDUCATION_NUMBER = 6;
-    public final static int POSTEDUCATION_ROW_COUNT = 5;
+    public final static int POSTEDUCATION_COL_COUNT = 5;
+
+    public final static int MAX_FAMILY_NUMBER = 6;
+    public final static int FAMILY_COL_COUNT = 3;
+
+    public final static Map<String, Integer> documentsOrder = Map.ofEntries(
+            new AbstractMap.SimpleEntry<String, Integer>("Паперовий паспорт", 0),
+            new AbstractMap.SimpleEntry<String, Integer>("ID картка", 0),
+            new AbstractMap.SimpleEntry<String, Integer>("Військовий квиток", 1),
+            new AbstractMap.SimpleEntry<String, Integer>("Посвідчення особи офіцера", 1),
+            new AbstractMap.SimpleEntry<String, Integer>("Закордонний паспорт", 2)
+    );
 }
