@@ -1,7 +1,6 @@
 package ntukhpi.semit.militaryoblik.utils.exportimport;
 
 import java.util.AbstractMap;
-import java.util.HashMap;
 import java.util.Map;
 
 public final class EISettings {
@@ -15,12 +14,27 @@ public final class EISettings {
 
     public final static int MAX_EDUCATION_NUMBER = 4;
     public final static int EDUCATION_COL_COUNT = 7;
+    public final static int EDUCATION_SHEET_INDEX = 3;
+    public final static int EDUCATION_GLOBAL_TABLE_START_COLUMN = 6;
+    public final static int EDUCATION_GLOBAL_TABLE_START_ROW = 1;
+    public final static int EDUCATION_DEST_TABLE_START_COLUMN = 0;
+    public final static int EDUCATION_DEST_TABLE_START_ROW = 4;
 
     public final static int MAX_POSTEDUCATION_NUMBER = 6;
     public final static int POSTEDUCATION_COL_COUNT = 5;
+    public final static int POSTEDUCATION_SHEET_INDEX = 3;
+    public final static int POSTEDUCATION_GLOBAL_TABLE_START_COLUMN = 6;
+    public final static int POSTEDUCATION_GLOBAL_TABLE_START_ROW = 7;
+    public final static int POSTEDUCATION_DEST_TABLE_START_COLUMN = 0;
+    public final static int POSTEDUCATION_DEST_TABLE_START_ROW = 12;
 
     public final static int MAX_FAMILY_NUMBER = 6;
     public final static int FAMILY_COL_COUNT = 3;
+    public final static int FAMILY_SHEET_INDEX = 4;
+    public final static int FAMILY_GLOBAL_TABLE_START_COLUMN = 6;
+    public final static int FAMILY_GLOBAL_TABLE_START_ROW = 15;
+    public final static int FAMILY_DEST_TABLE_START_COLUMN = 0;
+    public final static int FAMILY_DEST_TABLE_START_ROW = 4;
 
     public final static Map<String, Integer> documentsOrder = Map.ofEntries(
             new AbstractMap.SimpleEntry<String, Integer>("Паперовий паспорт", 0),

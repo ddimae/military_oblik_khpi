@@ -1,7 +1,6 @@
 package ntukhpi.semit.militaryoblik.utils.exportimport;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 public class EIDataPreparer {
     public static String[] stringsListToStringArray(List<String[]> list, int maxStringGroupsCapacity, int strArrLen) {
