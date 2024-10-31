@@ -9,18 +9,11 @@ public class EIDataPreparer {
         int count = 0;
 
 
-        for (String[] string : list) {
-            for (String s : string) {
-                arr.add(s);
-            }
+        for (String[] strings : list) {
+            arr.addAll(Arrays.asList(strings));
             count++;
         }
-//        arr = addEmptyStringsToList(arr, (maxStringGroupsCapacity - count) * strArrLen);
-        for (; count < maxStringGroupsCapacity; count++) {
-           for (int i = 0; i < strArrLen; i++) {
-               arr.add("empty");    // TODO: Set ""
-           }
-        }
+        addEmptyStringsToList(arr, (maxStringGroupsCapacity - count) * strArrLen);
 
         return arr.toArray(new String[0]);
     }
