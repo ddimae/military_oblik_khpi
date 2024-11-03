@@ -83,7 +83,7 @@ public final class AllStageSettings {
 
     public static SettingsStage militaryOblikSettings =
             new SettingsStage(MILITARY_OBLIK_LIST_JAVAFX, MILITARY_OBLIK_LIST_JAVAFX_TITLE,
-                    1500, 720, false, false);
+                    1600, 800, false, false);
 
     //============================
 

@@ -451,8 +451,7 @@ public class ReservistsAllController implements ControlledScene {
             FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Файли Excel з формою П-2 (*.xlsx)", "*.xlsx");
             fileChooser.getExtensionFilters().add(extFilter);
 
-//            resultSave = dataWriteService.writeDataToWord(reservist.getMilitaryPersonId(), fileChooser.showSaveDialog(new Stage()));
-            resultSave = dataWriteService.writeExportDataToExcelBase(reservist, fileChooser.showSaveDialog(new Stage()));
+            resultSave = dataWriteService.writeDataToWord(reservist.getMilitaryPersonId(), fileChooser.showSaveDialog(new Stage()));
 
             if (resultSave.startsWith("Дані успішно збережені")) {  // FIXME: Piece of shit
                 confirmationDialog = new Alert(Alert.AlertType.INFORMATION);
@@ -469,8 +468,39 @@ public class ReservistsAllController implements ControlledScene {
         }
         confirmationDialog.setHeaderText(null);
         confirmationDialog.showAndWait();
-
     }
+
+    @FXML
+    private void handlePrintExportButton() {
+        ReservistAdapter reservist = reservistsTableView.getSelectionModel().getSelectedItem();
+        Alert confirmationDialog = null;
+        if (reservist != null) {
+            FileChooser fileChooser = getFilePathFp2(reservist.getFam());
+            String resultSave;
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Файли Excel з формою для оновлення(*.xlsx)", "*.xlsx");
+            fileChooser.getExtensionFilters().add(extFilter);
+
+            resultSave = dataWriteService.writeExportDataToExcelBase(reservist, fileChooser.showSaveDialog(new Stage()));
+
+            if (resultSave.startsWith("Дані успішно збережені")) {  // FIXME: Piece of shit
+                confirmationDialog = new Alert(Alert.AlertType.INFORMATION);
+                confirmationDialog.setTitle("Формування форми оновлення");
+            } else {
+                confirmationDialog = new Alert(Alert.AlertType.ERROR);
+                confirmationDialog.setTitle("Помилка формування форми оновлення");
+            }
+            confirmationDialog.setContentText(resultSave);
+        } else {
+            confirmationDialog = new Alert(Alert.AlertType.WARNING);
+            confirmationDialog.setTitle("Помилка");
+            confirmationDialog.setContentText("Будь ласка, виберіть резервіста для формування форми оновлення");
+        }
+        confirmationDialog.setHeaderText(null);
+        confirmationDialog.showAndWait();
+    }
+
+    @FXML
+    private void handleImportButton() {}
 
     private FileChooser getFilePathD5() {
         FileChooser fileChooser = new FileChooser();
