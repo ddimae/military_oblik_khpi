@@ -10,46 +10,16 @@ import java.util.List;
 
 @Component
 public class EIExcelWriter {
-    public String writeExcelPersonData(List<String[]> personData, File file) {
+    public String writeExcel(List<String[]> personData, List<String[]> dropdownData, File file) {
         String resultSave = null;
         String resultsPath = file.getPath();
         String templatePath = EISettings.TEMPLATE_PATH;
 
         try (FileInputStream fis = new FileInputStream(templatePath);
             Workbook workbook = new XSSFWorkbook(fis)) {
-            Sheet sheet = workbook.getSheetAt(EISettings.GLOBAL_SHEET_INDEX);
-            int rowCount = EISettings.GLOBAL_START_ROW;
 
-            for (int i = 0; i < personData.size(); i++) {
-                for (String tableData : personData.get(i)) {
-                    Row row = sheet.getRow(rowCount);
-                    Cell cell = row.createCell(EISettings.GLOBAL_EXPORT_COLUMN);
-
-                    cell.setCellValue(tableData);
-                    rowCount++;
-                }
-            }
-
-            copyExcelTables(workbook,
-                    EISettings.GLOBAL_SHEET_INDEX,
-                    new Point(EISettings.EDUCATION_GLOBAL_TABLE_START_COLUMN, EISettings.EDUCATION_GLOBAL_TABLE_START_ROW),
-                    new Dimension(EISettings.EDUCATION_COL_COUNT, EISettings.MAX_EDUCATION_NUMBER),
-                    EISettings.EDUCATION_SHEET_INDEX,
-                    new Point(EISettings.EDUCATION_DEST_TABLE_START_COLUMN, EISettings.EDUCATION_DEST_TABLE_START_ROW));
-
-            copyExcelTables(workbook,
-                    EISettings.GLOBAL_SHEET_INDEX,
-                    new Point(EISettings.POSTEDUCATION_GLOBAL_TABLE_START_COLUMN, EISettings.POSTEDUCATION_GLOBAL_TABLE_START_ROW),
-                    new Dimension(EISettings.POSTEDUCATION_COL_COUNT, EISettings.MAX_POSTEDUCATION_NUMBER),
-                    EISettings.POSTEDUCATION_SHEET_INDEX,
-                    new Point(EISettings.POSTEDUCATION_DEST_TABLE_START_COLUMN, EISettings.POSTEDUCATION_DEST_TABLE_START_ROW));
-
-            copyExcelTables(workbook,
-                    EISettings.GLOBAL_SHEET_INDEX,
-                    new Point(EISettings.FAMILY_GLOBAL_TABLE_START_COLUMN, EISettings.FAMILY_GLOBAL_TABLE_START_ROW),
-                    new Dimension(EISettings.FAMILY_COL_COUNT, EISettings.MAX_FAMILY_NUMBER),
-                    EISettings.FAMILY_SHEET_INDEX,
-                    new Point(EISettings.FAMILY_DEST_TABLE_START_COLUMN, EISettings.FAMILY_DEST_TABLE_START_ROW));
+            writeExcelPersonData(personData, workbook);
+            writeExcelDropdownData(dropdownData, workbook);
 
             // Зберігаємо змінений документ у файл
             try (FileOutputStream fos = new FileOutputStream(resultsPath)) {
@@ -65,10 +35,6 @@ public class EIExcelWriter {
             System.err.println(resultSave);
         }
         return resultSave;
-    }
-
-    public String writeExcelDropdownListData(List<String[]> dropdownListData, File file) {
-        return null;
     }
 
     private void copyExcelTables(Workbook workbook, int sourceSheetIndex, Point sourceTopLeftCoords, Dimension sourceWidthHeight,
@@ -89,6 +55,57 @@ public class EIExcelWriter {
                 destCell.setCellValue(sourceCellValue.getStringValue());
 //                System.out.println(evaluator.evaluate(sourceCell).getStringValue() + " | " + destCell.getStringCellValue());
             }
+        }
+    }
+
+    private void writeExcelPersonData(List<String[]> personData, Workbook workbook) {
+        Sheet sheet = workbook.getSheetAt(EISettings.GLOBAL_SHEET_INDEX);
+        int rowCount = EISettings.GLOBAL_EXPORT_ROW;
+
+        for (int i = 0; i < personData.size(); i++) {
+            for (String tableData : personData.get(i)) {
+                Row row = sheet.getRow(rowCount);
+                Cell cell = row.createCell(EISettings.GLOBAL_EXPORT_COLUMN);
+
+                cell.setCellValue(tableData);
+                rowCount++;
+            }
+        }
+
+        copyExcelTables(workbook,
+                EISettings.GLOBAL_SHEET_INDEX,
+                new Point(EISettings.EDUCATION_GLOBAL_TABLE_START_COLUMN, EISettings.EDUCATION_GLOBAL_TABLE_START_ROW),
+                new Dimension(EISettings.EDUCATION_COL_COUNT, EISettings.MAX_EDUCATION_NUMBER),
+                EISettings.EDUCATION_SHEET_INDEX,
+                new Point(EISettings.EDUCATION_DEST_TABLE_START_COLUMN, EISettings.EDUCATION_DEST_TABLE_START_ROW));
+
+        copyExcelTables(workbook,
+                EISettings.GLOBAL_SHEET_INDEX,
+                new Point(EISettings.POSTEDUCATION_GLOBAL_TABLE_START_COLUMN, EISettings.POSTEDUCATION_GLOBAL_TABLE_START_ROW),
+                new Dimension(EISettings.POSTEDUCATION_COL_COUNT, EISettings.MAX_POSTEDUCATION_NUMBER),
+                EISettings.POSTEDUCATION_SHEET_INDEX,
+                new Point(EISettings.POSTEDUCATION_DEST_TABLE_START_COLUMN, EISettings.POSTEDUCATION_DEST_TABLE_START_ROW));
+
+        copyExcelTables(workbook,
+                EISettings.GLOBAL_SHEET_INDEX,
+                new Point(EISettings.FAMILY_GLOBAL_TABLE_START_COLUMN, EISettings.FAMILY_GLOBAL_TABLE_START_ROW),
+                new Dimension(EISettings.FAMILY_COL_COUNT, EISettings.MAX_FAMILY_NUMBER),
+                EISettings.FAMILY_SHEET_INDEX,
+                new Point(EISettings.FAMILY_DEST_TABLE_START_COLUMN, EISettings.FAMILY_DEST_TABLE_START_ROW));
+    }
+
+    private void writeExcelDropdownData(List<String[]> dropdownListData, Workbook workbook) {
+        Sheet sheet = workbook.getSheetAt(EISettings.GLOBAL_SHEET_INDEX);
+        int rowCount = 0;
+
+        for (String[] dropdownData : dropdownListData) {
+            Row row = sheet.getRow(EISettings.GLOBAL_DROPDOWN_ROW + rowCount);
+
+            for (int i = 0; i < dropdownData.length; i++) {
+                row.getCell(EISettings.GLOBAL_DROPDOWN_COLUMN + i).setCellValue(dropdownData[i]);
+            }
+
+            rowCount++;
         }
     }
 }

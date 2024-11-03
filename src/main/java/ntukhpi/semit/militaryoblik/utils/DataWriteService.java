@@ -98,7 +98,7 @@ public class DataWriteService {
             workingDatas.add(familyMembersInfo);
             workingDatas.add(documentsInfo);
 
-            return eiExcelWriter.writeExcelPersonData(workingDatas, file);
+            return eiExcelWriter.writeExcel(workingDatas, eiDataCollectService.getDropdownAdapter().toList(), file);
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return "error";

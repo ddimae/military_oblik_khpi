@@ -7,8 +7,8 @@ public final class EISettings {
     public final static String TEMPLATE_PATH = "docs/templates/update_form_p2.xlsx";
     public final static String TEMPLATE_PASSWORD = "oblik";
 
-    public final static int GLOBAL_START_ROW = 1;
     public final static int GLOBAL_IMPORT_COLUMN = 2;
+    public final static int GLOBAL_EXPORT_ROW = 1;
     public final static int GLOBAL_EXPORT_COLUMN = 3;
     public final static int GLOBAL_SHEET_INDEX = 6;
 
@@ -35,6 +35,9 @@ public final class EISettings {
     public final static int FAMILY_GLOBAL_TABLE_START_ROW = 15;
     public final static int FAMILY_DEST_TABLE_START_COLUMN = 0;
     public final static int FAMILY_DEST_TABLE_START_ROW = 4;
+
+    public final static int GLOBAL_DROPDOWN_ROW = 16;
+    public final static int GLOBAL_DROPDOWN_COLUMN = 16;
 
     public final static Map<String, Integer> documentsOrder = Map.ofEntries(
             new AbstractMap.SimpleEntry<String, Integer>("Паперовий паспорт", 0),
