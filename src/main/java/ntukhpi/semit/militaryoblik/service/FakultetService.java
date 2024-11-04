@@ -20,6 +20,8 @@ public interface FakultetService {
     //For add new Reservist
     Long findIDFakultetByFname(String fakName);
 
+    Fakultet findFakultetByFname(String fakName);
+
     String findAbrFakultetByFname(String fakName);
 
     Long findIDFakultetByAbr(String fakAbr);

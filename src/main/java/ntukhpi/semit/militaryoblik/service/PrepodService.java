@@ -19,4 +19,8 @@ public interface PrepodService {
     Prepod getPrepodByExapmleFIO(Prepod prepod);
 
     void savePrepodToDB(List<Prepod> list);
+
+    Prepod createPrepod(Prepod prepod);
+
+    Prepod getEmployeeByFullKeySet(String surname, String name, String midname, String kafedraFullName);
 }

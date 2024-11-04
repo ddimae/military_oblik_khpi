@@ -90,8 +90,8 @@ public class PrepodServiceImpl implements PrepodService {
 
     @Override
     public Prepod getPrepodByExapmle(Prepod prepod) {
-        return prepodRepository.getPrepodByFamAndImyaAndOtchAndKafedra_Kid(prepod.getFam(),
-                prepod.getImya(), prepod.getOtch(), prepod.getKafedra().getKid());
+        return prepodRepository.getPrepodByFamAndImyaAndOtchAndKafedra_Kname(prepod.getFam(),
+                prepod.getImya(), prepod.getOtch(), prepod.getKafedra().getKname());
     }
 
     @Override
@@ -131,5 +131,15 @@ public class PrepodServiceImpl implements PrepodService {
 
             }
         });
+    }
+
+    @Override
+    public Prepod createPrepod(Prepod prepod) {
+        return prepodRepository.save(prepod);
+    }
+
+    @Override
+    public Prepod getEmployeeByFullKeySet(String surname, String name, String midname, String kafedraFullName) {
+        return prepodRepository.getPrepodByFamAndImyaAndOtchAndKafedra_Kname(surname,name,midname,kafedraFullName);
     }
 }

@@ -22,6 +22,7 @@ import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValida
 import ntukhpi.semit.militaryoblik.service.DocumentServiceImpl;
 import ntukhpi.semit.militaryoblik.service.MilitaryPersonServiceImpl;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
+import ntukhpi.semit.militaryoblik.service.entitycrud.DocumentCRUD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -70,6 +71,9 @@ public class DocumentsEditController implements ControlledScene {
 
     @Autowired
     MilitaryPersonServiceImpl militaryPersonService;
+
+    @Autowired
+    DocumentCRUD documentCRUD;
 
     @Override
     public void setMainController(Object mainController) {
@@ -145,7 +149,7 @@ public class DocumentsEditController implements ControlledScene {
                 "Паперовий паспорт",
                 "ID картка",
                 "Закордонний паспорт",
-                "Посвідчення особи офіцера",
+                "Військовий квиток офіцера запасу",
                 "Військовий квиток"
         );
 
@@ -199,19 +203,24 @@ public class DocumentsEditController implements ControlledScene {
         }
 
         try {
-            Document newDocument = new Document();
-
-            newDocument.setPrepod(selectedPrepod);
-            newDocument.setDocType(docType);
-            newDocument.setDocNumber(number);
-            newDocument.setKtoVyd(whoGives);
-            newDocument.setDataVyd(LocalDate.parse(dateDatePicker.getEditor().getText(), DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+//            Document newDocument = new Document();
+//
+//            newDocument.setPrepod(selectedPrepod);
+//            newDocument.setDocType(docType);
+//            newDocument.setDocNumber(number);
+//            newDocument.setKtoVyd(whoGives);
+//            newDocument.setDataVyd(LocalDate.parse(dateDatePicker.getEditor().getText(), DateTimeFormatter.ofPattern("dd.MM.yyyy")));
 
             if (selectedDocument == null)
-                mainController.addNewDocument(newDocument);
+//                mainController.addNewDocument(newDocument);
+                documentCRUD.addDocument(selectedPrepod.getId(), docType,
+                        number, whoGives, dateDatePicker.getEditor().getText());
             else
-                mainController.updateDocument(selectedDocument, newDocument);
-
+//                mainController.updateDocument(selectedDocument, newDocument);
+                documentCRUD.updateDocument(selectedDocument.getId(),selectedPrepod.getId(), docType,
+                        number, whoGives, dateDatePicker.getEditor().getText());
+            //DDE - refresh documents list after add or edit or delete
+            mainController.refreshDocsTable();
             closeEdit(null);
             Popup.successSave();
         } catch (Exception e) {
@@ -237,7 +246,7 @@ public class DocumentsEditController implements ControlledScene {
                 whoGivesTextArea.setPromptText("1234");
                 break;
             case "Паперовий паспорт":
-            case "Посвідчення особи офіцера":
+            case "Військовий квиток офіцера запасу":
             case "Військовий квиток":
             default:
                 numberTextField.setPromptText("МГ123456");

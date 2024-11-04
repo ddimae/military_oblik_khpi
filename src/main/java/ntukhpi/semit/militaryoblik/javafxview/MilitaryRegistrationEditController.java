@@ -10,21 +10,19 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
-import ntukhpi.semit.militaryoblik.adapters.FakultetAdapter;
 import ntukhpi.semit.militaryoblik.adapters.MilitaryPersonAdapter;
+import ntukhpi.semit.militaryoblik.adapters.PrepodAdapter;
 import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
 import ntukhpi.semit.militaryoblik.entity.*;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.MilitaryRegistrationValidator;
-import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValidator;
-import ntukhpi.semit.militaryoblik.repository.VZvanieRepository;
 import ntukhpi.semit.militaryoblik.service.*;
+import ntukhpi.semit.militaryoblik.service.entitycrud.EmployeeCRUD;
+import ntukhpi.semit.militaryoblik.service.entitycrud.MilitaryRegistrationCRUD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.regex.Pattern;
 
 @Component
 public class MilitaryRegistrationEditController implements ControlledScene {
@@ -63,6 +61,9 @@ public class MilitaryRegistrationEditController implements ControlledScene {
     MilitaryRegistrationValidator militaryRegistrationValidator;
 
     @Autowired
+    MilitaryRegistrationCRUD militaryRegistrationCRUD;
+
+    @Autowired
     VSkladServiceImpl vSkladService;
 
     @Autowired
@@ -77,11 +78,24 @@ public class MilitaryRegistrationEditController implements ControlledScene {
     @Autowired
     MilitaryPersonServiceImpl militaryPersonService;
 
+    @Autowired
+    EmployeeCRUD employeeCRUD;
+
 
     private ReservistsAllController mainController;
     private Prepod selectedPrepod;
+
+
     private Stage mainStage;
     private Stage currentStage;
+
+    private PrepodAdapter newPrepod;
+    public void setNewPrepod(PrepodAdapter newPrepod){
+        this.newPrepod = newPrepod;
+    }
+    public PrepodAdapter getNewPrepod(){
+        return newPrepod;
+    }
 
     @Override
     public void setMainController(Object mainController) {
@@ -92,6 +106,12 @@ public class MilitaryRegistrationEditController implements ControlledScene {
     public void setData(Object data) {
         if (data instanceof ReservistAdapter)
             setMilitaryRegistrationInfo((ReservistAdapter) data);
+        //DDE
+        if (data instanceof PrepodAdapter) {
+            setNewPrepod((PrepodAdapter) data);
+            setMilitaryRegistrationInfo(newPrepod);
+        }
+
     }
 
     @Override
@@ -106,6 +126,7 @@ public class MilitaryRegistrationEditController implements ControlledScene {
 
     private void setMilitaryRegistrationInfo(ReservistAdapter reservist) {
         selectedPrepod = prepodService.getPrepodById(ReservistsAllController.getSelectedPrepodId());
+
 
         pibLabel.setText(reservist.getPib());
 
@@ -129,16 +150,47 @@ public class MilitaryRegistrationEditController implements ControlledScene {
         if (reservist.getFamilyState() != null)
             familyStanTextField.setText(reservist.getFamilyState());
         else
-            familyStanTextField.setText("одружений");
+            familyStanTextField.setText("неодружений");
 
         if (reservist.getFamilyState() != null)
             educationTextField.setText(reservist.getEducationLevel());
         else
             educationTextField.setText("повна вища");
+    }
 
+    //Перегрузка для нового препода
+    private void setMilitaryRegistrationInfo(PrepodAdapter newPrepod) {
+        //selectedPrepod = prepodService.getPrepodById(ReservistsAllController.getSelectedPrepodId());
 
-//        familyStanTextField.setText(reservist.getFamilyState());
-//        educationTextField.setText(reservist.getEducationLevel());
+        ReservistAdapter reservist = new ReservistAdapter(militaryRegistrationCRUD.getMilitaryPersonByPrepod(newPrepod));
+        pibLabel.setText(reservist.getPib());
+
+        vosTextField.setText(reservist.getVos());
+        categoryComboBox.setValue(reservist.getCategory());
+        groupComboBox.setValue(reservist.getVGrupa());
+        vSkladComboBox.setValue(reservist.getVSklad());
+
+        if (reservist.getRank() != null)
+            rankComboBox.setValue(reservist.getRank());
+        else
+            rankComboBox.getSelectionModel().selectFirst();
+
+        if (reservist.getVPrydatnist() != null)
+            validityTextArea.setText(reservist.getVPrydatnist()); // validityTextField.setText(reservist.getVPrydatnist());
+        else
+            validityTextArea.setText("придатний"); // validityTextField.setText("придатний");
+
+        voenkomatTextField.setText(reservist.getTrc());
+
+        if (reservist.getFamilyState() != null)
+            familyStanTextField.setText(reservist.getFamilyState());
+        else
+            familyStanTextField.setText("неодружений");
+
+        if (reservist.getFamilyState() != null)
+            educationTextField.setText(reservist.getEducationLevel());
+        else
+            educationTextField.setText("повна вища");
     }
 
     public void initialize() {
@@ -214,6 +266,11 @@ public class MilitaryRegistrationEditController implements ControlledScene {
 
     @FXML
     public void closeEdit(ActionEvent actionEvent) {
+        //Якщо додається новий запис, то треба недовведений запис ВИЛУЧИТИ!!!
+        //Вона має бути введена повністю
+        if (newPrepod!=null) {
+            employeeCRUD.deleteEmployee(newPrepod); //***
+        }
         mainController.updateForm();
         MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
     }
@@ -243,27 +300,45 @@ public class MilitaryRegistrationEditController implements ControlledScene {
         if (voenkomatService.getIDVoenkomatByName(voenkomat) == null) {
             if (!Popup.saveConfirmation())
                 return;
-
-            Voenkomat newVoenkomat = new Voenkomat();
-            newVoenkomat.setVoenkomatName(voenkomat);
-            voenkomatService.createVoenkomat(newVoenkomat);
+//            Винесено в VoenkomatCRUD
+//            Voenkomat newVoenkomat = new Voenkomat();
+//            newVoenkomat.setVoenkomatName(voenkomat);
+//            voenkomatService.createVoenkomat(newVoenkomat);
         }
 
         try {
-            MilitaryPerson militaryPerson = militaryPersonService.getMilitaryPersonByPrepod(selectedPrepod);
+//            MilitaryPerson militaryPerson = militaryPersonService.getMilitaryPersonByPrepod(selectedPrepod);
+//
+//            militaryPerson.setPrepod(selectedPrepod);
+//            militaryPerson.setVos(vos);
+//            militaryPerson.setVCategory(Integer.parseInt(category));
+//            militaryPerson.setVGrupa(group);
+//            militaryPerson.setVSklad(vSkladService.getVSkladByName(vSklad));
+//            militaryPerson.setVZvanie(vZvanieService.getVzvanieByName(vZvanie));
+//            militaryPerson.setVPrydatnist(prydatnist);
+//            militaryPerson.setVoenkomat(voenkomatService.getVoenkomatByName(voenkomat));
+//            militaryPerson.setFamilyState(familyState);
+//            militaryPerson.setEducationLevel(educationLevel);
+//
+//            militaryPersonService.updateMilitaryPerson(militaryPerson.getId(), militaryPerson);
 
-            militaryPerson.setPrepod(selectedPrepod);
-            militaryPerson.setVos(vos);
-            militaryPerson.setVCategory(Integer.parseInt(category));
-            militaryPerson.setVGrupa(group);
-            militaryPerson.setVSklad(vSkladService.getVSkladByName(vSklad));
-            militaryPerson.setVZvanie(vZvanieService.getVzvanieByName(vZvanie));
-            militaryPerson.setVPrydatnist(prydatnist);
-            militaryPerson.setVoenkomat(voenkomatService.getVoenkomatByName(voenkomat));
-            militaryPerson.setFamilyState(familyState);
-            militaryPerson.setEducationLevel(educationLevel);
-
-            militaryPersonService.updateMilitaryPerson(militaryPerson.getId(), militaryPerson);
+            //NewPrepod - це запис про препода, який створюється в цій програмі.
+            //Відразу після стоврення йому необхідно ввести дані його обліку.
+            //Якщо військово-облікова інформація введена не буде, цей запис відразу вилучається із бази!
+            if (newPrepod == null) {
+                militaryRegistrationCRUD.updateMilitaryPerson(selectedPrepod.getId(),
+                        vos, category, group, vSklad, vZvanie,
+                        prydatnist, voenkomat, familyState, educationLevel);
+            } else {
+                militaryRegistrationCRUD.updateMilitaryPerson(employeeCRUD.adapterPrepodToPrepod(newPrepod).getId(),
+                        vos, category, group, vSklad, vZvanie,
+                        prydatnist, voenkomat, familyState, educationLevel);
+                //???
+                MilitaryPerson mp = militaryPersonService.
+                        getMilitaryPersonByPrepod(employeeCRUD.adapterPrepodToPrepod(newPrepod)); //***
+                mainController.selectReservist(new ReservistAdapter(mp)); //***
+                setNewPrepod(null);
+            }
 
             closeEdit(null);
             Popup.successSave();

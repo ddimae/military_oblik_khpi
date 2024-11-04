@@ -22,8 +22,10 @@ import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
+import ntukhpi.semit.militaryoblik.service.FamilyMemberService;
 import ntukhpi.semit.militaryoblik.service.FamilyMemberServiceImpl;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
+import ntukhpi.semit.militaryoblik.service.entitycrud.FamilyMemberCRUD;
 import org.hibernate.type.descriptor.jdbc.JdbcTypeFamilyInformation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -54,6 +56,10 @@ public class FamilyCompositionAllController implements ControlledScene {
     PrepodServiceImpl prepodService;
     @Autowired
     FamilyMemberServiceImpl familyMemberService;
+
+    @Autowired
+    FamilyMemberCRUD familyMemberCRUD;
+
 
     @Override
     public void setMainController(Object controller) {
@@ -104,12 +110,14 @@ public class FamilyCompositionAllController implements ControlledScene {
         familyTableView.refresh();
     }
 
+    //    DDE -> Depricated
     public void addNewFamilyMember(FamilyMember family) {
         familyMemberService.createFamilyMember(family);
 //        familyObservableList.add(new FamilyAdapter(family));
         refreshFamilyTable();
     }
 
+    //    DDE -> Depricated
     public void updateFamily(FamilyAdapter oldSklad, FamilyMember newSklad) {
         familyMemberService.updateFamilyMember(oldSklad.getId(), newSklad);
 
@@ -119,12 +127,13 @@ public class FamilyCompositionAllController implements ControlledScene {
     }
 
     @FXML
-    void deleteSelectedRow(ActionEvent event) {
+    public void deleteSelectedRow(ActionEvent event) {
         FamilyAdapter selectedItem = familyTableView.getSelectionModel().getSelectedItem();
 
         if (selectedItem != null) {
             if (Popup.deleteConfirmation()) {
-                familyMemberService.deleteFamilyMember(selectedItem.getId());
+//                familyMemberService.deleteFamilyMember(selectedItem.getId());
+                familyMemberCRUD.deleteFamilyMember(selectedItem.getId());
 //                familyObservableList.remove(selectedItem);
                 refreshFamilyTable();
             }

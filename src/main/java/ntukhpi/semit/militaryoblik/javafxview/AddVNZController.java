@@ -7,11 +7,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
-import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
 import ntukhpi.semit.militaryoblik.entity.VNZaklad;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
-import ntukhpi.semit.militaryoblik.service.VNZakladServiceImpl;
+import ntukhpi.semit.militaryoblik.service.entitycrud.VNZCRUD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,17 +30,20 @@ public class AddVNZController implements ControlledScene {
     private Stage mainStage;
     private Stage currentStage;
 
+    //    @Autowired
+//    VNZakladServiceImpl vnZakladService;
     @Autowired
-    VNZakladServiceImpl vnZakladService;
+    VNZCRUD vnzCRUD;
 
     @Override
-    public void setMainController(Object controller) {}
+    public void setMainController(Object controller) {
+    }
 
     @Override
     public void setData(Object data) {
         Object[] arrData = (Object[]) data;
 
-        setVNZData((ComboBox<VNZaklad>)arrData[0], (ObservableList<VNZaklad>)arrData[1]);
+        setVNZData((ComboBox<VNZaklad>) arrData[0], (ObservableList<VNZaklad>) arrData[1]);
     }
 
     @Override
@@ -78,14 +80,12 @@ public class AddVNZController implements ControlledScene {
             newVNZ.setVnzShortName(abbreviation);
 
             try {
-                vnZakladService.createVNZaklad(newVNZ);
+                vnzCRUD.addVNZ(name, abbreviation);
+                vnzObservableList.add(newVNZ);
+                vnzComboBox.setValue(newVNZ);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            vnzObservableList.add(newVNZ);
-            vnzComboBox.setValue(newVNZ);
-
             cancel();
         }
     }

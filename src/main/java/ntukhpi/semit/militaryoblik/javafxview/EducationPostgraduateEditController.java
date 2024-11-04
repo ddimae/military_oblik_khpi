@@ -17,9 +17,9 @@ import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
-import ntukhpi.semit.militaryoblik.service.EducationPostgraduateServiceImpl;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
 import ntukhpi.semit.militaryoblik.service.VNZakladServiceImpl;
+import ntukhpi.semit.militaryoblik.service.entitycrud.EducationPostgraduateCRUD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -43,8 +43,11 @@ public class EducationPostgraduateEditController implements ControlledScene {
 
     private Prepod selectedPrepod;
 
+//    @Autowired
+//    EducationPostgraduateServiceImpl educationPostgraduateService;
     @Autowired
-    EducationPostgraduateServiceImpl educationPostgraduateService;
+    EducationPostgraduateCRUD educationPostgraduateCRUD;
+
     @Autowired
     PrepodServiceImpl prepodService;
     @Autowired
@@ -110,10 +113,14 @@ public class EducationPostgraduateEditController implements ControlledScene {
             newEducation.setVnz(vnz);
 
             if (selectedEducation == null) {
-                mainController.addPostgraduateEducation(newEducation);
+                educationPostgraduateCRUD.addPostgraduateEducation(selectedPrepod.getId(),year,type,vnz.getVnzName());
+//                mainController.addPostgraduateEducation(newEducation);
             } else {
-                mainController.updatePostgraduateEducation(selectedEducation, newEducation);
+                educationPostgraduateCRUD.updatePostgraduateEducation(selectedPrepod.getId(),year,type,vnz.getVnzName());
+//               mainController.updatePostgraduateEducation(selectedEducation, newEducation);
             }
+            //DDE - refresh education list after add or edit or delete
+            mainController.afterPostgraduateEducationCRUD();
             closeEdit(null);
             Popup.successSave();
         } catch (Exception e) {

@@ -9,7 +9,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
-import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
 import ntukhpi.semit.militaryoblik.adapters.EducationPostgraduateAdapter;
 import ntukhpi.semit.militaryoblik.entity.EducationPostgraduate;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
@@ -19,6 +18,7 @@ import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.service.EducationPostgraduateServiceImpl;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
+import ntukhpi.semit.militaryoblik.service.entitycrud.EducationPostgraduateCRUD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -52,6 +52,9 @@ public class EducationPostgraduateAllController implements ControlledScene {
 
     @Autowired
     EducationPostgraduateServiceImpl educationPostgraduateService;
+
+    @Autowired
+    EducationPostgraduateCRUD educationPostgraduateCRUD;
 
     @Autowired
     PrepodServiceImpl prepodService;
@@ -155,9 +158,9 @@ public class EducationPostgraduateAllController implements ControlledScene {
 
     @FXML
     private void deleteSelectedRow(ActionEvent event) {
-        EducationPostgraduateAdapter selectedPostgaduateEducation = vnzTableView.getSelectionModel().getSelectedItem();
+        EducationPostgraduateAdapter selectedPostgraduateEducation = vnzTableView.getSelectionModel().getSelectedItem();
 
-        if (selectedPostgaduateEducation != null) {
+        if (selectedPostgraduateEducation != null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Підтвердження видалення");
             alert.setHeaderText("Ви впевнені, що хочете видалити цей запис?");
@@ -166,29 +169,30 @@ public class EducationPostgraduateAllController implements ControlledScene {
             Optional<ButtonType> result = alert.showAndWait();
 
             if (result.isPresent() && result.get() == ButtonType.OK) {
-//                postgraduateEducationObservableList.remove(selectedPostgaduateEducation);
-                educationPostgraduateService.deleteEducationPostgraduate(selectedPostgaduateEducation.getId());
-                refreshVNZTable();
+                //DDE-->Depricated
+//                educationPostgraduateService.deleteEducationPostgraduate(selectedPostgraduateEducation.getId());
+//                refreshVNZTable();
+                educationPostgraduateCRUD.deletePostgraduateEducation(selectedPostgraduateEducation.getId());
+                afterPostgraduateEducationCRUD();
             }
         } else {
             Popup.noSelectedRowAlert();
         }
     }
 
+    //DDE-->Depricated
     public void addPostgraduateEducation(EducationPostgraduate newEducation) {
         educationPostgraduateService.createEducationPostgraduate(newEducation);
-
-//        postgraduateEducationObservableList.add(new EducationPostgraduateAdapter(newEducation));
-//        vnzTableView.refresh();
         refreshVNZTable();
     }
 
+    //DDE-->Depricated
     public void updatePostgraduateEducation(EducationPostgraduateAdapter oldEducation, EducationPostgraduate newEducation) {
         educationPostgraduateService.updateEducationPostgraduate(oldEducation.getId(), newEducation);
+        refreshVNZTable();
+    }
 
-//        postgraduateEducationObservableList.remove(oldEducation);
-//        postgraduateEducationObservableList.add(new EducationPostgraduateAdapter(newEducation));
-//        vnzTableView.refresh();
+    public void afterPostgraduateEducationCRUD() {
         refreshVNZTable();
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface PrepodRepository extends JpaRepository<Prepod,Long> {
 
-    Prepod getPrepodByFamAndImyaAndOtchAndKafedra_Kid(String fam,String imya, String otch,Long kid);
+    Prepod getPrepodByFamAndImyaAndOtchAndKafedra_Kname(String fam,String imya, String otch,String kafFullName);
 
     Prepod getPrepodByFamAndImyaAndOtchAndDr(String fam, String imya, String otch, LocalDate dr);
 

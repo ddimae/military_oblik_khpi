@@ -1,6 +1,5 @@
 package ntukhpi.semit.militaryoblik.testDB;
 
-import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
 import ntukhpi.semit.militaryoblik.entity.*;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Dolghnost;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Fakultet;
@@ -12,8 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 
@@ -324,12 +321,12 @@ public class DBTest {
 
     @Test
     void testFindVNZ() {
-        assertEquals(vNZakladServiceImpl.findVNZakladByVnzName("Харківський військовий університет"), 3L);
-        assertEquals(vNZakladServiceImpl.findVNZakladByVnzName("Інститут"), null);
-        assertNotEquals(vNZakladServiceImpl.findVNZakladByVnzName("Харківський університет Повітряних Сил"), null);
-        assertEquals(vNZakladServiceImpl.findVNZakladByVnzShortName("ХУПС"), 4L);
-        assertEquals(vNZakladServiceImpl.findVNZakladByVnzShortName("КІвХ"), null);
-        assertNotEquals(vNZakladServiceImpl.findVNZakladByVnzShortName("ХВУ"), null);
+        assertEquals(vNZakladServiceImpl.findIdVNZakladByVnzName("Харківський військовий університет"), 3L);
+        assertEquals(vNZakladServiceImpl.findIdVNZakladByVnzName("Інститут"), null);
+        assertNotEquals(vNZakladServiceImpl.findIdVNZakladByVnzName("Харківський університет Повітряних Сил"), null);
+        assertEquals(vNZakladServiceImpl.findIdVNZakladByVnzShortName("ХУПС"), 4L);
+        assertEquals(vNZakladServiceImpl.findIdVNZakladByVnzShortName("КІвХ"), null);
+        assertNotEquals(vNZakladServiceImpl.findIdVNZakladByVnzShortName("ХВУ"), null);
     }
 
     @Autowired

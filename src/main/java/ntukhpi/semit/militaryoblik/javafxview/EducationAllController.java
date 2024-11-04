@@ -15,8 +15,9 @@ import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
-import ntukhpi.semit.militaryoblik.service.EducationServiceImpl;
+import ntukhpi.semit.militaryoblik.service.EducationService;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
+import ntukhpi.semit.militaryoblik.service.entitycrud.EducationCRUD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
@@ -61,7 +62,10 @@ public class EducationAllController implements ControlledScene {
     private Stage currentStage;
 
     @Autowired
-    EducationServiceImpl educationService;
+    EducationService educationService;
+
+    @Autowired
+    EducationCRUD educationCRUD;
 
     @Autowired
     PrepodServiceImpl prepodService;
@@ -84,7 +88,8 @@ public class EducationAllController implements ControlledScene {
         currentStage = stage;
     }
 
-    private ObservableList<EducationAdapter> getEducationData() {
+    private ObservableList<EducationAdapter>
+    getEducationData() {
         return FXCollections.observableArrayList(educationService.getAllEducationByPrepod(selectedPrepod).
                 stream().map(EducationAdapter::new).
                 sorted(Comparator.comparing(EducationAdapter::getYear)).
@@ -179,31 +184,30 @@ public class EducationAllController implements ControlledScene {
             Optional<ButtonType> result = alert.showAndWait();
 
             if (result.isPresent() && result.get() == ButtonType.OK) {
-//                educationObservableList.remove(selectedEducation);
-                educationService.deleteEducation(selectedEducation.getId());
-                refreshVNZTable();
+                educationCRUD.deleteEducation(selectedEducation.getId());
+//                refreshVNZTable();
+                afterEducationCRUD();
             }
         } else {
             Popup.noSelectedRowAlert();
         }
     }
 
+    //DDE-->Depricated
     public void addEducation(Education newEducation) {
         educationService.createEducation(newEducation);
-
-//        educationObservableList.add(new EducationAdapter(newEducation));
-//        vnzTableView.refresh();
         refreshVNZTable();
-
     }
 
+    //DDE-->Depricated
     public void updateEducation(EducationAdapter oldEducation, Education newEducation) {
         educationService.updateEducation(oldEducation.getId(), newEducation);
-
-//        educationObservableList.remove(oldEducation);
-//        educationObservableList.add(new EducationAdapter(newEducation));
-//        vnzTableView.refresh();
         refreshVNZTable();
-
     }
+
+    public void afterEducationCRUD() {
+        refreshVNZTable();
+    }
+
+
 }

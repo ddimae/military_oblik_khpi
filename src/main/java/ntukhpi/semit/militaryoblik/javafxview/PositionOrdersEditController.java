@@ -18,6 +18,7 @@ import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValida
 import ntukhpi.semit.militaryoblik.service.CurrentDoljnostInfoServiceImpl;
 import ntukhpi.semit.militaryoblik.service.MilitaryPersonServiceImpl;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
+import ntukhpi.semit.militaryoblik.service.entitycrud.CurrentDoljnostInfoСRUD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -64,6 +65,9 @@ public class PositionOrdersEditController implements ControlledScene {
     CurrentDoljnostInfoServiceImpl dolghnostService;
     @Autowired
     MilitaryPersonServiceImpl militaryPersonService;
+
+    @Autowired
+    CurrentDoljnostInfoСRUD currentDoljnostInfoCRUD;
 
     private ReservistsAllController mainController;
 
@@ -181,6 +185,7 @@ public class PositionOrdersEditController implements ControlledScene {
         String dateDissStr = dateDissDatePicker.getEditor().getText();
         String commentDiss = commentDissTextArea.getText() != null ? commentDissTextArea.getText().trim() : "";
 
+        //TODO Получається, що введення правильності дати звільнення не контролюєтся...
         try {
             orderValidator.validate(new CurrentDoljnostInfoAdapter(dateStr, nakaz, comment,
                                                                     dateDissStr, nakazDiss, commentDiss,
@@ -190,18 +195,23 @@ public class PositionOrdersEditController implements ControlledScene {
             return;
         }
 
+        LocalDate date = LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        LocalDate dateDiss = null;
+        if (dateDissStr.length() > 0)
+            dateDiss = LocalDate.parse(dateDissStr, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+//        CurrentDoljnostInfo newCurrDolgnost = new CurrentDoljnostInfo(selectedPrepod, nakaz, date, comment,
+//                nakazDiss, dateDiss, commentDiss);
         try {
-            LocalDate date = LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-            LocalDate dateDiss = null;
-            if (dateDissStr.length() > 0)
-                dateDiss = LocalDate.parse(dateDissStr, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-            CurrentDoljnostInfo newCurrDolgnost = new CurrentDoljnostInfo(selectedPrepod, nakaz, date, comment,
-                    nakazDiss, dateDiss, commentDiss);
+
             CurrentDoljnostInfo cd = selectedPrepod.getPosadaNakazy();
             if (cd == null) {
-                dolghnostService.createCurrentDoljnostInfo(newCurrDolgnost);
+                currentDoljnostInfoCRUD.addCurrentDoljnost(selectedPrepod.getId(),
+                        nakaz, dateStr, comment, nakazDiss, dateDissStr, commentDiss);
+//                dolghnostService.createCurrentDoljnostInfo(newCurrDolgnost);
             } else {
-                dolghnostService.updateCurrentDoljnostInfo(cd.getId(), newCurrDolgnost);
+                currentDoljnostInfoCRUD.updateCurrentDoljnost(cd.getId(), selectedPrepod.getId(),
+                        nakaz, dateStr, comment, nakazDiss, dateDissStr, commentDiss);
+//                dolghnostService.updateCurrentDoljnostInfo(cd.getId(), newCurrDolgnost);
             }
             closeEdit(null);
             Popup.successSave();

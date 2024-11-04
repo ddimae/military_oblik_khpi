@@ -14,6 +14,7 @@ import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.InstituteValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValidator;
 import ntukhpi.semit.militaryoblik.service.FakultetServiceImpl;
+import ntukhpi.semit.militaryoblik.service.entitycrud.InstituteCRUD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -40,6 +41,8 @@ public class InstituteAddController implements ControlledScene {
     private Stage mainStage;
     private Stage currentStage;
 
+    @Autowired
+    InstituteCRUD instituteCRUD;
     @Override
     public void setMainController(Object mainController) {}
 
@@ -91,7 +94,8 @@ public class InstituteAddController implements ControlledScene {
             fakultet.setAbr(abbr);
             fakultet.setOid(code);
 
-            fakultetService.createFakultet(fakultet);
+            instituteCRUD.addInstitute(fullName,abbr,code);
+        //            fakultetService.createFakultet(fakultet);
             instituteComboBox.getItems().add(fakultet);
 
             closeEdit(null);

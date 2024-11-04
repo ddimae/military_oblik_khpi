@@ -107,6 +107,10 @@ public class Fakultet {
 
     @Override
     public String toString() {
+        return fname;
+    }
+
+    public String showInstituteInfo() {
         final StringBuilder sb = new StringBuilder("");
         sb.append(fname).append(" (");
         sb.append(abr).append(")");

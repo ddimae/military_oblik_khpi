@@ -50,13 +50,19 @@ public class VNZakladServiceImpl implements VNZakladService {
 
 
     @Override
-    public Long findVNZakladByVnzName(String vnzName) {
+    public Long findIdVNZakladByVnzName(String vnzName) {
         VNZaklad vnzInDB = vnZakladRepository.getVNZakladByVnzName(vnzName);
         return vnzInDB!=null?vnzInDB.getId():null;
     }
 
     @Override
-    public Long findVNZakladByVnzShortName(String vnzShortName) {
+    public VNZaklad getVNZakladByVnzName(String vnzName) {
+        VNZaklad vnzInDB = vnZakladRepository.getVNZakladByVnzName(vnzName);
+        return vnzInDB!=null?vnzInDB:null;
+    }
+
+    @Override
+    public Long findIdVNZakladByVnzShortName(String vnzShortName) {
         VNZaklad vnzInDB = vnZakladRepository.getVNZakladByVnzShortName(vnzShortName);
         return vnzInDB!=null?vnzInDB.getId():null;
     }

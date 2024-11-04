@@ -391,17 +391,17 @@ public class D5Reader {
                             Long idVNZ1 = null;
                             Long idVNZ2 = null;
                             VNZaklad vznEduItemInDB = null;
-                            idVNZ1 = vnzServiceImpl.findVNZakladByVnzShortName(vznEduItem.getVnzShortName());
+                            idVNZ1 = vnzServiceImpl.findIdVNZakladByVnzShortName(vznEduItem.getVnzShortName());
                             if (idVNZ1==null) {
                                 //Нема. Перевіряємо повну. Якщо раніше була із помилками - це не до нас
                                 //А ще вона може бути пустою - тоді не робимо нічого
                                 if (vznEduItem.getVnzName()!=null && vznEduItem.getVnzName().trim().length()>0) {
-                                    idVNZ2= vnzServiceImpl.findVNZakladByVnzName(vznEduItem.getVnzName());
+                                    idVNZ2= vnzServiceImpl.findIdVNZakladByVnzName(vznEduItem.getVnzName());
                                     if (idVNZ2==null) {
                                         //Новий ВНЗ із скороченою та повною назвою
                                         vnzServiceImpl.createVNZaklad(vznEduItem);
                                         //Сохранили и нашли снова - уже нулевой не будет
-                                        idVNZ2= vnzServiceImpl.findVNZakladByVnzName(vznEduItem.getVnzName());
+                                        idVNZ2= vnzServiceImpl.findIdVNZakladByVnzName(vznEduItem.getVnzName());
                                         vznEduItemInDB = vnzServiceImpl.getVNZakladById(idVNZ2);
                                     } else {
                                         //Есть с такою повною назвою - берется, а скорочена ігнорується
@@ -411,7 +411,7 @@ public class D5Reader {
                                     //Тобто нове скорочене імя і нема повного, то також створюємо новий
                                     vnzServiceImpl.createVNZaklad(vznEduItem);
                                     //Сохранили и нашли снова - уже нулевой не будет. Но ищем по сокращенному имени
-                                    idVNZ1= vnzServiceImpl.findVNZakladByVnzShortName(vznEduItem.getVnzShortName());
+                                    idVNZ1= vnzServiceImpl.findIdVNZakladByVnzShortName(vznEduItem.getVnzShortName());
                                     vznEduItemInDB = vnzServiceImpl.getVNZakladById(idVNZ1);
                                 }
                             } else {
