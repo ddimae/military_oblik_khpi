@@ -29,7 +29,7 @@ public class DocumentValidator implements IBaseValidator<DocumentAdapter> {
         switch (info.getType()) {
             case "Паперовий паспорт":
                 numberValidator.setRegex(ukrOldSeriesNumberRegex);
-                numberValidator.setErrorMsg("паперовога паспорта повинно містити 2 великі українські літери та 6 цифр");
+                numberValidator.setErrorMsg("паперового паспорту повинно містити 2 великі українські літери та 6 цифр");
                 whoGivesValidator.setRegex(ukrOldWhoGivesRegex);
                 whoGivesValidator.setErrorMsg("може містити українські літери, цифри, розділові знаки");
                 break;
@@ -41,14 +41,14 @@ public class DocumentValidator implements IBaseValidator<DocumentAdapter> {
                 break;
             case "Закордонний паспорт":
                 numberValidator.setRegex(enOldSeriesNumberRegex);
-                numberValidator.setErrorMsg("закордонного паспорта повинно містити 2 великі латинські літери та 6 цифр");
+                numberValidator.setErrorMsg("закордонного паспорту повинно містити 2 великі латинські літери та 6 цифр");
                 whoGivesValidator.setRegex(newWhoGivesRegex);
                 whoGivesValidator.setErrorMsg("повинно містити тільки 4 цифри");
                 break;
             case "Посвідчення особи офіцера":
             case "Військовий квиток":
                 numberValidator.setRegex(ukrOldSeriesNumberRegex);
-                numberValidator.setErrorMsg("Серія та номер посвідчення повинні містити 2 великі українські літери та 6 цифр");
+                numberValidator.setErrorMsg("Серія та номер військового квитка повинні містити 2 великі українські літери та 6 цифр");
                 whoGivesValidator.setRegex(ukrOldWhoGivesRegex);
                 whoGivesValidator.setErrorMsg("може містити українські літери, цифри, розділові знаки");
                 break;

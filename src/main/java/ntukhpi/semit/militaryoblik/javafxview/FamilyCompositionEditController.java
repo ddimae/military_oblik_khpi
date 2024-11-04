@@ -20,6 +20,7 @@ import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValida
 import ntukhpi.semit.militaryoblik.service.FamilyMemberServiceImpl;
 import ntukhpi.semit.militaryoblik.service.MilitaryPersonServiceImpl;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
+import ntukhpi.semit.militaryoblik.service.entitycrud.FamilyMemberCRUD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -50,6 +51,9 @@ public class FamilyCompositionEditController implements ControlledScene {
     FamilyValidator familyValidator;
     @Autowired
     PrepodServiceImpl prepodService;
+
+    @Autowired
+    FamilyMemberCRUD familyMemberCRUD;
 
     @Override
     public void setMainController(Object mainController) {
@@ -110,20 +114,27 @@ public class FamilyCompositionEditController implements ControlledScene {
         }
 
         try {
-            FamilyMember newMember = new FamilyMember();
+//            FamilyMember newMember = new FamilyMember();
+//
+//            newMember.setPrepod(selectedPrepod);
+//            newMember.setVidRidstva(vidRidstva);
+//            newMember.setMemFam(surname);
+//            newMember.setMemImya(name);
+//            newMember.setMemOtch(patronimic);
+//            newMember.setRikNarodz(year);
 
-            newMember.setPrepod(selectedPrepod);
-            newMember.setVidRidstva(vidRidstva);
-            newMember.setMemFam(surname);
-            newMember.setMemImya(name);
-            newMember.setMemOtch(patronimic);
-            newMember.setRikNarodz(year);
+            if (selectedMember == null) {
+//                mainController.addNewFamilyMember(newMember);
+                familyMemberCRUD.addFamilyMember(selectedPrepod.getId(),vidRidstva,
+                        surname,name,patronimic,year);
+            }            else {
+//                mainController.updateFamily(selectedMember, newMember);
+                familyMemberCRUD.updateFamilyMember(selectedMember.getId(),selectedPrepod.getId(),
+                        vidRidstva,surname,name,patronimic,year);
+            }
 
-            if (selectedMember == null)
-                mainController.addNewFamilyMember(newMember);
-            else
-                mainController.updateFamily(selectedMember, newMember);
 
+            mainController.refreshFamilyTable();
             closeEdit(null);
             Popup.successSave();
         } catch (Exception e) {

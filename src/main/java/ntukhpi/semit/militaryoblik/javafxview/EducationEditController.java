@@ -147,12 +147,11 @@ public class EducationEditController implements ControlledScene {
 //            newEducation.setDiplomaQualification(qualification);
 
             if (selectedEducation == null) {
-                educationCRUD.addEducation(selectedPrepod.getId(), form, level,
+                educationCRUD.addEducation(selectedPrepod.getId(),form,level,
                         vnz.getVnzName(),year,diplomaNumber,diplomaSeries,specialty,qualification);
             } else {
-                educationCRUD.updateEducation(selectedEducation.getId(),
-                        form, level,
-                        vnz.getVnzName(),year,diplomaNumber,diplomaSeries,specialty,qualification);
+                educationCRUD.updateEducation(selectedEducation.getId(),selectedEducation.getId(),
+                        form,level,vnz.getVnzName(),year,diplomaNumber,diplomaSeries,specialty,qualification);
             }
 
             //DDE - refresh education list after add or edit or delete

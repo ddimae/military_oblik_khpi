@@ -20,6 +20,7 @@ import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.service.DocumentServiceImpl;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
+import ntukhpi.semit.militaryoblik.service.entitycrud.DocumentCRUD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -60,7 +61,12 @@ public class DocumentsAllController implements ControlledScene {
     DocumentServiceImpl documentService;
 
     @Autowired
+    DocumentCRUD documentCRUD;
+
+    @Autowired
     PrepodServiceImpl prepodService;
+
+
 
     private ReservistsAllController mainController;
     private Stage mainStage;
@@ -130,6 +136,7 @@ public class DocumentsAllController implements ControlledScene {
     }
 
 
+    //    DDE -> Depricated
     /**
      * Додавання нового документу до таблиці та БД
      *
@@ -142,6 +149,7 @@ public class DocumentsAllController implements ControlledScene {
     }
 
 
+    //    DDE -> Depricated
     /**
      * Обновлення документа в таблиці та БД
      *
@@ -160,12 +168,13 @@ public class DocumentsAllController implements ControlledScene {
      * Видалення обранного документу з таблиці та БД
      */
     @FXML
-    void deleteSelectedRow(ActionEvent event) {
+    public void deleteSelectedRow(ActionEvent event) {
         DocumentAdapter selectedDocument = docsTableView.getSelectionModel().getSelectedItem();
 
         if (selectedDocument != null) {
             if (Popup.deleteConfirmation()) {   // Питаємо користувача
-                documentService.deleteDocument(selectedDocument.getId());
+//                documentService.deleteDocument(selectedDocument.getId());
+                documentCRUD.deleteDocument(selectedDocument.getId());
 //                docsObservableList.remove(selectedDocument);
                 refreshDocsTable();
             }
