@@ -19,6 +19,13 @@ public class PositionAdapter implements IBaseAdapter {
         return category == 1 ? "ППС" : "ІТС";
     }
 
+    public void setCategory(String category) {
+        if (category.equals("ППС"))
+            this.category = 1;
+        if (category.equals("ІТС"))
+            this.category = 0;
+    }
+
     public PositionAdapter(Dolghnost d) {
         this.fullName = d.getDolghnName();
         this.shortName = d.getDolghnShortName();

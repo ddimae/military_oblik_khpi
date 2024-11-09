@@ -123,12 +123,14 @@ public class DocumentsEditController implements ControlledScene {
                         break;
                 }
         }
+        // Рядовий - Військовий квиток
+        // Прапорщик - Військовий квиток офіцера запасу
         switch (militaryPersonService.getMilitaryPersonByPrepod(selectedPrepod).getVZvanie().getSkladName()) {
             case "Офіцерський склад":
                 typeComboBox.getItems().remove("Військовий квиток");
                 break;
             case "Рядовий та сержантський склад":
-                typeComboBox.getItems().remove("Посвідчення особи офіцера");
+                typeComboBox.getItems().remove("Військовий квиток офіцера запасу");
                 break;
         }
         if (selectedDocument == null)

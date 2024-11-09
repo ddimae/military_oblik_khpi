@@ -43,4 +43,18 @@ public class VNZaklad {
     public String toString() {
         return vnzShortName + " (" + vnzName + ")";
     }
+
+    public static VNZaklad getVNZakladByToString(String str) {
+        VNZaklad vnzaklad = new VNZaklad();
+
+        if (str == null || str.isEmpty())
+            return vnzaklad;
+
+        String[] arr = str.split(" \\(");
+
+        vnzaklad.vnzShortName = arr[0];
+        vnzaklad.vnzName = arr[1].substring(0, arr[1].length() - 2);
+
+        return vnzaklad;
+    }
 }

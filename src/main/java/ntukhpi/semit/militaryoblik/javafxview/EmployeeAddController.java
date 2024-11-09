@@ -220,7 +220,7 @@ public class EmployeeAddController implements ControlledScene {
         String status = statusComboBox.getValue() != null ? statusComboBox.getValue().getZvanieName() : null;
 
         try {
-            employeeValidator.validate(new PrepodAdapter(institute, surname, name,
+            employeeValidator.validate(new PrepodAdapter(null, institute, surname, name,
                     midname, birthDate, cathedra,
                     position, status, degree));
         } catch (Exception e) {

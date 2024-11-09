@@ -16,7 +16,6 @@ public class EducationAdapter {
     private String qualification;
 
     private VNZaklad vnz;
-    private VNZaklad vnzShortName;
     private String form;
     private String level;
 

@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PrepodAdapter implements IBaseAdapter {
+    private Long id;
     private String institute;
     private String surname;
     private String name;
@@ -25,7 +26,7 @@ public class PrepodAdapter implements IBaseAdapter {
     private String degree;
 
     public PrepodAdapter(Prepod prepod) {
-        this(DataFormat.safeStr(prepod.getKafedra().getFakultet()) , prepod.getFam(), prepod.getImya(),
+        this(prepod.getId(), DataFormat.safeStr(prepod.getKafedra().getFakultet()) , prepod.getFam(), prepod.getImya(),
                 prepod.getOtch(), DataFormat.localDateToUkStandart(prepod.getDr()), DataFormat.safeStr(prepod.getKafedra()),
                 DataFormat.safeStr(prepod.getDolghnost()),  DataFormat.safeStr(prepod.getZvanie()), DataFormat.safeStr(prepod.getStepen()));
 

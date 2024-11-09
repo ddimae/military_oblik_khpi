@@ -4,6 +4,8 @@ import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import ntukhpi.semit.militaryoblik.adapters.DropdownAdapter;
 import ntukhpi.semit.militaryoblik.adapters.ExportAdapter;
+import ntukhpi.semit.militaryoblik.adapters.MilitaryPersonAdapter;
+import ntukhpi.semit.militaryoblik.adapters.PrepodAdapter;
 import ntukhpi.semit.militaryoblik.entity.MilitaryPerson;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.service.*;
@@ -24,7 +26,7 @@ public class EIDataCollectService {
     private final VZvanieService vZvanieService;
     private final VoenkomatService voenkomatService;
     private final CountryService countryService;
-    private final  RegionUkraineService regionUkraineService;
+    private final RegionUkraineService regionUkraineService;
     private final RegionKharkivService regionKharkivService;
     private final VNZakladService vnZakladService;
 
@@ -75,5 +77,22 @@ public class EIDataCollectService {
             throw new Exception("Prepod or MilitaryPerson is not defined");
 
         return new ExportAdapter(prepod, militaryPerson);
+    }
+
+    public void fillIds(ExportAdapter ioAdapter) {
+        PrepodAdapter ioPrepod = ioAdapter.getPrepod();
+        Prepod foundPrepod = prepodService.getPrepodByExapmleFIO(new Prepod(ioPrepod.getSurname(), ioPrepod.getName(), ioPrepod.getMidname(), null));
+
+        MilitaryPersonAdapter ioMilitary = ioAdapter.getMilitary();
+        MilitaryPerson foundMilitary = militaryPersonService.getMilitaryPersonByPrepod(foundPrepod);
+
+        if (foundPrepod != null) {
+            ioPrepod.setId(foundPrepod.getId());
+            ioMilitary.setId(foundMilitary.getId());
+        }
+
+
+
+
     }
 }

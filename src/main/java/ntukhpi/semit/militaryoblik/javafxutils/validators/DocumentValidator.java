@@ -45,7 +45,7 @@ public class DocumentValidator implements IBaseValidator<DocumentAdapter> {
                 whoGivesValidator.setRegex(newWhoGivesRegex);
                 whoGivesValidator.setErrorMsg("повинно містити тільки 4 цифри");
                 break;
-            case "Посвідчення особи офіцера":
+            case "Військовий квиток офіцера запасу":
             case "Військовий квиток":
                 numberValidator.setRegex(ukrOldSeriesNumberRegex);
                 numberValidator.setErrorMsg("Серія та номер військового квитка повинні містити 2 великі українські літери та 6 цифр");

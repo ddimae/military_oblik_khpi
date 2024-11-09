@@ -21,7 +21,7 @@ import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.service.*;
-import ntukhpi.semit.militaryoblik.utils.DataWriteService;
+import ntukhpi.semit.militaryoblik.utils.DataWriteReadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -122,7 +122,7 @@ public class ReservistsAllController implements ControlledScene {
     MilitaryPersonServiceImpl militaryPersonServiceImpl;
 
     @Autowired
-    DataWriteService dataWriteService;
+    DataWriteReadService dataWriteReadService;
 
     @Override
     public void setMainController(Object controller) {
@@ -433,7 +433,7 @@ public class ReservistsAllController implements ControlledScene {
         String resultSave;
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Файли Excel з формою 05 (*.xlsx)", "*.xlsx");
         fileChooser.getExtensionFilters().add(extFilter);
-        resultSave = dataWriteService.writeDataToExcelBase(listToSave, fileChooser.showSaveDialog(new Stage()));
+        resultSave = dataWriteReadService.writeDataToExcelBase(listToSave, fileChooser.showSaveDialog(new Stage()));
 
         Alert confirmationDialog = null;
         if (resultSave.startsWith("Дані успішно збережені")) {
@@ -459,7 +459,7 @@ public class ReservistsAllController implements ControlledScene {
             FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Файли Excel з формою П-2 (*.xlsx)", "*.xlsx");
             fileChooser.getExtensionFilters().add(extFilter);
 
-            resultSave = dataWriteService.writeDataToWord(reservist.getMilitaryPersonId(), fileChooser.showSaveDialog(new Stage()));
+            resultSave = dataWriteReadService.writeDataToWord(reservist.getMilitaryPersonId(), fileChooser.showSaveDialog(new Stage()));
 
             if (resultSave.startsWith("Дані успішно збережені")) {  // FIXME: Piece of shit
                 confirmationDialog = new Alert(Alert.AlertType.INFORMATION);
@@ -488,7 +488,7 @@ public class ReservistsAllController implements ControlledScene {
             FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Файли Excel з формою для оновлення(*.xlsx)", "*.xlsx");
             fileChooser.getExtensionFilters().add(extFilter);
 
-            resultSave = dataWriteService.writeExportDataToExcelBase(reservist, fileChooser.showSaveDialog(new Stage()));
+            resultSave = dataWriteReadService.writeExportDataToExcelBase(reservist, fileChooser.showSaveDialog(new Stage()));
 
             if (resultSave.startsWith("Дані успішно збережені")) {  // FIXME: Piece of shit
                 confirmationDialog = new Alert(Alert.AlertType.INFORMATION);
@@ -508,7 +508,15 @@ public class ReservistsAllController implements ControlledScene {
     }
 
     @FXML
-    private void handleImportButton() {}
+    private void handleImportButton() {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Файли Excel з формою для оновлення(*.xlsx)", "*.xlsx");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        dataWriteReadService.readImportDataFromExcel(fileChooser.showOpenDialog(new Stage()));
+
+        Popup.successSave();
+    }
 
     private FileChooser getFilePathD5() {
         FileChooser fileChooser = new FileChooser();

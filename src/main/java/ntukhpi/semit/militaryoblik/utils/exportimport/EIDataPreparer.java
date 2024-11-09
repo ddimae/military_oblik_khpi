@@ -1,5 +1,7 @@
 package ntukhpi.semit.militaryoblik.utils.exportimport;
 
+import ntukhpi.semit.militaryoblik.adapters.ExportAdapter;
+
 import java.util.*;
 
 public class EIDataPreparer {
@@ -43,8 +45,88 @@ public class EIDataPreparer {
                 count++;
             }
         }
-        strList.remove("Закордонний паспорт");
+//        strList.remove("Закордонний паспорт");
 
         return strList.toArray(new String[0]);
+    }
+
+    public static <T> List<T[]> chunksArray(T[] arr, int chunkLen) {
+        List<T[]> chunksList = new ArrayList<>();
+
+        for (int i = 0; i < arr.length; i += chunkLen)
+            chunksList.add(Arrays.copyOfRange(arr, i, Math.min(arr.length, i + chunkLen)));
+
+        return chunksList;
+    }
+
+    public static List<String[]> exportAdapterToDataList(ExportAdapter exportAdapter) {
+        List<String[]> workingDatas = new ArrayList<>();
+
+        String[] generalInfo = exportAdapter.getGeneralInfoAsStringArray();
+        String[] contactInfo = exportAdapter.getContactInfoAsStringArray();
+        String[] educationsInfo = EIDataPreparer.stringsListToStringArray(exportAdapter.getEducationsInfoAsStringArray(),
+                EISettings.MAX_EDUCATION_NUMBER,
+                EISettings.EDUCATION_COL_COUNT);
+        String[] posteducationsInfo = EIDataPreparer.stringsListToStringArray(exportAdapter.getPosteducationsInfoAsStringArray(),
+                EISettings.MAX_POSTEDUCATION_NUMBER,
+                EISettings.POSTEDUCATION_COL_COUNT);
+        String[] familyMembersInfo = EIDataPreparer.stringsListToStringArray(exportAdapter.getFamilyInfoAsStringArray(),
+                EISettings.MAX_FAMILY_NUMBER,
+                EISettings.FAMILY_COL_COUNT);
+        String[] documentsInfo = EIDataPreparer.stringsDocumentsListToStringArray(exportAdapter.getDocumentsAsStringArray());
+
+        workingDatas.add(generalInfo);
+        workingDatas.add(contactInfo);
+        workingDatas.add(educationsInfo);
+        workingDatas.add(posteducationsInfo);
+        workingDatas.add(familyMembersInfo);
+        workingDatas.add(documentsInfo);
+
+        return workingDatas;
+    }
+
+    public static ExportAdapter dataToImportAdapter(String[] data) {
+        ExportAdapter importAdapter = new ExportAdapter();
+        int offset = 0;
+        int groupLen = 0;
+
+        for (int i = 0; i < EISettings.GLOBAL_DATAGROUPS_COUNT; i++) {
+            groupLen = switch (i) {
+                case 0 -> EISettings.GLOBAL_GENERAL_DATA_COUNT;
+                case 1 -> EISettings.GLOBAL_CONTACTS_DATA_COUNT;
+                case 2 -> EISettings.GLOBAL_EDUCATION_DATA_COUNT;
+                case 3 -> EISettings.GLOBAL_POSTEDUCATION_DATA_COUNT;
+                case 4 -> EISettings.GLOBAL_FAMILY_DATA_COUNT;
+                case 5 -> EISettings.GLOBAL_DOCUMENTS_DATA_COUNT;
+                default -> groupLen;
+            };
+
+            String[] subArr = Arrays.copyOfRange(data, EISettings.GLOBAL_IMPORT_ROW + offset - 1, offset + groupLen);
+
+            offset += groupLen;
+
+            switch (i) {
+                case 0:
+                    importAdapter.setGeneralInfoAsStringArray(subArr);
+                    break;
+                case 1:
+                    importAdapter.setContactInfoAsStringArray(subArr);
+                    break;
+                case 2:
+                    importAdapter.setEducationsInfoAsStringArray(subArr);
+                    break;
+                case 3:
+                    importAdapter.setPosteducationsInfoAsStringArray(subArr);
+                    break;
+                case 4:
+                    importAdapter.setFamilyInfoAsStringArray(subArr);
+                    break;
+                case 5:
+                    importAdapter.setDocumentsAsStringArray(subArr);
+                    break;
+            }
+        }
+
+        return importAdapter;
     }
 }

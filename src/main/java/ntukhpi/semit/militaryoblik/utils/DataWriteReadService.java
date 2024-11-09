@@ -10,18 +10,19 @@ import ntukhpi.semit.militaryoblik.utils.D5.D5ExcelWriter;
 import ntukhpi.semit.militaryoblik.utils.P2.P2WordWriter;
 import ntukhpi.semit.militaryoblik.utils.exportimport.EIDataCollectService;
 import ntukhpi.semit.militaryoblik.utils.exportimport.EIDataPreparer;
+import ntukhpi.semit.militaryoblik.utils.exportimport.EIExcelReader;
 import ntukhpi.semit.militaryoblik.utils.exportimport.EIExcelWriter;
-import ntukhpi.semit.militaryoblik.utils.exportimport.EISettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 @Service
-public class DataWriteService {
+public class DataWriteReadService {
 
     private final D5DataPreparer d5DataPreparer;
     private final D5DataCollectService d5DataCollectService;
@@ -31,18 +32,22 @@ public class DataWriteService {
     private final P2WordWriter P2WordWriter;
     private final EIExcelWriter eiExcelWriter;
 
+    private final EIExcelReader eiExcelReader;
+
     @Autowired
-    public DataWriteService(D5DataPreparer d5DataPreparer,
-                            D5DataCollectService d5DataCollectService,
-                            D5ExcelWriter d5ExcelWriter,
-                            P2WordWriter P2WordWriter,
-                            EIExcelWriter eiExcelWriter,
-                            EIDataCollectService eiDataCollectService) {
+    public DataWriteReadService(D5DataPreparer d5DataPreparer,
+                                D5DataCollectService d5DataCollectService,
+                                D5ExcelWriter d5ExcelWriter,
+                                P2WordWriter P2WordWriter,
+                                EIExcelWriter eiExcelWriter,
+                                EIExcelReader eiExcelReader,
+                                EIDataCollectService eiDataCollectService) {
         this.d5DataPreparer = d5DataPreparer;
         this.d5DataCollectService = d5DataCollectService;
         this.d5ExcelWriter = d5ExcelWriter;
         this.P2WordWriter = P2WordWriter;
         this.eiExcelWriter = eiExcelWriter;
+        this.eiExcelReader = eiExcelReader;
         this.eiDataCollectService = eiDataCollectService;
     }
 
@@ -74,35 +79,25 @@ public class DataWriteService {
 
     public String writeExportDataToExcelBase(ReservistAdapter reservist, File file) {
         Long prepodId = reservist.getId();
-        List<String[]> workingDatas = new ArrayList<>();
 
         try {
             ExportAdapter exportAdapter = eiDataCollectService.collectData(prepodId);
-            String[] generalInfo = exportAdapter.getGeneralInfoAsStringArray();
-            String[] contactInfo = exportAdapter.getContactInfoAsStringArray();
-            String[] educationsInfo = EIDataPreparer.stringsListToStringArray(exportAdapter.getEducationsInfoAsStringArray(),
-                                                                            EISettings.MAX_EDUCATION_NUMBER,
-                                                                            EISettings.EDUCATION_COL_COUNT);
-            String[] posteducationsInfo = EIDataPreparer.stringsListToStringArray(exportAdapter.getPosteducationsInfoAsStringArray(),
-                                                                                EISettings.MAX_POSTEDUCATION_NUMBER,
-                                                                                EISettings.POSTEDUCATION_COL_COUNT);
-            String[] familyMembersInfo = EIDataPreparer.stringsListToStringArray(exportAdapter.getFamilyInfoAsStringArray(),
-                                                                                EISettings.MAX_FAMILY_NUMBER,
-                                                                                EISettings.FAMILY_COL_COUNT);
-            String[] documentsInfo = EIDataPreparer.stringsDocumentsListToStringArray(exportAdapter.getDocumentsAsStringArray());
 
-            workingDatas.add(generalInfo);
-            workingDatas.add(contactInfo);
-            workingDatas.add(educationsInfo);
-            workingDatas.add(posteducationsInfo);
-            workingDatas.add(familyMembersInfo);
-            workingDatas.add(documentsInfo);
-
-            return eiExcelWriter.writeExcel(workingDatas, eiDataCollectService.getDropdownAdapter().toList(), file);
+            return eiExcelWriter.writeExcel(EIDataPreparer.exportAdapterToDataList(exportAdapter), eiDataCollectService.getDropdownAdapter().toList(), file);
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return "error";
         }
+    }
+
+    public ExportAdapter readImportDataFromExcel(File file) {
+        String[] importData = eiExcelReader.readExcel(file);
+
+        ExportAdapter importAdapter = EIDataPreparer.dataToImportAdapter(importData);
+
+//        eiDataCollectService.fillIds(importAdapter);
+
+        return null;
     }
 
     public String writeDataToWord(Long reservistId, File file) {

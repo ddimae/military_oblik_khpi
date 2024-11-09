@@ -7,6 +7,8 @@ import lombok.Setter;
 import ntukhpi.semit.militaryoblik.entity.*;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
+import ntukhpi.semit.militaryoblik.utils.exportimport.EIDataPreparer;
+import ntukhpi.semit.militaryoblik.utils.exportimport.EISettings;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -18,12 +20,12 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ExportAdapter implements IBaseAdapter {
-    private PrepodAdapter prepod;
-    private MilitaryPersonAdapter military;
-    private ContactInfoAdapter contactInfo;
-    private FakultetAdapter fakultet;
-    private PositionAdapter position;
-    private CurrentDoljnostInfoAdapter currentDoljnost;
+    private PrepodAdapter prepod = new PrepodAdapter();
+    private MilitaryPersonAdapter military = new MilitaryPersonAdapter();
+    private ContactInfoAdapter contactInfo = new ContactInfoAdapter();
+    private FakultetAdapter fakultet = new FakultetAdapter();
+    private PositionAdapter position = new PositionAdapter();
+    private CurrentDoljnostInfoAdapter currentDoljnost = new CurrentDoljnostInfoAdapter();
     private Set<EducationAdapter> educations = new HashSet<>();
     private Set<EducationPostgraduateAdapter> posteducations = new HashSet<>();
     private Set<FamilyAdapter> familyMembers = new HashSet<>();
@@ -83,6 +85,56 @@ public class ExportAdapter implements IBaseAdapter {
                             milTitle, milSpeciality, milSuitability, milOffice, milSpecialRecord};
     }
 
+    public void setGeneralInfoAsStringArray(String[] arr) {
+        String surname =            arr[0];
+        String firstName =          arr[1];
+        String middleName =         arr[2];
+        String dateOfBirth =        arr[3];
+//        String nationality =        arr[4];
+        String education =          arr[5];
+        String category =           arr[6];
+        String degree =             arr[7];
+        String title =              arr[8];
+        String familyStatus =       arr[9];
+        String institute =          arr[10];
+        String cathedra =           arr[11];
+        String position =           arr[12];
+        String orderNumber =        arr[13];
+        String orderDate =          arr[14];
+        String milGroup =           arr[15];
+        String milCategory =        arr[16];
+        String milComposition =     arr[17];
+        String milTitle =           arr[18];
+        String milSpeciality =      arr[19];
+        String milSuitability =     arr[20];
+        String milOffice =          arr[21];
+        String milSpecialRecord =   arr[22];
+
+        prepod.setSurname(surname);
+        prepod.setName(firstName);
+        prepod.setMidname(middleName);
+        prepod.setBirth(dateOfBirth);
+//        contactInfo.setCountry(nationality);
+        military.setEducationLevel(education);
+        this.position.setCategory(category);
+        prepod.setDegree(degree);
+        prepod.setStatus(title);
+        military.setFamilyState(familyStatus);
+        fakultet.setName(institute);
+        prepod.setCathedra(cathedra);
+        prepod.setPosition(position);
+        currentDoljnost.setNakazStart(orderNumber);
+        currentDoljnost.setDateStart(orderDate);
+        military.setVGrupa(milGroup);
+        military.setVCategory(milCategory);
+        military.setVSklad(milComposition);
+        military.setVZvanie(milTitle);
+        military.setVos(milSpeciality);
+        military.setVPrydatnist(milSuitability);
+        military.setVoenkomat(milOffice);
+        military.setReserv(milSpecialRecord);
+    }
+
     public String[] getContactInfoAsStringArray() {
         String country = contactInfo.getCountry();
         String region = contactInfo.getRegion();
@@ -105,22 +157,75 @@ public class ExportAdapter implements IBaseAdapter {
                             regionKhFact, addressFact, indexFact};
     }
 
+    public void setContactInfoAsStringArray(String[] arr) {
+            String country =          arr[0];
+            String region =           arr[1];
+            String city =             arr[2];
+//            String regionKh =         arr[3];
+            String address =          arr[4];
+            String index =            arr[5];
+            String mainPhone =        arr[6];
+            String secondPhone =      arr[7];
+            String isFactEqual =      arr[8];
+            String countryFact =      arr[9];
+            String regionFact =       arr[10];
+            String cityFact =         arr[11];
+//            String regionKhFact =     arr[12];
+            String addressFact =      arr[13];
+            String indexFact =        arr[14];
+
+            contactInfo.setCountry(country);
+            contactInfo.setRegion(region);
+            contactInfo.setCity(city);
+            contactInfo.setAddress(address);
+            contactInfo.setIndex(index);
+            contactInfo.setMainPhone(mainPhone);
+            contactInfo.setSecondPhone(secondPhone);
+            if (isFactEqual == "TAK") {
+                contactInfo.setCountryFact(countryFact);
+                contactInfo.setRegionFact(regionFact);
+                contactInfo.setCityFact(cityFact);
+                contactInfo.setAddressFact(addressFact);
+                contactInfo.setIndexFact(indexFact);
+            }
+    }
+
     public List<String[]> getEducationsInfoAsStringArray() {
         List<String[]> educationsList = new ArrayList<>();
 
         for (EducationAdapter education : educations) {
             String name = DataFormat.safeStr(education.getVnz());
-            String diplomaSeries = education.getDiplomaSeries() + education.getDiplomaNumber();
+            String diplomaSeriesNumber = education.getDiplomaSeries() + education.getDiplomaNumber();
             String year = education.getYear();
             String speciality = education.getSpeciality();
             String qualification = education.getQualification();
             String form = education.getForm();
             String level = education.getLevel();
 
-            educationsList.add(new String[]{name, diplomaSeries, year, speciality, qualification, form, level});
+            educationsList.add(new String[]{name, diplomaSeriesNumber, year, speciality, qualification, form, level});
         }
 
         return educationsList;
+    }
+
+    public void setEducationsInfoAsStringArray(String[] arr) {
+        List<String[]> educationsList = EIDataPreparer.chunksArray(arr, EISettings.EDUCATION_COL_COUNT);
+
+        for (String[] education : educationsList) {
+
+            String name =                   education[0];
+            String diplomaSeries =          education[1];   // FIXME: separate series and number in Excel
+            String diplomaNumber =          education[1];
+            String year =                   education[2];
+            String speciality =             education[3];
+            String qualification =          education[4];
+            String form =                   education[5];
+            String level =                  education[6];
+
+            VNZaklad vnZaklad = VNZaklad.getVNZakladByToString(name);
+
+            this.educations.add(new EducationAdapter(null, year, diplomaSeries, diplomaNumber, speciality, qualification, vnZaklad, form, level));
+        }
     }
 
     public List<String[]> getPosteducationsInfoAsStringArray() {
@@ -139,6 +244,22 @@ public class ExportAdapter implements IBaseAdapter {
         return posteducationsList;
     }
 
+    public void setPosteducationsInfoAsStringArray(String[] arr) {
+        List<String[]> posteducationsList = EIDataPreparer.chunksArray(arr, EISettings.POSTEDUCATION_COL_COUNT);
+
+        for (String[] posteducation : posteducationsList) {
+            String name =           posteducation[0];
+            String diplomaSeries =  posteducation[1];
+            String yearEnd =        posteducation[2];
+            String title =          posteducation[3];
+            String levelTraining =  posteducation[4];
+
+            VNZaklad vnZaklad = VNZaklad.getVNZakladByToString(name);
+
+            this.posteducations.add(new EducationPostgraduateAdapter(null, levelTraining, vnZaklad, yearEnd));
+        }
+    }
+
     public List<String[]> getFamilyInfoAsStringArray() {
         List<String[]> familyList = new ArrayList<>();
 
@@ -151,6 +272,19 @@ public class ExportAdapter implements IBaseAdapter {
         }
 
         return familyList;
+    }
+
+    public void setFamilyInfoAsStringArray(String[] arr) {
+        List<String[]> familyList = EIDataPreparer.chunksArray(arr, EISettings.FAMILY_COL_COUNT);
+
+        for (String[] familyMember : familyList) {
+            String level =  familyMember[0];
+            String pib =    familyMember[1];
+            String birth =  familyMember[2];
+
+            // TODO: split PIB
+            familyMembers.add(new FamilyAdapter(null, pib, pib, pib, level, birth));
+        }
     }
 
     public List<String[]> getDocumentsAsStringArray() {
@@ -167,5 +301,22 @@ public class ExportAdapter implements IBaseAdapter {
 
         return documentsList;
 
+    }
+
+    public void setDocumentsAsStringArray(String[] arr) {
+        List<String[]> documentsList = EIDataPreparer.chunksArray(arr, EISettings.DOCUMENT_COL_COUNT);
+
+        for (String[] document : documentsList) {
+            String passportType =   arr[0];
+            String series =         arr[1];
+            String whoGives =       arr[2];
+            String date =           arr[3];
+
+            this.documents.add(new DocumentAdapter(null, passportType, series, whoGives, date));
+        }
+    }
+
+    public String[] getSystemInfoAsStringArray() {
+        return new String[]{prepod.getId().toString()};
     }
 }
