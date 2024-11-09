@@ -139,7 +139,7 @@ public class ExportAdapter implements IBaseAdapter {
         String country = contactInfo.getCountry();
         String region = contactInfo.getRegion();
         String city = contactInfo.getCity();
-        String regionKh = "BOILERPLATE"; // FIXME: maybe delete this field from excel
+        String regionKh = "TO DO"; // TODO: set info
         String address = contactInfo.getAddress();
         String index = contactInfo.getIndex();
         String mainPhone = contactInfo.getMainPhone();
@@ -148,7 +148,7 @@ public class ExportAdapter implements IBaseAdapter {
         String countryFact = contactInfo.getCountryFact();
         String regionFact = contactInfo.getRegionFact();
         String cityFact = contactInfo.getCityFact();
-        String regionKhFact = "BOILERPLATE"; // FIXME: maybe delete this field from excel
+        String regionKhFact = "TO DO"; // TODO: set info
         String addressFact = contactInfo.getAddressFact();
         String indexFact = contactInfo.getIndexFact();
 
@@ -195,14 +195,15 @@ public class ExportAdapter implements IBaseAdapter {
 
         for (EducationAdapter education : educations) {
             String name = DataFormat.safeStr(education.getVnz());
-            String diplomaSeriesNumber = education.getDiplomaSeries() + education.getDiplomaNumber();
+            String diplomaSeries = education.getDiplomaSeries();
+            String diplomaNumber = education.getDiplomaNumber();
             String year = education.getYear();
             String speciality = education.getSpeciality();
             String qualification = education.getQualification();
             String form = education.getForm();
             String level = education.getLevel();
 
-            educationsList.add(new String[]{name, diplomaSeriesNumber, year, speciality, qualification, form, level});
+            educationsList.add(new String[]{name, diplomaSeries, diplomaNumber, year, speciality, qualification, form, level});
         }
 
         return educationsList;
@@ -214,13 +215,13 @@ public class ExportAdapter implements IBaseAdapter {
         for (String[] education : educationsList) {
 
             String name =                   education[0];
-            String diplomaSeries =          education[1];   // FIXME: separate series and number in Excel
-            String diplomaNumber =          education[1];
-            String year =                   education[2];
-            String speciality =             education[3];
-            String qualification =          education[4];
-            String form =                   education[5];
-            String level =                  education[6];
+            String diplomaSeries =          education[1];
+            String diplomaNumber =          education[2];
+            String year =                   education[3];
+            String speciality =             education[4];
+            String qualification =          education[5];
+            String form =                   education[6];
+            String level =                  education[7];
 
             VNZaklad vnZaklad = VNZaklad.getVNZakladByToString(name);
 
@@ -233,12 +234,14 @@ public class ExportAdapter implements IBaseAdapter {
 
         for (EducationPostgraduateAdapter posteducation : posteducations) {
             String name = DataFormat.safeStr(posteducation.getVnz());
-            String diplomaSeries = "BOILERPLATE";   // FIXME: No such field in DB
+            String diplomaSeries = "TO DO";   // FIXME: No such field in DB
+            String diplomaNumber = "TO DO";   // FIXME: No such field in DB
+            String endDate = "TO DO";   // FIXME: No such field in DB
             String yearEnd = posteducation.getYear();
-            String title = "BOILERPLATE";    // FIXME: No such field in DB
+            String title = "TO DO";    // FIXME: No such field in DB
             String levelTraining = posteducation.getType();
 
-            posteducationsList.add(new String[]{name, diplomaSeries, yearEnd, title, levelTraining});
+            posteducationsList.add(new String[]{name, diplomaSeries, diplomaNumber, endDate, yearEnd, title, levelTraining});
         }
 
         return posteducationsList;
@@ -250,9 +253,11 @@ public class ExportAdapter implements IBaseAdapter {
         for (String[] posteducation : posteducationsList) {
             String name =           posteducation[0];
             String diplomaSeries =  posteducation[1];
-            String yearEnd =        posteducation[2];
-            String title =          posteducation[3];
-            String levelTraining =  posteducation[4];
+            String diplomaNumber =  posteducation[2];
+            String endYear =        posteducation[3];
+            String yearEnd =        posteducation[4];
+            String title =          posteducation[5];
+            String levelTraining =  posteducation[6];
 
             VNZaklad vnZaklad = VNZaklad.getVNZakladByToString(name);
 
@@ -265,10 +270,12 @@ public class ExportAdapter implements IBaseAdapter {
 
         for (FamilyAdapter familyMember : familyMembers) {
             String level = familyMember.getVidRidstva();
-            String pib = familyMember.getFullPib();
+            String surName = familyMember.getMemFam();
+            String firstName = familyMember.getMemName();
+            String middleName = familyMember.getMemOtch();
             String birth = familyMember.getRikNarodz();
 
-            familyList.add(new String[]{level, pib, birth});
+            familyList.add(new String[]{level, surName, firstName, middleName, birth});
         }
 
         return familyList;
@@ -278,12 +285,14 @@ public class ExportAdapter implements IBaseAdapter {
         List<String[]> familyList = EIDataPreparer.chunksArray(arr, EISettings.FAMILY_COL_COUNT);
 
         for (String[] familyMember : familyList) {
-            String level =  familyMember[0];
-            String pib =    familyMember[1];
-            String birth =  familyMember[2];
+            String level =      familyMember[0];
+            String surName =    familyMember[1];
+            String firstName =  familyMember[2];
+            String middleName = familyMember[3];
+            String birth =      familyMember[4];
 
             // TODO: split PIB
-            familyMembers.add(new FamilyAdapter(null, pib, pib, pib, level, birth));
+            familyMembers.add(new FamilyAdapter(null, surName, firstName, middleName, level, birth));
         }
     }
 

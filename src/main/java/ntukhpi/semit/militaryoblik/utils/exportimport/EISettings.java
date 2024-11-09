@@ -14,7 +14,7 @@ public final class EISettings {
     public final static int GLOBAL_SHEET_INDEX = 6;
 
     public final static int MAX_EDUCATION_NUMBER = 4;
-    public final static int EDUCATION_COL_COUNT = 7;
+    public final static int EDUCATION_COL_COUNT = 8;
     public final static int EDUCATION_SHEET_INDEX = 3;
     public final static int EDUCATION_GLOBAL_TABLE_START_COLUMN = 6;
     public final static int EDUCATION_GLOBAL_TABLE_START_ROW = 1;
@@ -22,7 +22,7 @@ public final class EISettings {
     public final static int EDUCATION_DEST_TABLE_START_ROW = 4;
 
     public final static int MAX_POSTEDUCATION_NUMBER = 6;
-    public final static int POSTEDUCATION_COL_COUNT = 5;
+    public final static int POSTEDUCATION_COL_COUNT = 7;
     public final static int POSTEDUCATION_SHEET_INDEX = 3;
     public final static int POSTEDUCATION_GLOBAL_TABLE_START_COLUMN = 6;
     public final static int POSTEDUCATION_GLOBAL_TABLE_START_ROW = 7;
@@ -30,7 +30,7 @@ public final class EISettings {
     public final static int POSTEDUCATION_DEST_TABLE_START_ROW = 12;
 
     public final static int MAX_FAMILY_NUMBER = 6;
-    public final static int FAMILY_COL_COUNT = 3;
+    public final static int FAMILY_COL_COUNT = 5;
     public final static int FAMILY_SHEET_INDEX = 4;
     public final static int FAMILY_GLOBAL_TABLE_START_COLUMN = 6;
     public final static int FAMILY_GLOBAL_TABLE_START_ROW = 15;
@@ -44,9 +44,9 @@ public final class EISettings {
 
     public final static int GLOBAL_GENERAL_DATA_COUNT = 23;
     public final static int GLOBAL_CONTACTS_DATA_COUNT = 15;
-    public final static int GLOBAL_EDUCATION_DATA_COUNT = 28;
-    public final static int GLOBAL_POSTEDUCATION_DATA_COUNT = 30;
-    public final static int GLOBAL_FAMILY_DATA_COUNT = 18;
+    public final static int GLOBAL_EDUCATION_DATA_COUNT = MAX_EDUCATION_NUMBER * EDUCATION_COL_COUNT;
+    public final static int GLOBAL_POSTEDUCATION_DATA_COUNT = MAX_POSTEDUCATION_NUMBER * POSTEDUCATION_COL_COUNT;
+    public final static int GLOBAL_FAMILY_DATA_COUNT = MAX_POSTEDUCATION_NUMBER * FAMILY_COL_COUNT;
     public final static int GLOBAL_DOCUMENTS_DATA_COUNT = 12;
     public final static int GLOBAL_DATAGROUPS_COUNT = 6;
 
