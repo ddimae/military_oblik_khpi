@@ -27,8 +27,6 @@ public class ContactInfoValidator implements IBaseValidator<ContactInfoAdapter> 
     @Getter()
     private PhoneNumberValidator secondPhoneForm;
 
-    public ContactInfoValidator() {};
-
     @Override
     public boolean validate(ContactInfoAdapter info) throws Exception {
         TextFieldValidator countryForm = new TextFieldValidator(-1, true, null, "Країна", info.getCountry(), null);

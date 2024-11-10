@@ -3,10 +3,14 @@ package ntukhpi.semit.militaryoblik.javafxutils.validators;
 import ntukhpi.semit.militaryoblik.adapters.CathedraAdapter;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.IBaseValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValidator;
-import ntukhpi.semit.militaryoblik.service.KafedraServiceImpl;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.exceptions.InstituteNotFoundException;
+import ntukhpi.semit.militaryoblik.service.FakultetService;
+import ntukhpi.semit.militaryoblik.service.KafedraService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.management.InstanceAlreadyExistsException;
+import javax.management.InstanceNotFoundException;
 import java.util.regex.Pattern;
 
 @Component
@@ -15,10 +19,14 @@ public class CathedraValidator implements IBaseValidator<CathedraAdapter> {
     private Pattern oneWord = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії]*$");
     private Pattern onlyNumber = Pattern.compile("^\\d+$");
 
-    @Autowired
-    KafedraServiceImpl kafedraService;
+    KafedraService kafedraService;
+    FakultetService fakultetService;
 
-    public CathedraValidator() {}
+    @Autowired
+    public CathedraValidator(KafedraService kafedraService, FakultetService fakultetService) {
+        this.kafedraService = kafedraService;
+        this.fakultetService = fakultetService;
+    }
 
     @Override
     public boolean validate(CathedraAdapter info) throws Exception {
@@ -32,12 +40,16 @@ public class CathedraValidator implements IBaseValidator<CathedraAdapter> {
         abbrValidator.validate();
         codeValidator.validate();
 
+        if (fakultetService.findFakultetByFname(info.getInstitute()) == null)
+            throw new InstituteNotFoundException("Інститута з такою назвою не існує");
+
+
         if (kafedraService.findIDKafedraByKname(info.getFullName()) != null)
-            throw new Exception("Кафедра з такою назвою вже інсує");
+            throw new InstanceAlreadyExistsException("Кафедра з такою назвою вже інсує");
         if (kafedraService.findIDKafedraByKabr(info.getAbbr()) != null)
-            throw new Exception("Кафедра з такою абревіатуро вже інсує");
+            throw new InstanceAlreadyExistsException("Кафедра з такою абревіатуро вже інсує");
         if (kafedraService.findIDKafedraByOid(info.getCode()) != null)
-            throw new Exception("Кафедра з таким кодом вже інсує");
+            throw new InstanceAlreadyExistsException("Кафедра з таким кодом вже інсує");
 
         return true;
     }

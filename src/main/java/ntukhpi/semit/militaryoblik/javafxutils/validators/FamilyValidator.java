@@ -18,6 +18,7 @@ public class FamilyValidator implements IBaseValidator<FamilyAdapter> {
         TextFieldValidator surnameValidator = new TextFieldValidator(40, false, ukrWords, "Прізвище", info.getMemFam(), "повинно містити українські літери");
         TextFieldValidator nameValidator = new TextFieldValidator(30, false, ukrWords, "Ім'я", info.getMemName(), "повинно містити українські літери");
         TextFieldValidator midnameValidator = new TextFieldValidator(30, false, ukrWords, "По батькові", info.getMemOtch(), "повинно містити українські літери");
+        // FIXME: Not obligatory in DB
         TextFieldValidator yearValidator = new TextFieldValidator(4, true, onlyYear, "Рік народження", info.getRikNarodz(), "повинно містити 4 цифри");
 
         relationshipValidator.validate();

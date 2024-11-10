@@ -16,14 +16,18 @@ public class PositionAdapter implements IBaseAdapter {
     private int category;
 
     public String getCategory() {
-        return category == 1 ? "ППС" : "ІТС";
+        if (category == 1)
+            return "НПП";
+        if (category == 2)
+            return "ІТС";
+        return null;
     }
 
     public void setCategory(String category) {
-        if (category.equals("ППС"))
+        if (category.equals("НПП"))
             this.category = 1;
         if (category.equals("ІТС"))
-            this.category = 0;
+            this.category = 2;
     }
 
     public PositionAdapter(Dolghnost d) {

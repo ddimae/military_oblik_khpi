@@ -3,6 +3,7 @@ package ntukhpi.semit.militaryoblik.javafxutils.validators;
 import ntukhpi.semit.militaryoblik.adapters.MilitaryPersonAdapter;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.IBaseValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValidator;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.exceptions.VoenkomatNotFoundException;
 import ntukhpi.semit.militaryoblik.service.VoenkomatServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,11 +15,16 @@ public class MilitaryRegistrationValidator implements IBaseValidator<MilitaryPer
     Pattern onlyNumber = Pattern.compile("^\\d+$");
     Pattern ukrWords = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії,.\\-`'_\\s]*$");
 
-    @Autowired
     VoenkomatServiceImpl voenkomatService;
+
+    @Autowired
+    public MilitaryRegistrationValidator(VoenkomatServiceImpl voenkomatService) {
+        this.voenkomatService = voenkomatService;
+    }
 
     @Override
     public boolean validate(MilitaryPersonAdapter info) throws Exception {
+        // FIXME: Check all validators for obligation in DB
         TextFieldValidator vosValidator = new TextFieldValidator(6, true, onlyNumber, "ВОС", info.getVos(), "повинен містити тільки 1 число з 6 цифр");
         TextFieldValidator categoryValidator = new TextFieldValidator(1, true, onlyNumber, "Категорія обліку", info.getVCategory(), null);
 
@@ -41,6 +47,9 @@ public class MilitaryRegistrationValidator implements IBaseValidator<MilitaryPer
         voenkomatValidator.validate();
         familyStanValidator.validate();
         osvitaValidator.validate();
+
+        if (voenkomatService.getVoenkomatByName(info.getVoenkomat()) == null)
+            throw new VoenkomatNotFoundException("ТЦК з такою назвою не існує");
 
         return true;
     }

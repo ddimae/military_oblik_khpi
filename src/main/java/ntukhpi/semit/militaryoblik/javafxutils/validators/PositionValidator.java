@@ -7,25 +7,34 @@ import ntukhpi.semit.militaryoblik.service.DolghnostServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.management.InstanceAlreadyExistsException;
 import java.util.regex.Pattern;
 
 @Component
 public class PositionValidator implements IBaseValidator<PositionAdapter> {
     Pattern ukrWords = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії,.\\-`'_\\s0-9]*$");
+    Pattern onlyCategories = Pattern.compile("^(НПП|ІТС)$");
+
+    DolghnostServiceImpl dolghnostService;
 
     @Autowired
-    DolghnostServiceImpl dolghnostService;
+    public PositionValidator(DolghnostServiceImpl dolghnostService) {
+        this.dolghnostService = dolghnostService;
+    }
 
     @Override
     public boolean validate(PositionAdapter info) throws Exception {
         TextFieldValidator fullNameValidator = new TextFieldValidator(40, true, ukrWords, "Назва посади", info.getFullName(), "може містити тільки українські літери та розділові знаки");
         TextFieldValidator shortNameValidator = new TextFieldValidator(15, false, ukrWords, "Скорочене позначення", info.getShortName(), "може містити тільки українські літери та розділові знаки");
+        // FIXME: Not obligatory in DB
+        TextFieldValidator categoryValidator = new TextFieldValidator(3, true, onlyCategories, "Категорія працівника", info.getCategory(), "Може бути тільки НПП чи ІТС");
 
         fullNameValidator.validate();
         shortNameValidator.validate();
+        categoryValidator.validate();
 
         if (dolghnostService.findIDPosadaByName(info.getFullName()) != null)
-            throw new Exception("Посада з такою назвою вже існує");
+            throw new InstanceAlreadyExistsException("Посада з такою назвою вже існує");
 
         return true;
     }

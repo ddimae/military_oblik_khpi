@@ -17,6 +17,7 @@ import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.PosteducationValidator;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
 import ntukhpi.semit.militaryoblik.service.VNZakladServiceImpl;
 import ntukhpi.semit.militaryoblik.service.entitycrud.EducationPostgraduateCRUD;
@@ -52,6 +53,8 @@ public class EducationPostgraduateEditController implements ControlledScene {
     PrepodServiceImpl prepodService;
     @Autowired
     VNZakladServiceImpl vnZakladService;
+    @Autowired
+    PosteducationValidator posteducationValidator;
 
     @Override
     public void setMainController(Object mainController) {
@@ -90,17 +93,13 @@ public class EducationPostgraduateEditController implements ControlledScene {
     @FXML
     private void saveEducation() {
         String year = yearTextField.getText();
-
-        if (year.length() != 4) {
-            Popup.wrongInputAlert("Рік повинен містити 4 цифри");
-            return;
-        }
-
         String type = typeComboBox.getValue();
-        VNZaklad vnz = vnzComboBox.getValue();
+        VNZaklad vnz = vnzComboBox.getValue() != null ? vnzComboBox.getValue() : new VNZaklad();
 
-        if (type == null || vnz == null) {
-            Popup.wrongInputAlert("Заповніть обов'язкові поля");
+        try {
+            posteducationValidator.validate(new EducationPostgraduateAdapter(null, type, vnz, year));
+        } catch (Exception e) {
+            Popup.wrongInputAlert(e.getMessage());
             return;
         }
 
@@ -113,10 +112,10 @@ public class EducationPostgraduateEditController implements ControlledScene {
             newEducation.setVnz(vnz);
 
             if (selectedEducation == null) {
-                educationPostgraduateCRUD.addPostgraduateEducation(selectedPrepod.getId(),year,type,vnz.getVnzName());
+                educationPostgraduateCRUD.addPostgraduateEducation(selectedPrepod.getId(),year,type,vnz.getVnzShortName());
 //                mainController.addPostgraduateEducation(newEducation);
             } else {
-                educationPostgraduateCRUD.updatePostgraduateEducation(selectedPrepod.getId(),year,type,vnz.getVnzName());
+                educationPostgraduateCRUD.updatePostgraduateEducation(selectedPrepod.getId(),year,type,vnz.getVnzShortName());
 //               mainController.updatePostgraduateEducation(selectedEducation, newEducation);
             }
             //DDE - refresh education list after add or edit or delete

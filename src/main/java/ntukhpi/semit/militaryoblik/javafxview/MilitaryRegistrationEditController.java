@@ -18,6 +18,7 @@ import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.MilitaryRegistrationValidator;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.exceptions.VoenkomatNotFoundException;
 import ntukhpi.semit.militaryoblik.service.*;
 import ntukhpi.semit.militaryoblik.service.entitycrud.EmployeeCRUD;
 import ntukhpi.semit.militaryoblik.service.entitycrud.MilitaryRegistrationCRUD;
@@ -292,19 +293,18 @@ public class MilitaryRegistrationEditController implements ControlledScene {
             militaryRegistrationValidator.validate(new MilitaryPersonAdapter(null, vos, category,
                                                     group, vSklad, vZvanie, voenkomat,
                                                 null, prydatnist, familyState, educationLevel));
+        } catch (VoenkomatNotFoundException ignored) {
+            if (!Popup.saveConfirmation())
+                return;
         } catch (Exception e) {
             Popup.wrongInputAlert(e.getMessage());
             return;
         }
 
-        if (voenkomatService.getIDVoenkomatByName(voenkomat) == null) {
-            if (!Popup.saveConfirmation())
-                return;
 //            Винесено в VoenkomatCRUD
 //            Voenkomat newVoenkomat = new Voenkomat();
 //            newVoenkomat.setVoenkomatName(voenkomat);
 //            voenkomatService.createVoenkomat(newVoenkomat);
-        }
 
         try {
 //            MilitaryPerson militaryPerson = militaryPersonService.getMilitaryPersonByPrepod(selectedPrepod);

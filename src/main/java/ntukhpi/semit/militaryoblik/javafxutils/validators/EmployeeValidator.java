@@ -23,17 +23,21 @@ public class EmployeeValidator implements IBaseValidator<PrepodAdapter> {
     Pattern ukrWords = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії\\-\\s]+$");
     Pattern ukrDateRegex = Pattern.compile("^\\d{2}\\.\\d{2}\\.\\d{4}$");
 
-    @Autowired
     KafedraService kafedraService;
-
-    @Autowired
     FakultetService fakultetService;
-
-    @Autowired
     DolghnostService dolghnostService;
+    PrepodService prepodService;
 
     @Autowired
-    PrepodService prepodService;
+    public EmployeeValidator(KafedraService kafedraService,
+                             FakultetService fakultetService,
+                             DolghnostService dolghnostService,
+                             PrepodService prepodService) {
+        this.kafedraService = kafedraService;
+        this.fakultetService = fakultetService;
+        this.dolghnostService = dolghnostService;
+        this.prepodService = prepodService;
+    }
 
     @Override
     public boolean validate(PrepodAdapter info) throws Exception {

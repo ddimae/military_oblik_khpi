@@ -99,7 +99,7 @@ public class PositionAddController implements ControlledScene {
             positionCRUD.addCathedra(fullName,shortName,String.valueOf(category));
             //Якщо додавання успішне і зараз на формі із даними нового співробітника встановлена саме ця посада,
             //то додати її до комбобоксу
-            if (positionComboBox.getItems().get(positionComboBox.getItems().size() - 1).getCategoryEmployees() != category) {
+            if (positionComboBox.getItems().get(positionComboBox.getItems().size() - 1).getCategoryEmployees() == category) {
                 positionComboBox.getItems().add(dolghnost);
             }
             closeEdit(null);
