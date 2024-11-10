@@ -234,14 +234,10 @@ public class ExportAdapter implements IBaseAdapter {
 
         for (EducationPostgraduateAdapter posteducation : posteducations) {
             String name = DataFormat.safeStr(posteducation.getVnz());
-            String diplomaSeries = "TO DO";   // FIXME: No such field in DB
-            String diplomaNumber = "TO DO";   // FIXME: No such field in DB
-            String endDate = "TO DO";   // FIXME: No such field in DB
             String yearEnd = posteducation.getYear();
-            String title = "TO DO";    // FIXME: No such field in DB
             String levelTraining = posteducation.getType();
 
-            posteducationsList.add(new String[]{name, diplomaSeries, diplomaNumber, endDate, yearEnd, title, levelTraining});
+            posteducationsList.add(new String[]{name, yearEnd, levelTraining});
         }
 
         return posteducationsList;
@@ -252,12 +248,8 @@ public class ExportAdapter implements IBaseAdapter {
 
         for (String[] posteducation : posteducationsList) {
             String name =           posteducation[0];
-            String diplomaSeries =  posteducation[1];
-            String diplomaNumber =  posteducation[2];
-            String endYear =        posteducation[3];
-            String yearEnd =        posteducation[4];
-            String title =          posteducation[5];
-            String levelTraining =  posteducation[6];
+            String yearEnd =        posteducation[1];
+            String levelTraining =  posteducation[2];
 
             VNZaklad vnZaklad = VNZaklad.getVNZakladByToString(name);
 

@@ -22,7 +22,7 @@ public final class EISettings {
     public final static int EDUCATION_DEST_TABLE_START_ROW = 4;
 
     public final static int MAX_POSTEDUCATION_NUMBER = 6;
-    public final static int POSTEDUCATION_COL_COUNT = 7;
+    public final static int POSTEDUCATION_COL_COUNT = 3;
     public final static int POSTEDUCATION_SHEET_INDEX = 3;
     public final static int POSTEDUCATION_GLOBAL_TABLE_START_COLUMN = 6;
     public final static int POSTEDUCATION_GLOBAL_TABLE_START_ROW = 7;

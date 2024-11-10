@@ -103,9 +103,9 @@ public class EIDataPreparer {
 
             String[] subArr = Arrays.copyOfRange(data, EISettings.GLOBAL_IMPORT_ROW + offset - 1, offset + groupLen);
 
-//            System.out.println("===============================");
-//            for (int x = 0; x < subArr.length; x++)
-//                System.out.println(subArr[x]);
+            System.out.println("===============================");
+            for (int x = 0; x < subArr.length; x++)
+                System.out.println(subArr[x]);
 
             offset += groupLen;
 
