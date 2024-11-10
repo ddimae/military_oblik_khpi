@@ -7,7 +7,7 @@ import ntukhpi.semit.militaryoblik.entity.VNZaklad;
 
 @Getter
 @Setter
-public class EducationAdapter {
+public class EducationAdapter implements IBaseAdapter {
     private Long id;
     private String year;
     private String diplomaSeries;

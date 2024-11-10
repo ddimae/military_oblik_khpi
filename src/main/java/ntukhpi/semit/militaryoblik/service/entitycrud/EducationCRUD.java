@@ -39,10 +39,10 @@ public class EducationCRUD {
     }
 
     public void updateEducation(Long idEdu, Long idPersonForUpdate, String form, String level,
-                                String vnzName, String year, String diplomaNumber,
+                                String vnzShortName, String year, String diplomaNumber,
                                 String diplomaSeries, String specialty, String qualification) {
         Education educationUpdate = createNewInstance(idPersonForUpdate, form, level,
-                vnzName, year, diplomaNumber, diplomaSeries, specialty, qualification);
+                vnzShortName, year, diplomaNumber, diplomaSeries, specialty, qualification);
         Education newDocumentInDB = educationService.getEducationByKey(educationUpdate.getPrepod(),
                 educationUpdate.getVnz(),educationUpdate.getYearVypusk());
         if (newDocumentInDB == null || (newDocumentInDB != null && newDocumentInDB.getId() == idEdu)) {
@@ -56,14 +56,14 @@ public class EducationCRUD {
     }
 
     private Education createNewInstance(Long idPerson, String form, String level,
-                                        String vnzName, String year, String diplomaNumber,
+                                        String vnzShortName, String year, String diplomaNumber,
                                         String diplomaSeries, String specialty, String qualification) {
         Education newEducation = new Education();
 
         newEducation.setPrepod(prepodService.getPrepodById(idPerson));
         newEducation.setFormTraining(form);
         newEducation.setLevelTraining(level);
-        newEducation.setVnz(vnZakladService.getVNZakladByVnzName(vnzName));
+        newEducation.setVnz(vnZakladService.getVNZakladById(vnZakladService.findIdVNZakladByVnzShortName(vnzShortName)));
         newEducation.setYearVypusk(year);
         newEducation.setDiplomaNumber(diplomaNumber);
         newEducation.setDiplomaSeries(diplomaSeries);

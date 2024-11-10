@@ -7,9 +7,12 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
+import ntukhpi.semit.militaryoblik.adapters.UniversityAdapter;
 import ntukhpi.semit.militaryoblik.entity.VNZaklad;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.UniversityValidator;
+import ntukhpi.semit.militaryoblik.service.EducationService;
 import ntukhpi.semit.militaryoblik.service.entitycrud.VNZCRUD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -34,6 +37,9 @@ public class AddVNZController implements ControlledScene {
 //    VNZakladServiceImpl vnZakladService;
     @Autowired
     VNZCRUD vnzCRUD;
+
+    @Autowired
+    UniversityValidator universityValidator;
 
     @Override
     public void setMainController(Object controller) {
@@ -70,24 +76,29 @@ public class AddVNZController implements ControlledScene {
         String name = nameTextField.getText();
         String abbreviation = abbreviationTextField.getText();
 
-        if (!name.isEmpty() && !abbreviation.isEmpty()) {
-
-            if (!Popup.saveConfirmation())
-                return;
-
-            VNZaklad newVNZ = new VNZaklad();
-            newVNZ.setVnzName(name);
-            newVNZ.setVnzShortName(abbreviation);
-
-            try {
-                vnzCRUD.addVNZ(name, abbreviation);
-                vnzObservableList.add(newVNZ);
-                vnzComboBox.setValue(newVNZ);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            cancel();
+        try {
+            universityValidator.validate(new UniversityAdapter(name, abbreviation));
+        } catch (Exception e) {
+            Popup.wrongInputAlert(e.getMessage());
+            return;
         }
+
+        if (!Popup.saveConfirmation())
+            return;
+
+        VNZaklad newVNZ = new VNZaklad();
+        newVNZ.setVnzName(name);
+        newVNZ.setVnzShortName(abbreviation);
+
+        try {
+            vnzCRUD.addVNZ(name, abbreviation);
+            vnzObservableList.add(newVNZ);
+            vnzComboBox.setValue(newVNZ);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        cancel();
+        Popup.successSave();
     }
 
     @FXML

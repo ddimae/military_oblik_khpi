@@ -10,12 +10,14 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
+import ntukhpi.semit.militaryoblik.entity.Education;
 import ntukhpi.semit.militaryoblik.entity.VNZaklad;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.AllStageSettings;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.EducationValidator;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
 import ntukhpi.semit.militaryoblik.service.VNZakladServiceImpl;
 import ntukhpi.semit.militaryoblik.service.entitycrud.EducationCRUD;
@@ -59,6 +61,8 @@ public class EducationEditController implements ControlledScene {
     PrepodServiceImpl prepodService;
     @Autowired
     VNZakladServiceImpl vnZakladService;
+    @Autowired
+    EducationValidator educationValidator;
 
     @Override
     public void setMainController(Object mainController) {
@@ -101,57 +105,30 @@ public class EducationEditController implements ControlledScene {
     @FXML
     private void saveEducation() {
         String year = yearTextField.getText();
-
-        if (year.length() != 4) {
-            Popup.wrongInputAlert("Рік повинен містити 4 цифри");
-            return;
-        }
-
         String diplomaNumber = diplomaNumberTextField.getText();
         String diplomaSeries = diplomaSeriesTextField.getText();
-
-        if (!diplomaNumber.matches("^[0-9]+.+")) {
-            Popup.wrongInputAlert("Номер диплома на початку можe містити лише цифри");
-            return;
-        }
-
         String specialty = specialtyTextField.getText();
         String qualification = qualificationTextField.getText();
-
-        VNZaklad vnz = vnzComboBox.getValue();
-        //DDE
-        if (vnz.getId()==null) {
-            vnz.setId(vnZakladService.findIdVNZakladByVnzName(vnz.getVnzName()));
-        }
+        VNZaklad vnz = vnzComboBox.getValue() != null ? vnzComboBox.getValue() : new VNZaklad();
         String form = formComboBox.getValue();
         String level = levelComboBox.getValue();
 
-        if (vnz == null || form == null || level == null || diplomaNumber.isEmpty()
-            //    || specialty.isEmpty() || qualification.isEmpty()
-        ) {
-            Popup.wrongInputAlert("Заповніть обов'язкові поля");
+        try {
+            educationValidator.validate(new EducationAdapter(null, year, diplomaSeries,
+                                                            diplomaNumber, specialty, qualification,
+                                                            vnz, form, level));
+        } catch (Exception e) {
+            Popup.wrongInputAlert(e.getMessage());
             return;
         }
 
         try {
-//            Education newEducation = new Education();
-//
-//            newEducation.setPrepod(selectedPrepod);
-//            newEducation.setFormTraining(form);
-//            newEducation.setLevelTraining(level);
-//            newEducation.setVnz(vnz);
-//            newEducation.setYearVypusk(year);
-//            newEducation.setDiplomaNumber(diplomaNumber);
-//            newEducation.setDiplomaSeries(diplomaSeries);
-//            newEducation.setDiplomaSpeciality(specialty);
-//            newEducation.setDiplomaQualification(qualification);
-
             if (selectedEducation == null) {
                 educationCRUD.addEducation(selectedPrepod.getId(),form,level,
-                        vnz.getVnzName(),year,diplomaNumber,diplomaSeries,specialty,qualification);
+                        vnz.getVnzShortName(),year,diplomaNumber,diplomaSeries,specialty,qualification);
             } else {
-                educationCRUD.updateEducation(selectedEducation.getId(),selectedEducation.getId(),
-                        form,level,vnz.getVnzName(),year,diplomaNumber,diplomaSeries,specialty,qualification);
+                educationCRUD.updateEducation(selectedEducation.getId(), selectedPrepod.getId(),
+                        form,level,vnz.getVnzShortName(),year,diplomaNumber,diplomaSeries,specialty,qualification);
             }
 
             //DDE - refresh education list after add or edit or delete
@@ -159,6 +136,7 @@ public class EducationEditController implements ControlledScene {
             closeEdit(null);
             Popup.successSave();
         } catch (Exception e) {
+            e.printStackTrace();
             Popup.wrongInputAlert(e.getMessage());
         }
     }
