@@ -36,6 +36,12 @@ public class EducationPostgraduate {
     //Обирається з переліку (фіксований)
     private String levelTraining;
 
+    //Серія і номер диплому (може не бути!!!)
+    @Column(name = "diploma_series",length = 5)
+    private String diplomaSeries;
+    @Column(name = "diploma_numbers",length = 12)
+    private String diplomaNumber;
+
     //Однаковим вважати записи, в яких співпадає Препод, ВНЗ та рік
     // ? можливо ВНЗ для після дипломної освіти зайве....
     // Аспирантуру у двух вузах ніхто не закінчує

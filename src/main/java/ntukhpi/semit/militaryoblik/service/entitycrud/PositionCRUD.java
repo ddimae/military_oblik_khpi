@@ -18,12 +18,13 @@ public class PositionCRUD {
         dolghnost.setDolghnShortName(shortName);
         //Якщо якись зайде незрозумілий номер категорії (символи або більше 2), то категорія буде 2
         int category;
+
         try {
             category = Integer.parseInt(categoryString);
         } catch (IllegalArgumentException e){
             category = 2;
         }
-        if (category !=1 || category !=2) {
+        if (category != 1 && category != 2) {
             category = 2;
         }
         dolghnost.setCategoryEmployees(category);
