@@ -19,7 +19,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExportAdapter implements IBaseAdapter {
+public class IOAdapter implements IBaseAdapter {
     private PrepodAdapter prepod = new PrepodAdapter();
     private MilitaryPersonAdapter military = new MilitaryPersonAdapter();
     private ContactInfoAdapter contactInfo = new ContactInfoAdapter();
@@ -31,7 +31,7 @@ public class ExportAdapter implements IBaseAdapter {
     private Set<FamilyAdapter> familyMembers = new HashSet<>();
     private Set<DocumentAdapter> documents = new HashSet<>();
 
-    public ExportAdapter(Prepod prepod, MilitaryPerson militaryPerson) {
+    public IOAdapter(Prepod prepod, MilitaryPerson militaryPerson) {
         this.prepod = new PrepodAdapter(prepod);
         this.military = new MilitaryPersonAdapter(militaryPerson);
         this.contactInfo = new ContactInfoAdapter(prepod.getContacts());
@@ -139,7 +139,6 @@ public class ExportAdapter implements IBaseAdapter {
         String country = contactInfo.getCountry();
         String region = contactInfo.getRegion();
         String city = contactInfo.getCity();
-        String regionKh = "TO DO"; // TODO: set info
         String address = contactInfo.getAddress();
         String index = contactInfo.getIndex();
         String mainPhone = contactInfo.getMainPhone();
@@ -148,31 +147,28 @@ public class ExportAdapter implements IBaseAdapter {
         String countryFact = contactInfo.getCountryFact();
         String regionFact = contactInfo.getRegionFact();
         String cityFact = contactInfo.getCityFact();
-        String regionKhFact = "TO DO"; // TODO: set info
         String addressFact = contactInfo.getAddressFact();
         String indexFact = contactInfo.getIndexFact();
 
-        return new String[]{country, region, city, regionKh, address, index,
-                            mainPhone, secondPhone, isFactEqual, countryFact, regionFact, cityFact,
-                            regionKhFact, addressFact, indexFact};
+        return new String[]{country, region, city, address, index,
+                            mainPhone, secondPhone, isFactEqual, countryFact,
+                            regionFact, cityFact, addressFact, indexFact};
     }
 
     public void setContactInfoAsStringArray(String[] arr) {
             String country =          arr[0];
             String region =           arr[1];
             String city =             arr[2];
-//            String regionKh =         arr[3];
-            String address =          arr[4];
-            String index =            arr[5];
-            String mainPhone =        arr[6];
-            String secondPhone =      arr[7];
-            String isFactEqual =      arr[8];
-            String countryFact =      arr[9];
-            String regionFact =       arr[10];
-            String cityFact =         arr[11];
-//            String regionKhFact =     arr[12];
-            String addressFact =      arr[13];
-            String indexFact =        arr[14];
+            String address =          arr[3];
+            String index =            arr[4];
+            String mainPhone =        arr[5];
+            String secondPhone =      arr[6];
+            String isFactEqual =      arr[7];
+            String countryFact =      arr[8];
+            String regionFact =       arr[9];
+            String cityFact =         arr[10];
+            String addressFact =      arr[11];
+            String indexFact =        arr[12];
 
             contactInfo.setCountry(country);
             contactInfo.setRegion(region);

@@ -1,6 +1,5 @@
 package ntukhpi.semit.militaryoblik.utils.exportimport;
 
-import ntukhpi.semit.militaryoblik.adapters.ExportAdapter;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;

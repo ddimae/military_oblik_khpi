@@ -2,7 +2,7 @@ package ntukhpi.semit.militaryoblik.utils;
 
 import javafx.collections.ObservableList;
 import ntukhpi.semit.militaryoblik.adapters.D05Adapter;
-import ntukhpi.semit.militaryoblik.adapters.ExportAdapter;
+import ntukhpi.semit.militaryoblik.adapters.IOAdapter;
 import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
 import ntukhpi.semit.militaryoblik.utils.D5.D5DataCollectService;
 import ntukhpi.semit.militaryoblik.utils.D5.D5DataPreparer;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -81,7 +80,7 @@ public class DataWriteReadService {
         Long prepodId = reservist.getId();
 
         try {
-            ExportAdapter exportAdapter = eiDataCollectService.collectData(prepodId);
+            IOAdapter exportAdapter = eiDataCollectService.collectData(prepodId);
 
             return eiExcelWriter.writeExcel(EIDataPreparer.exportAdapterToDataList(exportAdapter), eiDataCollectService.getDropdownAdapter().toList(), file);
         } catch (Exception e) {
@@ -90,10 +89,10 @@ public class DataWriteReadService {
         }
     }
 
-    public ExportAdapter readImportDataFromExcel(File file) {
+    public IOAdapter readImportDataFromExcel(File file) {
         String[] importData = eiExcelReader.readExcel(file);
 
-        ExportAdapter importAdapter = EIDataPreparer.dataToImportAdapter(importData);
+        IOAdapter importAdapter = EIDataPreparer.dataToImportAdapter(importData);
 
 //        eiDataCollectService.fillIds(importAdapter);
 

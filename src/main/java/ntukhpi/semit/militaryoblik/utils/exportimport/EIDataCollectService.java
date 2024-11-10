@@ -1,9 +1,7 @@
 package ntukhpi.semit.militaryoblik.utils.exportimport;
 
-import jakarta.annotation.PostConstruct;
-import lombok.Getter;
 import ntukhpi.semit.militaryoblik.adapters.DropdownAdapter;
-import ntukhpi.semit.militaryoblik.adapters.ExportAdapter;
+import ntukhpi.semit.militaryoblik.adapters.IOAdapter;
 import ntukhpi.semit.militaryoblik.adapters.MilitaryPersonAdapter;
 import ntukhpi.semit.militaryoblik.adapters.PrepodAdapter;
 import ntukhpi.semit.militaryoblik.entity.MilitaryPerson;
@@ -69,17 +67,17 @@ public class EIDataCollectService {
     }
 
     @Transactional
-    public ExportAdapter collectData(Long prepodId) throws Exception {
+    public IOAdapter collectData(Long prepodId) throws Exception {
         Prepod prepod = prepodService.getPrepodById(prepodId);
         MilitaryPerson militaryPerson = militaryPersonService.getMilitaryPersonByPrepod(prepod);
 
         if (prepod == null || militaryPerson == null) // FIXME: refactor. maybe add try/catch
             throw new Exception("Prepod or MilitaryPerson is not defined");
 
-        return new ExportAdapter(prepod, militaryPerson);
+        return new IOAdapter(prepod, militaryPerson);
     }
 
-    public void fillIds(ExportAdapter ioAdapter) {
+    public void fillIds(IOAdapter ioAdapter) {
         PrepodAdapter ioPrepod = ioAdapter.getPrepod();
         Prepod foundPrepod = prepodService.getPrepodByExapmleFIO(new Prepod(ioPrepod.getSurname(), ioPrepod.getName(), ioPrepod.getMidname(), null));
 

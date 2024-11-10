@@ -1,6 +1,6 @@
 package ntukhpi.semit.militaryoblik.utils.exportimport;
 
-import ntukhpi.semit.militaryoblik.adapters.ExportAdapter;
+import ntukhpi.semit.militaryoblik.adapters.IOAdapter;
 
 import java.util.*;
 
@@ -59,7 +59,7 @@ public class EIDataPreparer {
         return chunksList;
     }
 
-    public static List<String[]> exportAdapterToDataList(ExportAdapter exportAdapter) {
+    public static List<String[]> exportAdapterToDataList(IOAdapter exportAdapter) {
         List<String[]> workingDatas = new ArrayList<>();
 
         String[] generalInfo = exportAdapter.getGeneralInfoAsStringArray();
@@ -85,8 +85,8 @@ public class EIDataPreparer {
         return workingDatas;
     }
 
-    public static ExportAdapter dataToImportAdapter(String[] data) {
-        ExportAdapter importAdapter = new ExportAdapter();
+    public static IOAdapter dataToImportAdapter(String[] data) {
+        IOAdapter importAdapter = new IOAdapter();
         int offset = 0;
         int groupLen = 0;
 
@@ -103,9 +103,9 @@ public class EIDataPreparer {
 
             String[] subArr = Arrays.copyOfRange(data, EISettings.GLOBAL_IMPORT_ROW + offset - 1, offset + groupLen);
 
-            System.out.println("===============================");
-            for (int x = 0; x < subArr.length; x++)
-                System.out.println(subArr[x]);
+//            System.out.println("===============================");
+//            for (int x = 0; x < subArr.length; x++)
+//                System.out.println(subArr[x]);
 
             offset += groupLen;
 
