@@ -4,6 +4,8 @@ import ntukhpi.semit.militaryoblik.adapters.DocumentAdapter;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.DateFieldValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.IBaseValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValidator;
+import ntukhpi.semit.militaryoblik.service.MilitaryPersonService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Pattern;
@@ -16,6 +18,13 @@ public class DocumentValidator implements IBaseValidator<DocumentAdapter> {
     Pattern newWhoGivesRegex = Pattern.compile("^\\d{4}$");
     Pattern enOldSeriesNumberRegex = Pattern.compile("^[A-Z]{2}\\d{6}$");
     Pattern ukrDateRegex = Pattern.compile("^\\d{2}\\.\\d{2}\\.\\d{4}$");
+
+    MilitaryPersonService militaryPersonService;
+
+    @Autowired
+    public DocumentValidator(MilitaryPersonService militaryPersonService) {
+        this.militaryPersonService =  militaryPersonService;
+    }
 
     @Override
     public boolean validate(DocumentAdapter info) throws Exception {
@@ -47,6 +56,16 @@ public class DocumentValidator implements IBaseValidator<DocumentAdapter> {
                 break;
             case "Військовий квиток офіцера запасу":
             case "Військовий квиток":
+                switch (militaryPersonService.getMilitaryPersonByPrepodId(info.getPrepodId()).getVZvanie().getSkladName()) {
+                    case "Офіцерський склад":
+                        if (info.getType().equals("Військовий квиток"))
+                            throw new Exception("Офіцерський склад може мати тільки Військовий квиток офіцера запасу");
+                        break;
+                    case "Рядовий та сержантський склад":
+                        if (info.getType().equals("Військовий квиток офіцера запасу"))
+                            throw new Exception("Рядовий та сержантський склад може мати тільки Військовий квиток");
+                        break;
+                }
                 numberValidator.setRegex(ukrOldSeriesNumberRegex);
                 numberValidator.setErrorMsg("Серія та номер військового квитка повинні містити 2 великі українські літери та 6 цифр");
                 whoGivesValidator.setRegex(ukrOldWhoGivesRegex);

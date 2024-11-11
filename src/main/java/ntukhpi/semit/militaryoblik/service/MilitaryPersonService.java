@@ -12,6 +12,8 @@ public interface MilitaryPersonService {
 
     MilitaryPerson getMilitaryPersonByPrepod(Prepod prep);
 
+    MilitaryPerson getMilitaryPersonByPrepodId(Long prepId);
+
     List<MilitaryPerson> getAllMilitaryPerson();
 
     MilitaryPerson updateMilitaryPerson(Long id, MilitaryPerson updateMilitaryPerson);

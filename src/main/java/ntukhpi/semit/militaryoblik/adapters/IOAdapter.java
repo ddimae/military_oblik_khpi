@@ -309,7 +309,7 @@ public class IOAdapter implements IBaseAdapter {
             String whoGives =       arr[2];
             String date =           arr[3];
 
-            this.documents.add(new DocumentAdapter(null, passportType, series, whoGives, date));
+            this.documents.add(new DocumentAdapter(null, passportType, series, whoGives, date, null));
         }
     }
 

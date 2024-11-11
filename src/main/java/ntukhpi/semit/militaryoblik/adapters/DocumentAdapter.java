@@ -19,8 +19,9 @@ public class DocumentAdapter implements IBaseAdapter {
     private String number;
     private String whoGives;
     private String date;
+    private Long prepodId;
 
     public DocumentAdapter(Document d) {
-        this(d.getId(), d.getDocType(), d.getDocNumber(), d.getKtoVyd(), DataFormat.localDateToUkStandart(d.getDataVyd()));
+        this(d.getId(), d.getDocType(), d.getDocNumber(), d.getKtoVyd(), DataFormat.localDateToUkStandart(d.getDataVyd()), d.getPrepod().getId());
     }
 }

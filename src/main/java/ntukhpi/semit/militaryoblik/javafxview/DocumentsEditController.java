@@ -198,7 +198,7 @@ public class DocumentsEditController implements ControlledScene {
         String date = dateDatePicker.getEditor().getText().trim();
 
         try {
-            documentValidator.validate(new DocumentAdapter(null, docType, number, whoGives, date));
+            documentValidator.validate(new DocumentAdapter(null, docType, number, whoGives, date, selectedPrepod.getId()));
         } catch (Exception e) {
             Popup.wrongInputAlert(e.getMessage());
             return;

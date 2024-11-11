@@ -16,15 +16,22 @@ public class MilitaryPersonServiceImpl implements MilitaryPersonService {
 
     private final MilitaryPersonRepository militaryPersonRepository;
 
+    private final PrepodServiceImpl prepodServiceImpl;
     private final VoenkomatServiceImpl voenkomatServiceImpl;
     private final VSkladServiceImpl vskladServiceImpl;
     private final VZvanieServiceImpl vzvanieServiceImpl;
+
     @Autowired
-    public MilitaryPersonServiceImpl(MilitaryPersonRepository militaryPersonRepository, VoenkomatServiceImpl voenkomatServiceImpl, VSkladServiceImpl vskladServiceImpl, VZvanieServiceImpl vzvanieServiceImpl) {
+    public MilitaryPersonServiceImpl(MilitaryPersonRepository militaryPersonRepository,
+                                     VoenkomatServiceImpl voenkomatServiceImpl,
+                                     VSkladServiceImpl vskladServiceImpl,
+                                     VZvanieServiceImpl vzvanieServiceImpl,
+                                     PrepodServiceImpl prepodServiceImpl) {
         this.militaryPersonRepository = militaryPersonRepository;
         this.voenkomatServiceImpl = voenkomatServiceImpl;
         this.vskladServiceImpl = vskladServiceImpl;
         this.vzvanieServiceImpl = vzvanieServiceImpl;
+        this.prepodServiceImpl = prepodServiceImpl;
     }
 
     @Override
@@ -40,6 +47,13 @@ public class MilitaryPersonServiceImpl implements MilitaryPersonService {
     @Override
     public MilitaryPerson getMilitaryPersonByPrepod(Prepod prep) {
         return militaryPersonRepository.findMilitaryPersonByPrepod(prep);
+    }
+
+    @Override
+    public MilitaryPerson getMilitaryPersonByPrepodId(Long prepId) {
+        Prepod prepod = prepodServiceImpl.getPrepodById(prepId);
+
+        return this.getMilitaryPersonByPrepod(prepod);
     }
 
     @Override
