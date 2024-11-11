@@ -1,10 +1,7 @@
 package ntukhpi.semit.militaryoblik.service.entitycrud;
 
-import ntukhpi.semit.militaryoblik.entity.FamilyMember;
-import ntukhpi.semit.militaryoblik.entity.MilitaryPerson;
+import ntukhpi.semit.militaryoblik.adapters.ContactInfoAdapter;
 import ntukhpi.semit.militaryoblik.entity.PersonalData;
-import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Country;
-import ntukhpi.semit.militaryoblik.entity.fromasukhpi.RegionUkraine;
 import ntukhpi.semit.militaryoblik.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,10 +18,7 @@ public class ContactsCRUD {
     RegionUkraineService regionUkraineService;
 
 
-    public PersonalData updatePersonalData(Long idPerson,
-                   String country, String index, String city, String address, String region,
-                   String countryFact, String indexFact, String cityFact, String addressFact, String regionFact,
-                                           String mainPhone, String secondPhone) {
+    public PersonalData updatePersonalData(Long idPerson, ContactInfoAdapter adapter) {
         PersonalData personalData = personalDataService.getPersonalDataByPrepodId(idPerson);
         if (personalData == null) {
             personalData = new PersonalData();
@@ -37,26 +31,27 @@ public class ContactsCRUD {
             personalData = personalDataService.createPersonalData(personalData);
         }
         //Registration Address
-        personalData.setCountry(countryService.getCountryByName(country));
-        personalData.setPostIndex(index);
-        personalData.setCity(city);
-        personalData.setRowAddress(address);
-        boolean isUkraine = String.valueOf(country).equals("Україна");
+        personalData.setCountry(countryService.getCountryByName(adapter.getCountry()));
+        personalData.setPostIndex(adapter.getIndex());
+        personalData.setCity(adapter.getCity());
+        personalData.setRowAddress(adapter.getAddress());
+        boolean isUkraine = String.valueOf(adapter.getCountry()).equals("Україна");
 
-        personalData.setOblastUA((region!=null && !region.isBlank())&&isUkraine?regionUkraineService.getRegionUkraineByName(region):null);
+        personalData.setOblastUA((adapter.getRegion() != null && !adapter.getRegion().isBlank()) &&
+                isUkraine ? regionUkraineService.getRegionUkraineByName(adapter.getRegion()) : null);
 
         //Fact Address
-        personalData.setFactСountry(countryService.getCountryByName(countryFact));
-        personalData.setFactPostIndex(indexFact);
-        personalData.setFactCity(cityFact);
-        personalData.setFactRowAddress(addressFact);
-        boolean isUkraineFact = String.valueOf(countryFact).equals("Україна");
-        personalData.setFactOblastUA((regionFact!=null && !regionFact.isBlank())&&isUkraineFact?
-                regionUkraineService.getRegionUkraineByName(regionFact):null);
+        personalData.setFactСountry(countryService.getCountryByName(adapter.getCountryFact()));
+        personalData.setFactPostIndex(adapter.getIndexFact());
+        personalData.setFactCity(adapter.getCityFact());
+        personalData.setFactRowAddress(adapter.getAddressFact());
+        boolean isUkraineFact = String.valueOf(adapter.getCountryFact()).equals("Україна");
+        personalData.setFactOblastUA((adapter.getRegionFact() !=null && !adapter.getRegionFact().isBlank())&&isUkraineFact?
+                regionUkraineService.getRegionUkraineByName(adapter.getRegionFact()):null);
 
         //Phones
-        personalData.setPhoneMain(mainPhone);
-        personalData.setPhoneDop(secondPhone);
+        personalData.setPhoneMain(adapter.getMainPhone());
+        personalData.setPhoneDop(adapter.getSecondPhone());
 
         return personalDataService.updatePersonalData(personalData);
     }

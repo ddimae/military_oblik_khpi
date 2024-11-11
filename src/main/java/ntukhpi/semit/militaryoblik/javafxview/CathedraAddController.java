@@ -133,7 +133,7 @@ public class CathedraAddController implements ControlledScene {
             kafedra.setFakultet(instituteComboBox.getValue());
 
 //            kafedraService.createKafedra(kafedra);
-            cathedraCRUD.addCathedra(fullName,abbr,code,instituteComboBox.getValue().getFname());
+            cathedraCRUD.addCathedra(new CathedraAdapter(institute, fullName, abbr, code));
             cathedraComboBox.getItems().add(kafedra);
 
             closeEdit(null);

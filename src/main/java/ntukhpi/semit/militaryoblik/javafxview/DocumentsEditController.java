@@ -215,12 +215,11 @@ public class DocumentsEditController implements ControlledScene {
 
             if (selectedDocument == null)
 //                mainController.addNewDocument(newDocument);
-                documentCRUD.addDocument(selectedPrepod.getId(), docType,
-                        number, whoGives, dateDatePicker.getEditor().getText());
+                documentCRUD.addDocument(selectedPrepod.getId(), new DocumentAdapter(null, docType, number, whoGives, date, null));
             else
 //                mainController.updateDocument(selectedDocument, newDocument);
-                documentCRUD.updateDocument(selectedDocument.getId(),selectedPrepod.getId(), docType,
-                        number, whoGives, dateDatePicker.getEditor().getText());
+                documentCRUD.updateDocument(selectedDocument.getId(),selectedPrepod.getId(),
+                        new DocumentAdapter(null, docType, number, whoGives, date, null));
             //DDE - refresh documents list after add or edit or delete
             mainController.refreshDocsTable();
             closeEdit(null);

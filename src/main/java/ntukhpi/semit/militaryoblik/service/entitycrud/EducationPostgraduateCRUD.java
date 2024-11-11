@@ -1,5 +1,6 @@
 package ntukhpi.semit.militaryoblik.service.entitycrud;
 
+import ntukhpi.semit.militaryoblik.adapters.EducationPostgraduateAdapter;
 import ntukhpi.semit.militaryoblik.entity.EducationPostgraduate;
 import ntukhpi.semit.militaryoblik.service.EducationPostgraduateService;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
@@ -19,15 +20,15 @@ public class EducationPostgraduateCRUD {
     @Autowired
     PrepodServiceImpl prepodService;
 
-    public void addPostgraduateEducation(Long idPerson, String year, String type, String vnzShortName) {
-        EducationPostgraduate newEducationPostgraduate = createNewInstance(idPerson, year, type, vnzShortName);
+    public void addPostgraduateEducation(Long idPerson, EducationPostgraduateAdapter adapter) {
+        EducationPostgraduate newEducationPostgraduate = createNewInstance(idPerson, adapter);
         educationPostgraduateService.createEducationPostgraduate(newEducationPostgraduate);
 
     }
 
-    public void updatePostgraduateEducation(Long idPersonForUpdate, String year, String type, String vnzShortName) {
-        EducationPostgraduate educationPostgraduateUpdate = createNewInstance(idPersonForUpdate, year, type, vnzShortName);
-        educationPostgraduateService.updateEducationPostgraduate(idPersonForUpdate, educationPostgraduateUpdate);
+    public void updatePostgraduateEducation(Long idPersonForUpdate,Long idPostEducation, EducationPostgraduateAdapter adapter) {
+        EducationPostgraduate educationPostgraduateUpdate = createNewInstance(idPersonForUpdate, adapter);
+        educationPostgraduateService.updateEducationPostgraduate(idPostEducation, educationPostgraduateUpdate);
     }
 
     public void deletePostgraduateEducation(Long idDelEducation) {
@@ -35,16 +36,14 @@ public class EducationPostgraduateCRUD {
     }
 
 
-    private EducationPostgraduate createNewInstance(Long idPerson, String year, String type, String vnzShortName
-//         , String diplomaSeries, String diplomaNumber, String specialtyNumber, String specialtyNazva
-    ) {
+    private EducationPostgraduate createNewInstance(Long idPerson, EducationPostgraduateAdapter adapter) {
 
         EducationPostgraduate newEducationPostgraduate = new EducationPostgraduate();
 
         newEducationPostgraduate.setPrepod(prepodService.getPrepodById(idPerson));
-        newEducationPostgraduate.setYearFinish(year);
-        newEducationPostgraduate.setLevelTraining(type);
-        newEducationPostgraduate.setVnz(vnZakladService.getVNZakladById(vnZakladService.findIdVNZakladByVnzShortName(vnzShortName)));
+        newEducationPostgraduate.setYearFinish(adapter.getYear());
+        newEducationPostgraduate.setLevelTraining(adapter.getType());
+        newEducationPostgraduate.setVnz(vnZakladService.getVNZakladById(vnZakladService.findIdVNZakladByVnzShortName(adapter.getVnz().getShortName())));
         // Зараз в БД немає номеру диплома та спеціальності
         //Но така інформація не потрібна для представлення у додатку 05, але передбачається формою П-2
 //        newEducation.setDiplomaSeries(diplomaSeries);

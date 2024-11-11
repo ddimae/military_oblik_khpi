@@ -30,12 +30,8 @@ public class EmployeeCRUD {
     @Autowired
     VoenkomatService voenkomatService;
 
-    public Prepod addEmployee(String surname, String name, String midname,
-                             String kafedraFullName,
-                             String birthDate,
-                             String dolghnost, String stepen, String zvanie) {
-        Prepod newEmployee = createNewInstance(surname, name, midname, kafedraFullName,
-                                                   birthDate, dolghnost, stepen, zvanie);
+    public Prepod addEmployee(PrepodAdapter adapter) {
+        Prepod newEmployee = createNewInstance(adapter);
         return prepodService.createPrepod(newEmployee);
     }
 
@@ -73,22 +69,19 @@ public class EmployeeCRUD {
                 prepodAdapter.getMidname(),prepodAdapter.getCathedra());
     }
 
-    private Prepod createNewInstance(String surname, String name, String midname,
-                                     String kafedraFullName,
-                                        String birthDate,
-                                        String dolghnost, String stepen, String zvanie) {
+    private Prepod createNewInstance(PrepodAdapter adapter) {
         Prepod newPrepod = new Prepod();
 
-        newPrepod.setFam(surname);
-        newPrepod.setImya(name);
-        newPrepod.setOtch(midname);
-        newPrepod.setKafedra(kafedraService.getKafedraByName(kafedraFullName));
+        newPrepod.setFam(adapter.getSurname());
+        newPrepod.setImya(adapter.getName());
+        newPrepod.setOtch(adapter.getMidname());
+        newPrepod.setKafedra(kafedraService.getKafedraByName(adapter.getCathedra()));
 //        if (!birthDate.isBlank())
-            newPrepod.setDr(LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+            newPrepod.setDr(LocalDate.parse(adapter.getBirth(), DateTimeFormatter.ofPattern("dd.MM.yyyy")));
 
-        newPrepod.setDolghnost(dolghnostService.getDolghnostByName(dolghnost));
-        newPrepod.setStepen(stepenService.getStepenByName(stepen));
-        newPrepod.setZvanie(zvanieService.getZvanieByName(zvanie));
+        newPrepod.setDolghnost(dolghnostService.getDolghnostByName(adapter.getPosition()));
+        newPrepod.setStepen(stepenService.getStepenByName(adapter.getDegree()));
+        newPrepod.setZvanie(zvanieService.getZvanieByName(adapter.getStatus()));
 
         return newPrepod;
     }

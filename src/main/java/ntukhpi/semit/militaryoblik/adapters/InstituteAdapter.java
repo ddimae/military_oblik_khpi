@@ -1,0 +1,31 @@
+package ntukhpi.semit.militaryoblik.adapters;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Fakultet;
+import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class InstituteAdapter implements IBaseAdapter {
+    private String id;
+    private String name;
+    private String abbr;
+    private String code;
+
+    public InstituteAdapter(Fakultet f) {
+        this.id = DataFormat.safeStr(f.getFid());
+        this.name = f.getFname();
+        this.abbr = f.getAbr();
+        this.code = f.getOid();
+    }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
+}

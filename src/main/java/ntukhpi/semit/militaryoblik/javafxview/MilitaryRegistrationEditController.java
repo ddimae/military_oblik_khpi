@@ -327,12 +327,16 @@ public class MilitaryRegistrationEditController implements ControlledScene {
             //Якщо військово-облікова інформація введена не буде, цей запис відразу вилучається із бази!
             if (newPrepod == null) {
                 militaryRegistrationCRUD.updateMilitaryPerson(selectedPrepod.getId(),
-                        vos, category, group, vSklad, vZvanie,
-                        prydatnist, voenkomat, familyState, educationLevel);
+                        new MilitaryPersonAdapter(null, vos, category,
+                                group, vSklad, vZvanie,
+                                voenkomat, null, prydatnist,
+                                familyState, educationLevel));
             } else {
                 militaryRegistrationCRUD.updateMilitaryPerson(employeeCRUD.adapterPrepodToPrepod(newPrepod).getId(),
-                        vos, category, group, vSklad, vZvanie,
-                        prydatnist, voenkomat, familyState, educationLevel);
+                        new MilitaryPersonAdapter(null, vos, category,
+                                group, vSklad, vZvanie,
+                                voenkomat, null, prydatnist,
+                                familyState, educationLevel));
                 //???
                 MilitaryPerson mp = militaryPersonService.
                         getMilitaryPersonByPrepod(employeeCRUD.adapterPrepodToPrepod(newPrepod)); //***

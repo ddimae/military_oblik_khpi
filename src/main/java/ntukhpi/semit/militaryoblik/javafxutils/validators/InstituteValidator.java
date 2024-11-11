@@ -1,6 +1,6 @@
 package ntukhpi.semit.militaryoblik.javafxutils.validators;
 
-import ntukhpi.semit.militaryoblik.adapters.FakultetAdapter;
+import ntukhpi.semit.militaryoblik.adapters.InstituteAdapter;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.IBaseValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValidator;
 import ntukhpi.semit.militaryoblik.service.FakultetServiceImpl;
@@ -11,7 +11,7 @@ import javax.management.InstanceAlreadyExistsException;
 import java.util.regex.Pattern;
 
 @Component
-public class InstituteValidator implements IBaseValidator<FakultetAdapter> {
+public class InstituteValidator implements IBaseValidator<InstituteAdapter> {
     Pattern ukrWords = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії,.\\-`'_\\s]*$");
     Pattern oneWord = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії]*$");
     Pattern onlyNumber = Pattern.compile("^\\d+$");
@@ -24,7 +24,7 @@ public class InstituteValidator implements IBaseValidator<FakultetAdapter> {
     }
 
     @Override
-    public boolean validate(FakultetAdapter info) throws Exception {
+    public boolean validate(InstituteAdapter info) throws Exception {
         TextFieldValidator fullNameValidator = new TextFieldValidator(100, true, ukrWords, "Повна назва", info.getName(), "може містити тільки українські літери та розділові знаки");
         TextFieldValidator abbrValidator = new TextFieldValidator(10, true, oneWord, "Абревіатура", info.getAbbr(), "повнно містити тільки українські літери без пробілів");
         // FIXME: Not obligatory in DB

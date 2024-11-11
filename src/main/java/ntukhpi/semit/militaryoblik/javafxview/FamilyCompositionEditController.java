@@ -125,12 +125,12 @@ public class FamilyCompositionEditController implements ControlledScene {
 
             if (selectedMember == null) {
 //                mainController.addNewFamilyMember(newMember);
-                familyMemberCRUD.addFamilyMember(selectedPrepod.getId(),vidRidstva,
-                        surname,name,patronimic,year);
+                familyMemberCRUD.addFamilyMember(selectedPrepod.getId(),
+                        new FamilyAdapter(null, surname, name, patronimic, vidRidstva, year));
             }            else {
 //                mainController.updateFamily(selectedMember, newMember);
                 familyMemberCRUD.updateFamilyMember(selectedMember.getId(),selectedPrepod.getId(),
-                        vidRidstva,surname,name,patronimic,year);
+                        new FamilyAdapter(null, surname, name, patronimic, vidRidstva, year));
             }
 
 

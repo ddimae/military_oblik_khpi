@@ -1,8 +1,6 @@
 package ntukhpi.semit.militaryoblik.utils.exportimport;
 
-import ntukhpi.semit.militaryoblik.adapters.CathedraAdapter;
-import ntukhpi.semit.militaryoblik.adapters.IOAdapter;
-import ntukhpi.semit.militaryoblik.adapters.TestAdapter;
+import ntukhpi.semit.militaryoblik.adapters.EIAdapter;
 
 import java.util.*;
 
@@ -61,7 +59,7 @@ public class EIDataPreparer {
         return chunksList;
     }
 
-    public static List<String[]> exportAdapterToDataList(IOAdapter exportAdapter) {
+    public static List<String[]> exportAdapterToDataList(EIAdapter exportAdapter) {
         List<String[]> workingDatas = new ArrayList<>();
 
         String[] generalInfo = exportAdapter.getGeneralInfoAsStringArray();
@@ -87,8 +85,8 @@ public class EIDataPreparer {
         return workingDatas;
     }
 
-    public static IOAdapter dataToImportAdapter(String[] data) {
-        IOAdapter importAdapter = new IOAdapter();
+    public static EIAdapter dataToImportAdapter(String[] data) {
+        EIAdapter importAdapter = new EIAdapter();
         int offset = 0;
         int groupLen = 0;
 
@@ -136,8 +134,8 @@ public class EIDataPreparer {
         return importAdapter;
     }
 
-    public static IOAdapter mergeIOAdapters(IOAdapter source, IOAdapter target) {
-        IOAdapter merged = new IOAdapter();
+    public static EIAdapter mergeEIAdapters(EIAdapter source, EIAdapter target) {
+        EIAdapter merged = new EIAdapter();
 
         merged.merge(source, true);
         merged.merge(target, true);

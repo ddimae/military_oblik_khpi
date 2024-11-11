@@ -1,5 +1,6 @@
 package ntukhpi.semit.militaryoblik.service.entitycrud;
 
+import ntukhpi.semit.militaryoblik.adapters.DocumentAdapter;
 import ntukhpi.semit.militaryoblik.entity.Document;
 import ntukhpi.semit.militaryoblik.service.DocumentService;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
@@ -20,10 +21,8 @@ public class DocumentCRUD {
     @Autowired
     DocumentService documentService;
 
-    public void addDocument(Long idPerson, String docType, String number,
-                            String whoGives, String dateFromDataPicker) {
-        Document newDocument = createNewInstance(idPerson, docType, number,
-                whoGives, dateFromDataPicker);
+    public void addDocument(Long idPerson, DocumentAdapter adapter) {
+        Document newDocument = createNewInstance(idPerson, adapter);
         Document newDocumentInDB = documentService.getDocumentByExample(newDocument);
         if (newDocumentInDB == null) {
             documentService.createDocument(newDocument);
@@ -33,10 +32,8 @@ public class DocumentCRUD {
 
     }
 
-    public void updateDocument(Long idDoc, Long idPersonForUpdate, String docType, String number,
-                               String whoGives, String dateFromDataPicker) {
-        Document documentUpdate = createNewInstance(idPersonForUpdate, docType, number,
-                whoGives, dateFromDataPicker);
+    public void updateDocument(Long idDoc, Long idPersonForUpdate, DocumentAdapter adapter) {
+        Document documentUpdate = createNewInstance(idPersonForUpdate, adapter);
         Document newDocumentInDB = documentService.getDocumentByExample(documentUpdate);
         if (newDocumentInDB == null || (newDocumentInDB != null && newDocumentInDB.getId()==idDoc)) {
             documentService.updateDocument(idDoc, documentUpdate);
@@ -50,16 +47,15 @@ public class DocumentCRUD {
     }
 
 
-    private Document createNewInstance(Long idPerson, String docType, String number,
-                                       String whoGives, String dateFromDataPicker) {
+    private Document createNewInstance(Long idPerson, DocumentAdapter adapter) {
 
         Document newDocument = new Document();
 
         newDocument.setPrepod(prepodService.getPrepodById(idPerson));
-        newDocument.setDocType(docType);
-        newDocument.setDocNumber(number);
-        newDocument.setKtoVyd(whoGives);
-        newDocument.setDataVyd(LocalDate.parse(dateFromDataPicker, DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        newDocument.setDocType(adapter.getType());
+        newDocument.setDocNumber(adapter.getNumber());
+        newDocument.setKtoVyd(adapter.getWhoGives());
+        newDocument.setDataVyd(LocalDate.parse(adapter.getDate(), DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         return newDocument;
     }
 }

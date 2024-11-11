@@ -7,18 +7,15 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
-import ntukhpi.semit.militaryoblik.adapters.FakultetAdapter;
+import ntukhpi.semit.militaryoblik.adapters.InstituteAdapter;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Fakultet;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.InstituteValidator;
-import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValidator;
 import ntukhpi.semit.militaryoblik.service.FakultetServiceImpl;
 import ntukhpi.semit.militaryoblik.service.entitycrud.InstituteCRUD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.regex.Pattern;
 
 
 /**
@@ -78,7 +75,7 @@ public class InstituteAddController implements ControlledScene {
         String code = codeTextField.getText().trim();
 
         try {
-            instituteValidator.validate(new FakultetAdapter(null, fullName, abbr, code));
+            instituteValidator.validate(new InstituteAdapter(null, fullName, abbr, code));
         } catch (Exception e) {
             Popup.wrongInputAlert(e.getMessage());
             return;
@@ -94,7 +91,7 @@ public class InstituteAddController implements ControlledScene {
             fakultet.setAbr(abbr);
             fakultet.setOid(code);
 
-            instituteCRUD.addInstitute(fullName,abbr,code);
+            instituteCRUD.addInstitute(new InstituteAdapter(null, fullName, abbr, code));
         //            fakultetService.createFakultet(fakultet);
             instituteComboBox.getItems().add(fakultet);
 

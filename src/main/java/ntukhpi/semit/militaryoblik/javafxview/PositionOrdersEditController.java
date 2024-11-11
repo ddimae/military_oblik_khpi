@@ -206,11 +206,15 @@ public class PositionOrdersEditController implements ControlledScene {
             CurrentDoljnostInfo cd = selectedPrepod.getPosadaNakazy();
             if (cd == null) {
                 currentDoljnostInfoCRUD.addCurrentDoljnost(selectedPrepod.getId(),
-                        nakaz, dateStr, comment, nakazDiss, dateDissStr, commentDiss);
+                        new CurrentDoljnostInfoAdapter(dateStr, nakaz, comment,
+                                dateDissStr, nakazDiss, commentDiss,
+                                null, null, null));
 //                dolghnostService.createCurrentDoljnostInfo(newCurrDolgnost);
             } else {
                 currentDoljnostInfoCRUD.updateCurrentDoljnost(cd.getId(), selectedPrepod.getId(),
-                        nakaz, dateStr, comment, nakazDiss, dateDissStr, commentDiss);
+                        new CurrentDoljnostInfoAdapter(dateStr, nakaz, comment,
+                                dateDissStr,nakazDiss, commentDiss,
+                                null, null, null));
 //                dolghnostService.updateCurrentDoljnostInfo(cd.getId(), newCurrDolgnost);
             }
             closeEdit(null);

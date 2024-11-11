@@ -1,5 +1,6 @@
 package ntukhpi.semit.militaryoblik.service.entitycrud;
 
+import ntukhpi.semit.militaryoblik.adapters.FamilyAdapter;
 import ntukhpi.semit.militaryoblik.entity.Document;
 import ntukhpi.semit.militaryoblik.entity.FamilyMember;
 import ntukhpi.semit.militaryoblik.service.DocumentService;
@@ -20,10 +21,8 @@ public class FamilyMemberCRUD {
     @Autowired
     FamilyMemberService familyMemberService;
 
-    public void addFamilyMember(Long idPerson, String vidRidstva, String surname,
-                                String name, String patronimic, String year) {
-        FamilyMember newFamilyMember = createNewInstance(idPerson, vidRidstva,
-                                                  surname, name, patronimic,year);
+    public void addFamilyMember(Long idPerson, FamilyAdapter adapter) {
+        FamilyMember newFamilyMember = createNewInstance(idPerson, adapter);
         FamilyMember newFamilyMemberInDB = familyMemberService.getFamilyMemberByExample(newFamilyMember);
         if (newFamilyMemberInDB == null) {
             familyMemberService.createFamilyMember(newFamilyMember);
@@ -32,10 +31,8 @@ public class FamilyMemberCRUD {
         }
     }
 
-    public void updateFamilyMember(Long idUpdateFamilyMember, Long idPersonForUpdate, String vidRidstva, String surname,
-                               String name, String patronimic, String year) {
-        FamilyMember familyMemberUpdate = createNewInstance(idPersonForUpdate, vidRidstva,
-                surname, name, patronimic,year);
+    public void updateFamilyMember(Long idUpdateFamilyMember, Long idPersonForUpdate, FamilyAdapter adapter) {
+        FamilyMember familyMemberUpdate = createNewInstance(idPersonForUpdate, adapter);
         FamilyMember newFamilyMemberInDB = familyMemberService.getFamilyMemberByExample(familyMemberUpdate);
         if (newFamilyMemberInDB == null || (newFamilyMemberInDB != null && newFamilyMemberInDB.getId()==idUpdateFamilyMember)) {
             familyMemberService.updateFamilyMember(idUpdateFamilyMember, familyMemberUpdate);
@@ -49,17 +46,16 @@ public class FamilyMemberCRUD {
     }
 
 
-    private FamilyMember createNewInstance(Long idPerson, String vidRidstva, String surname,
-                                       String name, String patronimic, String year) {
+    private FamilyMember createNewInstance(Long idPerson, FamilyAdapter adapter) {
 
         FamilyMember newFamilyMember = new FamilyMember();
 
         newFamilyMember.setPrepod(prepodService.getPrepodById(idPerson));
-        newFamilyMember.setVidRidstva(vidRidstva);
-        newFamilyMember.setMemFam(surname);
-        newFamilyMember.setMemImya(name);
-        newFamilyMember.setMemOtch(patronimic);
-        newFamilyMember.setRikNarodz(year);
+        newFamilyMember.setVidRidstva(adapter.getVidRidstva());
+        newFamilyMember.setMemFam(adapter.getMemFam());
+        newFamilyMember.setMemImya(adapter.getMemName());
+        newFamilyMember.setMemOtch(adapter.getMemOtch());
+        newFamilyMember.setRikNarodz(adapter.getRikNarodz());
         return newFamilyMember;
     }
 }

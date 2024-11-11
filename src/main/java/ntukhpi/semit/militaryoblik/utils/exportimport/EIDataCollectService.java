@@ -1,8 +1,7 @@
 package ntukhpi.semit.militaryoblik.utils.exportimport;
 
 import ntukhpi.semit.militaryoblik.adapters.DropdownAdapter;
-import ntukhpi.semit.militaryoblik.adapters.IOAdapter;
-import ntukhpi.semit.militaryoblik.adapters.MilitaryPersonAdapter;
+import ntukhpi.semit.militaryoblik.adapters.EIAdapter;
 import ntukhpi.semit.militaryoblik.adapters.PrepodAdapter;
 import ntukhpi.semit.militaryoblik.entity.MilitaryPerson;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
@@ -67,36 +66,20 @@ public class EIDataCollectService {
     }
 
     @Transactional
-    public IOAdapter collectData(Long prepodId) throws Exception {
+    public EIAdapter collectData(Long prepodId) throws Exception {
         Prepod prepod = prepodService.getPrepodById(prepodId);
         MilitaryPerson militaryPerson = militaryPersonService.getMilitaryPersonByPrepod(prepod);
 
         if (prepod == null || militaryPerson == null) // FIXME: refactor. maybe add try/catch
             throw new Exception("Prepod or MilitaryPerson is not defined");
 
-        return new IOAdapter(prepod, militaryPerson);
+        return new EIAdapter(prepod, militaryPerson);
     }
 
-    public Long getPrepodIdByIOAdapter(IOAdapter ioAdapter) {
-        PrepodAdapter ioPrepod = ioAdapter.getPrepod();
+    public Long getPrepodIdByEIAdapter(EIAdapter EIAdapter) {
+        PrepodAdapter ioPrepod = EIAdapter.getPrepod();
         Prepod foundPrepod = prepodService.getEmployeeByFullKeySet(ioPrepod.getSurname(), ioPrepod.getName(), ioPrepod.getMidname(), ioPrepod.getCathedra());
 
         return  foundPrepod != null ? foundPrepod.getId() : null;
     }
-//    public void fillIds(IOAdapter ioAdapter) {
-//        PrepodAdapter ioPrepod = ioAdapter.getPrepod();
-//        Prepod foundPrepod = prepodService.getPrepodByExapmleFIO(new Prepod(ioPrepod.getSurname(), ioPrepod.getName(), ioPrepod.getMidname(), null));
-//
-//        MilitaryPersonAdapter ioMilitary = ioAdapter.getMilitary();
-//        MilitaryPerson foundMilitary = militaryPersonService.getMilitaryPersonByPrepod(foundPrepod);
-//
-//        if (foundPrepod != null) {
-//            ioPrepod.setId(foundPrepod.getId());
-//            ioMilitary.setId(foundMilitary.getId());
-//        }
-//
-//
-//
-//
-//    }
 }

@@ -2,7 +2,7 @@ package ntukhpi.semit.militaryoblik.utils;
 
 import javafx.collections.ObservableList;
 import ntukhpi.semit.militaryoblik.adapters.D05Adapter;
-import ntukhpi.semit.militaryoblik.adapters.IOAdapter;
+import ntukhpi.semit.militaryoblik.adapters.EIAdapter;
 import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
 import ntukhpi.semit.militaryoblik.utils.D5.D5DataCollectService;
 import ntukhpi.semit.militaryoblik.utils.D5.D5DataPreparer;
@@ -80,7 +80,7 @@ public class DataWriteReadService {
         Long prepodId = reservist.getId();
 
         try {
-            IOAdapter exportAdapter = eiDataCollectService.collectData(prepodId);
+            EIAdapter exportAdapter = eiDataCollectService.collectData(prepodId);
 
             return eiExcelWriter.writeExcel(EIDataPreparer.exportAdapterToDataList(exportAdapter), eiDataCollectService.getDropdownAdapter().toList(), file);
         } catch (Exception e) {
@@ -89,17 +89,15 @@ public class DataWriteReadService {
         }
     }
 
-    public IOAdapter readImportDataFromExcel(File file) {
+    public EIAdapter readImportDataFromExcel(File file) {
         try {
             String[] importData = eiExcelReader.readExcel(file);
-            IOAdapter importedAdapter = EIDataPreparer.dataToImportAdapter(importData);
-            Long importedPrepodId = eiDataCollectService.getPrepodIdByIOAdapter(importedAdapter);
-            IOAdapter sourceAdapter = eiDataCollectService.collectData(importedPrepodId);
-            IOAdapter mergedAdapter = EIDataPreparer.mergeIOAdapters(sourceAdapter, importedAdapter);
+            EIAdapter importedAdapter = EIDataPreparer.dataToImportAdapter(importData);
+            Long importedPrepodId = eiDataCollectService.getPrepodIdByEIAdapter(importedAdapter);
+            EIAdapter sourceAdapter = eiDataCollectService.collectData(importedPrepodId);
+            EIAdapter mergedAdapter = EIDataPreparer.mergeEIAdapters(sourceAdapter, importedAdapter);
 
             eiExcelWriter.writeExcel(EIDataPreparer.exportAdapterToDataList(mergedAdapter), eiDataCollectService.getDropdownAdapter().toList(), file);
-
-//        eiDataCollectService.fillIds(importAdapter);
         } catch (Exception e) {
             e.printStackTrace();
         }

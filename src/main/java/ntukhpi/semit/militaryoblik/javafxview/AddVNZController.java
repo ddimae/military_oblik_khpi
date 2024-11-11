@@ -12,8 +12,7 @@ import ntukhpi.semit.militaryoblik.entity.VNZaklad;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.UniversityValidator;
-import ntukhpi.semit.militaryoblik.service.EducationService;
-import ntukhpi.semit.militaryoblik.service.entitycrud.VNZCRUD;
+import ntukhpi.semit.militaryoblik.service.entitycrud.UniversityCRUD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -36,7 +35,7 @@ public class AddVNZController implements ControlledScene {
     //    @Autowired
 //    VNZakladServiceImpl vnZakladService;
     @Autowired
-    VNZCRUD vnzCRUD;
+    UniversityCRUD vnzCRUD;
 
     @Autowired
     UniversityValidator universityValidator;
@@ -91,7 +90,7 @@ public class AddVNZController implements ControlledScene {
         newVNZ.setVnzShortName(abbreviation);
 
         try {
-            vnzCRUD.addVNZ(name, abbreviation);
+            vnzCRUD.addUniversity(new UniversityAdapter(null, name, abbreviation));
             vnzObservableList.add(newVNZ);
             vnzComboBox.setValue(newVNZ);
         } catch (Exception e) {

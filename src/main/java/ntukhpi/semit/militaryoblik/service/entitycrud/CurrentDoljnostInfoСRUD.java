@@ -1,5 +1,6 @@
 package ntukhpi.semit.militaryoblik.service.entitycrud;
 
+import ntukhpi.semit.militaryoblik.adapters.CurrentDoljnostInfoAdapter;
 import ntukhpi.semit.militaryoblik.entity.CurrentDoljnostInfo;
 import ntukhpi.semit.militaryoblik.service.CurrentDoljnostInfoService;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
@@ -18,35 +19,30 @@ public class CurrentDoljnostInfoСRUD {
     @Autowired
     CurrentDoljnostInfoService currentDoljnostInfoService;
 
-    public void addCurrentDoljnost(Long idPerson, String nakaz, String dateStr, String comment,
-                                   String nakazDiss, String dateDissStr, String commentDiss) {
-        CurrentDoljnostInfo newCurrentDoljnost = createNewInstance(idPerson,
-                nakaz, dateStr, comment, nakazDiss, dateDissStr, commentDiss);
+    public void addCurrentDoljnost(Long idPerson, CurrentDoljnostInfoAdapter adapter) {
+        CurrentDoljnostInfo newCurrentDoljnost = createNewInstance(idPerson, adapter);
         currentDoljnostInfoService.createCurrentDoljnostInfo(newCurrentDoljnost);
     }
 
-    public void updateCurrentDoljnost(Long idCD, Long idPersonForUpdate, String nakaz, String dateStr, String comment,
-                                      String nakazDiss, String dateDissStr, String commentDiss) {
-        CurrentDoljnostInfo familyMemberUpdate = createNewInstance(idPersonForUpdate,
-                nakaz, dateStr, comment, nakazDiss, dateDissStr, commentDiss);
+    public void updateCurrentDoljnost(Long idCD, Long idPersonForUpdate, CurrentDoljnostInfoAdapter adapter) {
+        CurrentDoljnostInfo familyMemberUpdate = createNewInstance(idPersonForUpdate, adapter);
         currentDoljnostInfoService.updateCurrentDoljnostInfo(idCD, familyMemberUpdate);
     }
 
 
-    private CurrentDoljnostInfo createNewInstance(Long idPerson, String nakaz, String dateStr, String comment,
-                                                  String nakazDiss, String dateDissStr, String commentDiss) {
+    private CurrentDoljnostInfo createNewInstance(Long idPerson, CurrentDoljnostInfoAdapter adapter) {
 
         CurrentDoljnostInfo newCurrentDoljnostInfo = new CurrentDoljnostInfo();
         newCurrentDoljnostInfo.setPrepod(prepodService.getPrepodById(idPerson));
         //start
-        newCurrentDoljnostInfo.setNumNakazStart(nakaz);
-        newCurrentDoljnostInfo.setDateStart(LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("dd.MM.yyyy")));
-        newCurrentDoljnostInfo.setCommentStart(comment.isBlank()? null : comment);
+        newCurrentDoljnostInfo.setNumNakazStart(adapter.getNakazStart());
+        newCurrentDoljnostInfo.setDateStart(LocalDate.parse(adapter.getDateStart(), DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        newCurrentDoljnostInfo.setCommentStart(adapter.getCommentStart().isBlank()? null : adapter.getCommentStart());
         //stop
-        newCurrentDoljnostInfo.setNumNakazStop(nakazDiss.isBlank()? null : nakazDiss);
+        newCurrentDoljnostInfo.setNumNakazStop(adapter.getNakazStop().isBlank()? null : adapter.getNakazStop());
         newCurrentDoljnostInfo.setDateStop(
-                dateDissStr.isBlank()? null : LocalDate.parse(dateDissStr, DateTimeFormatter.ofPattern("dd.MM.yyyy")));
-        newCurrentDoljnostInfo.setCommentStop(commentDiss.isBlank()? null : commentDiss);
+                adapter.getDateStop().isBlank()? null : LocalDate.parse(adapter.getDateStop(), DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        newCurrentDoljnostInfo.setCommentStop(adapter.getCommentStop().isBlank()? null : adapter.getCommentStop());
         return newCurrentDoljnostInfo;
     }
 }

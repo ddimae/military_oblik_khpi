@@ -1,6 +1,6 @@
 package ntukhpi.semit.militaryoblik.service.entitycrud;
 
-import ntukhpi.semit.militaryoblik.entity.Document;
+import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
 import ntukhpi.semit.militaryoblik.entity.Education;
 import ntukhpi.semit.militaryoblik.service.EducationService;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
@@ -22,11 +22,8 @@ public class EducationCRUD {
     @Autowired
     PrepodServiceImpl prepodService;
 
-    public void addEducation(Long idPerson, String form, String level,
-                             String vnzName, String year,
-                             String diplomaNumber, String diplomaSeries, String specialty, String qualification) {
-        Education newEducation = createNewInstance(idPerson, form, level,
-                vnzName, year, diplomaNumber, diplomaSeries, specialty, qualification);
+    public void addEducation(Long idPerson, EducationAdapter adapter) {
+        Education newEducation = createNewInstance(idPerson, adapter);
         Education newDocumentInDB = educationService.getEducationByKey(newEducation.getPrepod(),
                 newEducation.getVnz(),newEducation.getYearVypusk());
         if (newDocumentInDB == null) {
@@ -38,11 +35,8 @@ public class EducationCRUD {
 
     }
 
-    public void updateEducation(Long idEdu, Long idPersonForUpdate, String form, String level,
-                                String vnzShortName, String year, String diplomaNumber,
-                                String diplomaSeries, String specialty, String qualification) {
-        Education educationUpdate = createNewInstance(idPersonForUpdate, form, level,
-                vnzShortName, year, diplomaNumber, diplomaSeries, specialty, qualification);
+    public void updateEducation(Long idEdu, Long idPersonForUpdate, EducationAdapter adapter) {
+        Education educationUpdate = createNewInstance(idPersonForUpdate, adapter);
         Education newDocumentInDB = educationService.getEducationByKey(educationUpdate.getPrepod(),
                 educationUpdate.getVnz(),educationUpdate.getYearVypusk());
         if (newDocumentInDB == null || (newDocumentInDB != null && newDocumentInDB.getId() == idEdu)) {
@@ -55,20 +49,18 @@ public class EducationCRUD {
         educationService.deleteEducation(idDelEducation);
     }
 
-    private Education createNewInstance(Long idPerson, String form, String level,
-                                        String vnzShortName, String year, String diplomaNumber,
-                                        String diplomaSeries, String specialty, String qualification) {
+    private Education createNewInstance(Long idPerson, EducationAdapter adapter) {
         Education newEducation = new Education();
 
         newEducation.setPrepod(prepodService.getPrepodById(idPerson));
-        newEducation.setFormTraining(form);
-        newEducation.setLevelTraining(level);
-        newEducation.setVnz(vnZakladService.getVNZakladById(vnZakladService.findIdVNZakladByVnzShortName(vnzShortName)));
-        newEducation.setYearVypusk(year);
-        newEducation.setDiplomaNumber(diplomaNumber);
-        newEducation.setDiplomaSeries(diplomaSeries);
-        newEducation.setDiplomaSpeciality(specialty);
-        newEducation.setDiplomaQualification(qualification);
+        newEducation.setFormTraining(adapter.getForm());
+        newEducation.setLevelTraining(adapter.getLevel());
+        newEducation.setVnz(vnZakladService.getVNZakladById(vnZakladService.findIdVNZakladByVnzShortName(adapter.getVnz().getShortName())));
+        newEducation.setYearVypusk(adapter.getYear());
+        newEducation.setDiplomaNumber(adapter.getDiplomaNumber());
+        newEducation.setDiplomaSeries(adapter.getDiplomaSeries());
+        newEducation.setDiplomaSpeciality(adapter.getSpeciality());
+        newEducation.setDiplomaQualification(adapter.getQualification());
         return newEducation;
     }
 }

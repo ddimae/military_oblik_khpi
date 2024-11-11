@@ -13,14 +13,9 @@ import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Dolghnost;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.PositionValidator;
-import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValidator;
-import ntukhpi.semit.militaryoblik.service.DolghnostService;
-import ntukhpi.semit.militaryoblik.service.DolghnostServiceImpl;
 import ntukhpi.semit.militaryoblik.service.entitycrud.PositionCRUD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.regex.Pattern;
 
 
 /**
@@ -96,7 +91,7 @@ public class PositionAddController implements ControlledScene {
             dolghnost.setCategoryEmployees(category);
 //            DDE  - depricated
 //            dolghnostService.createDolghnost(dolghnost);
-            positionCRUD.addCathedra(fullName,shortName,String.valueOf(category));
+            positionCRUD.addPosition(new PositionAdapter(fullName,shortName,category));
             //Якщо додавання успішне і зараз на формі із даними нового співробітника встановлена саме ця посада,
             //то додати її до комбобоксу
             if (positionComboBox.getItems().get(positionComboBox.getItems().size() - 1).getCategoryEmployees() == category) {

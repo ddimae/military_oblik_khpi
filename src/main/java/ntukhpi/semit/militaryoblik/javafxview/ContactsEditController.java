@@ -294,17 +294,17 @@ public class ContactsEditController implements ControlledScene {
 //            personalData.setPhoneMain(mainPhone.getNumber());
 //            personalData.setPhoneDop(secondPhone.getNumber());
             if (equalRadioButton.isSelected()) {
-                contactsCRUD.updatePersonalData(selectedPrepod.getId(), country, index, city, address, region,
-                        country, index, city, address, region,
-                        mainPhone.getNumber(), secondPhone.getNumber()
-                );
+                contactsCRUD.updatePersonalData(selectedPrepod.getId(),
+                        new ContactInfoAdapter(country, index, city, region, address,
+                                                mainPhone.getNumber(), secondPhone.getNumber(),
+                                                country, index, city, region, address, isForeinNumber));
 
             } else {
 
-                contactsCRUD.updatePersonalData(selectedPrepod.getId(), country, index, city, address, region,
-                        countryFact, indexFact, cityFact, addressFact, regionFact,
-                        mainPhone.getNumber(), secondPhone.getNumber()
-                );
+                contactsCRUD.updatePersonalData(selectedPrepod.getId(),
+                        new ContactInfoAdapter(country, index, city, region, address,
+                                                mainPhone.getNumber(), secondPhone.getNumber(),
+                                                countryFact, indexFact, cityFact, regionFact, addressFact, isForeinNumber));
             }
 
 

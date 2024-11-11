@@ -16,11 +16,11 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class IOAdapter implements IBaseAdapter {
+public class EIAdapter implements IBaseAdapter {
     private PrepodAdapter prepod = new PrepodAdapter();
     private MilitaryPersonAdapter military = new MilitaryPersonAdapter();
     private ContactInfoAdapter contactInfo = new ContactInfoAdapter();
-    private FakultetAdapter fakultet = new FakultetAdapter();
+    private InstituteAdapter fakultet = new InstituteAdapter();
     private PositionAdapter position = new PositionAdapter();
     private CurrentDoljnostInfoAdapter currentDoljnost = new CurrentDoljnostInfoAdapter();
     private Set<EducationAdapter> educations = new HashSet<>();
@@ -28,11 +28,11 @@ public class IOAdapter implements IBaseAdapter {
     private Set<FamilyAdapter> familyMembers = new HashSet<>();
     private Set<DocumentAdapter> documents = new HashSet<>();
 
-    public IOAdapter(Prepod prepod, MilitaryPerson militaryPerson) {
+    public EIAdapter(Prepod prepod, MilitaryPerson militaryPerson) {
         this.prepod = new PrepodAdapter(prepod);
         this.military = new MilitaryPersonAdapter(militaryPerson);
         this.contactInfo = new ContactInfoAdapter(prepod.getContacts());
-        this.fakultet = new FakultetAdapter(prepod.getKafedra().getFakultet());
+        this.fakultet = new InstituteAdapter(prepod.getKafedra().getFakultet());
         this.position = new PositionAdapter(prepod.getDolghnost());
         this.currentDoljnost = new CurrentDoljnostInfoAdapter(prepod);
 

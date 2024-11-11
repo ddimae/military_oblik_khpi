@@ -1,5 +1,6 @@
 package ntukhpi.semit.militaryoblik.service.entitycrud;
 
+import ntukhpi.semit.militaryoblik.adapters.PositionAdapter;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Dolghnost;
 import ntukhpi.semit.militaryoblik.service.DolghnostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,17 +11,17 @@ public class PositionCRUD {
 
     @Autowired
     DolghnostService dolghnostService;
-    public void addCathedra(String fullName, String shortName, String categoryString) {
+    public void addPosition(PositionAdapter adapter) {
 
         Dolghnost dolghnost = new Dolghnost();
 
-        dolghnost.setDolghnName(fullName);
-        dolghnost.setDolghnShortName(shortName);
+        dolghnost.setDolghnName(adapter.getFullName());
+        dolghnost.setDolghnShortName(adapter.getShortName());
         //Якщо якись зайде незрозумілий номер категорії (символи або більше 2), то категорія буде 2
         int category;
 
         try {
-            category = Integer.parseInt(categoryString);
+            category = Integer.parseInt(adapter.getCategory());
         } catch (IllegalArgumentException e){
             category = 2;
         }

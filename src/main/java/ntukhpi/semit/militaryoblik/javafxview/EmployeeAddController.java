@@ -260,8 +260,9 @@ public class EmployeeAddController implements ControlledScene {
 //
 //            prepodService.savePrepod(prepod);
 
-            Prepod newEmployeeInDB = employeeCRUD.addEmployee(surname, name, midname, cathedra,
-                    birthDate, position, degree, status);
+            Prepod newEmployeeInDB = employeeCRUD.addEmployee(new PrepodAdapter(null, null, surname, name,
+                                                                                midname, birthDate, cathedra,
+                                                                                position, status, degree));
 
 //            mainController.setNewPrepod(newEmployeeInDB);
             militaryRegistrationCRUD.createBaseMilitaryPerson(newEmployeeInDB);

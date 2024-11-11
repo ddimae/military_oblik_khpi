@@ -1,12 +1,13 @@
 package ntukhpi.semit.militaryoblik.service.entitycrud;
 
+import ntukhpi.semit.militaryoblik.adapters.UniversityAdapter;
 import ntukhpi.semit.militaryoblik.entity.VNZaklad;
 import ntukhpi.semit.militaryoblik.service.VNZakladService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class VNZCRUD {
+public class UniversityCRUD {
     @Autowired
     VNZakladService vnZakladService;
 
@@ -21,10 +22,10 @@ public class VNZCRUD {
 //    @Autowired
 //    private VNZakladService vnZakladService;
 
-    public void addVNZ(String name, String abbreviation) {
+    public void addUniversity(UniversityAdapter adapter) {
         VNZaklad newVNZ = new VNZaklad();
-        newVNZ.setVnzName(name);
-        newVNZ.setVnzShortName(abbreviation);
+        newVNZ.setVnzName(adapter.getFullName());
+        newVNZ.setVnzShortName(adapter.getShortName());
         vnZakladService.createVNZaklad(newVNZ);
     }
 }

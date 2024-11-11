@@ -1,5 +1,6 @@
 package ntukhpi.semit.militaryoblik.service.entitycrud;
 
+import ntukhpi.semit.militaryoblik.adapters.MilitaryPersonAdapter;
 import ntukhpi.semit.militaryoblik.adapters.PrepodAdapter;
 import ntukhpi.semit.militaryoblik.entity.MilitaryPerson;
 import ntukhpi.semit.militaryoblik.entity.VSklad;
@@ -30,31 +31,30 @@ public class MilitaryRegistrationCRUD {
     VZvanieService vZvanieService;
 
     public MilitaryPerson updateMilitaryPerson(Long idPerson,
-                                     String vos, String category, String group, String vSklad, String vZvanie,
-                                     String prydatnist, String voenkomatName, String familyState, String educationLevel) {
+                                               MilitaryPersonAdapter adapter) {
 
 
         MilitaryPerson militaryPerson = militaryPersonService
                 .getMilitaryPersonByPrepod(prepodService.getPrepodById(idPerson));
 
       //  militaryPerson.setPrepod(selectedPrepod); ВІН ВЖЕ ПРИЗНАЧЕНИЙ У militaryPerson
-        militaryPerson.setVos(vos);
-        militaryPerson.setVCategory(Integer.parseInt(category));
-        militaryPerson.setVGrupa(group);
+        militaryPerson.setVos(adapter.getVos());
+        militaryPerson.setVCategory(Integer.parseInt(adapter.getVCategory()));
+        militaryPerson.setVGrupa(adapter.getVGrupa());
 
-        militaryPerson.setVSklad(vSkladService.getVSkladByName(vSklad));
-        militaryPerson.setVZvanie(vZvanieService.getVzvanieByName(vZvanie));
-        militaryPerson.setVPrydatnist(prydatnist);
-        Voenkomat voenkomat = voenkomatService.getVoenkomatByName(voenkomatName);
+        militaryPerson.setVSklad(vSkladService.getVSkladByName(adapter.getVSklad()));
+        militaryPerson.setVZvanie(vZvanieService.getVzvanieByName(adapter.getVZvanie()));
+        militaryPerson.setVPrydatnist(adapter.getVPrydatnist());
+        Voenkomat voenkomat = voenkomatService.getVoenkomatByName(adapter.getVoenkomat());
         if (voenkomat == null) {
             // Якщо новий, то треба додати
             voenkomat = new Voenkomat();
-            voenkomat.setVoenkomatName(voenkomatName);
+            voenkomat.setVoenkomatName(adapter.getVoenkomat());
             voenkomat = voenkomatService.createVoenkomat(voenkomat);
         }
         militaryPerson.setVoenkomat(voenkomat);
-        militaryPerson.setFamilyState(familyState);
-        militaryPerson.setEducationLevel(educationLevel);
+        militaryPerson.setFamilyState(adapter.getFamilyState());
+        militaryPerson.setEducationLevel(adapter.getEducationLevel());
 
         return militaryPersonService.updateMilitaryPerson(militaryPerson.getId(), militaryPerson);
     }

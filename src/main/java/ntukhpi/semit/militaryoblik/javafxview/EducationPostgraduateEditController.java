@@ -108,10 +108,12 @@ public class EducationPostgraduateEditController implements ControlledScene {
 
         try {
             if (selectedEducation == null) {
-                educationPostgraduateCRUD.addPostgraduateEducation(selectedPrepod.getId(),year,type,vnz.getShortName());
+                educationPostgraduateCRUD.addPostgraduateEducation(selectedPrepod.getId(),
+                        new EducationPostgraduateAdapter(null, type, vnz, year));
 //                mainController.addPostgraduateEducation(newEducation);
             } else {
-                educationPostgraduateCRUD.updatePostgraduateEducation(selectedPrepod.getId(),year,type,vnz.getShortName());
+                educationPostgraduateCRUD.updatePostgraduateEducation(selectedPrepod.getId(), selectedEducation.getId(),
+                        new EducationPostgraduateAdapter(null, type, vnz, year));
 //               mainController.updatePostgraduateEducation(selectedEducation, newEducation);
             }
             //DDE - refresh education list after add or edit or delete
