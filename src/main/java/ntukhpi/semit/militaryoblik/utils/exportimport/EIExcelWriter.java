@@ -62,6 +62,9 @@ public class EIExcelWriter {
         Sheet sheet = workbook.getSheetAt(EISettings.GLOBAL_SHEET_INDEX);
         int rowCount = EISettings.GLOBAL_EXPORT_ROW;
 
+        if (personData == null)
+            return;
+
         for (int i = 0; i < personData.size(); i++) {
             for (String tableData : personData.get(i)) {
                 Row row = sheet.getRow(rowCount);
@@ -97,6 +100,9 @@ public class EIExcelWriter {
     private void writeExcelDropdownData(List<String[]> dropdownListData, Workbook workbook) {
         Sheet sheet = workbook.getSheetAt(EISettings.GLOBAL_SHEET_INDEX);
         int rowCount = 0;
+
+        if (dropdownListData == null)
+            return;
 
         for (String[] dropdownData : dropdownListData) {
             Row row = sheet.getRow(EISettings.GLOBAL_DROPDOWN_ROW + rowCount);

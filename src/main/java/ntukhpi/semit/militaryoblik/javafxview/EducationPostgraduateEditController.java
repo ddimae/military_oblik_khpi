@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.EducationPostgraduateAdapter;
+import ntukhpi.semit.militaryoblik.adapters.UniversityAdapter;
 import ntukhpi.semit.militaryoblik.entity.EducationPostgraduate;
 import ntukhpi.semit.militaryoblik.entity.VNZaklad;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
@@ -24,6 +25,8 @@ import ntukhpi.semit.militaryoblik.service.entitycrud.EducationPostgraduateCRUD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.lang.constant.DynamicCallSiteDesc;
+
 @Component
 public class EducationPostgraduateEditController implements ControlledScene {
     @FXML
@@ -31,7 +34,7 @@ public class EducationPostgraduateEditController implements ControlledScene {
     @FXML
     public ComboBox<String> typeComboBox;
     @FXML
-    public ComboBox<VNZaklad> vnzComboBox;
+    public ComboBox<UniversityAdapter> vnzComboBox;
     @FXML
     private TextField yearTextField;
 
@@ -40,7 +43,7 @@ public class EducationPostgraduateEditController implements ControlledScene {
     private Stage currentStage;
     private EducationPostgraduateAdapter selectedEducation;
 
-    private ObservableList<VNZaklad> vnzObservableList;
+    private ObservableList<UniversityAdapter> vnzObservableList;
 
     private Prepod selectedPrepod;
 
@@ -82,7 +85,7 @@ public class EducationPostgraduateEditController implements ControlledScene {
         selectedEducation = postgraduateEducation;
         pibLabel.setText(DataFormat.getPIB(prepodService.getPrepodById(selectedPrepod.getId())));
 
-        VNZaklad vnz = postgraduateEducation.getVnz();
+        UniversityAdapter vnz = postgraduateEducation.getVnz();
         if (vnz != null) vnzComboBox.setValue(vnz);
 
         typeComboBox.setValue(postgraduateEducation.getType());
@@ -94,7 +97,7 @@ public class EducationPostgraduateEditController implements ControlledScene {
     private void saveEducation() {
         String year = yearTextField.getText();
         String type = typeComboBox.getValue();
-        VNZaklad vnz = vnzComboBox.getValue() != null ? vnzComboBox.getValue() : new VNZaklad();
+        UniversityAdapter vnz = vnzComboBox.getValue() != null ? vnzComboBox.getValue() : new UniversityAdapter();
 
         try {
             posteducationValidator.validate(new EducationPostgraduateAdapter(null, type, vnz, year));
@@ -104,18 +107,11 @@ public class EducationPostgraduateEditController implements ControlledScene {
         }
 
         try {
-            EducationPostgraduate newEducation = new EducationPostgraduate();
-
-            newEducation.setPrepod(selectedPrepod);
-            newEducation.setYearFinish(year);
-            newEducation.setLevelTraining(type);
-            newEducation.setVnz(vnz);
-
             if (selectedEducation == null) {
-                educationPostgraduateCRUD.addPostgraduateEducation(selectedPrepod.getId(),year,type,vnz.getVnzShortName());
+                educationPostgraduateCRUD.addPostgraduateEducation(selectedPrepod.getId(),year,type,vnz.getShortName());
 //                mainController.addPostgraduateEducation(newEducation);
             } else {
-                educationPostgraduateCRUD.updatePostgraduateEducation(selectedPrepod.getId(),year,type,vnz.getVnzShortName());
+                educationPostgraduateCRUD.updatePostgraduateEducation(selectedPrepod.getId(),year,type,vnz.getShortName());
 //               mainController.updatePostgraduateEducation(selectedEducation, newEducation);
             }
             //DDE - refresh education list after add or edit or delete
@@ -132,8 +128,10 @@ public class EducationPostgraduateEditController implements ControlledScene {
         MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
     }
 
-    private ObservableList<VNZaklad> getAllVNZ() {
-        return FXCollections.observableArrayList(vnZakladService.getAllVNZaklad());
+    private ObservableList<UniversityAdapter> getAllVNZ() {
+        return FXCollections.observableArrayList(vnZakladService.getAllVNZaklad().stream()
+                .map(UniversityAdapter::new)
+                .toList());
     }
 
     @FXML

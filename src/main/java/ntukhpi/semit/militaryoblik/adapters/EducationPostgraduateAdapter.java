@@ -16,10 +16,10 @@ import ntukhpi.semit.militaryoblik.entity.VNZaklad;
 public class EducationPostgraduateAdapter implements IBaseAdapter {
     private Long id;
     private String type;
-    private VNZaklad vnz;
+    private UniversityAdapter vnz;
     private String year;
 
     public EducationPostgraduateAdapter(EducationPostgraduate e) {
-        this(e.getId(), e.getLevelTraining(), e.getVnz(), e.getYearFinish());
+        this(e.getId(), e.getLevelTraining(), new UniversityAdapter(e.getVnz()), e.getYearFinish());
     }
 }

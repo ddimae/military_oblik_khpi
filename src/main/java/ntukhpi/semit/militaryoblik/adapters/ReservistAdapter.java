@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ReservistAdapter {
+public class ReservistAdapter implements IBaseAdapter {
     private Long id;
     private Long militaryPersonId;
     private String pib;

@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
 import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
+import ntukhpi.semit.militaryoblik.adapters.UniversityAdapter;
 import ntukhpi.semit.militaryoblik.entity.Education;
 import ntukhpi.semit.militaryoblik.entity.VNZaklad;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
@@ -29,7 +30,7 @@ public class EducationEditController implements ControlledScene {
     @FXML
     public Label pibLabel;
     @FXML
-    public ComboBox<VNZaklad> vnzComboBox;
+    public ComboBox<UniversityAdapter> vnzComboBox;
     @FXML
     public ComboBox<String> formComboBox;
     @FXML
@@ -50,7 +51,7 @@ public class EducationEditController implements ControlledScene {
     private Stage currentStage;
     private EducationAdapter selectedEducation;
 
-    private ObservableList<VNZaklad> vnzObservableList;
+    private ObservableList<UniversityAdapter> vnzObservableList;
     private Prepod selectedPrepod;
 
 //    @Autowired
@@ -90,7 +91,7 @@ public class EducationEditController implements ControlledScene {
         selectedEducation = education;
         pibLabel.setText(DataFormat.getPIB(prepodService.getPrepodById(selectedPrepod.getId())));
 
-        VNZaklad vnz = education.getVnz();
+        UniversityAdapter vnz = education.getVnz();
         if (vnz != null) vnzComboBox.setValue(vnz);
 
         formComboBox.setValue(education.getForm());
@@ -109,7 +110,7 @@ public class EducationEditController implements ControlledScene {
         String diplomaSeries = diplomaSeriesTextField.getText();
         String specialty = specialtyTextField.getText();
         String qualification = qualificationTextField.getText();
-        VNZaklad vnz = vnzComboBox.getValue() != null ? vnzComboBox.getValue() : new VNZaklad();
+        UniversityAdapter vnz = vnzComboBox.getValue() != null ? vnzComboBox.getValue() : new UniversityAdapter();
         String form = formComboBox.getValue();
         String level = levelComboBox.getValue();
 
@@ -125,10 +126,10 @@ public class EducationEditController implements ControlledScene {
         try {
             if (selectedEducation == null) {
                 educationCRUD.addEducation(selectedPrepod.getId(),form,level,
-                        vnz.getVnzShortName(),year,diplomaNumber,diplomaSeries,specialty,qualification);
+                        vnz.getShortName(),year,diplomaNumber,diplomaSeries,specialty,qualification);
             } else {
                 educationCRUD.updateEducation(selectedEducation.getId(), selectedPrepod.getId(),
-                        form,level,vnz.getVnzShortName(),year,diplomaNumber,diplomaSeries,specialty,qualification);
+                        form,level,vnz.getShortName(),year,diplomaNumber,diplomaSeries,specialty,qualification);
             }
 
             //DDE - refresh education list after add or edit or delete
@@ -146,8 +147,10 @@ public class EducationEditController implements ControlledScene {
         MilitaryOblikKhPIMain.showPreviousStage(mainStage, currentStage);
     }
 
-    private ObservableList<VNZaklad> getAllVNZ() {
-        return FXCollections.observableArrayList(vnZakladService.getAllVNZaklad());
+    private ObservableList<UniversityAdapter> getAllVNZ() {
+        return FXCollections.observableArrayList(vnZakladService.getAllVNZaklad().stream()
+                .map(UniversityAdapter::new)
+                .toList());
     }
 
     @FXML

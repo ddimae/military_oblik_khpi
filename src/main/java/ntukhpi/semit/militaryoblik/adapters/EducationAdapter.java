@@ -15,12 +15,12 @@ public class EducationAdapter implements IBaseAdapter {
     private String speciality;
     private String qualification;
 
-    private VNZaklad vnz;
+    private UniversityAdapter vnz;
     private String form;
     private String level;
 
     public EducationAdapter(Long id, String year, String diplomaSeries, String diplomaNumber,
-                            String speciality, String qualification, VNZaklad vnz,
+                            String speciality, String qualification, UniversityAdapter vnz,
                             String form, String level) {
         this.id = id;
         this.year = year;
@@ -35,7 +35,7 @@ public class EducationAdapter implements IBaseAdapter {
 
     public EducationAdapter(Education e) {
         this(e.getId(), e.getYearVypusk(), e.getDiplomaSeries(), e.getDiplomaNumber(),
-                e.getDiplomaSpeciality(), e.getDiplomaQualification(), e.getVnz(),
+                e.getDiplomaSpeciality(), e.getDiplomaQualification(), new UniversityAdapter(e.getVnz()),
                 e.getFormTraining(), e.getLevelTraining());
     }
 }

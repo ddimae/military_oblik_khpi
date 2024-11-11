@@ -25,7 +25,7 @@ public class EducationValidator implements IBaseValidator<EducationAdapter> {
 
     @Override
     public boolean validate(EducationAdapter info) throws Exception {
-        TextFieldValidator universityValidator = new TextFieldValidator(-1, true, null, "ВНЗ", info.getVnz().getVnzShortName(), null);
+        TextFieldValidator universityValidator = new TextFieldValidator(-1, true, null, "ВНЗ", info.getVnz().getShortName(), null);
         TextFieldValidator formValidator = new TextFieldValidator(-1, true, null, "Форма", info.getForm(), null);
         TextFieldValidator levelValidator = new TextFieldValidator(-1, true, null, "Рівень", info.getLevel(), null);
         TextFieldValidator yearValidator = new TextFieldValidator(4, true, onlyFourDigits, "Рік", info.getYear(), "повинен містити 4 цифри");
@@ -41,7 +41,7 @@ public class EducationValidator implements IBaseValidator<EducationAdapter> {
         diplomaSeriesValidator.validate();
         diplomaNumberValidator.validate();
 
-        if (vnZakladService.findIdVNZakladByVnzShortName(info.getVnz().getVnzShortName()) == null)
+        if (vnZakladService.findIdVNZakladByVnzShortName(info.getVnz().getShortName()) == null)
             throw new UniversityNotFoundException("ВНЗ з даною назвою не існує");
 
         return true;

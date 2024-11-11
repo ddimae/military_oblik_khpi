@@ -77,20 +77,26 @@ public class EIDataCollectService {
         return new IOAdapter(prepod, militaryPerson);
     }
 
-    public void fillIds(IOAdapter ioAdapter) {
+    public Long getPrepodIdByIOAdapter(IOAdapter ioAdapter) {
         PrepodAdapter ioPrepod = ioAdapter.getPrepod();
-        Prepod foundPrepod = prepodService.getPrepodByExapmleFIO(new Prepod(ioPrepod.getSurname(), ioPrepod.getName(), ioPrepod.getMidname(), null));
+        Prepod foundPrepod = prepodService.getEmployeeByFullKeySet(ioPrepod.getSurname(), ioPrepod.getName(), ioPrepod.getMidname(), ioPrepod.getCathedra());
 
-        MilitaryPersonAdapter ioMilitary = ioAdapter.getMilitary();
-        MilitaryPerson foundMilitary = militaryPersonService.getMilitaryPersonByPrepod(foundPrepod);
-
-        if (foundPrepod != null) {
-            ioPrepod.setId(foundPrepod.getId());
-            ioMilitary.setId(foundMilitary.getId());
-        }
-
-
-
-
+        return  foundPrepod != null ? foundPrepod.getId() : null;
     }
+//    public void fillIds(IOAdapter ioAdapter) {
+//        PrepodAdapter ioPrepod = ioAdapter.getPrepod();
+//        Prepod foundPrepod = prepodService.getPrepodByExapmleFIO(new Prepod(ioPrepod.getSurname(), ioPrepod.getName(), ioPrepod.getMidname(), null));
+//
+//        MilitaryPersonAdapter ioMilitary = ioAdapter.getMilitary();
+//        MilitaryPerson foundMilitary = militaryPersonService.getMilitaryPersonByPrepod(foundPrepod);
+//
+//        if (foundPrepod != null) {
+//            ioPrepod.setId(foundPrepod.getId());
+//            ioMilitary.setId(foundMilitary.getId());
+//        }
+//
+//
+//
+//
+//    }
 }

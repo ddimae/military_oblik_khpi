@@ -1,6 +1,8 @@
 package ntukhpi.semit.militaryoblik.utils.exportimport;
 
+import ntukhpi.semit.militaryoblik.adapters.CathedraAdapter;
 import ntukhpi.semit.militaryoblik.adapters.IOAdapter;
+import ntukhpi.semit.militaryoblik.adapters.TestAdapter;
 
 import java.util.*;
 
@@ -103,9 +105,9 @@ public class EIDataPreparer {
 
             String[] subArr = Arrays.copyOfRange(data, EISettings.GLOBAL_IMPORT_ROW + offset - 1, offset + groupLen);
 
-//            System.out.println("===============================");
-//            for (int x = 0; x < subArr.length; x++)
-//                System.out.println(subArr[x]);
+            System.out.println("===============================");
+            for (int x = 0; x < subArr.length; x++)
+                System.out.println(subArr[x]);
 
             offset += groupLen;
 
@@ -132,5 +134,52 @@ public class EIDataPreparer {
         }
 
         return importAdapter;
+    }
+
+    public static IOAdapter mergeIOAdapters(IOAdapter source, IOAdapter target) {
+        IOAdapter merged = new IOAdapter();
+
+        merged.merge(source, true);
+        merged.merge(target, true);
+
+        merged.setEducations(target.getEducations());
+        merged.setPosteducations(target.getPosteducations());
+        merged.setFamilyMembers(target.getFamilyMembers());
+        merged.setDocuments(target.getDocuments());
+
+
+//        TestAdapter a = new TestAdapter("A", "B", new CathedraAdapter("C", "D", "E", "F"));
+//        TestAdapter b = new TestAdapter("A1", "", new CathedraAdapter(null, "D1", "E1", "  "));
+
+//        a.merge(b, true);
+//
+//        System.out.println(a.getName());
+//        System.out.println(a.getFigma());
+//        System.out.println(a.getCathedra().getInstitute());
+//        System.out.println(a.getCathedra().getFullName());
+//        System.out.println(a.getCathedra().getAbbr());
+//        System.out.println(a.getCathedra().getCode());
+//        System.out.println("=================");
+
+//        CathedraAdapter ca = a.getCathedra();
+//        ca.setInstitute("TEST");
+//        a.setCathedra(ca);
+//
+//        System.out.println(a.getName());
+//        System.out.println(a.getFigma());
+//        System.out.println(a.getCathedra().getInstitute());
+//        System.out.println(a.getCathedra().getFullName());
+//        System.out.println(a.getCathedra().getAbbr());
+//        System.out.println(a.getCathedra().getCode());
+//        System.out.println("=================");
+//        System.out.println(b.getName());
+//        System.out.println(b.getFigma());
+//        System.out.println(b.getCathedra().getInstitute());
+//        System.out.println(b.getCathedra().getFullName());
+//        System.out.println(b.getCathedra().getAbbr());
+//        System.out.println(b.getCathedra().getCode());
+//        System.out.println("=================");
+
+        return merged;
     }
 }

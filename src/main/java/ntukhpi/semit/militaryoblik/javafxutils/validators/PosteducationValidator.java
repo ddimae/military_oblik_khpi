@@ -25,13 +25,13 @@ public class PosteducationValidator implements IBaseValidator<EducationPostgradu
     public boolean validate(EducationPostgraduateAdapter info) throws Exception {
         TextFieldValidator yearValidator = new TextFieldValidator(4, true, onlyFourDigits, "Рік", info.getYear(), "повинен містити 4 цифри");
         TextFieldValidator typeValidator = new TextFieldValidator(-1, true, null, "Вид", info.getType(), null);
-        TextFieldValidator universityValidator = new TextFieldValidator(-1, true, null, "ВНЗ", info.getVnz().getVnzShortName(), null);
+        TextFieldValidator universityValidator = new TextFieldValidator(-1, true, null, "ВНЗ", info.getVnz().getShortName(), null);
 
         typeValidator.validate();
         universityValidator.validate();
         yearValidator.validate();
 
-        if (vnZakladService.findIdVNZakladByVnzShortName(info.getVnz().getVnzShortName()) == null)
+        if (vnZakladService.findIdVNZakladByVnzShortName(info.getVnz().getShortName()) == null)
             throw new UniversityNotFoundException("ВНЗ з даною назвою не існує");
 
         return true;

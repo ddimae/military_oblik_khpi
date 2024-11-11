@@ -10,10 +10,7 @@ import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.utils.exportimport.EIDataPreparer;
 import ntukhpi.semit.militaryoblik.utils.exportimport.EISettings;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -177,7 +174,13 @@ public class IOAdapter implements IBaseAdapter {
             contactInfo.setIndex(index);
             contactInfo.setMainPhone(mainPhone);
             contactInfo.setSecondPhone(secondPhone);
-            if (isFactEqual == "TAK") {
+            if (isFactEqual.equals("TAK")) {
+                contactInfo.setCountryFact(country);
+                contactInfo.setRegionFact(region);
+                contactInfo.setCityFact(city);
+                contactInfo.setAddressFact(address);
+                contactInfo.setIndexFact(index);
+            } else {
                 contactInfo.setCountryFact(countryFact);
                 contactInfo.setRegionFact(regionFact);
                 contactInfo.setCityFact(cityFact);
@@ -209,6 +212,8 @@ public class IOAdapter implements IBaseAdapter {
         List<String[]> educationsList = EIDataPreparer.chunksArray(arr, EISettings.EDUCATION_COL_COUNT);
 
         for (String[] education : educationsList) {
+            if (isStringArrayEmpty(education))
+                continue;
 
             String name =                   education[0];
             String diplomaSeries =          education[1];
@@ -219,7 +224,7 @@ public class IOAdapter implements IBaseAdapter {
             String form =                   education[6];
             String level =                  education[7];
 
-            VNZaklad vnZaklad = VNZaklad.getVNZakladByToString(name);
+            UniversityAdapter vnZaklad = UniversityAdapter.getUniversityAdapterByToString(name);
 
             this.educations.add(new EducationAdapter(null, year, diplomaSeries, diplomaNumber, speciality, qualification, vnZaklad, form, level));
         }
@@ -243,11 +248,14 @@ public class IOAdapter implements IBaseAdapter {
         List<String[]> posteducationsList = EIDataPreparer.chunksArray(arr, EISettings.POSTEDUCATION_COL_COUNT);
 
         for (String[] posteducation : posteducationsList) {
+            if (isStringArrayEmpty(posteducation))
+                continue;
+
             String name =           posteducation[0];
             String yearEnd =        posteducation[1];
             String levelTraining =  posteducation[2];
 
-            VNZaklad vnZaklad = VNZaklad.getVNZakladByToString(name);
+            UniversityAdapter vnZaklad = UniversityAdapter.getUniversityAdapterByToString(name);
 
             this.posteducations.add(new EducationPostgraduateAdapter(null, levelTraining, vnZaklad, yearEnd));
         }
@@ -273,13 +281,15 @@ public class IOAdapter implements IBaseAdapter {
         List<String[]> familyList = EIDataPreparer.chunksArray(arr, EISettings.FAMILY_COL_COUNT);
 
         for (String[] familyMember : familyList) {
+            if (isStringArrayEmpty(familyMember))
+                continue;
+
             String level =      familyMember[0];
             String surName =    familyMember[1];
             String firstName =  familyMember[2];
             String middleName = familyMember[3];
             String birth =      familyMember[4];
 
-            // TODO: split PIB
             familyMembers.add(new FamilyAdapter(null, surName, firstName, middleName, level, birth));
         }
     }
@@ -304,10 +314,10 @@ public class IOAdapter implements IBaseAdapter {
         List<String[]> documentsList = EIDataPreparer.chunksArray(arr, EISettings.DOCUMENT_COL_COUNT);
 
         for (String[] document : documentsList) {
-            String passportType =   arr[0];
-            String series =         arr[1];
-            String whoGives =       arr[2];
-            String date =           arr[3];
+            String passportType =   document[0];
+            String series =         document[1];
+            String whoGives =       document[2];
+            String date =           document[3];
 
             this.documents.add(new DocumentAdapter(null, passportType, series, whoGives, date, null));
         }
@@ -315,5 +325,24 @@ public class IOAdapter implements IBaseAdapter {
 
     public String[] getSystemInfoAsStringArray() {
         return new String[]{prepod.getId().toString()};
+    }
+
+//    public IOAdapter clone(IOAdapter src) {
+//        this.setPrepod(src.getPrepod());
+//        this.setMilitary(src.getMilitary());
+//        this.setContactInfo(src.getContactInfo());
+//        this.setFakultet(src.getFakultet());
+//        this.setPosition(src.getPosition());
+//        this.setCurrentDoljnost(src.getCurrentDoljnost());
+//        this.setEducations(src.getEducations());
+//        this.setPosteducations(src.getPosteducations());
+//        this.setFamilyMembers(src.getFamilyMembers());
+//        this.setDocuments(src.getDocuments());
+//
+//        return this;
+//    }
+
+    private boolean isStringArrayEmpty(String[] arr) {
+        return  Arrays.stream(arr).allMatch(String::isBlank);
     }
 }

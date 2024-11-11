@@ -77,7 +77,7 @@ public class AddVNZController implements ControlledScene {
         String abbreviation = abbreviationTextField.getText();
 
         try {
-            universityValidator.validate(new UniversityAdapter(name, abbreviation));
+            universityValidator.validate(new UniversityAdapter(null, name, abbreviation));
         } catch (Exception e) {
             Popup.wrongInputAlert(e.getMessage());
             return;

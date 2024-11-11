@@ -90,11 +90,19 @@ public class DataWriteReadService {
     }
 
     public IOAdapter readImportDataFromExcel(File file) {
-        String[] importData = eiExcelReader.readExcel(file);
+        try {
+            String[] importData = eiExcelReader.readExcel(file);
+            IOAdapter importedAdapter = EIDataPreparer.dataToImportAdapter(importData);
+            Long importedPrepodId = eiDataCollectService.getPrepodIdByIOAdapter(importedAdapter);
+            IOAdapter sourceAdapter = eiDataCollectService.collectData(importedPrepodId);
+            IOAdapter mergedAdapter = EIDataPreparer.mergeIOAdapters(sourceAdapter, importedAdapter);
 
-        IOAdapter importAdapter = EIDataPreparer.dataToImportAdapter(importData);
+            eiExcelWriter.writeExcel(EIDataPreparer.exportAdapterToDataList(mergedAdapter), eiDataCollectService.getDropdownAdapter().toList(), file);
 
 //        eiDataCollectService.fillIds(importAdapter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return null;
     }
