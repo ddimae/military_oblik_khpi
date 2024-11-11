@@ -5,6 +5,9 @@ import ntukhpi.semit.militaryoblik.adapters.ContactInfoAdapter;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.IBaseValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.PhoneNumberValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.common.TextFieldValidator;
+import ntukhpi.semit.militaryoblik.javafxutils.validators.exceptions.RegionUkraineNotFoundException;
+import ntukhpi.semit.militaryoblik.service.RegionUkraineService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Pattern;
@@ -26,6 +29,13 @@ public class ContactInfoValidator implements IBaseValidator<ContactInfoAdapter> 
 
     @Getter()
     private PhoneNumberValidator secondPhoneForm;
+
+    RegionUkraineService regionUkraineService;
+
+    @Autowired
+    public ContactInfoValidator(RegionUkraineService regionUkraineService) {
+        this.regionUkraineService = regionUkraineService;
+    }
 
     @Override
     public boolean validate(ContactInfoAdapter info) throws Exception {
@@ -63,6 +73,10 @@ public class ContactInfoValidator implements IBaseValidator<ContactInfoAdapter> 
             mainPhoneForm.validateNumber(ukrPhoneFullRegex, ukrPhoneNoCountryCodeRegex, ukrPhoneNoPlusRegex, ukrPhoneCityRegex);
             secondPhoneForm.validateNumber(ukrPhoneFullRegex, ukrPhoneNoCountryCodeRegex, ukrPhoneNoPlusRegex, ukrPhoneCityRegex);
         }
+
+        if ((info.getRegion() != null && regionUkraineService.getRegionUkraineByName(info.getRegion()) == null) ||
+            (info.getRegionFact() != null && regionUkraineService.getRegionUkraineByName(info.getRegionFact()) == null))
+            throw new RegionUkraineNotFoundException("Такої області України не істує");
 
         return true;
     }

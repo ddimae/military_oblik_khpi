@@ -294,15 +294,15 @@ public class ContactsEditController implements ControlledScene {
 //            personalData.setPhoneMain(mainPhone.getNumber());
 //            personalData.setPhoneDop(secondPhone.getNumber());
             if (equalRadioButton.isSelected()) {
-                contactsCRUD.updatePersonalData(selectedPrepod.getId(), country, index, city, address, country,
-                        country, index, city, address, country,
+                contactsCRUD.updatePersonalData(selectedPrepod.getId(), country, index, city, address, region,
+                        country, index, city, address, region,
                         mainPhone.getNumber(), secondPhone.getNumber()
                 );
 
             } else {
 
-                contactsCRUD.updatePersonalData(selectedPrepod.getId(), country, index, city, address, country,
-                        countryFact, indexFact, cityFact, addressFact, countryFact,
+                contactsCRUD.updatePersonalData(selectedPrepod.getId(), country, index, city, address, region,
+                        countryFact, indexFact, cityFact, addressFact, regionFact,
                         mainPhone.getNumber(), secondPhone.getNumber()
                 );
             }
