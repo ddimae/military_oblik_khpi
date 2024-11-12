@@ -1,6 +1,8 @@
 package ntukhpi.semit.militaryoblik.utils.exportimport;
 
 import ntukhpi.semit.militaryoblik.adapters.EIAdapter;
+import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
+import ntukhpi.semit.militaryoblik.adapters.EducationPostgraduateAdapter;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.*;
 import ntukhpi.semit.militaryoblik.service.entitycrud.*;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.management.InstanceAlreadyExistsException;
 import java.util.Arrays;
+import java.util.Set;
 
 @Service
 public class EIDataSaveService {
@@ -77,6 +80,37 @@ public class EIDataSaveService {
             } catch (Exception e) {
                 throw e;
             }
+
+            try {
+                this.educationCRUD.deleteAllEducationsByPrepodId(prepodId);
+
+                Set<EducationAdapter> educations = importAdapter.getEducations();
+
+                for (EducationAdapter education : educations) {
+                    this.educationValidator.validate(education);
+                }
+                for (EducationAdapter education : educations) {
+                    this.educationCRUD.addEducation(prepodId, education);
+                }
+            } catch (Exception e) {
+                throw e;
+            }
+
+            try {
+                this.posteducationCRUD.deleteAllPostgraduateEducationsByPrepodId(prepodId);
+
+                Set<EducationPostgraduateAdapter> educations = importAdapter.getPosteducations();
+
+                for (EducationPostgraduateAdapter education : educations) {
+                    this.posteducationValidator.validate(education);
+                }
+                for (EducationPostgraduateAdapter education : educations) {
+                    this.posteducationCRUD.addPostgraduateEducation(prepodId, education);
+                }
+            } catch (Exception e) {
+                throw e;
+            }
+
         } catch (Exception e) {
             Popup.wrongInputAlert(e.getMessage());
             e.printStackTrace();

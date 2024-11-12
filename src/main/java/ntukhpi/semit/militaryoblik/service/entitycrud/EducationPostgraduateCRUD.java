@@ -2,6 +2,7 @@ package ntukhpi.semit.militaryoblik.service.entitycrud;
 
 import ntukhpi.semit.militaryoblik.adapters.EducationPostgraduateAdapter;
 import ntukhpi.semit.militaryoblik.entity.EducationPostgraduate;
+import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.service.EducationPostgraduateService;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
 import ntukhpi.semit.militaryoblik.service.VNZakladServiceImpl;
@@ -35,6 +36,12 @@ public class EducationPostgraduateCRUD {
         educationPostgraduateService.deleteEducationPostgraduate(idDelEducation);
     }
 
+    public void deleteAllPostgraduateEducationsByPrepodId(Long prepodId) {
+        Prepod prepod = new Prepod();
+
+        prepod.setId(prepodId);
+        educationPostgraduateService.deleteAllByPrepod(prepod);
+    }
 
     private EducationPostgraduate createNewInstance(Long idPerson, EducationPostgraduateAdapter adapter) {
 

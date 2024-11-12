@@ -19,4 +19,6 @@ public interface EducationPostgraduateService {
     EducationPostgraduate updateEducationPostgraduate(Long id, EducationPostgraduate updatedEducationPostgraduate);
 
     void deleteEducationPostgraduate(Long id);
+
+    void deleteAllByPrepod(Prepod prep);
 }

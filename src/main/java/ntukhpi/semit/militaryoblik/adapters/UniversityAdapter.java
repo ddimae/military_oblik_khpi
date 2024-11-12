@@ -34,7 +34,7 @@ public class UniversityAdapter implements IBaseAdapter {
         String[] arr = str.split(" \\(");
 
         vnzaklad.setShortName(arr[0]);
-        vnzaklad.setFullName(arr[1].substring(0, arr[1].length() - 2));
+        vnzaklad.setFullName(arr[1].length() - 2 >= 0 ? arr[1].substring(0, arr[1].length() - 2) : "");
 
         return vnzaklad;
     }

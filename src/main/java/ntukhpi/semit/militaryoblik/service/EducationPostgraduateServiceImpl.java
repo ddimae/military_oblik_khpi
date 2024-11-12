@@ -56,4 +56,12 @@ public class EducationPostgraduateServiceImpl implements EducationPostgraduateSe
     public void deleteEducationPostgraduate(Long id) {
         educationPostgraduateRepository.deleteById(id);
     }
+
+    @Override
+    public void deleteAllByPrepod(Prepod prep) {
+        List<EducationPostgraduate> list = educationPostgraduateRepository.findAllByPrepod(prep);
+        for (EducationPostgraduate eduItem: list) {
+            educationPostgraduateRepository.deleteById(eduItem.getId());
+        }
+    }
 }
