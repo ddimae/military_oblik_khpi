@@ -1,10 +1,14 @@
 package ntukhpi.semit.militaryoblik.utils.exportimport;
 
 import ntukhpi.semit.militaryoblik.adapters.EIAdapter;
+import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.*;
 import ntukhpi.semit.militaryoblik.service.entitycrud.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.management.InstanceAlreadyExistsException;
+import java.util.Arrays;
 
 @Service
 public class EIDataSaveService {
@@ -47,7 +51,35 @@ public class EIDataSaveService {
                 this.documentValidator = documentValidator;
     }
 
-    public void save(EIAdapter importAdapter) {
+    public void update(EIAdapter importAdapter) {
+        Long prepodId = importAdapter.getPrepod().getId();
 
+        Arrays.stream(importAdapter.getContactInfoAsStringArray()).forEach(System.out::println);
+
+        try {
+            try {
+                this.employeeValidator.validate(importAdapter.getPrepod());
+                this.employeeCRUD.updateEmployee(prepodId, importAdapter.getPrepod());
+            } catch (Exception e) {
+                throw e;
+            }
+
+            try {
+                this.militaryRegistrationValidator.validate(importAdapter.getMilitary());
+                this.militaryRegistrationCRUD.updateMilitaryPerson(prepodId, importAdapter.getMilitary());
+            } catch (Exception e) {
+                throw e;
+            }
+
+            try {
+                this.contactInfoValidator.validate(importAdapter.getContactInfo());
+                this.contactInfoCRUD.updatePersonalData(prepodId, importAdapter.getContactInfo());
+            } catch (Exception e) {
+                throw e;
+            }
+        } catch (Exception e) {
+            Popup.wrongInputAlert(e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

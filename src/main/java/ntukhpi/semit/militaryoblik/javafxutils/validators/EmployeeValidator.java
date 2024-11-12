@@ -58,13 +58,13 @@ public class EmployeeValidator implements IBaseValidator<PrepodAdapter> {
         dateValidator.validate();
         positionValidator.validate();
 
-        if (prepodService.getEmployeeByFullKeySet(info.getSurname(), info.getName(), info.getMidname(), info.getCathedra()) != null)
-            throw new InstanceAlreadyExistsException("Людина з таким ПІБ на даній кафедрі вже існує");
+//        if (prepodService.getEmployeeByFullKeySet(info.getSurname(), info.getName(), info.getMidname(), info.getCathedra()) != null)
+//            throw new InstanceAlreadyExistsException("Людина з таким ПІБ на даній кафедрі вже існує");
 
-        if (dolghnostService.findIDPosadaByName(info.getPosition()) == 0)
-            throw new Exception("Поле 'Посада' є обов'язковим для заповнення");
         if (dolghnostService.getDolghnostByName(info.getPosition()) == null)
             throw new PositionNotFoundException("Такої посади не знайдено");
+        if (dolghnostService.findIDPosadaByName(info.getPosition()) == 0)
+            throw new Exception("Поле 'Посада' є обов'язковим для заповнення");
 
         if (fakultetService.findFakultetByFname(info.getInstitute()) == null)
             throw new InstituteNotFoundException("Інститута з такою назвою не існує");

@@ -15,7 +15,7 @@ public interface IBaseAdapter {
                 Object targetValue = targetField.get(target);
                 Object sourceValue = sourceField.get(this);
 
-                System.out.println(targetField.getName() + ":\t" + targetValue + "\t->\t" + sourceValue);
+//                System.out.println(targetField.getName() + ":\t" + targetValue + "\t->\t" + sourceValue);
 
                 if (targetValue == null)
                     continue;
@@ -31,12 +31,12 @@ public interface IBaseAdapter {
                 sourceField.set(this, targetValue);
             }
 
-            for (Field sourceField : fields) {
-                sourceField.setAccessible(true);
-                Object sourceValue = sourceField.get(this);
-
-                System.out.println(sourceField.getName() + ":\t" + sourceValue);
-            }
+//            for (Field sourceField : fields) {
+//                sourceField.setAccessible(true);
+//                Object sourceValue = sourceField.get(this);
+//
+//                System.out.println(sourceField.getName() + ":\t" + sourceValue);
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }

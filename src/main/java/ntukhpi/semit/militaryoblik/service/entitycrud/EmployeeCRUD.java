@@ -35,13 +35,12 @@ public class EmployeeCRUD {
         return prepodService.createPrepod(newEmployee);
     }
 
-//    public void updateEducation(Long idPersonForUpdate, String form, String level,
-//                                String vnzName, String year, String diplomaNumber,
-//                                String diplomaSeries, String specialty, String qualification) {
-//        Education educationUpdate = createNewInstance(idPersonForUpdate, form, level,
-//                vnzName, year, diplomaNumber, diplomaSeries, specialty, qualification);
-//        educationService.updateEducation(idPersonForUpdate,educationUpdate);
-//    }
+    public Prepod updateEmployee(Long updatePrepodId, PrepodAdapter adapter) {
+        Prepod newEmployee = createNewInstance(adapter);
+        newEmployee.setId(updatePrepodId);
+        return prepodService.updatePrepod(newEmployee);
+    }
+
     public void deleteEmployee(Long idPrepod) {
         Prepod delPrepod = prepodService.getPrepodById(idPrepod);
         MilitaryPerson mp = militaryPersonService.getMilitaryPersonByPrepod(delPrepod);
@@ -77,7 +76,7 @@ public class EmployeeCRUD {
         newPrepod.setOtch(adapter.getMidname());
         newPrepod.setKafedra(kafedraService.getKafedraByName(adapter.getCathedra()));
 //        if (!birthDate.isBlank())
-            newPrepod.setDr(LocalDate.parse(adapter.getBirth(), DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        newPrepod.setDr(LocalDate.parse(adapter.getBirth(), DateTimeFormatter.ofPattern("dd.MM.yyyy")));
 
         newPrepod.setDolghnost(dolghnostService.getDolghnostByName(adapter.getPosition()));
         newPrepod.setStepen(stepenService.getStepenByName(adapter.getDegree()));

@@ -174,7 +174,7 @@ public class EIAdapter implements IBaseAdapter {
             contactInfo.setIndex(index);
             contactInfo.setMainPhone(mainPhone);
             contactInfo.setSecondPhone(secondPhone);
-            if (isFactEqual.equals("TAK")) {
+            if (isFactEqual.equals("ТАК")) {
                 contactInfo.setCountryFact(country);
                 contactInfo.setRegionFact(region);
                 contactInfo.setCityFact(city);

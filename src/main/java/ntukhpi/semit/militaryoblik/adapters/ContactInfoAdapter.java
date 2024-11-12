@@ -28,7 +28,7 @@ public class ContactInfoAdapter implements IBaseAdapter {
     private String regionFact;
     private String addressFact;
 
-    private boolean isForeinNumber;
+    private boolean isForeinNumber = true;
 
     public ContactInfoAdapter(PersonalData pd) {
         this.country = DataFormat.safeStr(pd.getCountry());
@@ -43,7 +43,6 @@ public class ContactInfoAdapter implements IBaseAdapter {
         this.cityFact = pd.getFactCity();
         this.regionFact = DataFormat.safeStr(pd.getRegionKh());
         this.addressFact = pd.getFactRowAddress();
-        this.isForeinNumber = true;
     }
 
     public boolean isFactEqual() {

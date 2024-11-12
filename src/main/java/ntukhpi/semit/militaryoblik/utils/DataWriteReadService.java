@@ -8,14 +8,12 @@ import ntukhpi.semit.militaryoblik.utils.D5.D5DataCollectService;
 import ntukhpi.semit.militaryoblik.utils.D5.D5DataPreparer;
 import ntukhpi.semit.militaryoblik.utils.D5.D5ExcelWriter;
 import ntukhpi.semit.militaryoblik.utils.P2.P2WordWriter;
-import ntukhpi.semit.militaryoblik.utils.exportimport.EIDataCollectService;
-import ntukhpi.semit.militaryoblik.utils.exportimport.EIDataPreparer;
-import ntukhpi.semit.militaryoblik.utils.exportimport.EIExcelReader;
-import ntukhpi.semit.militaryoblik.utils.exportimport.EIExcelWriter;
+import ntukhpi.semit.militaryoblik.utils.exportimport.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +24,7 @@ public class DataWriteReadService {
     private final D5DataPreparer d5DataPreparer;
     private final D5DataCollectService d5DataCollectService;
     private final EIDataCollectService eiDataCollectService;
+    private final EIDataSaveService eiDataSaveService;
 
     private final D5ExcelWriter d5ExcelWriter;
     private final P2WordWriter P2WordWriter;
@@ -40,7 +39,8 @@ public class DataWriteReadService {
                                 P2WordWriter P2WordWriter,
                                 EIExcelWriter eiExcelWriter,
                                 EIExcelReader eiExcelReader,
-                                EIDataCollectService eiDataCollectService) {
+                                EIDataCollectService eiDataCollectService,
+                                EIDataSaveService eiDataSaveService) {
         this.d5DataPreparer = d5DataPreparer;
         this.d5DataCollectService = d5DataCollectService;
         this.d5ExcelWriter = d5ExcelWriter;
@@ -48,6 +48,7 @@ public class DataWriteReadService {
         this.eiExcelWriter = eiExcelWriter;
         this.eiExcelReader = eiExcelReader;
         this.eiDataCollectService = eiDataCollectService;
+        this.eiDataSaveService = eiDataSaveService;
     }
 
     // Запис данних з бд до файлу додатку 5.
@@ -89,20 +90,25 @@ public class DataWriteReadService {
         }
     }
 
-    public EIAdapter readImportDataFromExcel(File file) {
-        try {
-            String[] importData = eiExcelReader.readExcel(file);
-            EIAdapter importedAdapter = EIDataPreparer.dataToImportAdapter(importData);
-            Long importedPrepodId = eiDataCollectService.getPrepodIdByEIAdapter(importedAdapter);
-            EIAdapter sourceAdapter = eiDataCollectService.collectData(importedPrepodId);
-            EIAdapter mergedAdapter = EIDataPreparer.mergeEIAdapters(sourceAdapter, importedAdapter);
+    public EIAdapter readImportDataFromExcel(File file) throws Exception {
+        System.out.println("Типи клітинок ІМПОРТА=======================");
+        String[] importData = eiExcelReader.readImportExcel(file);
+        System.out.println("Типи клітинок ЕКСПОРТА=======================");
+        String[] exportData = eiExcelReader.readExportExcel(file);
 
-            eiExcelWriter.writeExcel(EIDataPreparer.exportAdapterToDataList(mergedAdapter), eiDataCollectService.getDropdownAdapter().toList(), file);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        System.out.println("Значення клітинок ІМПОРТА==============================================");
+        EIAdapter importAdapter = EIDataPreparer.dataToImportAdapter(importData);
+        System.out.println("Значення клітинок ЕКСПОРТА==============================================");
+        EIAdapter exportAdapter = EIDataPreparer.dataToImportAdapter(exportData);
 
-        return null;
+        Long prepodId = eiDataCollectService.getPrepodIdByEIAdapter(exportAdapter);
+
+        EIAdapter sourceAdapter = eiDataCollectService.collectData(prepodId);
+        EIAdapter mergedAdapter = EIDataPreparer.mergeEIAdapters(sourceAdapter, importAdapter);
+
+        eiDataSaveService.update(mergedAdapter);
+        return mergedAdapter;
+//            eiExcelWriter.writeExcel(EIDataPreparer.exportAdapterToDataList(mergedAdapter), eiDataCollectService.getDropdownAdapter().toList(), file);
     }
 
     public String writeDataToWord(Long reservistId, File file) {

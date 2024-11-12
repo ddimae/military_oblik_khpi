@@ -64,8 +64,8 @@ public class ContactInfoValidator implements IBaseValidator<ContactInfoAdapter> 
         addressForm.validate();
         addressFactForm.validate();
         if (info.isForeinNumber()) {
-            mainPhoneForm.setErrorMsg("має іноземний формат та повинен починатися зі знаку '+'");
-            secondPhoneForm.setErrorMsg("має іноземний формат та повинен починатися зі знаку '+'");
+            mainPhoneForm.setErrorMsg("Основний номер телефона має іноземний формат та повинен починатися зі знаку '+'");
+            secondPhoneForm.setErrorMsg("Додатковий новер телефона має іноземний формат та повинен починатися зі знаку '+'");
 
             mainPhoneForm.validateNumber(foreinPhoneRegex, null, null, null);
             secondPhoneForm.validateNumber(foreinPhoneRegex, null, null, null);

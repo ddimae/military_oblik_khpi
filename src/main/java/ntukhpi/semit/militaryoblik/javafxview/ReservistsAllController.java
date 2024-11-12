@@ -513,8 +513,13 @@ public class ReservistsAllController implements ControlledScene {
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Файли Excel з формою для оновлення(*.xlsx)", "*.xlsx");
         fileChooser.getExtensionFilters().add(extFilter);
 
-        dataWriteReadService.readImportDataFromExcel(fileChooser.showOpenDialog(new Stage()));
+        try {
+            dataWriteReadService.readImportDataFromExcel(fileChooser.showOpenDialog(new Stage()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        this.updateForm();
         Popup.successSave();
     }
 
