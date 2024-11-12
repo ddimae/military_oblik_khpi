@@ -1,5 +1,6 @@
 package ntukhpi.semit.militaryoblik.utils.exportimport;
 
+import ntukhpi.semit.militaryoblik.adapters.DocumentAdapter;
 import ntukhpi.semit.militaryoblik.adapters.EIAdapter;
 
 import java.util.*;
@@ -143,7 +144,14 @@ public class EIDataPreparer {
         merged.setEducations(target.getEducations());
         merged.setPosteducations(target.getPosteducations());
         merged.setFamilyMembers(target.getFamilyMembers());
-        merged.setDocuments(target.getDocuments());
+
+        List<DocumentAdapter> sourceDocuments = source.getDocuments().stream().toList();
+        List<DocumentAdapter> targetDocuments = target.getDocuments().stream().toList();
+
+        for (int i = 0; i < 3; i++)
+            sourceDocuments.get(i).merge(targetDocuments.get(i), true);
+
+        merged.setDocuments(source.getDocuments());
 
 
 //        TestAdapter a = new TestAdapter("A", "B", new CathedraAdapter("C", "D", "E", "F"));

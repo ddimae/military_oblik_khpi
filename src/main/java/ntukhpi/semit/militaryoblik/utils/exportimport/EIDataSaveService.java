@@ -1,8 +1,6 @@
 package ntukhpi.semit.militaryoblik.utils.exportimport;
 
-import ntukhpi.semit.militaryoblik.adapters.EIAdapter;
-import ntukhpi.semit.militaryoblik.adapters.EducationAdapter;
-import ntukhpi.semit.militaryoblik.adapters.EducationPostgraduateAdapter;
+import ntukhpi.semit.militaryoblik.adapters.*;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.*;
 import ntukhpi.semit.militaryoblik.service.entitycrud.*;
@@ -57,7 +55,7 @@ public class EIDataSaveService {
     public void update(EIAdapter importAdapter) {
         Long prepodId = importAdapter.getPrepod().getId();
 
-        Arrays.stream(importAdapter.getContactInfoAsStringArray()).forEach(System.out::println);
+        importAdapter.getDocumentsAsStringArray().forEach(l -> Arrays.stream(l).forEach(System.out::println));
 
         try {
             try {
@@ -111,6 +109,35 @@ public class EIDataSaveService {
                 throw e;
             }
 
+            try {
+                this.familyCRUD.deleteAllFamilyByPrepodId(prepodId);
+
+                Set<FamilyAdapter> familyMembers = importAdapter.getFamilyMembers();
+
+                for (FamilyAdapter familyMember : familyMembers) {
+                    this.familyValidator.validate(familyMember);
+                }
+                for (FamilyAdapter familyMember : familyMembers) {
+                    this.familyCRUD.addFamilyMember(prepodId, familyMember);
+                }
+            } catch (Exception e) {
+                throw e;
+            }
+
+//            try {
+//                this.documentCRUD.deleteAllDocumentsByPrepodId(prepodId);
+//
+//                Set<DocumentAdapter> documents = importAdapter.getDocuments();
+//
+//                for (DocumentAdapter document : documents) {
+//                    this.documentValidator.validate(document);
+//                }
+//                for (DocumentAdapter document : documents) {
+//                    this.documentCRUD.addDocument(prepodId, document);
+//                }
+//            } catch (Exception e) {
+//                throw e;
+//            }
         } catch (Exception e) {
             Popup.wrongInputAlert(e.getMessage());
             e.printStackTrace();

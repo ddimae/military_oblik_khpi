@@ -3,6 +3,7 @@ package ntukhpi.semit.militaryoblik.service.entitycrud;
 import ntukhpi.semit.militaryoblik.adapters.FamilyAdapter;
 import ntukhpi.semit.militaryoblik.entity.Document;
 import ntukhpi.semit.militaryoblik.entity.FamilyMember;
+import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.service.DocumentService;
 import ntukhpi.semit.militaryoblik.service.FamilyMemberService;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
@@ -45,6 +46,12 @@ public class FamilyMemberCRUD {
         familyMemberService.deleteFamilyMember(idDelFamilyMember);
     }
 
+    public void deleteAllFamilyByPrepodId(Long prepodId) {
+        Prepod prepod = new Prepod();
+
+        prepod.setId(prepodId);
+        familyMemberService.deleteAllByPrepod(prepod);
+    }
 
     private FamilyMember createNewInstance(Long idPerson, FamilyAdapter adapter) {
 

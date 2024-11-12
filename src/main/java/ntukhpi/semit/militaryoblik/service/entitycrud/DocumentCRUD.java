@@ -2,6 +2,7 @@ package ntukhpi.semit.militaryoblik.service.entitycrud;
 
 import ntukhpi.semit.militaryoblik.adapters.DocumentAdapter;
 import ntukhpi.semit.militaryoblik.entity.Document;
+import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.service.DocumentService;
 import ntukhpi.semit.militaryoblik.service.PrepodServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,12 @@ public class DocumentCRUD {
         documentService.deleteDocument(idDelDocument);
     }
 
+    public void deleteAllDocumentsByPrepodId(Long prepodId) {
+        Prepod prepod = new Prepod();
+
+        prepod.setId(prepodId);
+        documentService.deleteDocumentsByPrepod(prepod);
+    }
 
     private Document createNewInstance(Long idPerson, DocumentAdapter adapter) {
 
