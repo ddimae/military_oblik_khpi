@@ -55,8 +55,6 @@ public class EIDataSaveService {
     public void update(EIAdapter importAdapter) {
         Long prepodId = importAdapter.getPrepod().getId();
 
-        importAdapter.getDocumentsAsStringArray().forEach(l -> Arrays.stream(l).forEach(System.out::println));
-
         try {
             try {
                 this.employeeValidator.validate(importAdapter.getPrepod());
@@ -80,13 +78,14 @@ public class EIDataSaveService {
             }
 
             try {
-                this.educationCRUD.deleteAllEducationsByPrepodId(prepodId);
-
                 Set<EducationAdapter> educations = importAdapter.getEducations();
 
                 for (EducationAdapter education : educations) {
                     this.educationValidator.validate(education);
                 }
+
+                this.educationCRUD.deleteAllEducationsByPrepodId(prepodId);
+
                 for (EducationAdapter education : educations) {
                     this.educationCRUD.addEducation(prepodId, education);
                 }
@@ -95,13 +94,14 @@ public class EIDataSaveService {
             }
 
             try {
-                this.posteducationCRUD.deleteAllPostgraduateEducationsByPrepodId(prepodId);
-
                 Set<EducationPostgraduateAdapter> educations = importAdapter.getPosteducations();
 
                 for (EducationPostgraduateAdapter education : educations) {
                     this.posteducationValidator.validate(education);
                 }
+
+                this.posteducationCRUD.deleteAllPostgraduateEducationsByPrepodId(prepodId);
+
                 for (EducationPostgraduateAdapter education : educations) {
                     this.posteducationCRUD.addPostgraduateEducation(prepodId, education);
                 }
@@ -110,13 +110,14 @@ public class EIDataSaveService {
             }
 
             try {
-                this.familyCRUD.deleteAllFamilyByPrepodId(prepodId);
-
                 Set<FamilyAdapter> familyMembers = importAdapter.getFamilyMembers();
 
                 for (FamilyAdapter familyMember : familyMembers) {
                     this.familyValidator.validate(familyMember);
                 }
+
+                this.familyCRUD.deleteAllFamilyByPrepodId(prepodId);
+
                 for (FamilyAdapter familyMember : familyMembers) {
                     this.familyCRUD.addFamilyMember(prepodId, familyMember);
                 }
@@ -124,20 +125,22 @@ public class EIDataSaveService {
                 throw e;
             }
 
-//            try {
-//                this.documentCRUD.deleteAllDocumentsByPrepodId(prepodId);
-//
-//                Set<DocumentAdapter> documents = importAdapter.getDocuments();
-//
-//                for (DocumentAdapter document : documents) {
-//                    this.documentValidator.validate(document);
-//                }
-//                for (DocumentAdapter document : documents) {
-//                    this.documentCRUD.addDocument(prepodId, document);
-//                }
-//            } catch (Exception e) {
-//                throw e;
-//            }
+            try {
+                Set<DocumentAdapter> documents = importAdapter.getDocuments();
+
+                for (DocumentAdapter document : documents) {
+                    document.setPrepodId(prepodId);
+                    this.documentValidator.validate(document);
+                }
+
+                this.documentCRUD.deleteAllDocumentsByPrepodId(prepodId);
+
+                for (DocumentAdapter document : documents) {
+                    this.documentCRUD.addDocument(prepodId, document);
+                }
+            } catch (Exception e) {
+                throw e;
+            }
         } catch (Exception e) {
             Popup.wrongInputAlert(e.getMessage());
             e.printStackTrace();

@@ -51,6 +51,27 @@ public class EIDataPreparer {
         return strList.toArray(new String[0]);
     }
 
+    public static List<DocumentAdapter> documentsSetToOffsetList (Set<DocumentAdapter> documentsSet) {
+        for (DocumentAdapter document : documentsSet) {
+            System.out.println(document.getType() + " " + EISettings.documentsOrder.get(document.getType()));
+        }
+
+        List<DocumentAdapter> documentsList = documentsSet.stream().sorted(Comparator.comparingInt(o -> EISettings.documentsOrder.get(o.getType()))).toList();;
+        List<DocumentAdapter> documentsListOffset = new ArrayList<>();
+        int count = 0;
+
+        for (int i = 0; i < 3; i++) {
+            if (documentsList.size() <= count || EISettings.documentsOrder.get(documentsList.get(count).getType()) == null || EISettings.documentsOrder.get(documentsList.get(count).getType()) != i) {
+                documentsListOffset.add(new DocumentAdapter());
+            } else {
+                documentsListOffset.add(documentsList.get(count));
+                count++;
+            }
+        }
+
+        return documentsListOffset;
+    }
+
     public static <T> List<T[]> chunksArray(T[] arr, int chunkLen) {
         List<T[]> chunksList = new ArrayList<>();
 
@@ -145,14 +166,14 @@ public class EIDataPreparer {
         merged.setPosteducations(target.getPosteducations());
         merged.setFamilyMembers(target.getFamilyMembers());
 
-        List<DocumentAdapter> sourceDocuments = source.getDocuments().stream().toList();
-        List<DocumentAdapter> targetDocuments = target.getDocuments().stream().toList();
+        List<DocumentAdapter> sourceDocumentsOffset = EIDataPreparer.documentsSetToOffsetList(source.getDocuments());
+        List<DocumentAdapter> targetDocumentsOffset = EIDataPreparer.documentsSetToOffsetList(target.getDocuments());
 
-        for (int i = 0; i < 3; i++)
-            sourceDocuments.get(i).merge(targetDocuments.get(i), true);
+        for (int i = 0; i < 3; i++) {
+            sourceDocumentsOffset.get(i).merge(targetDocumentsOffset.get(i), true);
+        }
 
-        merged.setDocuments(source.getDocuments());
-
+        merged.setDocuments(new HashSet<>(sourceDocumentsOffset));
 
 //        TestAdapter a = new TestAdapter("A", "B", new CathedraAdapter("C", "D", "E", "F"));
 //        TestAdapter b = new TestAdapter("A1", "", new CathedraAdapter(null, "D1", "E1", "  "));
