@@ -73,13 +73,12 @@ public class EIAdapter implements IBaseAdapter {
         String milSpeciality = military.getVos();
         String milSuitability = military.getVPrydatnist();
         String milOffice = military.getVoenkomat();
-        String milSpecialRecord = military.getReserv();
 
         return new String[]{surname, firstName, middleName, dateOfBirth,
                             nationality, education, category, degree, title,
                             familyStatus, institute, cathedra, position,
                             orderNumber, orderDate, milGroup, milCategory, milComposition,
-                            milTitle, milSpeciality, milSuitability, milOffice, milSpecialRecord};
+                            milTitle, milSpeciality, milSuitability, milOffice};
     }
 
     public void setGeneralInfoAsStringArray(String[] arr) {
@@ -105,7 +104,6 @@ public class EIAdapter implements IBaseAdapter {
         String milSpeciality =      arr[19];
         String milSuitability =     arr[20];
         String milOffice =          arr[21];
-        String milSpecialRecord =   arr[22];
 
         prepod.setSurname(surname);
         prepod.setName(firstName);
@@ -129,7 +127,6 @@ public class EIAdapter implements IBaseAdapter {
         military.setVos(milSpeciality);
         military.setVPrydatnist(milSuitability);
         military.setVoenkomat(milOffice);
-        military.setReserv(milSpecialRecord);
     }
 
     public String[] getContactInfoAsStringArray() {

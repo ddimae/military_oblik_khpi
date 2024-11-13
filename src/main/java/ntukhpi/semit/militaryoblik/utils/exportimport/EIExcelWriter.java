@@ -68,7 +68,7 @@ public class EIExcelWriter {
         for (int i = 0; i < personData.size(); i++) {
             for (String tableData : personData.get(i)) {
                 Row row = sheet.getRow(rowCount);
-                Cell cell = row.createCell(EISettings.GLOBAL_EXPORT_COLUMN);
+                Cell cell = row.getCell(EISettings.GLOBAL_EXPORT_COLUMN);
 
                 cell.setCellValue(tableData);
                 rowCount++;
