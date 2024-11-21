@@ -55,6 +55,7 @@ public class MilitaryRegistrationCRUD {
         militaryPerson.setVoenkomat(voenkomat);
         militaryPerson.setFamilyState(adapter.getFamilyState());
         militaryPerson.setEducationLevel(adapter.getEducationLevel());
+        militaryPerson.setVin(adapter.getVin());
 
         return militaryPersonService.updateMilitaryPerson(militaryPerson.getId(), militaryPerson);
     }
@@ -105,6 +106,7 @@ public class MilitaryRegistrationCRUD {
         newMilitaryPerson.setReserv("немає");
         newMilitaryPerson.setFamilyState("Не вказаний");
         newMilitaryPerson.setEducationLevel("Не вказаний");
+        newMilitaryPerson.setVin("123456789012345678901");
 
         return militaryPersonService.createMilitaryPerson(newMilitaryPerson);
     }

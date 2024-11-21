@@ -30,18 +30,12 @@ public class MilitaryPersonAdapter implements IBaseAdapter {
     private String vPrydatnist;
     private String familyState;
     private String educationLevel;
+    private String vin;
 
     public MilitaryPersonAdapter(MilitaryPerson militaryPerson) {
-        this.id = militaryPerson.getId();
-        this.vos = militaryPerson.getVos();
-        this.vCategory = DataFormat.safeStr(militaryPerson.getVCategory());
-        this.vGrupa = militaryPerson.getVGrupa();
-        this.vSklad = DataFormat.safeStr(militaryPerson.getVSklad());
-        this.vZvanie = DataFormat.safeStr(militaryPerson.getVZvanie());
-        this.voenkomat = DataFormat.safeStr(militaryPerson.getVoenkomat());
-        this.reserv = militaryPerson.getReserv();
-        this.vPrydatnist = militaryPerson.getVPrydatnist();
-        this.familyState = militaryPerson.getFamilyState();
-        this.educationLevel = militaryPerson.getEducationLevel();
+        this(militaryPerson.getId(), militaryPerson.getVos(), DataFormat.safeStr(militaryPerson.getVCategory()),
+                militaryPerson.getVGrupa(), DataFormat.safeStr(militaryPerson.getVSklad()), DataFormat.safeStr(militaryPerson.getVZvanie()),
+                DataFormat.safeStr(militaryPerson.getVoenkomat()), militaryPerson.getReserv(),
+                militaryPerson.getVPrydatnist(), militaryPerson.getFamilyState(), militaryPerson.getEducationLevel(), militaryPerson.getVin());
     }
 }

@@ -50,6 +50,8 @@ public class MilitaryRegistrationEditController implements ControlledScene {
     @FXML
     public TextField validityTextField;
     @FXML
+    public TextField vinTextField;
+    @FXML
     public ComboBox<String> educationComboBox;
     @FXML
     public ComboBox<String> familyStateComboBox;
@@ -128,13 +130,13 @@ public class MilitaryRegistrationEditController implements ControlledScene {
     private void setMilitaryRegistrationInfo(ReservistAdapter reservist) {
         selectedPrepod = prepodService.getPrepodById(ReservistsAllController.getSelectedPrepodId());
 
-
         pibLabel.setText(reservist.getPib());
 
         vosTextField.setText(reservist.getVos());
         categoryComboBox.setValue(reservist.getCategory());
         groupComboBox.setValue(reservist.getVGrupa());
         vSkladComboBox.setValue(reservist.getVSklad());
+        vinTextField.setText(reservist.getVin());
 
         if (reservist.getRank() != null)
             rankComboBox.setValue(reservist.getRank());
@@ -170,6 +172,7 @@ public class MilitaryRegistrationEditController implements ControlledScene {
         categoryComboBox.setValue(reservist.getCategory());
         groupComboBox.setValue(reservist.getVGrupa());
         vSkladComboBox.setValue(reservist.getVSklad());
+        vinTextField.setText(reservist.getVin());
 
         if (reservist.getRank() != null)
             rankComboBox.setValue(reservist.getRank());
@@ -288,11 +291,12 @@ public class MilitaryRegistrationEditController implements ControlledScene {
         String voenkomat = voenkomatTextField.getText().trim();
         String familyState = familyStanTextField.getText().trim();
         String educationLevel = educationTextField.getText().trim();
+        String vin = vinTextField.getText().trim();
 
         try {
             militaryRegistrationValidator.validate(new MilitaryPersonAdapter(null, vos, category,
                                                     group, vSklad, vZvanie, voenkomat,
-                                                null, prydatnist, familyState, educationLevel));
+                                                null, prydatnist, familyState, educationLevel, vin));
         } catch (VoenkomatNotFoundException ignored) {
             if (!Popup.saveConfirmation())
                 return;
@@ -330,13 +334,13 @@ public class MilitaryRegistrationEditController implements ControlledScene {
                         new MilitaryPersonAdapter(null, vos, category,
                                 group, vSklad, vZvanie,
                                 voenkomat, null, prydatnist,
-                                familyState, educationLevel));
+                                familyState, educationLevel, vin));
             } else {
                 militaryRegistrationCRUD.updateMilitaryPerson(employeeCRUD.adapterPrepodToPrepod(newPrepod).getId(),
                         new MilitaryPersonAdapter(null, vos, category,
                                 group, vSklad, vZvanie,
                                 voenkomat, null, prydatnist,
-                                familyState, educationLevel));
+                                familyState, educationLevel, vin));
                 //???
                 MilitaryPerson mp = militaryPersonService.
                         getMilitaryPersonByPrepod(employeeCRUD.adapterPrepodToPrepod(newPrepod)); //***

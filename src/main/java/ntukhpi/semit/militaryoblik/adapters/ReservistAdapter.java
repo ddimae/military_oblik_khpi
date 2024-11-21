@@ -45,6 +45,8 @@ public class ReservistAdapter implements IBaseAdapter {
     private String familyState;
     private String educationLevel;
 
+    private String vin;
+
 
     public ReservistAdapter(String pib, String dr, String gender,
                             String trc, String rank, String vos,
@@ -86,6 +88,8 @@ public class ReservistAdapter implements IBaseAdapter {
 
         this.familyState = militaryPerson.getFamilyState();
         this.educationLevel = militaryPerson.getEducationLevel();
+
+        this.vin = militaryPerson.getVin();
     }
 
     public String getFam() {

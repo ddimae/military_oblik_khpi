@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 public class EmployeeValidator implements IBaseValidator<PrepodAdapter> {
     Pattern ukrWords = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії\\-\\s]+$");
     Pattern ukrDateRegex = Pattern.compile("^\\d{2}\\.\\d{2}\\.\\d{4}$");
-    Pattern innRegax = Pattern.compile("^\\d{10}$");
+    Pattern innRegex = Pattern.compile("^\\d{10}$");
 
     KafedraService kafedraService;
     FakultetService fakultetService;
@@ -69,7 +69,7 @@ public class EmployeeValidator implements IBaseValidator<PrepodAdapter> {
         TextFieldValidator surnameValidator = new TextFieldValidator(40, true, ukrWords, "Прізвище", info.getSurname(), "повинно містити українські літери");
         TextFieldValidator nameValidator = new TextFieldValidator(30, true, ukrWords, "Ім'я", info.getName(), "повинно містити українські літери");
         TextFieldValidator midnameValidator = new TextFieldValidator(30, true, ukrWords, "По батькові", info.getMidname(), "повинно містити українські літери");
-        TextFieldValidator innValidator = new TextFieldValidator(10, true, innRegax, "ІНН", info.getInn(), "повинно містити рівно 10 цифр");
+        TextFieldValidator innValidator = new TextFieldValidator(10, true, innRegex, "ІНН", info.getInn(), "повинно містити рівно 10 цифр");
         // FIXME: Not obligatory in DB
         DateFieldValidator dateValidator = new DateFieldValidator(true, ukrDateRegex, "Дата народження", info.getBirth(), "повинно мати формат дати: dd.mm.yyyy");
         TextFieldValidator positionValidator = new TextFieldValidator(-1, true, null, "Посада", info.getPosition(), null);

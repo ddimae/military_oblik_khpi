@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 public class MilitaryRegistrationValidator implements IBaseValidator<MilitaryPersonAdapter> {
     Pattern onlyNumber = Pattern.compile("^\\d+$");
     Pattern ukrWords = Pattern.compile("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії,.\\-`'_\\s]*$");
+    Pattern vinRegex = Pattern.compile("^\\d{19}$|^\\d{21}$");
 
     VoenkomatServiceImpl voenkomatService;
 
@@ -36,6 +37,7 @@ public class MilitaryRegistrationValidator implements IBaseValidator<MilitaryPer
         TextFieldValidator voenkomatValidator = new TextFieldValidator(-1, true, ukrWords, "ТЦК", info.getVoenkomat(), "може містити тільки українські літери та розділові знаки");
         TextFieldValidator familyStanValidator = new TextFieldValidator(-1, true, ukrWords, "Сімейний стан", info.getFamilyState(), "може містити тільки українські літери та розділові знаки");
         TextFieldValidator osvitaValidator = new TextFieldValidator(-1, true, ukrWords, "Освіта", info.getEducationLevel(), "може містити тільки українські літери та розділові знаки");
+        TextFieldValidator vinValidator = new TextFieldValidator(21, false, vinRegex, "ВІН", info.getVin(), "повинен містити рівно 19 або 21 цифру");
 
         vosValidator.validate();
         categoryValidator.validate();
@@ -47,6 +49,7 @@ public class MilitaryRegistrationValidator implements IBaseValidator<MilitaryPer
         voenkomatValidator.validate();
         familyStanValidator.validate();
         osvitaValidator.validate();
+        vinValidator.validate();
 
         if (voenkomatService.getVoenkomatByName(info.getVoenkomat()) == null)
             throw new VoenkomatNotFoundException("ТЦК з такою назвою не існує");

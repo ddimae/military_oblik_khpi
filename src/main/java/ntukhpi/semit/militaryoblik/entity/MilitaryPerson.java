@@ -89,6 +89,9 @@ public class MilitaryPerson {
     @Column(name = "edication_level")
     private String educationLevel;
 
+    @Column
+    private String vin;
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("MilitaryPerson ");
