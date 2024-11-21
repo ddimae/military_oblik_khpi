@@ -106,9 +106,7 @@ public class DataWriteReadService {
         EIAdapter sourceAdapter = eiDataCollectService.collectData(prepodId);
         EIAdapter mergedAdapter = EIDataPreparer.mergeEIAdapters(sourceAdapter, importAdapter);
 
-        eiDataSaveService.update(mergedAdapter);
-        return mergedAdapter;
-//            eiExcelWriter.writeExcel(EIDataPreparer.exportAdapterToDataList(mergedAdapter), eiDataCollectService.getDropdownAdapter().toList(), file);
+        return eiDataSaveService.update(mergedAdapter) ? mergedAdapter : null;
     }
 
     public String writeDataToWord(Long reservistId, File file) {

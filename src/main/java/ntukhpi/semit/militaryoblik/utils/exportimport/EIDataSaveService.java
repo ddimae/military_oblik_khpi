@@ -52,7 +52,7 @@ public class EIDataSaveService {
                 this.documentValidator = documentValidator;
     }
 
-    public void update(EIAdapter importAdapter) {
+    public boolean update(EIAdapter importAdapter) {
         Long prepodId = importAdapter.getPrepod().getId();
 
         try {
@@ -144,6 +144,8 @@ public class EIDataSaveService {
         } catch (Exception e) {
             Popup.wrongInputAlert(e.getMessage());
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
 }

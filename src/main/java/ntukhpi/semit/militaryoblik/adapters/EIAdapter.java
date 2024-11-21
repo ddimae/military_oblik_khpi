@@ -61,6 +61,7 @@ public class EIAdapter implements IBaseAdapter {
         String degree = prepod.getDegree();
         String title = prepod.getStatus();
         String familyStatus = military.getFamilyState();
+        String inn = prepod.getInn();
         String institute = fakultet.toString();
         String cathedra = prepod.getCathedra();
         String position = prepod.getPosition();
@@ -76,7 +77,7 @@ public class EIAdapter implements IBaseAdapter {
 
         return new String[]{surname, firstName, middleName, dateOfBirth,
                             nationality, education, category, degree, title,
-                            familyStatus, institute, cathedra, position,
+                            familyStatus, inn, institute, cathedra, position,
                             orderNumber, orderDate, milGroup, milCategory, milComposition,
                             milTitle, milSpeciality, milSuitability, milOffice};
     }
@@ -92,18 +93,19 @@ public class EIAdapter implements IBaseAdapter {
         String degree =             arr[7];
         String title =              arr[8];
         String familyStatus =       arr[9];
-        String institute =          arr[10];
-        String cathedra =           arr[11];
-        String position =           arr[12];
-        String orderNumber =        arr[13];
-        String orderDate =          arr[14];
-        String milGroup =           arr[15];
-        String milCategory =        arr[16];
-        String milComposition =     arr[17];
-        String milTitle =           arr[18];
-        String milSpeciality =      arr[19];
-        String milSuitability =     arr[20];
-        String milOffice =          arr[21];
+        String inn =                arr[10];
+        String institute =          arr[11];
+        String cathedra =           arr[12];
+        String position =           arr[13];
+        String orderNumber =        arr[14];
+        String orderDate =          arr[15];
+        String milGroup =           arr[16];
+        String milCategory =        arr[17];
+        String milComposition =     arr[18];
+        String milTitle =           arr[19];
+        String milSpeciality =      arr[20];
+        String milSuitability =     arr[21];
+        String milOffice =          arr[22];
 
         prepod.setSurname(surname);
         prepod.setName(firstName);
@@ -115,6 +117,7 @@ public class EIAdapter implements IBaseAdapter {
         prepod.setDegree(degree);
         prepod.setStatus(title);
         military.setFamilyState(familyStatus);
+        prepod.setInn(inn);
         fakultet.setName(institute);
         prepod.setCathedra(cathedra);
         prepod.setPosition(position);

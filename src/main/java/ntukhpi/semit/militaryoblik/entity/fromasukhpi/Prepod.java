@@ -72,6 +72,9 @@ public class Prepod {
     @Column
     private String email;
 
+    @Column
+    private String inn;
+
     //Склад родини -
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "prepod")
     private Set<FamilyMember> family = new LinkedHashSet<>();

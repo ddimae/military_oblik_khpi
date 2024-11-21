@@ -75,6 +75,7 @@ public class EmployeeCRUD {
         newPrepod.setImya(adapter.getName());
         newPrepod.setOtch(adapter.getMidname());
         newPrepod.setKafedra(kafedraService.getKafedraByName(adapter.getCathedra()));
+        newPrepod.setInn(adapter.getInn());
 //        if (!birthDate.isBlank())
         newPrepod.setDr(LocalDate.parse(adapter.getBirth(), DateTimeFormatter.ofPattern("dd.MM.yyyy")));
 

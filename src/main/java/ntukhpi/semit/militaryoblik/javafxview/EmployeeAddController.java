@@ -60,6 +60,9 @@ public class EmployeeAddController implements ControlledScene {
     private TextField nameTextField;
 
     @FXML
+    private TextField innTextField;
+
+    @FXML
     private RadioButton nppRadioButton;
 
     @FXML
@@ -211,6 +214,7 @@ public class EmployeeAddController implements ControlledScene {
         String surname = surnameTextField.getText().trim();
         String name = nameTextField.getText().trim();
         String midname = midnameTextField.getText().trim();
+        String inn = innTextField.getText().trim();
         String birthDate = birthDatePicker.getEditor().getText();
 //        String position = positionComboBox.getValue() != null ? positionComboBox.getValue().toString() : null;
         String position = positionComboBox.getValue() != null ? positionComboBox.getValue().getDolghnName() : null;
@@ -222,7 +226,7 @@ public class EmployeeAddController implements ControlledScene {
         try {
             employeeValidator.validate(new PrepodAdapter(null, institute, surname, name,
                     midname, birthDate, cathedra,
-                    position, status, degree));
+                    position, status, degree, inn));
         } catch (Exception e) {
             Popup.wrongInputAlert(e.getMessage());
             return;
@@ -262,7 +266,7 @@ public class EmployeeAddController implements ControlledScene {
 
             Prepod newEmployeeInDB = employeeCRUD.addEmployee(new PrepodAdapter(null, null, surname, name,
                                                                                 midname, birthDate, cathedra,
-                                                                                position, status, degree));
+                                                                                position, status, degree, inn));
 
 //            mainController.setNewPrepod(newEmployeeInDB);
             militaryRegistrationCRUD.createBaseMilitaryPerson(newEmployeeInDB);

@@ -42,7 +42,7 @@ public final class EISettings {
     public final static int GLOBAL_DROPDOWN_ROW = 16;
     public final static int GLOBAL_DROPDOWN_COLUMN = 16;
 
-    public final static int GLOBAL_GENERAL_DATA_COUNT = 22;
+    public final static int GLOBAL_GENERAL_DATA_COUNT = 23;
     public final static int GLOBAL_CONTACTS_DATA_COUNT = 13;
     public final static int GLOBAL_EDUCATION_DATA_COUNT = MAX_EDUCATION_NUMBER * EDUCATION_COL_COUNT;
     public final static int GLOBAL_POSTEDUCATION_DATA_COUNT = MAX_POSTEDUCATION_NUMBER * POSTEDUCATION_COL_COUNT;

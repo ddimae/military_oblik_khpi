@@ -10,6 +10,7 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ntukhpi.semit.militaryoblik.MilitaryOblikKhPIMain;
+import ntukhpi.semit.militaryoblik.adapters.EIAdapter;
 import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
 import ntukhpi.semit.militaryoblik.entity.MilitaryPerson;
 import ntukhpi.semit.militaryoblik.entity.Voenkomat;
@@ -514,9 +515,14 @@ public class ReservistsAllController implements ControlledScene {
         fileChooser.getExtensionFilters().add(extFilter);
 
         try {
-            dataWriteReadService.readImportDataFromExcel(fileChooser.showOpenDialog(new Stage()));
+            EIAdapter mergedAdapter = dataWriteReadService.readImportDataFromExcel(fileChooser.showOpenDialog(new Stage()));
+
+            if (mergedAdapter == null)
+                return;
         } catch (Exception e) {
+            Popup.internalAlert(e.getMessage());
             e.printStackTrace();
+            return;
         }
 
         this.updateForm();

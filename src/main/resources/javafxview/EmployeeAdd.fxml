@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -20,7 +15,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="610.0" prefWidth="550.0" spacing="20.0" stylesheets="@MOStyles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntukhpi.semit.militaryoblik.javafxview.EmployeeAddController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="550.0" spacing="20.0" stylesheets="@MOStyles.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntukhpi.semit.militaryoblik.javafxview.EmployeeAddController">
    <children>
       <HBox alignment="CENTER" minWidth="450.0" prefHeight="100.0" prefWidth="450.0">
          <children>
@@ -31,6 +26,7 @@
                   <Label prefHeight="40.0" text="Прізвище" />
                   <Label prefHeight="40.0" text="Ім'я" />
                   <Label prefHeight="40.0" text="По батькові" />
+                  <Label prefHeight="40.0" text="ІНН" />
                   <Label prefHeight="40.0" text="Дата народження" />
                </children></VBox>
             <VBox prefHeight="200.0" prefWidth="300.0" spacing="5.0">
@@ -71,6 +67,7 @@
                   <TextField fx:id="surnameTextField" promptText="Шевченко" styleClass="obligatory-field" />
                   <TextField fx:id="nameTextField" promptText="Микола" styleClass="obligatory-field" />
                   <TextField fx:id="midnameTextField" promptText="Іванович" styleClass="obligatory-field" />
+                  <TextField fx:id="innTextField" promptText="1234567890" styleClass="obligatory-field" />
                   <DatePicker fx:id="birthDatePicker" maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="150.0" promptText="23.01.2004" styleClass="obligatory-field" />
                </children></VBox>
          </children>
