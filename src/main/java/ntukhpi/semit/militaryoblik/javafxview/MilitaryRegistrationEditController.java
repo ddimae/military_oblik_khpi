@@ -16,6 +16,7 @@ import ntukhpi.semit.militaryoblik.adapters.ReservistAdapter;
 import ntukhpi.semit.militaryoblik.entity.*;
 import ntukhpi.semit.militaryoblik.entity.fromasukhpi.Prepod;
 import ntukhpi.semit.militaryoblik.javafxutils.ControlledScene;
+import ntukhpi.semit.militaryoblik.javafxutils.DataFormat;
 import ntukhpi.semit.militaryoblik.javafxutils.Popup;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.MilitaryRegistrationValidator;
 import ntukhpi.semit.militaryoblik.javafxutils.validators.exceptions.VoenkomatNotFoundException;
@@ -291,7 +292,7 @@ public class MilitaryRegistrationEditController implements ControlledScene {
         String voenkomat = voenkomatTextField.getText().trim();
         String familyState = familyStanTextField.getText().trim();
         String educationLevel = educationTextField.getText().trim();
-        String vin = vinTextField.getText().trim();
+        String vin = DataFormat.safeStr(vinTextField.getText()).trim();
 
         try {
             militaryRegistrationValidator.validate(new MilitaryPersonAdapter(null, vos, category,

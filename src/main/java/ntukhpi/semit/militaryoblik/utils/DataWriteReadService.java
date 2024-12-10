@@ -77,17 +77,14 @@ public class DataWriteReadService {
         return d5ExcelWriter.writeExcel(workingDatas, file);
     }
 
-    public String writeExportDataToExcelBase(ReservistAdapter reservist, File file) {
+    public String writeExportDataToExcelBase(ReservistAdapter reservist, File file) throws Exception {
         Long prepodId = reservist.getId();
 
-        try {
-            EIAdapter exportAdapter = eiDataCollectService.collectData(prepodId);
+        EIAdapter exportAdapter = eiDataCollectService.collectData(prepodId);
 
-            return eiExcelWriter.writeExcel(EIDataPreparer.exportAdapterToDataList(exportAdapter), eiDataCollectService.getDropdownAdapter().toList(), file);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            return "error";
-        }
+        eiExcelWriter.writeExcel(EIDataPreparer.exportAdapterToDataList(exportAdapter), eiDataCollectService.getDropdownAdapter().toList(), file);
+
+        return file.getPath();
     }
 
     public EIAdapter readImportDataFromExcel(File file) throws Exception {

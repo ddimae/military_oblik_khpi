@@ -52,9 +52,9 @@ public class EIDataPreparer {
     }
 
     public static List<DocumentAdapter> documentsSetToOffsetList (Set<DocumentAdapter> documentsSet) {
-//        for (DocumentAdapter document : documentsSet) {
-//            System.out.println(document.getType() + " " + EISettings.documentsOrder.get(document.getType()));
-//        }
+        for (DocumentAdapter document : documentsSet) {
+            System.out.println(document.getType() + " " + EISettings.documentsOrder.get(document.getType()));
+        }
 
         List<DocumentAdapter> documentsList = documentsSet.stream().sorted(Comparator.comparingInt(o -> EISettings.documentsOrder.get(o.getType()))).toList();;
         List<DocumentAdapter> documentsListOffset = new ArrayList<>();

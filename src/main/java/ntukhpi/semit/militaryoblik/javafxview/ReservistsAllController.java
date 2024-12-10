@@ -482,23 +482,28 @@ public class ReservistsAllController implements ControlledScene {
     @FXML
     private void handlePrintExportButton() {
         ReservistAdapter reservist = reservistsTableView.getSelectionModel().getSelectedItem();
+        String path = null;
+        File file = null;
         Alert confirmationDialog = null;
         if (reservist != null) {
-            FileChooser fileChooser = getFilePathFp2(reservist.getFam());
-            String resultSave;
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Файли Excel з формою для оновлення(*.xlsx)", "*.xlsx");
+            FileChooser fileChooser = getFilePathExport(reservist.getFam());
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Файли Excel з формою оновлення(*.xlsx)", "*.xlsx");
             fileChooser.getExtensionFilters().add(extFilter);
 
-            resultSave = dataWriteReadService.writeExportDataToExcelBase(reservist, fileChooser.showSaveDialog(new Stage()));
+            try {
+                file = fileChooser.showSaveDialog(new Stage());
+                path = dataWriteReadService.writeExportDataToExcelBase(reservist, file);
 
-            if (resultSave.startsWith("Дані успішно збережені")) {  // FIXME: Piece of shit
                 confirmationDialog = new Alert(Alert.AlertType.INFORMATION);
-                confirmationDialog.setTitle("Формування форми оновлення");
-            } else {
+                confirmationDialog.setContentText("Дані успішно збережені:\n" + path);
+            } catch (Exception e) {
                 confirmationDialog = new Alert(Alert.AlertType.ERROR);
-                confirmationDialog.setTitle("Помилка формування форми оновлення");
+                confirmationDialog.setTitle("Помилка");
+                confirmationDialog.setContentText(e.getMessage());
             }
-            confirmationDialog.setContentText(resultSave);
+
+            if (file == null)
+                return;
         } else {
             confirmationDialog = new Alert(Alert.AlertType.WARNING);
             confirmationDialog.setTitle("Помилка");
@@ -577,6 +582,32 @@ public class ReservistsAllController implements ControlledScene {
 
         fileChooser.setInitialDirectory(resultDir);
         String resultFileName = fam+"_formaP2_" + LocalDate.now().format(DateTimeFormatter.ISO_DATE);
+        fileChooser.setInitialFileName(resultFileName);
+        return fileChooser;
+    }
+
+    private FileChooser getFilePathExport(String fam) {
+        FileChooser fileChooser = new FileChooser();
+        String resultDirName = "docs/results";
+        File resultDir = new File(resultDirName);
+        String resultSave = "";
+        if (!resultDir.isDirectory()) {
+            boolean success = resultDir.mkdirs();
+            if (success) {
+                System.out.println("Created path: " + resultDir.getPath());
+            } else {
+                resultSave = "Помилка створення форми оновлення";
+                Alert confirmationDialog = null;
+                confirmationDialog = new Alert(Alert.AlertType.ERROR);
+                confirmationDialog.setTitle("Помилка формування форми оновлення");
+                confirmationDialog.setHeaderText(null);
+                confirmationDialog.setContentText(resultSave);
+                confirmationDialog.showAndWait();
+            }
+        }
+
+        fileChooser.setInitialDirectory(resultDir);
+        String resultFileName = fam+"_update_" + LocalDate.now().format(DateTimeFormatter.ISO_DATE);
         fileChooser.setInitialFileName(resultFileName);
         return fileChooser;
     }

@@ -10,8 +10,7 @@ import java.util.List;
 
 @Component
 public class EIExcelWriter {
-    public String writeExcel(List<String[]> personData, List<String[]> dropdownData, File file) {
-        String resultSave = null;
+    public void writeExcel(List<String[]> personData, List<String[]> dropdownData, File file) throws Exception {
         String resultsPath = file.getPath();
         String templatePath = EISettings.TEMPLATE_PATH;
 
@@ -24,17 +23,12 @@ public class EIExcelWriter {
             // Зберігаємо змінений документ у файл
             try (FileOutputStream fos = new FileOutputStream(resultsPath)) {
                 workbook.write(fos);
-                resultSave = "Дані успішно збережені: "+resultsPath;
-                System.out.println(resultSave);
             } catch (FileNotFoundException e) {
-                resultSave = "Помилка під час запису у файл: "+resultsPath;
-                System.err.println(resultSave);
+                throw new FileNotFoundException("Помилка під час запису у файл: "+resultsPath);
             }
         } catch (IOException e) {
-            resultSave = "Помилка відкриття файлу-шаблону: "+templatePath;
-            System.err.println(resultSave);
+            throw new IOException("Помилка відкриття файлу-шаблону: "+templatePath);
         }
-        return resultSave;
     }
 
     private void copyExcelTables(Workbook workbook, int sourceSheetIndex, Point sourceTopLeftCoords, Dimension sourceWidthHeight,
